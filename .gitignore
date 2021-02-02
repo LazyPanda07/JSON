@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# VS Folders
+.vs/
+
+# Binaries
+bin/
+
+# .sln file
+JSON.sln

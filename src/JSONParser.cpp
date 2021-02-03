@@ -5,6 +5,8 @@
 #include <cctype>
 #include <algorithm>
 
+#define INSERT_DATA(key, value) if(isArrayData) { insertDataIntoArray(key, value, ptr); } else { ptr->data.insert(make_pair(move(key), value)); }
+
 using namespace std;
 
 constexpr char openCurlyBracket = '{';
@@ -18,19 +20,34 @@ bool isNumber(const string& source);
 
 namespace json
 {
-	void JSONParser::insertKeyValue(string&& key, const string& value, jsonStruct*& ptr)
+	template<typename T>
+	void JSONParser::insertDataIntoArray(const string& key, T&& value, jsonStruct*& ptr)
 	{
+		try
+		{
+			get<vector<T>>(ptr->data.at(key)).push_back(move(value));
+		}
+		catch (const bad_variant_access&)
+		{
+			ptr->data.at(key).emplace<vector<T>>(vector<T>({ move(value) }));
+		}
+	}
+
+	void JSONParser::insertData(string&& key, const string& value, jsonStruct*& ptr)
+	{
+		bool isArrayData = ptr->data.find(key) != ptr->data.end();
+
 		if (*value.begin() == '"' && *value.rbegin() == '"')
 		{
-			ptr->data.insert(make_pair(move(key), string(value.begin() + 1, value.end() - 1)));
+			INSERT_DATA(key, string(value.begin() + 1, value.end() - 1));
 		}
 		else if (bool logicValue = (value == "true" || value == "false"))
 		{
-			ptr->data.insert(make_pair(move(key), logicValue));
+			INSERT_DATA(key, move(logicValue));
 		}
 		else if (value == "null")
 		{
-			ptr->data.insert(make_pair(move(key), nullptr));
+			INSERT_DATA(key, nullptr);
 		}
 		else if (isNumber(value))
 		{
@@ -41,11 +58,11 @@ namespace json
 
 				if (numeric_limits<float>::max() > valueToInsert)
 				{
-					ptr->data.insert(make_pair(move(key), static_cast<float>(valueToInsert)));
+					INSERT_DATA(key, static_cast<float>(valueToInsert));
 				}
 				else
 				{
-					ptr->data.insert(make_pair(move(key), valueToInsert));
+					INSERT_DATA(key, move(valueToInsert));
 				}
 			}
 			else
@@ -55,11 +72,11 @@ namespace json
 
 				if (numeric_limits<int>::max() > valueToInsert)
 				{
-					ptr->data.insert(make_pair(move(key), static_cast<int>(valueToInsert)));
+					INSERT_DATA(key, static_cast<int>(valueToInsert));
 				}
 				else
 				{
-					ptr->data.insert(make_pair(move(key), valueToInsert));
+					INSERT_DATA(key, move(valueToInsert));
 				}
 			}
 		}
@@ -113,7 +130,7 @@ namespace json
 			case closeCurlyBracket:
 				if (value.size())
 				{
-					insertKeyValue(move(key), value, maps.top().second);
+					insertData(move(key), value, maps.top().second);
 
 					value.clear();
 				}
@@ -130,17 +147,25 @@ namespace json
 				break;
 
 			case openSquareBracket:
+				maps.top().second->data.insert(make_pair(key, jsonStruct::variantType()));
 
 				break;
 
 			case closeSquareBracket:
+				if (value.size())
+				{
+					insertData(move(key), value, maps.top().second);
+
+					key.clear();
+					value.clear();
+				}
 
 				break;
 
 			case comma:
 				if (isNumber(value) || (value.size() && *value.begin() == '"' && *value.rbegin() == '"'))
 				{
-					insertKeyValue(move(key), value, maps.top().second);
+					insertData(move(key), value, maps.top().second);
 
 					value.clear();
 				}
@@ -162,6 +187,8 @@ namespace json
 				value += i;
 			}
 		}
+
+		int a = 5;
 	}
 
 	JSONParser::JSONParser(const string& data) :

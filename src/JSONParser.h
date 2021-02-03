@@ -13,7 +13,7 @@ namespace json
 	private:
 		struct jsonStruct
 		{
-			std::unordered_map<std::string, std::variant
+			using variantType = std::variant
 				<
 				nullptr_t,
 				std::string,
@@ -31,8 +31,6 @@ namespace json
 				std::vector<char>,
 				std::vector<unsigned char>,
 				std::vector<bool>,
-				std::vector<short>,
-				std::vector<unsigned short>,
 				std::vector<int>,
 				std::vector<unsigned int>,
 				std::vector<float>,
@@ -40,8 +38,9 @@ namespace json
 				std::vector<uint64_t>,
 				std::vector<double>,
 				std::unique_ptr<jsonStruct>
-				>
-			> data;
+				> ;
+
+			std::unordered_map<std::string, variantType> data;
 		};
 
 	private:
@@ -49,7 +48,10 @@ namespace json
 		jsonStruct parsedData;
 
 	private:
-		static void insertKeyValue(std::string&& key, const std::string& value, jsonStruct*& ptr);
+		template<typename T>
+		static void insertDataIntoArray(const std::string& key, T&& value, jsonStruct*& ptr);
+
+		static void insertData(std::string&& key, const std::string& value, jsonStruct*& ptr);
 
 		void parse(const std::string& data);
 

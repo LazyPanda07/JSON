@@ -5,6 +5,7 @@
 #include <variant>
 #include <cstdint>
 #include <memory>
+#include <sstream>
 
 namespace json
 {
@@ -20,9 +21,6 @@ namespace json
 				char,
 				unsigned char,
 				bool,
-				int,
-				unsigned int,
-				float,
 				int64_t,
 				uint64_t,
 				double,
@@ -31,9 +29,6 @@ namespace json
 				std::vector<char>,
 				std::vector<unsigned char>,
 				std::vector<bool>,
-				std::vector<int>,
-				std::vector<unsigned int>,
-				std::vector<float>,
 				std::vector<int64_t>,
 				std::vector<uint64_t>,
 				std::vector<double>,
@@ -44,7 +39,7 @@ namespace json
 		};
 
 	private:
-		const std::string rawData;
+		std::string rawData;
 		jsonStruct parsedData;
 
 	private:
@@ -53,7 +48,7 @@ namespace json
 
 		static void insertData(std::string&& key, const std::string& value, jsonStruct*& ptr);
 
-		void parse(const std::string& data);
+		void parse();
 
 	public:
 		JSONParser() = default;
@@ -63,6 +58,26 @@ namespace json
 		/// </summary>
 		/// <param name="data">JSON formatted data</param>
 		JSONParser(const std::string& data);
+
+		/// <summary>
+		/// Getter for rawData
+		/// </summary>
+		/// <returns>rawData</returns>
+		const std::string& getRawData() const;
+
+		/// <summary>
+		/// Getter for rawData
+		/// </summary>
+		/// <returns>rawData</returns>
+		const std::string& operator * () const;
+
+		/// <summary>
+		/// Get JSON from stream
+		/// </summary>
+		/// <param name="stream">std::istream subclass</param>
+		/// <param name="parser">reference to JSONParser instance</param>
+		/// <returns>stream</returns>
+		friend std::istream& operator >> (std::istream& stream, JSONParser& parser);
 
 		~JSONParser() = default;
 	};

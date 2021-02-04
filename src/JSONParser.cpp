@@ -7,7 +7,18 @@
 
 #define INSERT_DATA(key, value) if(isArrayData) { insertDataIntoArray(key, value, ptr); } else { ptr->data.insert(make_pair(move(key), value)); }
 
-#define GET_METHOD(templateType) template<> const templateType& JSONParser::get<templateType>(const string& key) const { return ::get<templateType>(find(key, parsedData.data)->second); }
+#define GET_METHOD(templateType) template<> \
+const templateType& JSONParser::get<templateType>(const string& key) const \
+{ \
+	auto [result, success] = find(key, parsedData.data); \
+	  \
+	if(!success) \
+	{ \
+		throw runtime_error("Wrong key"); \
+	} \
+	  \
+	return ::get<templateType>(result->second); \
+}
 
 using namespace std;
 
@@ -145,13 +156,13 @@ namespace json
 		}
 	}
 
-	unordered_map<string, JSONParser::jsonStruct::variantType>::const_iterator JSONParser::find(const string& key, const unordered_map<string, jsonStruct::variantType>& start)
+	pair<unordered_map<string, JSONParser::jsonStruct::variantType>::const_iterator, bool> JSONParser::find(const string& key, const unordered_map<string, jsonStruct::variantType>& start)
 	{
 		auto it = start.find(key);
 
 		if (it != start.end())
 		{
-			return it;
+			return { it, true };
 		}
 
 		it = start.begin();
@@ -165,7 +176,7 @@ namespace json
 
 				auto result = find(key, data);
 
-				if (result != data.end())
+				if (result.second)
 				{
 					return result;
 				}
@@ -173,8 +184,8 @@ namespace json
 
 			++it;
 		}
-
-		throw runtime_error("Wrong key");
+		
+		return { end, false };
 	}
 
 	void JSONParser::parse()

@@ -91,7 +91,7 @@ namespace json
 
 		static void insertData(std::string&& key, const std::string& value, jsonStruct*& ptr);
 
-		static std::unordered_map<std::string, jsonStruct::variantType>::const_iterator find(const std::string& key, const std::unordered_map<std::string, jsonStruct::variantType>& start);
+		static std::pair<std::unordered_map<std::string, jsonStruct::variantType>::const_iterator, bool> find(const std::string& key, const std::unordered_map<std::string, jsonStruct::variantType>& start);
 
 		void parse();
 

@@ -91,6 +91,8 @@ namespace json
 
 		static void insertData(std::string&& key, const std::string& value, jsonStruct*& ptr);
 
+		static std::unordered_map<std::string, jsonStruct::variantType>::const_iterator find(const std::string& key, const std::unordered_map<std::string, jsonStruct::variantType>& start);
+
 		void parse();
 
 	public:
@@ -114,9 +116,17 @@ namespace json
 		/// <returns>rawData</returns>
 		const std::string& operator * () const;
 
-		ConstIterator begin() noexcept;
+		/// <summary>
+		/// Get iterator to begin of the JSON parsedData
+		/// </summary>
+		/// <returns>begin iterator</returns>
+		ConstIterator begin() const noexcept;
 
-		ConstIterator end() noexcept;
+		/// <summary>
+		/// Get iterator to end of the JSON parsedData
+		/// </summary>
+		/// <returns>end iterator</returns>
+		ConstIterator end() const noexcept;
 
 		/// <summary>
 		/// <para>Getter for all JSON parsed values</para>
@@ -125,11 +135,12 @@ namespace json
 		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
 		/// <param name="key">JSON key</param>
 		/// <returns>JSON value</returns>
+		/// <exception cref="std::runtime_error">can't find JSON value</exception>
 		template<typename T>
 		const T& get(const std::string& key) const;
 
 		/// <summary>
-		/// Get JSON from stream
+		/// Get JSON from input stream
 		/// </summary>
 		/// <param name="stream">std::istream subclass</param>
 		/// <param name="parser">reference to JSONParser instance</param>

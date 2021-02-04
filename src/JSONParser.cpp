@@ -7,6 +7,8 @@
 
 #define INSERT_DATA(key, value) if(isArrayData) { insertDataIntoArray(key, value, ptr); } else { ptr->data.insert(make_pair(move(key), value)); }
 
+#define GET_METHOD(templateType) template<> const templateType& JSONParser::get<templateType>(const string& key) const { return ::get<templateType>(find(key, parsedData.data)->second); }
+
 using namespace std;
 
 constexpr char openCurlyBracket = '{';
@@ -95,7 +97,7 @@ namespace json
 	{
 		try
 		{
-			std::get<vector<T>>(ptr->data.at(key)).push_back(move(value));
+			::get<vector<T>>(ptr->data.at(key)).push_back(move(value));
 		}
 		catch (const bad_variant_access&)
 		{
@@ -141,6 +143,38 @@ namespace json
 				}
 			}
 		}
+	}
+
+	unordered_map<string, JSONParser::jsonStruct::variantType>::const_iterator JSONParser::find(const string& key, const unordered_map<string, jsonStruct::variantType>& start)
+	{
+		auto it = start.find(key);
+
+		if (it != start.end())
+		{
+			return it;
+		}
+
+		it = start.begin();
+		auto end = start.end();
+
+		while (it != end)
+		{
+			if (it->second.index() == 16)
+			{
+				const unordered_map<string, jsonStruct::variantType>& data = ::get<unique_ptr<jsonStruct>>(it->second)->data;
+
+				auto result = find(key, data);
+
+				if (result != data.end())
+				{
+					return result;
+				}
+			}
+
+			++it;
+		}
+
+		throw runtime_error("Wrong key");
 	}
 
 	void JSONParser::parse()
@@ -256,14 +290,14 @@ namespace json
 		this->parse();
 	}
 
-	ConstIterator JSONParser::begin() noexcept
+	ConstIterator JSONParser::begin() const noexcept
 	{
-		return ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cbegin());
+		return JSONParser::ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cbegin());
 	}
 
-	ConstIterator JSONParser::end() noexcept
+	ConstIterator JSONParser::end() const noexcept
 	{
-		return ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cend());
+		return JSONParser::ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cend());
 	}
 
 	const string& JSONParser::getRawData() const
@@ -275,6 +309,40 @@ namespace json
 	{
 		return rawData;
 	}
+
+	GET_METHOD(nullptr_t);
+
+	GET_METHOD(string);
+
+	GET_METHOD(char);
+
+	GET_METHOD(unsigned char);
+
+	GET_METHOD(bool);
+
+	GET_METHOD(int64_t);
+
+	GET_METHOD(uint64_t);
+
+	GET_METHOD(double);
+
+	GET_METHOD(vector<nullptr_t>);
+
+	GET_METHOD(vector<string>);
+
+	GET_METHOD(vector<char>);
+
+	GET_METHOD(vector<unsigned char>);
+
+	GET_METHOD(vector<bool>);
+
+	GET_METHOD(vector<int64_t>);
+
+	GET_METHOD(vector<uint64_t>);
+
+	GET_METHOD(vector<double>);
+
+	GET_METHOD(unique_ptr<JSONParser::jsonStruct>);
 
 	istream& operator >> (istream& stream, JSONParser& parser)
 	{

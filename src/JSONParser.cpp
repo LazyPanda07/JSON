@@ -5,6 +5,10 @@
 #include <cctype>
 #include <algorithm>
 
+#include <Windows.h>
+
+#undef max
+
 #define INSERT_DATA(key, value) if(isArrayData) { insertDataIntoArray(key, value, ptr); } else { ptr->data.insert(make_pair(move(key), value)); }
 
 #define GET_METHOD(templateType) template<> \
@@ -35,6 +39,8 @@ bool isNumber(const string& source);
 
 template<typename T>
 ostream& operator << (ostream& outputStream, const vector<T>& jsonArray);
+
+string toUTF8(const string& source, unsigned int sourceCodePage);
 
 namespace json
 {
@@ -442,7 +448,7 @@ namespace json
 	}
 
 	JSONParser::JSONParser(const string& data) :
-		rawData(data)
+		rawData(toUTF8(data, CP_UTF8))
 	{
 		this->parse();
 	}
@@ -511,7 +517,7 @@ namespace json
 			data += tem + '\n';
 		}
 
-		parser.rawData = data;
+		parser.rawData = toUTF8(data, CP_UTF8);
 
 		parser.parse();
 
@@ -601,4 +607,75 @@ ostream& operator << (ostream& outputStream, const vector<T>& jsonArray)
 	}
 
 	return outputStream;
+}
+
+string toUTF8(const string& source, unsigned int sourceCodePage)
+{
+	string result;
+	wstring tem;
+	int size = MultiByteToWideChar
+	(
+		sourceCodePage,
+		NULL,
+		source.data(),
+		-1,
+		nullptr,
+		NULL
+	);
+
+	if (!size)
+	{
+		throw runtime_error("Can't convert string to UTF8");
+	}
+
+	tem.resize(static_cast<size_t>(size) - 1);
+
+	if (!MultiByteToWideChar
+	(
+		sourceCodePage,
+		NULL,
+		source.data(),
+		-1,
+		tem.data(),
+		size
+	))
+	{
+		throw runtime_error("Can't convert string to UTF8");
+	}
+
+	size = WideCharToMultiByte
+	(
+		CP_UTF8,
+		NULL,
+		tem.data(),
+		-1,
+		nullptr,
+		NULL,
+		NULL,
+		NULL
+	);
+
+	if (!size)
+	{
+		throw runtime_error("Can't convert string to UTF8");
+	}
+
+	result.resize(static_cast<size_t>(size) - 1);
+
+	if (!WideCharToMultiByte
+	(
+		CP_UTF8,
+		NULL,
+		tem.data(),
+		-1,
+		result.data(),
+		size,
+		NULL,
+		NULL
+	))
+	{
+		throw runtime_error("Can't convert string to UTF8");
+	}
+
+	return result;
 }

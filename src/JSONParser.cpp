@@ -20,6 +20,76 @@ bool isNumber(const string& source);
 
 namespace json
 {
+	using ConstIterator = JSONParser::ConstIterator;
+
+	ConstIterator::ConstIterator(const ConstIterator& other) :
+		begin(other.begin),
+		end(other.end),
+		current(other.current)
+	{
+
+	}
+
+	ConstIterator::ConstIterator(ConstIteratorType begin, ConstIteratorType end, ConstIteratorType start) :
+		begin(begin),
+		end(end),
+		current(start)
+	{
+
+	}
+
+	ConstIterator ConstIterator::operator++ (int) noexcept
+	{
+		ConstIterator it(*this);
+
+		++current;
+
+		return it;
+	}
+
+	const ConstIterator& ConstIterator::operator++ () noexcept
+	{
+		++current;
+
+		return *this;
+	}
+
+	ConstIterator ConstIterator::operator-- (int) noexcept
+	{
+		ConstIterator it(*this);
+
+		--current;
+
+		return it;
+	}
+
+	const ConstIterator& ConstIterator::operator-- () noexcept
+	{
+		--current;
+
+		return *this;
+	}
+
+	const ConstIterator::ConstIteratorType& ConstIterator::operator * () const noexcept
+	{
+		return current;
+	}
+
+	const ConstIterator::ConstIteratorType& ConstIterator::operator -> () const noexcept
+	{
+		return **this;
+	}
+
+	bool ConstIterator::operator == (const ConstIterator& other) const noexcept
+	{
+		return current == other.current;
+	}
+
+	bool ConstIterator::operator != (const ConstIterator& other) const noexcept
+	{
+		return current != other.current;
+	}
+
 	template<typename T>
 	void JSONParser::insertDataIntoArray(const string& key, T&& value, jsonStruct*& ptr)
 	{
@@ -186,11 +256,21 @@ namespace json
 		this->parse();
 	}
 
+	ConstIterator JSONParser::begin() noexcept
+	{
+		return ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cbegin());
+	}
+
+	ConstIterator JSONParser::end() noexcept
+	{
+		return ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cend());
+	}
+
 	const string& JSONParser::getRawData() const
 	{
 		return rawData;
 	}
-	
+
 	const string& JSONParser::operator * () const
 	{
 		return rawData;

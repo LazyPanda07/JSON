@@ -12,7 +12,6 @@ namespace json
 	class JSONParser
 	{
 	public:
-		
 		/// <summary>
 		/// Utility struct
 		/// </summary>
@@ -40,9 +39,46 @@ namespace json
 				std::vector<uint64_t>,
 				std::vector<double>,
 				std::unique_ptr<jsonStruct>
-				> ;
+				>;
 
 			std::unordered_map<std::string, variantType> data;
+		};
+
+	public:
+		class ConstIterator
+		{
+		private:
+			using ConstIteratorType = std::unordered_map<std::string, jsonStruct::variantType>::const_iterator;
+
+		private:
+			ConstIteratorType begin;
+			ConstIteratorType end;
+			ConstIteratorType current;
+
+		public:
+			ConstIterator() = default;
+
+			ConstIterator(const ConstIterator& other);
+
+			ConstIterator(ConstIteratorType begin, ConstIteratorType end, ConstIteratorType start);
+
+			ConstIterator operator ++ (int) noexcept;
+
+			const ConstIterator& operator ++ () noexcept;
+
+			ConstIterator operator -- (int) noexcept;
+
+			const ConstIterator& operator -- () noexcept;
+
+			const ConstIteratorType& operator * () const noexcept;
+
+			const ConstIteratorType& operator -> () const noexcept;
+
+			bool operator == (const ConstIterator& other) const noexcept;
+
+			bool operator != (const ConstIterator& other) const noexcept;
+
+			~ConstIterator() = default;
 		};
 
 	private:
@@ -77,6 +113,10 @@ namespace json
 		/// </summary>
 		/// <returns>rawData</returns>
 		const std::string& operator * () const;
+
+		ConstIterator begin() noexcept;
+
+		ConstIterator end() noexcept;
 
 		/// <summary>
 		/// <para>Getter for all JSON parsed values</para>

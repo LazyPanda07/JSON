@@ -13,6 +13,30 @@ namespace json
 	{
 	public:
 		/// <summary>
+		/// enum for variantType template arguments
+		/// </summary>
+		enum variantTypeEnum
+		{
+			jNull,
+			jString,
+			jChar,
+			jUnsignedChar,
+			jBool,
+			jInt64_t,
+			jUint64_t,
+			jDouble,
+			jNullArray,
+			jStringArray,
+			jCharArray,
+			jUnsignedCharArray,
+			jBoolArray,
+			jInt64_tArray,
+			jUint64_tArray,
+			jDoubleArray,
+			jJsonStruct
+		};
+
+		/// <summary>
 		/// Utility struct
 		/// </summary>
 		struct jsonStruct
@@ -93,6 +117,9 @@ namespace json
 
 		static std::pair<std::unordered_map<std::string, jsonStruct::variantType>::const_iterator, bool> find(const std::string& key, const std::unordered_map<std::string, jsonStruct::variantType>& start);
 
+		static void outputJSONType(std::ostream& outputStream, const jsonStruct::variantType& value, bool isLast);
+
+	private:
 		void parse();
 
 	public:
@@ -145,7 +172,9 @@ namespace json
 		/// <param name="stream">std::istream subclass</param>
 		/// <param name="parser">reference to JSONParser instance</param>
 		/// <returns>stream</returns>
-		friend std::istream& operator >> (std::istream& stream, JSONParser& parser);
+		friend std::istream& operator >> (std::istream& inputStream, JSONParser& parser);
+
+		friend std::ostream& operator << (std::ostream& outputStream, const JSONParser& parser);
 
 		~JSONParser() = default;
 	};

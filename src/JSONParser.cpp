@@ -29,7 +29,12 @@ constexpr char closeSquareBracket = ']';
 constexpr char comma = ',';
 constexpr char colon = ':';
 
+static string offset;
+
 bool isNumber(const string& source);
+
+template<typename T>
+ostream& operator << (ostream& outputStream, const vector<T>& jsonArray);
 
 namespace json
 {
@@ -170,7 +175,7 @@ namespace json
 
 		while (it != end)
 		{
-			if (it->second.index() == 16)
+			if (it->second.index() == variantTypeEnum::jJsonStruct)
 			{
 				const unordered_map<string, jsonStruct::variantType>& data = ::get<unique_ptr<jsonStruct>>(it->second)->data;
 
@@ -184,8 +189,149 @@ namespace json
 
 			++it;
 		}
-		
+
 		return { end, false };
+	}
+
+	void JSONParser::outputJSONType(ostream& outputStream, const JSONParser::jsonStruct::variantType& value, bool isLast)
+	{
+		if (value.index() >= variantTypeEnum::jNullArray)
+		{
+			offset += "  ";
+		}
+
+		switch (value.index())
+		{
+		case json::JSONParser::jNull:
+			outputStream << "null";
+
+			break;
+
+		case json::JSONParser::jString:
+			outputStream << '"' << ::get<string>(value) << '"';
+
+			break;
+
+		case json::JSONParser::jChar:
+			outputStream << ::get<char>(value);
+
+			break;
+
+		case json::JSONParser::jUnsignedChar:
+			outputStream << ::get<unsigned char>(value);
+
+			break;
+
+		case json::JSONParser::jBool:
+			outputStream << boolalpha << ::get<bool>(value);
+
+			break;
+
+		case json::JSONParser::jInt64_t:
+			outputStream << ::get<int64_t>(value);
+
+			break;
+
+		case json::JSONParser::jUint64_t:
+			outputStream << ::get<uint64_t>(value);
+
+			break;
+
+		case json::JSONParser::jDouble:
+			outputStream << fixed << ::get<double>(value);
+
+			break;
+
+		case json::JSONParser::jNullArray:
+		{
+			const vector<nullptr_t>& ref = ::get<vector<nullptr_t>>(value);
+
+			outputStream << "[\n";
+
+			for (size_t i = 0; i < ref.size(); i++)
+			{
+				outputStream << offset << "null";
+
+				if (i + 1 != ref.size())
+				{
+					outputStream << ",\n";
+				}
+			}
+
+			outputStream << string(offset.begin(), offset.end() - 2) << ']';
+		}
+		break;
+
+		case json::JSONParser::jStringArray:
+			outputStream << ::get<vector<string>>(value) << string(offset.begin(), offset.end() - 2) << ']';
+
+			break;
+
+		case json::JSONParser::jCharArray:
+			outputStream << ::get<vector<char>>(value) << string(offset.begin(), offset.end() - 2) << ']';
+
+			break;
+
+		case json::JSONParser::jUnsignedCharArray:
+			outputStream << ::get<vector<unsigned char>>(value) << string(offset.begin(), offset.end() - 2) << ']';
+
+			break;
+
+		case json::JSONParser::jBoolArray:
+			outputStream << ::get<vector<bool>>(value) << string(offset.begin(), offset.end() - 2) << ']';
+
+			break;
+
+		case json::JSONParser::jInt64_tArray:
+			outputStream << ::get<vector<int64_t>>(value) << string(offset.begin(), offset.end() - 2) << ']';
+
+			break;
+
+		case json::JSONParser::jUint64_tArray:
+			outputStream << ::get<vector<uint64_t>>(value) << string(offset.begin(), offset.end() - 2) << ']';
+
+			break;
+
+		case json::JSONParser::jDoubleArray:
+			outputStream << fixed << ::get<vector<double>>(value) << string(offset.begin(), offset.end() - 2) << ']';
+
+			break;
+
+		case json::JSONParser::jJsonStruct:
+		{
+			const unique_ptr<jsonStruct>& ref = ::get<unique_ptr<jsonStruct>>(value);
+
+			auto start = ref->data.begin();
+			auto end = ref->data.end();
+
+			outputStream << "{\n";
+
+			while (start != end)
+			{
+				auto check = start;
+
+				outputStream << offset << '"' << start->first << '"' << ": ";
+
+				outputJSONType(outputStream, start->second, ++check == end);
+
+				++start;
+			}
+
+			outputStream << string(offset.begin(), offset.end() - 2) << '}';
+
+			offset.pop_back();
+			offset.pop_back();
+		}
+
+		break;
+		}
+
+		if (!isLast)
+		{
+			outputStream << ',';
+		}
+
+		outputStream << endl;
 	}
 
 	void JSONParser::parse()
@@ -355,12 +501,12 @@ namespace json
 
 	GET_METHOD(unique_ptr<JSONParser::jsonStruct>);
 
-	istream& operator >> (istream& stream, JSONParser& parser)
+	istream& operator >> (istream& inputStream, JSONParser& parser)
 	{
 		string data;
 		string tem;
 
-		while (getline(stream, tem))
+		while (getline(inputStream, tem))
 		{
 			data += tem + '\n';
 		}
@@ -369,7 +515,32 @@ namespace json
 
 		parser.parse();
 
-		return stream;
+		return inputStream;
+	}
+
+	ostream& operator << (ostream& outputStream, const JSONParser& parser)
+	{
+		auto start = parser.begin();
+		auto end = parser.end();
+		string result;
+		offset = "  ";
+
+		outputStream << "{\n";
+
+		while (start != end)
+		{
+			auto check = start;
+
+			outputStream << offset << '"' << start->first << '"' << ": ";
+
+			parser.outputJSONType(outputStream, start->second, ++check == end);
+
+			++start;
+		}
+
+		outputStream << '}';
+
+		return outputStream;
 	}
 }
 
@@ -403,4 +574,31 @@ bool isNumber(const string& source)
 	}
 
 	return false;
+}
+
+template<typename T>
+ostream& operator << (ostream& outputStream, const vector<T>& jsonArray)
+{
+	outputStream << "[\n";
+
+	for (size_t i = 0; i < jsonArray.size(); i++)
+	{
+		if constexpr (is_same_v<string, T>)
+		{
+			outputStream << fixed << boolalpha << offset << '"' << jsonArray[i] << '"';
+		}
+		else
+		{
+			outputStream << fixed << boolalpha << offset << jsonArray[i];
+		}
+
+		if (i + 1 != jsonArray.size())
+		{
+			outputStream << ',';
+		}
+
+		outputStream << endl;
+	}
+
+	return outputStream;
 }

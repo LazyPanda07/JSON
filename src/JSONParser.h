@@ -11,9 +11,16 @@ namespace json
 {
 	class JSONParser
 	{
-	private:
+	public:
+		
+		/// <summary>
+		/// Utility struct
+		/// </summary>
 		struct jsonStruct
 		{
+			/// <summary>
+			/// Describes all JSON types
+			/// </summary>
 			using variantType = std::variant
 				<
 				nullptr_t,
@@ -70,6 +77,16 @@ namespace json
 		/// </summary>
 		/// <returns>rawData</returns>
 		const std::string& operator * () const;
+
+		/// <summary>
+		/// <para>Getter for all JSON parsed values</para>
+		/// <para>T is one of JSONParser::jsonStruct::variantType template parameters</para>
+		/// </summary>
+		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
+		/// <param name="key">JSON key</param>
+		/// <returns>JSON value</returns>
+		template<typename T>
+		const T& get(const std::string& key) const;
 
 		/// <summary>
 		/// Get JSON from stream

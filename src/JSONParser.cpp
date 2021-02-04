@@ -25,7 +25,7 @@ namespace json
 	{
 		try
 		{
-			get<vector<T>>(ptr->data.at(key)).push_back(move(value));
+			std::get<vector<T>>(ptr->data.at(key)).push_back(move(value));
 		}
 		catch (const bad_variant_access&)
 		{

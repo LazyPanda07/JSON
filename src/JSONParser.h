@@ -101,7 +101,7 @@ namespace json
 
 		/// <summary>
 		/// <para>Getter for all JSON parsed values</para>
-		/// <para>T is one of JSONParser::jsonStruct::variantType template parameters</para>
+		/// <para>T is one of json::utility::jsonParserStruct::variantType template parameters</para>
 		/// </summary>
 		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
 		/// <param name="key">JSON key</param>

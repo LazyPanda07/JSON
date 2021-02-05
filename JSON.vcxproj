@@ -163,6 +163,7 @@
     <ClInclude Include="src\Exceptions\WrongEncodingException.h" />
     <ClInclude Include="src\JSONBuilder.h" />
     <ClInclude Include="src\JSONParser.h" />
+    <ClInclude Include="src\JSONUtility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

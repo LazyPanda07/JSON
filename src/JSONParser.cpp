@@ -118,7 +118,7 @@ namespace json
 	}
 
 	template<typename T>
-	void JSONParser::insertDataIntoArray(const string& key, T&& value, jsonStruct*& ptr)
+	void JSONParser::insertDataIntoArray(const string& key, T&& value, utility::jsonParserStruct*& ptr)
 	{
 		try
 		{
@@ -130,7 +130,7 @@ namespace json
 		}
 	}
 
-	void JSONParser::insertData(string&& key, const string& value, jsonStruct*& ptr)
+	void JSONParser::insertData(string&& key, const string& value, utility::jsonParserStruct*& ptr)
 	{
 		bool isArrayData = ptr->data.find(key) != ptr->data.end();
 
@@ -170,7 +170,7 @@ namespace json
 		}
 	}
 
-	pair<unordered_map<string, JSONParser::jsonStruct::variantType>::const_iterator, bool> JSONParser::find(const string& key, const unordered_map<string, jsonStruct::variantType>& start)
+	pair<unordered_map<string, utility::jsonParserStruct::variantType>::const_iterator, bool> JSONParser::find(const string& key, const unordered_map<string, utility::jsonParserStruct::variantType>& start)
 	{
 		auto it = start.find(key);
 
@@ -184,9 +184,9 @@ namespace json
 
 		while (it != end)
 		{
-			if (it->second.index() == variantTypeEnum::jJsonStruct)
+			if (it->second.index() == utility::variantTypeEnum::jJsonStruct)
 			{
-				const unordered_map<string, jsonStruct::variantType>& data = ::get<unique_ptr<jsonStruct>>(it->second)->data;
+				const unordered_map<string, utility::jsonParserStruct::variantType>& data = ::get<unique_ptr<utility::jsonParserStruct>>(it->second)->data;
 
 				auto result = find(key, data);
 
@@ -202,56 +202,56 @@ namespace json
 		return { end, false };
 	}
 
-	void JSONParser::outputJSONType(ostream& outputStream, const JSONParser::jsonStruct::variantType& value, bool isLast)
+	void JSONParser::outputJSONType(ostream& outputStream, const utility::jsonParserStruct::variantType& value, bool isLast)
 	{
-		if (value.index() >= variantTypeEnum::jNullArray)
+		if (value.index() >= utility::variantTypeEnum::jNullArray)
 		{
 			offset += "  ";
 		}
 
 		switch (value.index())
 		{
-		case json::JSONParser::jNull:
+		case utility::variantTypeEnum::jNull:
 			outputStream << "null";
 
 			break;
 
-		case json::JSONParser::jString:
+		case utility::variantTypeEnum::jString:
 			outputStream << '"' << ::get<string>(value) << '"';
 
 			break;
 
-		case json::JSONParser::jChar:
+		case utility::variantTypeEnum::jChar:
 			outputStream << ::get<char>(value);
 
 			break;
 
-		case json::JSONParser::jUnsignedChar:
+		case utility::variantTypeEnum::jUnsignedChar:
 			outputStream << ::get<unsigned char>(value);
 
 			break;
 
-		case json::JSONParser::jBool:
+		case utility::variantTypeEnum::jBool:
 			outputStream << boolalpha << ::get<bool>(value);
 
 			break;
 
-		case json::JSONParser::jInt64_t:
+		case utility::variantTypeEnum::jInt64_t:
 			outputStream << ::get<int64_t>(value);
 
 			break;
 
-		case json::JSONParser::jUint64_t:
+		case utility::variantTypeEnum::jUint64_t:
 			outputStream << ::get<uint64_t>(value);
 
 			break;
 
-		case json::JSONParser::jDouble:
+		case utility::variantTypeEnum::jDouble:
 			outputStream << fixed << ::get<double>(value);
 
 			break;
 
-		case json::JSONParser::jNullArray:
+		case utility::variantTypeEnum::jNullArray:
 		{
 			const vector<nullptr_t>& ref = ::get<vector<nullptr_t>>(value);
 
@@ -271,44 +271,44 @@ namespace json
 		}
 		break;
 
-		case json::JSONParser::jStringArray:
+		case utility::variantTypeEnum::jStringArray:
 			outputStream << ::get<vector<string>>(value) << string(offset.begin(), offset.end() - 2) << ']';
 
 			break;
 
-		case json::JSONParser::jCharArray:
+		case utility::variantTypeEnum::jCharArray:
 			outputStream << ::get<vector<char>>(value) << string(offset.begin(), offset.end() - 2) << ']';
 
 			break;
 
-		case json::JSONParser::jUnsignedCharArray:
+		case utility::variantTypeEnum::jUnsignedCharArray:
 			outputStream << ::get<vector<unsigned char>>(value) << string(offset.begin(), offset.end() - 2) << ']';
 
 			break;
 
-		case json::JSONParser::jBoolArray:
+		case utility::variantTypeEnum::jBoolArray:
 			outputStream << ::get<vector<bool>>(value) << string(offset.begin(), offset.end() - 2) << ']';
 
 			break;
 
-		case json::JSONParser::jInt64_tArray:
+		case utility::variantTypeEnum::jInt64_tArray:
 			outputStream << ::get<vector<int64_t>>(value) << string(offset.begin(), offset.end() - 2) << ']';
 
 			break;
 
-		case json::JSONParser::jUint64_tArray:
+		case utility::variantTypeEnum::jUint64_tArray:
 			outputStream << ::get<vector<uint64_t>>(value) << string(offset.begin(), offset.end() - 2) << ']';
 
 			break;
 
-		case json::JSONParser::jDoubleArray:
+		case utility::variantTypeEnum::jDoubleArray:
 			outputStream << fixed << ::get<vector<double>>(value) << string(offset.begin(), offset.end() - 2) << ']';
 
 			break;
 
-		case json::JSONParser::jJsonStruct:
+		case utility::variantTypeEnum::jJsonStruct:
 		{
-			const unique_ptr<jsonStruct>& ref = ::get<unique_ptr<jsonStruct>>(value);
+			const unique_ptr<utility::jsonParserStruct>& ref = ::get<unique_ptr<utility::jsonParserStruct>>(value);
 
 			auto start = ref->data.begin();
 			auto end = ref->data.end();
@@ -332,7 +332,7 @@ namespace json
 		break;
 		}
 
-		if (value.index() >= variantTypeEnum::jNullArray)
+		if (value.index() >= utility::variantTypeEnum::jNullArray)
 		{
 			offset.pop_back();
 			offset.pop_back();
@@ -348,10 +348,10 @@ namespace json
 
 	void JSONParser::parse()
 	{
-		stack<pair<string, jsonStruct*>> maps;
+		stack<pair<string, utility::jsonParserStruct*>> maps;
 		string key;
 		string value;
-		pair<string, jsonStruct*> ptr = { "", nullptr };
+		pair<string, utility::jsonParserStruct*> ptr = { "", nullptr };
 		bool startString = false;
 
 		for (const auto& i : rawData)
@@ -386,7 +386,7 @@ namespace json
 				}
 				else
 				{
-					maps.push(make_pair(move(key), new jsonStruct()));
+					maps.push(make_pair(move(key), new utility::jsonParserStruct()));
 				}
 
 				break;
@@ -405,13 +405,13 @@ namespace json
 
 				if (ptr.second != &parsedData)
 				{
-					maps.top().second->data.insert(make_pair(move(ptr.first), unique_ptr<jsonStruct>(ptr.second)));
+					maps.top().second->data.insert(make_pair(move(ptr.first), unique_ptr<utility::jsonParserStruct>(ptr.second)));
 				}
 
 				break;
 
 			case openSquareBracket:
-				maps.top().second->data.insert(make_pair(key, jsonStruct::variantType(vector<nullptr_t>())));
+				maps.top().second->data.insert(make_pair(key, utility::jsonParserStruct::variantType(vector<nullptr_t>())));
 
 				break;
 
@@ -511,7 +511,7 @@ namespace json
 
 	GET_METHOD(vector<double>);
 
-	GET_METHOD(unique_ptr<JSONParser::jsonStruct>);
+	GET_METHOD(unique_ptr<utility::jsonParserStruct>);
 
 	istream& operator >> (istream& inputStream, JSONParser& parser)
 	{

@@ -1,78 +1,18 @@
 #pragma once
 
-#include <unordered_map>
-#include <vector>
-#include <variant>
-#include <cstdint>
-#include <memory>
 #include <sstream>
+
+#include "JSONUtility.h"
 
 namespace json
 {
 	class JSONParser
 	{
 	public:
-		/// <summary>
-		/// enum for variantType template arguments
-		/// </summary>
-		enum variantTypeEnum
-		{
-			jNull,
-			jString,
-			jChar,
-			jUnsignedChar,
-			jBool,
-			jInt64_t,
-			jUint64_t,
-			jDouble,
-			jNullArray,
-			jStringArray,
-			jCharArray,
-			jUnsignedCharArray,
-			jBoolArray,
-			jInt64_tArray,
-			jUint64_tArray,
-			jDoubleArray,
-			jJsonStruct
-		};
-
-		/// <summary>
-		/// Utility struct
-		/// </summary>
-		struct jsonStruct
-		{
-			/// <summary>
-			/// Describes all JSON types
-			/// </summary>
-			using variantType = std::variant
-				<
-				nullptr_t,
-				std::string,
-				char,
-				unsigned char,
-				bool,
-				int64_t,
-				uint64_t,
-				double,
-				std::vector<nullptr_t>,
-				std::vector<std::string>,
-				std::vector<char>,
-				std::vector<unsigned char>,
-				std::vector<bool>,
-				std::vector<int64_t>,
-				std::vector<uint64_t>,
-				std::vector<double>,
-				std::unique_ptr<jsonStruct>
-				>;
-
-			std::unordered_map<std::string, variantType> data;
-		};
-
-	public:
 		class ConstIterator
 		{
 		private:
-			using ConstIteratorType = std::unordered_map<std::string, jsonStruct::variantType>::const_iterator;
+			using ConstIteratorType = std::unordered_map<std::string, utility::jsonParserStruct::variantType>::const_iterator;
 
 		private:
 			ConstIteratorType begin;
@@ -107,17 +47,17 @@ namespace json
 
 	private:
 		std::string rawData;
-		jsonStruct parsedData;
+		utility::jsonParserStruct parsedData;
 
 	private:
 		template<typename T>
-		static void insertDataIntoArray(const std::string& key, T&& value, jsonStruct*& ptr);
+		static void insertDataIntoArray(const std::string& key, T&& value, utility::jsonParserStruct*& ptr);
 
-		static void insertData(std::string&& key, const std::string& value, jsonStruct*& ptr);
+		static void insertData(std::string&& key, const std::string& value, utility::jsonParserStruct*& ptr);
 
-		static std::pair<std::unordered_map<std::string, jsonStruct::variantType>::const_iterator, bool> find(const std::string& key, const std::unordered_map<std::string, jsonStruct::variantType>& start);
+		static std::pair<std::unordered_map<std::string, utility::jsonParserStruct::variantType>::const_iterator, bool> find(const std::string& key, const std::unordered_map<std::string, utility::jsonParserStruct::variantType>& start);
 
-		static void outputJSONType(std::ostream& outputStream, const jsonStruct::variantType& value, bool isLast);
+		static void outputJSONType(std::ostream& outputStream, const utility::jsonParserStruct::variantType& value, bool isLast);
 
 	private:
 		void parse();

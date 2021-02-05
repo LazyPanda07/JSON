@@ -327,12 +327,15 @@ namespace json
 			}
 
 			outputStream << string(offset.begin(), offset.end() - 2) << '}';
-
-			offset.pop_back();
-			offset.pop_back();
 		}
 
 		break;
+		}
+
+		if (value.index() >= variantTypeEnum::jNullArray)
+		{
+			offset.pop_back();
+			offset.pop_back();
 		}
 
 		if (!isLast)
@@ -408,7 +411,7 @@ namespace json
 				break;
 
 			case openSquareBracket:
-				maps.top().second->data.insert(make_pair(key, jsonStruct::variantType()));
+				maps.top().second->data.insert(make_pair(key, jsonStruct::variantType(vector<nullptr_t>())));
 
 				break;
 

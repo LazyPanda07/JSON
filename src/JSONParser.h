@@ -129,6 +129,7 @@ namespace json
 		/// Parse data
 		/// </summary>
 		/// <param name="data">JSON formatted data</param>
+		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
 		JSONParser(const std::string& data);
 
 		/// <summary>
@@ -162,18 +163,25 @@ namespace json
 		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
 		/// <param name="key">JSON key</param>
 		/// <returns>JSON value</returns>
-		/// <exception cref="std::runtime_error">can't find JSON value</exception>
+		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
 		template<typename T>
 		const T& get(const std::string& key) const;
 
 		/// <summary>
 		/// Get JSON from input stream
 		/// </summary>
-		/// <param name="stream">std::istream subclass</param>
+		/// <param name="stream">std::istream subclass instance</param>
 		/// <param name="parser">reference to JSONParser instance</param>
-		/// <returns>stream</returns>
+		/// <returns>inputStream</returns>
+		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
 		friend std::istream& operator >> (std::istream& inputStream, JSONParser& parser);
 
+		/// <summary>
+		/// Set JSON to output stream
+		/// </summary>
+		/// <param name="outputStream">std::ostream subclass instance</param>
+		/// <param name="parser">const reference to JSONParser instance</param>
+		/// <returns>outputStream</returns>
 		friend std::ostream& operator << (std::ostream& outputStream, const JSONParser& parser);
 
 		~JSONParser() = default;

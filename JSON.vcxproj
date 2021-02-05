@@ -151,10 +151,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Exceptions\BaseJSONException.cpp" />
+    <ClCompile Include="src\Exceptions\CantFindValueException.cpp" />
+    <ClCompile Include="src\Exceptions\WrongEncodingException.cpp" />
     <ClCompile Include="src\JSONBuilder.cpp" />
     <ClCompile Include="src\JSONParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Exceptions\BaseJSONException.h" />
+    <ClInclude Include="src\Exceptions\CantFindValueException.h" />
+    <ClInclude Include="src\Exceptions\WrongEncodingException.h" />
     <ClInclude Include="src\JSONBuilder.h" />
     <ClInclude Include="src\JSONParser.h" />
   </ItemGroup>

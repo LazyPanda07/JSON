@@ -7,6 +7,9 @@
 
 #include <Windows.h>
 
+#include "Exceptions/CantFindValueException.h"
+#include "Exceptions/WrongEncodingException.h"
+
 #undef max
 
 #define INSERT_DATA(key, value) if(isArrayData) { insertDataIntoArray(key, value, ptr); } else { ptr->data.insert(make_pair(move(key), value)); }
@@ -18,7 +21,7 @@ const templateType& JSONParser::get<templateType>(const string& key) const \
 	  \
 	if(!success) \
 	{ \
-		throw runtime_error("Wrong key"); \
+		throw exceptions::CantFindValueException(key); \
 	} \
 	  \
 	return ::get<templateType>(result->second); \
@@ -455,12 +458,12 @@ namespace json
 
 	ConstIterator JSONParser::begin() const noexcept
 	{
-		return JSONParser::ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cbegin());
+		return ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cbegin());
 	}
 
 	ConstIterator JSONParser::end() const noexcept
 	{
-		return JSONParser::ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cend());
+		return ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cend());
 	}
 
 	const string& JSONParser::getRawData() const
@@ -625,7 +628,7 @@ string toUTF8(const string& source, unsigned int sourceCodePage)
 
 	if (!size)
 	{
-		throw runtime_error("Can't convert string to UTF8");
+		throw json::exceptions::WrongEncodingException();
 	}
 
 	tem.resize(static_cast<size_t>(size) - 1);
@@ -640,7 +643,7 @@ string toUTF8(const string& source, unsigned int sourceCodePage)
 		size
 	))
 	{
-		throw runtime_error("Can't convert string to UTF8");
+		throw json::exceptions::WrongEncodingException();
 	}
 
 	size = WideCharToMultiByte
@@ -657,7 +660,7 @@ string toUTF8(const string& source, unsigned int sourceCodePage)
 
 	if (!size)
 	{
-		throw runtime_error("Can't convert string to UTF8");
+		throw json::exceptions::WrongEncodingException();
 	}
 
 	result.resize(static_cast<size_t>(size) - 1);
@@ -674,7 +677,7 @@ string toUTF8(const string& source, unsigned int sourceCodePage)
 		NULL
 	))
 	{
-		throw runtime_error("Can't convert string to UTF8");
+		throw json::exceptions::WrongEncodingException();
 	}
 
 	return result;

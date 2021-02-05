@@ -9,10 +9,13 @@ namespace json
 	class JSONParser
 	{
 	public:
+		using variantType = utility::jsonParserStruct::variantType;
+
+	public:
 		class ConstIterator
 		{
 		private:
-			using ConstIteratorType = std::unordered_map<std::string, utility::jsonParserStruct::variantType>::const_iterator;
+			using ConstIteratorType = std::unordered_map<std::string, variantType>::const_iterator;
 
 		private:
 			ConstIteratorType begin;
@@ -55,9 +58,9 @@ namespace json
 
 		static void insertData(std::string&& key, const std::string& value, utility::jsonParserStruct*& ptr);
 
-		static std::pair<std::unordered_map<std::string, utility::jsonParserStruct::variantType>::const_iterator, bool> find(const std::string& key, const std::unordered_map<std::string, utility::jsonParserStruct::variantType>& start);
+		static std::pair<std::unordered_map<std::string, variantType>::const_iterator, bool> find(const std::string& key, const std::unordered_map<std::string, variantType>& start);
 
-		static void outputJSONType(std::ostream& outputStream, const utility::jsonParserStruct::variantType& value, bool isLast);
+		static void outputJSONType(std::ostream& outputStream, const variantType& value, bool isLast);
 
 	private:
 		void parse();

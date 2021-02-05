@@ -170,7 +170,7 @@ namespace json
 		}
 	}
 
-	pair<unordered_map<string, utility::jsonParserStruct::variantType>::const_iterator, bool> JSONParser::find(const string& key, const unordered_map<string, utility::jsonParserStruct::variantType>& start)
+	pair<unordered_map<string, JSONParser::variantType>::const_iterator, bool> JSONParser::find(const string& key, const unordered_map<string, variantType>& start)
 	{
 		auto it = start.find(key);
 
@@ -186,7 +186,7 @@ namespace json
 		{
 			if (it->second.index() == utility::variantTypeEnum::jJsonStruct)
 			{
-				const unordered_map<string, utility::jsonParserStruct::variantType>& data = ::get<unique_ptr<utility::jsonParserStruct>>(it->second)->data;
+				const unordered_map<string, variantType>& data = ::get<unique_ptr<utility::jsonParserStruct>>(it->second)->data;
 
 				auto result = find(key, data);
 
@@ -202,7 +202,7 @@ namespace json
 		return { end, false };
 	}
 
-	void JSONParser::outputJSONType(ostream& outputStream, const utility::jsonParserStruct::variantType& value, bool isLast)
+	void JSONParser::outputJSONType(ostream& outputStream, const variantType& value, bool isLast)
 	{
 		if (value.index() >= utility::variantTypeEnum::jNullArray)
 		{
@@ -411,7 +411,7 @@ namespace json
 				break;
 
 			case openSquareBracket:
-				maps.top().second->data.insert(make_pair(key, utility::jsonParserStruct::variantType(vector<nullptr_t>())));
+				maps.top().second->data.insert(make_pair(key, variantType(vector<nullptr_t>())));
 
 				break;
 

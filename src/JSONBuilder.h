@@ -72,12 +72,28 @@ namespace json
 		/// <exception cref="json::exceptions::CantFindValueException"></exception>
 		const variantType& operator [] (const std::string& key) const;
 
+		/// <summary>
+		/// Build JSON formatted string
+		/// </summary>
+		/// <returns>JSON</returns>
 		std::string build() const;
 
-		void minimize();
-
+		/// <summary>
+		/// Set type to json::JSONBuilder::outputType::standard
+		/// </summary>
 		void standard();
 
+		/// <summary>
+		/// Set type to json::JSONBuilder::outputType::minimize
+		/// </summary>
+		void minimize();
+
+		/// <summary>
+		/// Set JSON to output stream
+		/// </summary>
+		/// <param name="outputStream">std::ostream subclass instance</param>
+		/// <param name="builder">const reference to JSONBuilder instance</param>
+		/// <returns>outputStream</returns>
 		friend std::ostream& operator << (std::ostream& outputStream, const JSONBuilder& builder);
 
 		~JSONBuilder() = default;

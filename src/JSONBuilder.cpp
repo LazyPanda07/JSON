@@ -230,14 +230,14 @@ namespace json
 		}
 	}
 
-	void JSONBuilder::minimize()
-	{
-		type = outputType::minimize;
-	}
-
 	void JSONBuilder::standard()
 	{
 		type = outputType::standard;
+	}
+
+	void JSONBuilder::minimize()
+	{
+		type = outputType::minimize;
 	}
 
 	ostream& operator << (ostream& outputStream, const JSONBuilder& builder)

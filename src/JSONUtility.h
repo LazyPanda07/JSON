@@ -84,11 +84,31 @@ namespace json
 			std::vector<std::pair<std::string, variantType>> data;
 		};
 
+		/// <summary>
+		/// Convert string to UTF8
+		/// </summary>
+		/// <param name="source">string to convert</param>
+		/// <param name="sourceCodepage">string codepage</param>
+		/// <returns>string in UTF8</returns>
 		std::string toUTF8JSON(const std::string& source, unsigned int sourceCodepage);
 
+		/// <summary>
+		/// Set to outputStream JSON value
+		/// </summary>
+		/// <typeparam name="jsonStructT">last argument in baseVariantType</typeparam>
+		/// <param name="outputStream">std::ostream subclass</param>
+		/// <param name="value">JSON value</param>
+		/// <param name="isLast">is description ends</param>
 		template<typename jsonStructT>
 		void outputJSONType(std::ostream& outputStream, const baseVariantType<jsonStructT>& value, bool isLast);
 
+		/// <summary>
+		/// Output JSON arrays to std::ostream
+		/// </summary>
+		/// <typeparam name="T">type of JSON array</typeparam>
+		/// <param name="outputStream">std::ostream subclass</param>
+		/// <param name="jsonArray">JSON array</param>
+		/// <returns>outputStream</returns>
 		template<typename T>
 		std::ostream& operator << (std::ostream& outputStream, const std::vector<T>& jsonArray);
 	}
@@ -145,24 +165,9 @@ void json::utility::outputJSONType(std::ostream& outputStream, const json::utili
 		break;
 
 	case utility::variantTypeEnum::jNullArray:
-	{
-		const std::vector<nullptr_t>& ref = std::get<std::vector<nullptr_t>>(value);
+		outputStream << std::get<std::vector<nullptr_t>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
 
-		outputStream << "[\n";
-
-		for (size_t i = 0; i < ref.size(); i++)
-		{
-			outputStream << offset << "null";
-
-			if (i + 1 != ref.size())
-			{
-				outputStream << ",\n";
-			}
-		}
-
-		outputStream << std::string(offset.begin(), offset.end() - 2) << ']';
-	}
-	break;
+		break;
 
 	case utility::variantTypeEnum::jStringArray:
 		outputStream << std::get<std::vector<std::string>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
@@ -249,6 +254,10 @@ std::ostream& json::utility::operator << (std::ostream& outputStream, const std:
 		if constexpr (std::is_same_v<std::string, T>)
 		{
 			outputStream << std::fixed << std::boolalpha << offset << '"' << jsonArray[i] << '"';
+		}
+		else if constexpr (std::is_same_v<nullptr_t, T>)
+		{
+			outputStream << std::fixed << std::boolalpha << offset << "null";
 		}
 		else
 		{

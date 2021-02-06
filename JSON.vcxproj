@@ -156,6 +156,7 @@
     <ClCompile Include="src\Exceptions\WrongEncodingException.cpp" />
     <ClCompile Include="src\JSONBuilder.cpp" />
     <ClCompile Include="src\JSONParser.cpp" />
+    <ClCompile Include="src\JSONUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Exceptions\BaseJSONException.h" />

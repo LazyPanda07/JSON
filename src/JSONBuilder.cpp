@@ -73,6 +73,13 @@ namespace json
 		return { end, false };
 	}
 
+	JSONBuilder::JSONBuilder(unsigned int codepage, outputType type) :
+		codepage(codepage),
+		type(type)
+	{
+
+	}
+
 	PUSH_BACK_METHOD(nullptr_t);
 
 	PUSH_BACK_METHOD(string);
@@ -185,5 +192,56 @@ namespace json
 		}
 
 		throw exceptions::CantFindValueException(key);
+	}
+
+	string JSONBuilder::build() const
+	{
+		auto start = builderData.data.begin();
+		auto end = builderData.data.end();
+		ostringstream outputStream;
+		offset = "  ";
+
+		outputStream << "{\n";
+
+		while (start != end)
+		{
+			auto check = start;
+
+			outputStream << offset << '"' << start->first << '"' << ": ";
+
+			utility::outputJSONType(outputStream, start->second, ++check == end);
+
+			++start;
+		}
+
+		outputStream << '}';
+
+		switch (string result; type)
+		{
+		case json::JSONBuilder::outputType::standard:
+			return json::utility::toUTF8JSON(outputStream.str(), codepage);
+
+		case json::JSONBuilder::outputType::minimize:
+			result = outputStream.str();
+
+			result.erase(remove_if(result.begin(), result.end(), [](unsigned char c) { return isspace(c); }), result.end());
+
+			return json::utility::toUTF8JSON(result, codepage);
+		}
+	}
+
+	void JSONBuilder::minimize()
+	{
+		type = outputType::minimize;
+	}
+
+	void JSONBuilder::standard()
+	{
+		type = outputType::standard;
+	}
+
+	ostream& operator << (ostream& outputStream, const JSONBuilder& builder)
+	{
+		return outputStream << builder.build();
 	}
 }

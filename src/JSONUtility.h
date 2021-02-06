@@ -7,6 +7,8 @@
 #include <memory>
 #include <sstream>
 
+#include <Windows.h>
+
 static std::string offset;
 
 namespace json
@@ -81,6 +83,8 @@ namespace json
 
 			std::vector<std::pair<std::string, variantType>> data;
 		};
+
+		std::string toUTF8JSON(const std::string& source, unsigned int sourceCodepage);
 
 		template<typename jsonStructT>
 		void outputJSONType(std::ostream& outputStream, const baseVariantType<jsonStructT>& value, bool isLast);

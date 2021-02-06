@@ -5,10 +5,7 @@
 #include <cctype>
 #include <algorithm>
 
-#include <Windows.h>
-
 #include "Exceptions/CantFindValueException.h"
-#include "Exceptions/WrongEncodingException.h"
 
 #undef max
 
@@ -37,8 +34,6 @@ constexpr char comma = ',';
 constexpr char colon = ':';
 
 bool isNumber(const string& source);
-
-string toUTF8(const string& source, unsigned int sourceCodePage);
 
 namespace json
 {
@@ -305,7 +300,7 @@ namespace json
 	}
 
 	JSONParser::JSONParser(const string& data) :
-		rawData(toUTF8(data, CP_UTF8))
+		rawData(utility::toUTF8JSON(data, CP_UTF8))
 	{
 		this->parse();
 	}
@@ -374,7 +369,7 @@ namespace json
 			data += tem + '\n';
 		}
 
-		parser.rawData = toUTF8(data, CP_UTF8);
+		parser.rawData = utility::toUTF8JSON(data, CP_UTF8);
 
 		parser.parse();
 
@@ -385,7 +380,6 @@ namespace json
 	{
 		auto start = parser.begin();
 		auto end = parser.end();
-		string result;
 		offset = "  ";
 
 		outputStream << "{\n";
@@ -464,75 +458,4 @@ ostream& operator << (ostream& outputStream, const vector<T>& jsonArray)
 	}
 
 	return outputStream;
-}
-
-string toUTF8(const string& source, unsigned int sourceCodePage)
-{
-	string result;
-	wstring tem;
-	int size = MultiByteToWideChar
-	(
-		sourceCodePage,
-		NULL,
-		source.data(),
-		-1,
-		nullptr,
-		NULL
-	);
-
-	if (!size)
-	{
-		throw json::exceptions::WrongEncodingException();
-	}
-
-	tem.resize(static_cast<size_t>(size) - 1);
-
-	if (!MultiByteToWideChar
-	(
-		sourceCodePage,
-		NULL,
-		source.data(),
-		-1,
-		tem.data(),
-		size
-	))
-	{
-		throw json::exceptions::WrongEncodingException();
-	}
-
-	size = WideCharToMultiByte
-	(
-		CP_UTF8,
-		NULL,
-		tem.data(),
-		-1,
-		nullptr,
-		NULL,
-		NULL,
-		NULL
-	);
-
-	if (!size)
-	{
-		throw json::exceptions::WrongEncodingException();
-	}
-
-	result.resize(static_cast<size_t>(size) - 1);
-
-	if (!WideCharToMultiByte
-	(
-		CP_UTF8,
-		NULL,
-		tem.data(),
-		-1,
-		result.data(),
-		size,
-		NULL,
-		NULL
-	))
-	{
-		throw json::exceptions::WrongEncodingException();
-	}
-
-	return result;
 }

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <sstream>
-
 #include "JSONUtility.h"
 
 namespace json
@@ -11,6 +9,12 @@ namespace json
 	public:
 		using variantType = utility::jsonBuilderStruct::variantType;
 
+		enum class outputType
+		{
+			standard,	// human readable JSON
+			minimize	// no spaces JSON
+		};
+
 	private:
 		static std::pair<std::vector<std::pair<std::string, variantType>>::iterator, bool> find(const std::string& key, std::vector<std::pair<std::string, variantType>>& start);
 
@@ -18,9 +22,16 @@ namespace json
 
 	private:
 		utility::jsonBuilderStruct builderData;
+		unsigned int codepage;
+		outputType type;
 
 	public:
-		JSONBuilder() = default;
+		/// <summary>
+		/// Construct JSONBuilder
+		/// </summary>
+		/// <param name="codepage">codepage of your system</param>
+		/// <param name="type">value from json::JSONBuilder::outputType</param>
+		JSONBuilder(unsigned int codepage, outputType type = outputType::standard);
 
 		/// <summary>
 		/// <para>Add JSON key - value</para>
@@ -60,6 +71,14 @@ namespace json
 		/// <returns>JSON value</returns>
 		/// <exception cref="json::exceptions::CantFindValueException"></exception>
 		const variantType& operator [] (const std::string& key) const;
+
+		std::string build() const;
+
+		void minimize();
+
+		void standard();
+
+		friend std::ostream& operator << (std::ostream& outputStream, const JSONBuilder& builder);
 
 		~JSONBuilder() = default;
 	};

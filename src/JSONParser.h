@@ -72,6 +72,18 @@ namespace json
 		JSONParser(const std::string& data);
 
 		/// <summary>
+		/// Setter for rawData
+		/// </summary>
+		/// <param name="jsonData">JSON formatted string</param>
+		void setJSONData(const std::string& jsonData);
+
+		/// <summary>
+		/// Setter for rawData
+		/// </summary>
+		/// <param name="jsonData">JSON formatted string</param>
+		void setJSONData(std::string&& jsonData) noexcept;
+
+		/// <summary>
 		/// Getter for rawData
 		/// </summary>
 		/// <returns>rawData</returns>

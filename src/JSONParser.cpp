@@ -305,6 +305,20 @@ namespace json
 		this->parse();
 	}
 
+	void JSONParser::setJSONData(const string& jsonData)
+	{
+		rawData = jsonData;
+
+		this->parse();
+	}
+
+	void JSONParser::setJSONData(string&& jsonData) noexcept
+	{
+		rawData = move(jsonData);
+
+		this->parse();
+	}
+
 	ConstIterator JSONParser::begin() const noexcept
 	{
 		return ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cbegin());

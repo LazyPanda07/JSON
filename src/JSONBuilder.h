@@ -4,7 +4,7 @@
 
 namespace json
 {
-	class JSONBuilder
+	class JSON_API JSONBuilder
 	{
 	public:
 		using variantType = utility::jsonBuilderStruct::variantType;
@@ -94,7 +94,7 @@ namespace json
 		/// <param name="outputStream">std::ostream subclass instance</param>
 		/// <param name="builder">const reference to JSONBuilder instance</param>
 		/// <returns>outputStream</returns>
-		friend std::ostream& operator << (std::ostream& outputStream, const JSONBuilder& builder);
+		friend JSON_API std::ostream& operator << (std::ostream& outputStream, const JSONBuilder& builder);
 
 		~JSONBuilder() = default;
 	};

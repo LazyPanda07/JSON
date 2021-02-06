@@ -4,7 +4,7 @@
 
 namespace json
 {
-	class JSONParser
+	class JSON_API JSONParser
 	{
 	public:
 		using variantType = utility::jsonParserStruct::variantType;
@@ -125,7 +125,7 @@ namespace json
 		/// <param name="parser">reference to JSONParser instance</param>
 		/// <returns>inputStream</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
-		friend std::istream& operator >> (std::istream& inputStream, JSONParser& parser);
+		friend JSON_API std::istream& operator >> (std::istream& inputStream, JSONParser& parser);
 
 		/// <summary>
 		/// Set JSON to output stream
@@ -133,7 +133,7 @@ namespace json
 		/// <param name="outputStream">std::ostream subclass instance</param>
 		/// <param name="parser">const reference to JSONParser instance</param>
 		/// <returns>outputStream</returns>
-		friend std::ostream& operator << (std::ostream& outputStream, const JSONParser& parser);
+		friend JSON_API std::ostream& operator << (std::ostream& outputStream, const JSONParser& parser);
 
 		~JSONParser() = default;
 	};

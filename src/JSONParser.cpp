@@ -176,7 +176,11 @@ namespace json
 		{
 			if (it->second.index() == utility::variantTypeEnum::jJsonStruct)
 			{
+#ifdef JSON_DLL
+				const unordered_map<string, variantType>& data = ::get<shared_ptr<utility::jsonParserStruct>>(it->second)->data;
+#else
 				const unordered_map<string, variantType>& data = ::get<unique_ptr<utility::jsonParserStruct>>(it->second)->data;
+#endif // JSON_DLL
 
 				auto result = find(key, data);
 
@@ -371,7 +375,11 @@ namespace json
 
 	GET_METHOD(vector<double>);
 
+#ifdef JSON_DLL
+	GET_METHOD(shared_ptr<utility::jsonParserStruct>);
+#else
 	GET_METHOD(unique_ptr<utility::jsonParserStruct>);
+#endif // JSON_DLL
 
 	istream& operator >> (istream& inputStream, JSONParser& parser)
 	{

@@ -4,8 +4,8 @@
 
 using namespace std;
 
-#define PUSH_BACK_METHOD(templateParameter) template<> JSONBuilder& JSONBuilder::push_back(const pair<string, templateParameter>& value) { builderData.data.push_back(value); return *this; }	\
-template<> JSONBuilder& JSONBuilder::push_back(pair<string, templateParameter>&& value) noexcept { builderData.data.push_back(move(value)); return *this; }
+#define PUSH_BACK_METHOD(templateParameter) template<> JSON_API JSONBuilder& JSONBuilder::push_back(const pair<string, templateParameter>& value) { builderData.data.push_back(value); return *this; }	\
+template<> JSON_API JSONBuilder& JSONBuilder::push_back(pair<string, templateParameter>&& value) noexcept { builderData.data.push_back(move(value)); return *this; }
 
 namespace json
 {
@@ -25,7 +25,11 @@ namespace json
 		{
 			if (it->second.index() == utility::variantTypeEnum::jJsonStruct)
 			{
+#ifdef JSON_DLL
+				vector<pair<string, variantType>>& data = ::get<shared_ptr<utility::jsonBuilderStruct>>(it->second)->data;
+#else
 				vector<pair<string, variantType>>& data = ::get<unique_ptr<utility::jsonBuilderStruct>>(it->second)->data;
+#endif // JSON_DLL
 
 				auto result = find(key, data);
 
@@ -57,7 +61,11 @@ namespace json
 		{
 			if (it->second.index() == utility::variantTypeEnum::jJsonStruct)
 			{
+#ifdef JSON_DLL
+				const vector<pair<string, variantType>>& data = ::get<shared_ptr<utility::jsonBuilderStruct>>(it->second)->data;
+#else
 				const vector<pair<string, variantType>>& data = ::get<unique_ptr<utility::jsonBuilderStruct>>(it->second)->data;
+#endif // JSON_DLL
 
 				auto result = find(key, data);
 
@@ -113,21 +121,38 @@ namespace json
 	PUSH_BACK_METHOD(vector<double>);
 
 	template<>
-	JSONBuilder& JSONBuilder::push_back<utility::jsonBuilderStruct*>(const pair<string, utility::jsonBuilderStruct*>& value)
+	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonBuilderStruct*>(const pair<string, utility::jsonBuilderStruct*>& value)
 	{
+#ifdef JSON_DLL
+		builderData.data.push_back(make_pair(value.first, shared_ptr<utility::jsonBuilderStruct>(value.second)));
+#else
 		builderData.data.push_back(make_pair(value.first, unique_ptr<utility::jsonBuilderStruct>(value.second)));
+#endif // JSON_DLL
 
 		return *this;
 	}
 
 	template<>
-	JSONBuilder& JSONBuilder::push_back<utility::jsonBuilderStruct*>(pair<string, utility::jsonBuilderStruct*>&& value) noexcept
+	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonBuilderStruct*>(pair<string, utility::jsonBuilderStruct*>&& value) noexcept
 	{
+#ifdef JSON_DLL
+		builderData.data.push_back(make_pair(value.first, shared_ptr<utility::jsonBuilderStruct>(value.second)));
+#else
 		builderData.data.push_back(make_pair(value.first, unique_ptr<utility::jsonBuilderStruct>(value.second)));
+#endif // JSON_DLL
 
 		return *this;
 	}
 
+#ifdef JSON_DLL
+	template<>
+	JSON_API JSONBuilder& JSONBuilder::push_back<shared_ptr<utility::jsonBuilderStruct>>(pair<string, shared_ptr<utility::jsonBuilderStruct>>&& value) noexcept
+	{
+		builderData.data.push_back(move(value));
+
+		return *this;
+	}
+#else
 	template<>
 	JSONBuilder& JSONBuilder::push_back<unique_ptr<utility::jsonBuilderStruct>>(pair<string, unique_ptr<utility::jsonBuilderStruct>>&& value) noexcept
 	{
@@ -135,6 +160,7 @@ namespace json
 
 		return *this;
 	}
+#endif // JSON_DLL
 
 	template<>
 	JSONBuilder& JSONBuilder::push_back<int>(const pair<string, int>& value)

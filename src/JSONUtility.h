@@ -9,6 +9,14 @@
 
 #include <Windows.h>
 
+#ifdef JSON_DLL
+#define JSON_API __declspec(dllexport)
+#define JSON_API_FUNCTION extern "C" __declspec(dllexport)
+#else
+#define JSON_API
+#define JSON_API_FUNCTION
+#endif // JSON_DLL
+
 static std::string offset;
 
 namespace json
@@ -61,13 +69,16 @@ namespace json
 			std::vector<int64_t>,
 			std::vector<uint64_t>,
 			std::vector<double>,
+#ifdef JSON_DLL
+			std::shared_ptr<jsonStruct>
+#else
 			std::unique_ptr<jsonStruct>
-			>;
-
+#endif // JSON_DLL>
+			> ;
 		/// <summary>
 		/// Utility struct for JSONParser
 		/// </summary>
-		struct jsonParserStruct
+		struct JSON_API jsonParserStruct
 		{
 			using variantType = baseVariantType<jsonParserStruct>;
 
@@ -77,7 +88,7 @@ namespace json
 		/// <summary>
 		/// Utility struct for JSONBuilder
 		/// </summary>
-		struct jsonBuilderStruct
+		struct JSON_API jsonBuilderStruct
 		{
 			using variantType = baseVariantType<jsonBuilderStruct>;
 
@@ -206,7 +217,11 @@ void json::utility::outputJSONType(std::ostream& outputStream, const json::utili
 
 	case utility::variantTypeEnum::jJsonStruct:
 	{
+#ifdef JSON_DLL
+		const std::shared_ptr<jsonStructT>& ref = std::get<std::shared_ptr<jsonStructT>>(value);
+#else
 		const std::unique_ptr<jsonStructT>& ref = std::get<std::unique_ptr<jsonStructT>>(value);
+#endif // JSON_DLL
 
 		auto start = ref->data.begin();
 		auto end = ref->data.end();

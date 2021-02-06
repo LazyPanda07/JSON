@@ -36,12 +36,7 @@ constexpr char closeSquareBracket = ']';
 constexpr char comma = ',';
 constexpr char colon = ':';
 
-static string offset;
-
 bool isNumber(const string& source);
-
-template<typename T>
-ostream& operator << (ostream& outputStream, const vector<T>& jsonArray);
 
 string toUTF8(const string& source, unsigned int sourceCodePage);
 
@@ -200,150 +195,6 @@ namespace json
 		}
 
 		return { end, false };
-	}
-
-	void JSONParser::outputJSONType(ostream& outputStream, const variantType& value, bool isLast)
-	{
-		if (value.index() >= utility::variantTypeEnum::jNullArray)
-		{
-			offset += "  ";
-		}
-
-		switch (value.index())
-		{
-		case utility::variantTypeEnum::jNull:
-			outputStream << "null";
-
-			break;
-
-		case utility::variantTypeEnum::jString:
-			outputStream << '"' << ::get<string>(value) << '"';
-
-			break;
-
-		case utility::variantTypeEnum::jChar:
-			outputStream << ::get<char>(value);
-
-			break;
-
-		case utility::variantTypeEnum::jUnsignedChar:
-			outputStream << ::get<unsigned char>(value);
-
-			break;
-
-		case utility::variantTypeEnum::jBool:
-			outputStream << boolalpha << ::get<bool>(value);
-
-			break;
-
-		case utility::variantTypeEnum::jInt64_t:
-			outputStream << ::get<int64_t>(value);
-
-			break;
-
-		case utility::variantTypeEnum::jUint64_t:
-			outputStream << ::get<uint64_t>(value);
-
-			break;
-
-		case utility::variantTypeEnum::jDouble:
-			outputStream << fixed << ::get<double>(value);
-
-			break;
-
-		case utility::variantTypeEnum::jNullArray:
-		{
-			const vector<nullptr_t>& ref = ::get<vector<nullptr_t>>(value);
-
-			outputStream << "[\n";
-
-			for (size_t i = 0; i < ref.size(); i++)
-			{
-				outputStream << offset << "null";
-
-				if (i + 1 != ref.size())
-				{
-					outputStream << ",\n";
-				}
-			}
-
-			outputStream << string(offset.begin(), offset.end() - 2) << ']';
-		}
-		break;
-
-		case utility::variantTypeEnum::jStringArray:
-			outputStream << ::get<vector<string>>(value) << string(offset.begin(), offset.end() - 2) << ']';
-
-			break;
-
-		case utility::variantTypeEnum::jCharArray:
-			outputStream << ::get<vector<char>>(value) << string(offset.begin(), offset.end() - 2) << ']';
-
-			break;
-
-		case utility::variantTypeEnum::jUnsignedCharArray:
-			outputStream << ::get<vector<unsigned char>>(value) << string(offset.begin(), offset.end() - 2) << ']';
-
-			break;
-
-		case utility::variantTypeEnum::jBoolArray:
-			outputStream << ::get<vector<bool>>(value) << string(offset.begin(), offset.end() - 2) << ']';
-
-			break;
-
-		case utility::variantTypeEnum::jInt64_tArray:
-			outputStream << ::get<vector<int64_t>>(value) << string(offset.begin(), offset.end() - 2) << ']';
-
-			break;
-
-		case utility::variantTypeEnum::jUint64_tArray:
-			outputStream << ::get<vector<uint64_t>>(value) << string(offset.begin(), offset.end() - 2) << ']';
-
-			break;
-
-		case utility::variantTypeEnum::jDoubleArray:
-			outputStream << fixed << ::get<vector<double>>(value) << string(offset.begin(), offset.end() - 2) << ']';
-
-			break;
-
-		case utility::variantTypeEnum::jJsonStruct:
-		{
-			const unique_ptr<utility::jsonParserStruct>& ref = ::get<unique_ptr<utility::jsonParserStruct>>(value);
-
-			auto start = ref->data.begin();
-			auto end = ref->data.end();
-
-			outputStream << "{\n";
-
-			while (start != end)
-			{
-				auto check = start;
-
-				outputStream << offset << '"' << start->first << '"' << ": ";
-
-				outputJSONType(outputStream, start->second, ++check == end);
-
-				++start;
-			}
-
-			outputStream << string(offset.begin(), offset.end() - 2) << '}';
-		}
-
-		break;
-		}
-
-		if (value.index() >= utility::variantTypeEnum::jNullArray)
-		{
-			offset.pop_back();
-			offset.pop_back();
-		}
-
-		if (!isLast)
-		{
-			outputStream << ',';
-		}
-
-		outputStream << endl;
 	}
 
 	void JSONParser::parse()
@@ -545,7 +396,7 @@ namespace json
 
 			outputStream << offset << '"' << start->first << '"' << ": ";
 
-			parser.outputJSONType(outputStream, start->second, ++check == end);
+			utility::outputJSONType(outputStream, start->second, ++check == end);
 
 			++start;
 		}

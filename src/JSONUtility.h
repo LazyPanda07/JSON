@@ -5,6 +5,9 @@
 #include <variant>
 #include <cstdint>
 #include <memory>
+#include <sstream>
+
+static std::string offset;
 
 namespace json
 {
@@ -78,5 +81,183 @@ namespace json
 
 			std::vector<std::pair<std::string, variantType>> data;
 		};
+
+		template<typename jsonStructT>
+		void outputJSONType(std::ostream& outputStream, const baseVariantType<jsonStructT>& value, bool isLast);
+
+		template<typename T>
+		std::ostream& operator << (std::ostream& outputStream, const std::vector<T>& jsonArray);
 	}
+}
+
+template<typename jsonStructT>
+void json::utility::outputJSONType(std::ostream& outputStream, const json::utility::baseVariantType<jsonStructT>& value, bool isLast)
+{
+	if (value.index() >= utility::variantTypeEnum::jNullArray)
+	{
+		offset += "  ";
+	}
+
+	switch (value.index())
+	{
+	case utility::variantTypeEnum::jNull:
+		outputStream << "null";
+
+		break;
+
+	case utility::variantTypeEnum::jString:
+		outputStream << '"' << std::get<std::string>(value) << '"';
+
+		break;
+
+	case utility::variantTypeEnum::jChar:
+		outputStream << std::get<char>(value);
+
+		break;
+
+	case utility::variantTypeEnum::jUnsignedChar:
+		outputStream << std::get<unsigned char>(value);
+
+		break;
+
+	case utility::variantTypeEnum::jBool:
+		outputStream << std::boolalpha << std::get<bool>(value);
+
+		break;
+
+	case utility::variantTypeEnum::jInt64_t:
+		outputStream << std::get<int64_t>(value);
+
+		break;
+
+	case utility::variantTypeEnum::jUint64_t:
+		outputStream << std::get<uint64_t>(value);
+
+		break;
+
+	case utility::variantTypeEnum::jDouble:
+		outputStream << std::fixed << std::get<double>(value);
+
+		break;
+
+	case utility::variantTypeEnum::jNullArray:
+	{
+		const std::vector<nullptr_t>& ref = std::get<std::vector<nullptr_t>>(value);
+
+		outputStream << "[\n";
+
+		for (size_t i = 0; i < ref.size(); i++)
+		{
+			outputStream << offset << "null";
+
+			if (i + 1 != ref.size())
+			{
+				outputStream << ",\n";
+			}
+		}
+
+		outputStream << std::string(offset.begin(), offset.end() - 2) << ']';
+	}
+	break;
+
+	case utility::variantTypeEnum::jStringArray:
+		outputStream << std::get<std::vector<std::string>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
+
+		break;
+
+	case utility::variantTypeEnum::jCharArray:
+		outputStream << std::get<std::vector<char>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
+
+		break;
+
+	case utility::variantTypeEnum::jUnsignedCharArray:
+		outputStream << std::get<std::vector<unsigned char>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
+
+		break;
+
+	case utility::variantTypeEnum::jBoolArray:
+		outputStream << std::get<std::vector<bool>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
+
+		break;
+
+	case utility::variantTypeEnum::jInt64_tArray:
+		outputStream << std::get<std::vector<int64_t>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
+
+		break;
+
+	case utility::variantTypeEnum::jUint64_tArray:
+		outputStream << std::get<std::vector<uint64_t>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
+
+		break;
+
+	case utility::variantTypeEnum::jDoubleArray:
+		outputStream << std::fixed << std::get<std::vector<double>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
+
+		break;
+
+	case utility::variantTypeEnum::jJsonStruct:
+	{
+		const std::unique_ptr<jsonStructT>& ref = std::get<std::unique_ptr<jsonStructT>>(value);
+
+		auto start = ref->data.begin();
+		auto end = ref->data.end();
+
+		outputStream << "{\n";
+
+		while (start != end)
+		{
+			auto check = start;
+
+			outputStream << offset << '"' << start->first << '"' << ": ";
+
+			outputJSONType(outputStream, start->second, ++check == end);
+
+			++start;
+		}
+
+		outputStream << std::string(offset.begin(), offset.end() - 2) << '}';
+	}
+
+	break;
+	}
+
+	if (value.index() >= utility::variantTypeEnum::jNullArray)
+	{
+		offset.pop_back();
+		offset.pop_back();
+	}
+
+	if (!isLast)
+	{
+		outputStream << ',';
+	}
+
+	outputStream << std::endl;
+}
+
+template<typename T>
+std::ostream& json::utility::operator << (std::ostream& outputStream, const std::vector<T>& jsonArray)
+{
+	outputStream << "[\n";
+
+	for (size_t i = 0; i < jsonArray.size(); i++)
+	{
+		if constexpr (std::is_same_v<std::string, T>)
+		{
+			outputStream << std::fixed << std::boolalpha << offset << '"' << jsonArray[i] << '"';
+		}
+		else
+		{
+			outputStream << std::fixed << std::boolalpha << offset << jsonArray[i];
+		}
+
+		if (i + 1 != jsonArray.size())
+		{
+			outputStream << ',';
+		}
+
+		outputStream << std::endl;
+	}
+
+	return outputStream;
 }

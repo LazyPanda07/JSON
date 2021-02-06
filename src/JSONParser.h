@@ -1,7 +1,5 @@
 #pragma once
 
-#include <sstream>
-
 #include "JSONUtility.h"
 
 namespace json
@@ -59,8 +57,6 @@ namespace json
 		static void insertData(std::string&& key, const std::string& value, utility::jsonParserStruct*& ptr);
 
 		static std::pair<std::unordered_map<std::string, variantType>::const_iterator, bool> find(const std::string& key, const std::unordered_map<std::string, variantType>& start);
-
-		static void outputJSONType(std::ostream& outputStream, const variantType& value, bool isLast);
 
 	private:
 		void parse();

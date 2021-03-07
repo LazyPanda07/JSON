@@ -1,5 +1,7 @@
 #include "JSONUtility.h"
 
+#include <Windows.h>
+
 #include "Exceptions/WrongEncodingException.h"
 
 using namespace std;

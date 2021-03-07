@@ -7,7 +7,9 @@
 #include <memory>
 #include <sstream>
 
-#include <Windows.h>
+#ifndef CP_UTF8
+#define CP_UTF8 65001
+#endif // !CP_UTF8
 
 #ifdef JSON_DLL
 #define JSON_API __declspec(dllexport)

@@ -10,7 +10,7 @@ namespace json
 		using variantType = utility::jsonParserStruct::variantType;
 
 	public:
-		class ConstIterator
+		class JSON_API ConstIterator
 		{
 		private:
 			using ConstIteratorType = std::unordered_map<std::string, variantType>::const_iterator;

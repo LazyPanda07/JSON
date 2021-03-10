@@ -103,7 +103,7 @@ namespace json
 		/// <param name="source">string to convert</param>
 		/// <param name="sourceCodepage">string codepage</param>
 		/// <returns>string in UTF8</returns>
-		std::string toUTF8JSON(const std::string& source, unsigned int sourceCodepage);
+		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, unsigned int sourceCodepage);
 
 		/// <summary>
 		/// Set to outputStream JSON value

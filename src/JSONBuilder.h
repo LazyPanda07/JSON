@@ -53,6 +53,22 @@ namespace json
 		template<typename T>
 		JSONBuilder& push_back(std::pair<std::string, T>&& value) noexcept;
 
+		/// @brief Add JSON key - value
+		/// @tparam T is one of json::utility::jsonBuilderStruct::variantType template parameters
+		/// @param key JSON key
+		/// @param value JSON value
+		/// @return reference to current JSONBuilder instance
+		template<typename T>
+		JSONBuilder& append(const std::string& key, T&& value);
+
+		/// @brief Add JSON key - value
+		/// @tparam T is one of json::utility::jsonBuilderStruct::variantType template parameters
+		/// @param key JSON key
+		/// @param value JSON value
+		/// @return reference to current JSONBuilder instance
+		template<typename T>
+		JSONBuilder& append(std::string&& key, T&& value);
+
 		/// <summary>
 		/// <para>Access to JSON value operator</para>
 		/// <para>If key doesn't exist creates new with this key and return reference to it</para>
@@ -98,4 +114,16 @@ namespace json
 
 		~JSONBuilder() = default;
 	};
+
+	template<typename T>
+	JSONBuilder& JSONBuilder::append(const std::string& key, T&& value)
+	{
+		return this->push_back(std::make_pair(key, std::forward<decltype(value)>(value)));
+	}
+
+	template<typename T>
+	JSONBuilder& JSONBuilder::append(std::string&& key, T&& value)
+	{
+		return this->push_back(std::make_pair(std::move(key), std::forward<decltype(value)>(value)));
+	}
 }

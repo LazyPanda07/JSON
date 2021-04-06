@@ -98,12 +98,22 @@ namespace json
 		};
 
 		/// <summary>
-		/// Convert string to UTF8
+		/// Encode string to UTF8
 		/// </summary>
 		/// <param name="source">string to convert</param>
-		/// <param name="sourceCodepage">string codepage</param>
-		/// <returns>string in UTF8</returns>
-		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, unsigned int sourceCodepage);
+		/// <param name="sourceCodePage">source encoding</param>
+		/// <returns>string in UTF8 encoding</returns>
+		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
+		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, unsigned int sourceCodePage);
+
+		/// <summary>
+		/// Decode string from UTF8
+		/// </summary>
+		/// <param name="source">string to convert</param>
+		/// <param name="resultCodePage">decoding code page</param>
+		/// <returns>string in resultCodePage encoding</returns>
+		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
+		JSON_API_FUNCTION std::string fromUTF8JSON(const std::string& source, unsigned int resultCodePage);
 
 		/// <summary>
 		/// Set to outputStream JSON value

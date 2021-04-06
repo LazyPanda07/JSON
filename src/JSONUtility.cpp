@@ -6,79 +6,145 @@
 
 using namespace std;
 
-namespace json
+
+string json::utility::toUTF8JSON(const string& source, unsigned int sourceCodePage)
 {
-	namespace utility
+	string result;
+	wstring tem;
+	int size = MultiByteToWideChar
+	(
+		sourceCodePage,
+		NULL,
+		source.data(),
+		-1,
+		nullptr,
+		NULL
+	);
+
+	if (!size)
 	{
-		string json::utility::toUTF8JSON(const string& source, unsigned int sourceCodepage)
-		{
-			string result;
-			wstring tem;
-			int size = MultiByteToWideChar
-			(
-				sourceCodepage,
-				NULL,
-				source.data(),
-				-1,
-				nullptr,
-				NULL
-			);
-
-			if (!size)
-			{
-				throw json::exceptions::WrongEncodingException();
-			}
-
-			tem.resize(static_cast<size_t>(size) - 1);
-
-			if (!MultiByteToWideChar
-			(
-				sourceCodepage,
-				NULL,
-				source.data(),
-				-1,
-				tem.data(),
-				size
-			))
-			{
-				throw json::exceptions::WrongEncodingException();
-			}
-
-			size = WideCharToMultiByte
-			(
-				CP_UTF8,
-				NULL,
-				tem.data(),
-				-1,
-				nullptr,
-				NULL,
-				NULL,
-				NULL
-			);
-
-			if (!size)
-			{
-				throw json::exceptions::WrongEncodingException();
-			}
-
-			result.resize(static_cast<size_t>(size) - 1);
-
-			if (!WideCharToMultiByte
-			(
-				CP_UTF8,
-				NULL,
-				tem.data(),
-				-1,
-				result.data(),
-				size,
-				NULL,
-				NULL
-			))
-			{
-				throw json::exceptions::WrongEncodingException();
-			}
-
-			return result;
-		}
+		throw json::exceptions::WrongEncodingException();
 	}
+
+	tem.resize(static_cast<size_t>(size) - 1);
+
+	if (!MultiByteToWideChar
+	(
+		sourceCodePage,
+		NULL,
+		source.data(),
+		-1,
+		tem.data(),
+		size
+	))
+	{
+		throw json::exceptions::WrongEncodingException();
+	}
+
+	size = WideCharToMultiByte
+	(
+		CP_UTF8,
+		NULL,
+		tem.data(),
+		-1,
+		nullptr,
+		NULL,
+		NULL,
+		NULL
+	);
+
+	if (!size)
+	{
+		throw json::exceptions::WrongEncodingException();
+	}
+
+	result.resize(static_cast<size_t>(size) - 1);
+
+	if (!WideCharToMultiByte
+	(
+		CP_UTF8,
+		NULL,
+		tem.data(),
+		-1,
+		result.data(),
+		size,
+		NULL,
+		NULL
+	))
+	{
+		throw json::exceptions::WrongEncodingException();
+	}
+
+	return result;
+}
+
+string json::utility::fromUTF8JSON(const string& source, unsigned int resultCodePage)
+{
+	string result;
+	wstring tem;
+	int size = MultiByteToWideChar
+	(
+		CP_UTF8,
+		NULL,
+		source.data(),
+		-1,
+		nullptr,
+		NULL
+	);
+
+	if (!size)
+	{
+		throw json::exceptions::WrongEncodingException();
+	}
+
+	tem.resize(static_cast<size_t>(size) - 1);
+
+	if (!MultiByteToWideChar
+	(
+		CP_UTF8,
+		NULL,
+		source.data(),
+		-1,
+		tem.data(),
+		size
+	))
+	{
+		throw json::exceptions::WrongEncodingException();
+	}
+
+	size = WideCharToMultiByte
+	(
+		resultCodePage,
+		NULL,
+		tem.data(),
+		-1,
+		nullptr,
+		NULL,
+		NULL,
+		NULL
+	);
+
+	if (!size)
+	{
+		throw json::exceptions::WrongEncodingException();
+	}
+
+	result.resize(static_cast<size_t>(size) - 1);
+
+	if (!WideCharToMultiByte
+	(
+		resultCodePage,
+		NULL,
+		tem.data(),
+		-1,
+		result.data(),
+		size,
+		NULL,
+		NULL
+	))
+	{
+		throw json::exceptions::WrongEncodingException();
+	}
+
+	return result;
 }

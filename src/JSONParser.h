@@ -96,6 +96,12 @@ namespace json
 		/// Setter for rawData
 		/// </summary>
 		/// <param name="jsonData">JSON formatted UTF8 string</param>
+		void setJSONData(const std::string& jsonData);
+
+		/// <summary>
+		/// Setter for rawData
+		/// </summary>
+		/// <param name="jsonData">JSON formatted UTF8 string</param>
 		void setJSONData(std::string&& jsonData) noexcept;
 
 		/// <summary>

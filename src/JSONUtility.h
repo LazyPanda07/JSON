@@ -104,7 +104,7 @@ namespace json
 		/// <param name="sourceCodePage">source encoding</param>
 		/// <returns>string in UTF8 encoding</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, unsigned int sourceCodePage);
+		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, uint32_t sourceCodePage);
 
 		/// <summary>
 		/// Decode string from UTF8
@@ -113,7 +113,7 @@ namespace json
 		/// <param name="resultCodePage">decoding code page</param>
 		/// <returns>string in resultCodePage encoding</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-		JSON_API_FUNCTION std::string fromUTF8JSON(const std::string& source, unsigned int resultCodePage);
+		JSON_API_FUNCTION std::string fromUTF8JSON(const std::string& source, uint32_t resultCodePage);
 
 		/// <summary>
 		/// Set to outputStream JSON value

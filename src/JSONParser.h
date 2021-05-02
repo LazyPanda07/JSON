@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fstream>
+
 #include "JSONUtility.h"
 
 namespace json
@@ -8,6 +10,7 @@ namespace json
 	{
 	public:
 		using variantType = utility::jsonParserStruct::variantType;
+		using objectType = utility::jsonParserStruct;
 
 	public:
 		class JSON_API ConstIterator
@@ -71,16 +74,28 @@ namespace json
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
 		JSONParser(const std::string& data);
 
-		/// <summary>
-		/// Setter for rawData
-		/// </summary>
-		/// <param name="jsonData">JSON formatted string</param>
-		void setJSONData(const std::string& jsonData);
+		/// @brief Parse data
+		/// @param inputStream JSON formatted data from stream
+		/// @exception json::exceptions::WrongEncodingException Can't convert JSON formatted string to UTF8 encoding
+		JSONParser(std::ifstream& inputStream);
+
+		/// @brief Parse data
+		/// @param inputStream JSON formatted data from stream
+		/// @exception json::exceptions::WrongEncodingException Can't convert JSON formatted string to UTF8 encoding
+		JSONParser(std::ifstream&& inputStream);
 
 		/// <summary>
 		/// Setter for rawData
 		/// </summary>
 		/// <param name="jsonData">JSON formatted string</param>
+		/// <param name="codepage">codepage of jsonData</param>
+		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
+		void setJSONData(const std::string& jsonData, uint32_t codePage);
+
+		/// <summary>
+		/// Setter for rawData
+		/// </summary>
+		/// <param name="jsonData">JSON formatted UTF8 string</param>
 		void setJSONData(std::string&& jsonData) noexcept;
 
 		/// <summary>

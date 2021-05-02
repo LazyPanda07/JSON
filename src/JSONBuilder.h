@@ -8,6 +8,7 @@ namespace json
 	{
 	public:
 		using variantType = utility::jsonBuilderStruct::variantType;
+		using objectType = utility::jsonBuilderStruct;
 
 		enum class outputType
 		{

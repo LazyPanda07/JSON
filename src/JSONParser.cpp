@@ -309,9 +309,30 @@ namespace json
 		this->parse();
 	}
 
-	void JSONParser::setJSONData(const string& jsonData)
+	JSONParser::JSONParser(ifstream& inputStream)
 	{
-		rawData = jsonData;
+		string line;
+		string data;
+
+		while (getline(inputStream, line))
+		{
+			data += line + '\n';
+		}
+
+		rawData = utility::toUTF8JSON(data, CP_UTF8);
+
+		this->parse();
+	}
+
+	JSONParser::JSONParser(ifstream&& inputStream) :
+		JSONParser(inputStream)
+	{
+		
+	}
+
+	void JSONParser::setJSONData(const string& jsonData, uint32_t codePage)
+	{
+		rawData = utility::toUTF8JSON(jsonData, codePage);
 
 		this->parse();
 	}

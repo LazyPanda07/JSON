@@ -7,7 +7,7 @@
 using namespace std;
 
 
-string json::utility::toUTF8JSON(const string& source, unsigned int sourceCodePage)
+string json::utility::toUTF8JSON(const string& source, uint32_t sourceCodePage)
 {
 	string result;
 	wstring tem;
@@ -78,7 +78,7 @@ string json::utility::toUTF8JSON(const string& source, unsigned int sourceCodePa
 	return result;
 }
 
-string json::utility::fromUTF8JSON(const string& source, unsigned int resultCodePage)
+string json::utility::fromUTF8JSON(const string& source, uint32_t resultCodePage)
 {
 	string result;
 	wstring tem;

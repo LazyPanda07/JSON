@@ -12,7 +12,7 @@
 #define INSERT_DATA(key, value) if(isArrayData) { insertDataIntoArray(key, value, ptr); } else { ptr->data.insert(make_pair(move(key), value)); }
 
 #define GET_METHOD(templateType) template<> \
-const templateType& JSONParser::get<templateType>(const string& key) const \
+JSON_API const templateType& JSONParser::get<templateType>(const string& key) const \
 { \
 	auto [result, success] = find(key, parsedData.data); \
 	  \

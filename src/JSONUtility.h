@@ -32,16 +32,12 @@ namespace json
 		{
 			jNull,
 			jString,
-			jChar,
-			jUnsignedChar,
 			jBool,
 			jInt64_t,
 			jUint64_t,
 			jDouble,
 			jNullArray,
 			jStringArray,
-			jCharArray,
-			jUnsignedCharArray,
 			jBoolArray,
 			jInt64_tArray,
 			jUint64_tArray,
@@ -57,16 +53,12 @@ namespace json
 			<
 			nullptr_t,
 			std::string,
-			char,
-			unsigned char,
 			bool,
 			int64_t,
 			uint64_t,
 			double,
 			std::vector<nullptr_t>,
 			std::vector<std::string>,
-			std::vector<char>,
-			std::vector<unsigned char>,
 			std::vector<bool>,
 			std::vector<int64_t>,
 			std::vector<uint64_t>,
@@ -77,9 +69,8 @@ namespace json
 			std::unique_ptr<jsonStruct>
 #endif // JSON_DLL>
 			> ;
-		/// <summary>
-		/// Utility struct for JSONParser
-		/// </summary>
+
+		/// @brief Utility struct for JSONParser
 		struct JSON_API jsonParserStruct
 		{
 			using variantType = baseVariantType<jsonParserStruct>;
@@ -87,9 +78,7 @@ namespace json
 			std::unordered_map<std::string, variantType> data;
 		};
 
-		/// <summary>
-		/// Utility struct for JSONBuilder
-		/// </summary>
+		/// @brief Utility struct for JSONBuilder
 		struct JSON_API jsonBuilderStruct
 		{
 			using variantType = baseVariantType<jsonBuilderStruct>;
@@ -157,16 +146,6 @@ void json::utility::outputJSONType(std::ostream& outputStream, const json::utili
 
 		break;
 
-	case utility::variantTypeEnum::jChar:
-		outputStream << std::get<char>(value);
-
-		break;
-
-	case utility::variantTypeEnum::jUnsignedChar:
-		outputStream << std::get<unsigned char>(value);
-
-		break;
-
 	case utility::variantTypeEnum::jBool:
 		outputStream << std::boolalpha << std::get<bool>(value);
 
@@ -194,16 +173,6 @@ void json::utility::outputJSONType(std::ostream& outputStream, const json::utili
 
 	case utility::variantTypeEnum::jStringArray:
 		outputStream << std::get<std::vector<std::string>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
-
-		break;
-
-	case utility::variantTypeEnum::jCharArray:
-		outputStream << std::get<std::vector<char>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
-
-		break;
-
-	case utility::variantTypeEnum::jUnsignedCharArray:
-		outputStream << std::get<std::vector<unsigned char>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
 
 		break;
 

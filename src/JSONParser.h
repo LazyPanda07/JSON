@@ -6,13 +6,17 @@
 
 namespace json
 {
+	/// @brief Parser for JSON
 	class JSON_API JSONParser
 	{
 	public:
+		/// @brief std::variant specialization for JSONParser
 		using variantType = utility::jsonParserStruct::variantType;
+		/// @brief JSON object for JSONParser
 		using objectType = utility::jsonParserStruct;
 
 	public:
+		/// @brief Iterator through JSONParser
 		class JSON_API ConstIterator
 		{
 		private:
@@ -60,6 +64,8 @@ namespace json
 		static void insertData(std::string&& key, const std::string& value, utility::jsonParserStruct*& ptr);
 
 		static std::pair<std::unordered_map<std::string, variantType>::const_iterator, bool> find(const std::string& key, const std::unordered_map<std::string, variantType>& start);
+
+		static bool isStringSymbol(char symbol);
 
 	private:
 		void parse();

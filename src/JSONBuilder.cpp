@@ -92,10 +92,6 @@ namespace json
 
 	PUSH_BACK_METHOD(string);
 
-	PUSH_BACK_METHOD(char);
-
-	PUSH_BACK_METHOD(unsigned char);
-
 	PUSH_BACK_METHOD(bool);
 
 	PUSH_BACK_METHOD(int64_t);
@@ -107,10 +103,6 @@ namespace json
 	PUSH_BACK_METHOD(vector<nullptr_t>);
 
 	PUSH_BACK_METHOD(vector<string>);
-
-	PUSH_BACK_METHOD(vector<char>);
-
-	PUSH_BACK_METHOD(vector<unsigned char>);
 
 	PUSH_BACK_METHOD(vector<bool>);
 

@@ -4,16 +4,22 @@
 
 namespace json
 {
+	/// @brief Builder for JSON
 	class JSON_API JSONBuilder
 	{
 	public:
+		/// @brief std::variant specialization for JSONBuilder
 		using variantType = utility::jsonBuilderStruct::variantType;
+		/// @brief JSON object for JSONBuilder
 		using objectType = utility::jsonBuilderStruct;
 
+		/// @brief Output type for istream operator
 		enum class outputType
 		{
-			standard,	// human readable JSON
-			minimize	// no spaces JSON
+			/// @brief human readable JSON
+			standard,
+			/// @brief no spaces JSON
+			minimize
 		};
 
 	private:

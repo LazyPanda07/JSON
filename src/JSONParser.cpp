@@ -124,7 +124,7 @@ namespace json
 	{
 		bool isArrayData = ptr->data.find(key) != ptr->data.end();
 
-		if (*value.begin() == '"' && *value.rbegin() == '"')
+		if (isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin()))
 		{
 			INSERT_DATA(key, string(value.begin() + 1, value.end() - 1));
 		}
@@ -196,6 +196,11 @@ namespace json
 		return { end, false };
 	}
 
+	bool JSONParser::isStringSymbol(char symbol)
+	{
+		return symbol == '"' || symbol == '\'';
+	}
+
 	void JSONParser::parse()
 	{
 		stack<pair<string, utility::jsonParserStruct*>> maps;
@@ -206,11 +211,11 @@ namespace json
 
 		for (const auto& i : rawData)
 		{
-			if (!startString && i == '"')
+			if (!startString && isStringSymbol(i))
 			{
 				startString = true;
 			}
-			else if (startString && i == '"')
+			else if (startString && isStringSymbol(i))
 			{
 				startString = false;
 			}
@@ -277,7 +282,7 @@ namespace json
 				break;
 
 			case comma:
-				if (isNumber(value) || (value.size() && *value.begin() == '"' && *value.rbegin() == '"') || (value == "true" || value == "false" || value == "null"))
+				if (isNumber(value) || (value.size() && isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin())) || (value == "true" || value == "false" || value == "null"))
 				{
 					insertData(move(key), value, maps.top().second);
 
@@ -375,10 +380,6 @@ namespace json
 
 	GET_METHOD(string);
 
-	GET_METHOD(char);
-
-	GET_METHOD(unsigned char);
-
 	GET_METHOD(bool);
 
 	GET_METHOD(int64_t);
@@ -390,10 +391,6 @@ namespace json
 	GET_METHOD(vector<nullptr_t>);
 
 	GET_METHOD(vector<string>);
-
-	GET_METHOD(vector<char>);
-
-	GET_METHOD(vector<unsigned char>);
 
 	GET_METHOD(vector<bool>);
 

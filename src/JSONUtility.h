@@ -19,8 +19,6 @@
 #define JSON_API_FUNCTION
 #endif // JSON_DLL
 
-static std::string offset;
-
 namespace json
 {
 	namespace utility
@@ -59,22 +57,16 @@ namespace json
 			std::vector<std::unique_ptr<jsonStruct>>,
 			std::unique_ptr<jsonStruct>
 #endif // JSON_DLL>
-			> ;
+			>;
 
 		/// @brief JSON object
 		struct JSON_API jsonObject
 		{
+			static inline std::string offset;
+
 			using variantType = baseVariantType<jsonObject>;
 
 			std::vector<std::pair<std::string, variantType>> data;
-		};
-
-		/// @brief JSON array
-		struct JSON_API jsonArray
-		{
-			using variantType = baseVariantType<jsonArray>;
-
-			std::vector<variantType> data;
 		};
 
 		/// <summary>
@@ -102,140 +94,14 @@ namespace json
 		/// <param name="outputStream">std::ostream subclass</param>
 		/// <param name="value">JSON value</param>
 		/// <param name="isLast">is description ends</param>
-		template<typename jsonStructT>
-		void outputJSONType(std::ostream& outputStream, const baseVariantType<jsonStructT>& value, bool isLast);
+		JSON_API_FUNCTION void outputJSONType(std::ostream& outputStream, const jsonObject::variantType& value, bool isLast);
 
 		/// <summary>
 		/// Output JSON arrays to std::ostream
 		/// </summary>
-		/// <typeparam name="T">type of JSON array</typeparam>
 		/// <param name="outputStream">std::ostream subclass</param>
-		/// <param name="jsonArray">JSON array</param>
+		/// <param name="jsonData">JSON array</param>
 		/// <returns>outputStream</returns>
-		template<typename T>
-		std::ostream& operator << (std::ostream& outputStream, const std::vector<T>& jsonArray);
+		JSON_API_FUNCTION std::ostream& operator << (std::ostream& outputStream, const jsonObject::variantType& jsonData);
 	}
-}
-
-template<typename jsonStructT>
-void json::utility::outputJSONType(std::ostream& outputStream, const json::utility::baseVariantType<jsonStructT>& value, bool isLast)
-{
-	variantTypeEnum type = static_cast<variantTypeEnum>(value.index());
-
-	if (type == variantTypeEnum::jJSONArray)
-	{
-		offset += "  ";
-	}
-
-	switch (type)
-	{
-	case variantTypeEnum::jNull:
-		outputStream << "null";
-
-		break;
-
-	case variantTypeEnum::jString:
-		outputStream << '"' << std::get<std::string>(value) << '"';
-
-		break;
-
-	case variantTypeEnum::jBool:
-		outputStream << std::boolalpha << std::get<bool>(value);
-
-		break;
-
-	case variantTypeEnum::jInt64_t:
-		outputStream << std::get<int64_t>(value);
-
-		break;
-
-	case variantTypeEnum::JUInt64_t:
-		outputStream << std::get<uint64_t>(value);
-
-		break;
-
-	case variantTypeEnum::jDouble:
-		outputStream << std::fixed << std::get<double>(value);
-
-		break;
-
-		// TODO: доделать
-	case variantTypeEnum::jJSONArray:
-		// outputStream << std::get<std::vector<nullptr_t>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
-
-		break;
-
-	case variantTypeEnum::jJSONObject:
-	{
-#ifdef JSON_DLL
-		const std::shared_ptr<jsonStructT>& ref = std::get<std::shared_ptr<jsonStructT>>(value);
-#else
-		const std::unique_ptr<jsonStructT>& ref = std::get<std::unique_ptr<jsonStructT>>(value);
-#endif // JSON_DLL
-
-		auto start = ref->data.begin();
-		auto end = ref->data.end();
-
-		outputStream << "{\n";
-
-		while (start != end)
-		{
-			auto check = start;
-
-			outputStream << offset << '"' << start->first << '"' << ": ";
-
-			outputJSONType(outputStream, start->second, ++check == end);
-
-			++start;
-		}
-
-		outputStream << std::string(offset.begin(), offset.end() - 2) << '}';
-	}
-
-	break;
-	}
-
-	if (type == utility::variantTypeEnum::jJSONArray)
-	{
-		offset.pop_back();
-		offset.pop_back();
-	}
-
-	if (!isLast)
-	{
-		outputStream << ',';
-	}
-
-	outputStream << std::endl;
-}
-
-template<typename T>
-std::ostream& json::utility::operator << (std::ostream& outputStream, const std::vector<T>& jsonArray)
-{
-	outputStream << "[\n";
-
-	for (size_t i = 0; i < jsonArray.size(); i++)
-	{
-		if constexpr (std::is_same_v<std::string, T>)
-		{
-			outputStream << std::fixed << std::boolalpha << offset << '"' << jsonArray[i] << '"';
-		}
-		else if constexpr (std::is_same_v<nullptr_t, T>)
-		{
-			outputStream << std::fixed << std::boolalpha << offset << "null";
-		}
-		else
-		{
-			outputStream << std::fixed << std::boolalpha << offset << jsonArray[i];
-		}
-
-		if (i + 1 != jsonArray.size())
-		{
-			outputStream << ',';
-		}
-
-		outputStream << std::endl;
-	}
-
-	return outputStream;
 }

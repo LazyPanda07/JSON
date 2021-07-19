@@ -14,9 +14,6 @@ namespace json
 		/// @brief JSON object
 		using objectType = utility::jsonObject;
 
-		/// @brief JSON array
-		using arrayType = utility::jsonArray;
-
 		/// @brief Output type for istream operator
 		enum class outputType
 		{

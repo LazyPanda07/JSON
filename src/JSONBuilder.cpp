@@ -270,7 +270,7 @@ namespace json
 		auto start = builderData.data.begin();
 		auto end = builderData.data.end();
 		ostringstream outputStream;
-		offset = "  ";
+		utility::jsonObject::offset = "  ";
 
 		outputStream << "{\n";
 
@@ -278,7 +278,7 @@ namespace json
 		{
 			auto check = start;
 
-			outputStream << offset << '"' << start->first << '"' << ": ";
+			outputStream << utility::jsonObject::offset << '"' << start->first << '"' << ": ";
 
 			utility::outputJSONType(outputStream, start->second, ++check == end);
 

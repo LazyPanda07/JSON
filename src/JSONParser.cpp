@@ -9,8 +9,6 @@
 
 #undef max
 
-#define INSERT_DATA(key, value) if(isArrayData) { insertDataIntoArray(key, value, ptr); } else { ptr->data.push_back({ move(key), value }); }
-
 #define GET_METHOD(templateType) template<> \
 JSON_API const templateType& JSONParser::get<templateType>(const string& key) const \
 { \
@@ -107,57 +105,41 @@ namespace json
 		return current != other.current;
 	}
 
-	template<typename T>
-	void JSONParser::insertDataIntoArray(const string& key, T&& value, utility::jsonObject*& ptr)
-	{
-		try
-		{
-			::get<vector<T>>(ptr->data.at(key)).push_back(move(value));
-		}
-		catch (const bad_variant_access&)
-		{
-			ptr->data.at(key).emplace<vector<T>>(vector<T>({ move(value) }));
-		}
-	}
-
-	void JSONParser::insertData(string&& key, const string& value, utility::jsonObject*& ptr)
+	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject*& ptr)
 	{
 #pragma warning(push)
 #pragma warning(disable: 4018)
-
-		bool isArrayData = std::find_if(ptr->data.begin(), ptr->data.end(), [&key](const pair<string, variantType>& value) { return value.first == key;  }) != ptr->data.end();
-
 		if (isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin()))
 		{
-			// INSERT_DATA(key, string(value.begin() + 1, value.end() - 1));
+			ptr->data.push_back({ move(key), string(value.begin() + 1, value.end() - 1) });
 		}
 		else if (value == "true" || value == "false")
 		{
-			// INSERT_DATA(key, value == "true" ? true : false);
+			ptr->data.push_back({ move(key), value == "true" ? true : false });
 		}
 		else if (value == "null")
 		{
-			// INSERT_DATA(key, nullptr);
+			ptr->data.push_back({ move(key), nullptr });
 		}
 		else if (isNumber(value))
 		{
 			if (value.find('.') != string::npos)
 			{
-				// INSERT_DATA(key, stod(value));
+				ptr->data.push_back({ move(key), stod(value) });
 			}
 			else
 			{
-				if (value.find('-'))
+				if (value.find('-') != string::npos)
 				{
-					// INSERT_DATA(key, stoll(value));
+					ptr->data.push_back({ move(key), stoll(value) });
 				}
 				else if (uint64_t valueToInsert = stoull(value) > numeric_limits<int64_t>::max())
 				{
-					// INSERT_DATA(key, move(valueToInsert));
+					ptr->data.push_back({ move(key), valueToInsert });
 				}
 				else
 				{
-					// INSERT_DATA(key, stoll(value));
+					ptr->data.push_back({ move(key), stoll(value) });
 				}
 			}
 		}
@@ -187,7 +169,7 @@ namespace json
 				const vector<pair<string, variantType>>& data = ::get<unique_ptr<utility::jsonObject>>(it->second)->data;
 #endif // JSON_DLL
 
-				auto result =  find(key, data);
+				auto result = find(key, data);
 
 				if (result.second)
 				{
@@ -254,7 +236,7 @@ namespace json
 			case closeCurlyBracket:
 				if (value.size())
 				{
-					insertData(move(key), value, maps.top().second);
+					insertKeyValueData(move(key), value, maps.top().second);
 
 					value.clear();
 				}
@@ -278,7 +260,7 @@ namespace json
 			case closeSquareBracket:
 				if (value.size())
 				{
-					insertData(move(key), value, maps.top().second);
+					insertKeyValueData(move(key), value, maps.top().second);
 
 					key.clear();
 					value.clear();
@@ -289,7 +271,7 @@ namespace json
 			case comma:
 				if (isNumber(value) || (value.size() && isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin())) || (value == "true" || value == "false" || value == "null"))
 				{
-					insertData(move(key), value, maps.top().second);
+					insertKeyValueData(move(key), value, maps.top().second);
 
 					value.clear();
 				}
@@ -337,7 +319,7 @@ namespace json
 	JSONParser::JSONParser(ifstream&& inputStream) :
 		JSONParser(inputStream)
 	{
-		
+
 	}
 
 	void JSONParser::setJSONData(const string& jsonData, uint32_t codePage)
@@ -426,7 +408,7 @@ namespace json
 		parser.parse();
 
 		return inputStream;
-	}
+}
 
 	ostream& operator << (ostream& outputStream, const JSONParser& parser)
 	{

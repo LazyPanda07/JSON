@@ -62,10 +62,7 @@ namespace json
 		utility::jsonObject parsedData;
 
 	private:
-		template<typename T>
-		static void insertDataIntoArray(const std::string& key, T&& value, utility::jsonObject*& ptr);
-
-		static void insertData(std::string&& key, const std::string& value, utility::jsonObject*& ptr);
+		static void insertKeyValueData(std::string&& key, const std::string& value, utility::jsonObject*& ptr);
 
 		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(const std::string& key, const std::vector<std::pair<std::string, variantType>>& start);
 

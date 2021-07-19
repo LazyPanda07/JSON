@@ -12,8 +12,12 @@ namespace json
 	public:
 		/// @brief std::variant specialization for JSONParser
 		using variantType = utility::jsonParserStruct::variantType;
+		
 		/// @brief JSON object for JSONParser
 		using objectType = utility::jsonParserStruct;
+
+		/// @brief JSON array for JSONParser
+		using arrayType = utility::jsonParserArray;
 
 	public:
 		/// @brief Iterator through JSONParser

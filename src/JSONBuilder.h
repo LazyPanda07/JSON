@@ -10,8 +10,12 @@ namespace json
 	public:
 		/// @brief std::variant specialization for JSONBuilder
 		using variantType = utility::jsonBuilderStruct::variantType;
+
 		/// @brief JSON object for JSONBuilder
 		using objectType = utility::jsonBuilderStruct;
+
+		/// @brief JSON array for JSONBuilder
+		using arrayType = utility::jsonBuilderArray;
 
 		/// @brief Output type for istream operator
 		enum class outputType

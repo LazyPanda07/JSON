@@ -28,7 +28,7 @@ namespace json
 		/// <summary>
 		/// enum for variantType template arguments
 		/// </summary>
-		enum variantTypeEnum
+		enum class variantTypeEnum
 		{
 			jNull,
 			jString,
@@ -36,13 +36,8 @@ namespace json
 			jInt64_t,
 			jUint64_t,
 			jDouble,
-			jNullArray,
-			jStringArray,
-			jBoolArray,
-			jInt64_tArray,
-			jUint64_tArray,
-			jDoubleArray,
-			jJsonStruct
+			jJSONArray,
+			jJSONObject
 		};
 
 		/// <summary>
@@ -57,33 +52,45 @@ namespace json
 			int64_t,
 			uint64_t,
 			double,
-			std::vector<nullptr_t>,
-			std::vector<std::string>,
-			std::vector<bool>,
-			std::vector<int64_t>,
-			std::vector<uint64_t>,
-			std::vector<double>,
 #ifdef JSON_DLL
+			std::vector<std::shared_ptr<jsonStruct>>,
 			std::shared_ptr<jsonStruct>
 #else
+			std::vector<std::unique_ptr<jsonStruct>>,
 			std::unique_ptr<jsonStruct>
 #endif // JSON_DLL>
 			> ;
 
-		/// @brief Utility struct for JSONParser
+		/// @brief JSON object for JSONParser
 		struct JSON_API jsonParserStruct
 		{
 			using variantType = baseVariantType<jsonParserStruct>;
 
-			std::unordered_map<std::string, variantType> data;
+			std::vector<std::pair<std::string, variantType>> data;
 		};
 
-		/// @brief Utility struct for JSONBuilder
+		/// @brief JSON array for JSONParser
+		struct JSON_API jsonParserArray
+		{
+			using variantType = baseVariantType<jsonParserArray>;
+
+			std::vector<variantType> data;
+		};
+
+		/// @brief JSON object for JSONBuilder
 		struct JSON_API jsonBuilderStruct
 		{
 			using variantType = baseVariantType<jsonBuilderStruct>;
 
 			std::vector<std::pair<std::string, variantType>> data;
+		};
+
+		/// @brief JSON array for JSONBuilder
+		struct JSON_API jsonBuilderArray
+		{
+			using variantType = baseVariantType<jsonBuilderArray>;
+
+			std::vector<variantType> data;
 		};
 
 		/// <summary>

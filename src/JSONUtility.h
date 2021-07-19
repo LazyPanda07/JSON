@@ -34,7 +34,7 @@ namespace json
 			jString,
 			jBool,
 			jInt64_t,
-			jUint64_t,
+			JUInt64_t,
 			jDouble,
 			jJSONArray,
 			jJSONObject
@@ -61,34 +61,18 @@ namespace json
 #endif // JSON_DLL>
 			> ;
 
-		/// @brief JSON object for JSONParser
-		struct JSON_API jsonParserStruct
+		/// @brief JSON object
+		struct JSON_API jsonObject
 		{
-			using variantType = baseVariantType<jsonParserStruct>;
+			using variantType = baseVariantType<jsonObject>;
 
 			std::vector<std::pair<std::string, variantType>> data;
 		};
 
-		/// @brief JSON array for JSONParser
-		struct JSON_API jsonParserArray
+		/// @brief JSON array
+		struct JSON_API jsonArray
 		{
-			using variantType = baseVariantType<jsonParserArray>;
-
-			std::vector<variantType> data;
-		};
-
-		/// @brief JSON object for JSONBuilder
-		struct JSON_API jsonBuilderStruct
-		{
-			using variantType = baseVariantType<jsonBuilderStruct>;
-
-			std::vector<std::pair<std::string, variantType>> data;
-		};
-
-		/// @brief JSON array for JSONBuilder
-		struct JSON_API jsonBuilderArray
-		{
-			using variantType = baseVariantType<jsonBuilderArray>;
+			using variantType = baseVariantType<jsonArray>;
 
 			std::vector<variantType> data;
 		};
@@ -136,74 +120,52 @@ namespace json
 template<typename jsonStructT>
 void json::utility::outputJSONType(std::ostream& outputStream, const json::utility::baseVariantType<jsonStructT>& value, bool isLast)
 {
-	if (value.index() >= utility::variantTypeEnum::jNullArray)
+	variantTypeEnum type = static_cast<variantTypeEnum>(value.index());
+
+	if (type == variantTypeEnum::jJSONArray)
 	{
 		offset += "  ";
 	}
 
-	switch (value.index())
+	switch (type)
 	{
-	case utility::variantTypeEnum::jNull:
+	case variantTypeEnum::jNull:
 		outputStream << "null";
 
 		break;
 
-	case utility::variantTypeEnum::jString:
+	case variantTypeEnum::jString:
 		outputStream << '"' << std::get<std::string>(value) << '"';
 
 		break;
 
-	case utility::variantTypeEnum::jBool:
+	case variantTypeEnum::jBool:
 		outputStream << std::boolalpha << std::get<bool>(value);
 
 		break;
 
-	case utility::variantTypeEnum::jInt64_t:
+	case variantTypeEnum::jInt64_t:
 		outputStream << std::get<int64_t>(value);
 
 		break;
 
-	case utility::variantTypeEnum::jUint64_t:
+	case variantTypeEnum::JUInt64_t:
 		outputStream << std::get<uint64_t>(value);
 
 		break;
 
-	case utility::variantTypeEnum::jDouble:
+	case variantTypeEnum::jDouble:
 		outputStream << std::fixed << std::get<double>(value);
 
 		break;
 
-	case utility::variantTypeEnum::jNullArray:
-		outputStream << std::get<std::vector<nullptr_t>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
+		// TODO: доделать
+	case variantTypeEnum::jJSONArray:
+		// outputStream << std::get<std::vector<nullptr_t>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
 
 		break;
 
-	case utility::variantTypeEnum::jStringArray:
-		outputStream << std::get<std::vector<std::string>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
-
-		break;
-
-	case utility::variantTypeEnum::jBoolArray:
-		outputStream << std::get<std::vector<bool>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
-
-		break;
-
-	case utility::variantTypeEnum::jInt64_tArray:
-		outputStream << std::get<std::vector<int64_t>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
-
-		break;
-
-	case utility::variantTypeEnum::jUint64_tArray:
-		outputStream << std::get<std::vector<uint64_t>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
-
-		break;
-
-	case utility::variantTypeEnum::jDoubleArray:
-		outputStream << std::fixed << std::get<std::vector<double>>(value) << std::string(offset.begin(), offset.end() - 2) << ']';
-
-		break;
-
-	case utility::variantTypeEnum::jJsonStruct:
+	case variantTypeEnum::jJSONObject:
 	{
 #ifdef JSON_DLL
 		const std::shared_ptr<jsonStructT>& ref = std::get<std::shared_ptr<jsonStructT>>(value);
@@ -233,7 +195,7 @@ void json::utility::outputJSONType(std::ostream& outputStream, const json::utili
 	break;
 	}
 
-	if (value.index() >= utility::variantTypeEnum::jNullArray)
+	if (type == utility::variantTypeEnum::jJSONArray)
 	{
 		offset.pop_back();
 		offset.pop_back();

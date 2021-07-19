@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('bin_2_production_release-_win32_2_j_s_
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            jString,</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            jBool,</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            jInt64_t,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            jUint64_t,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            JUInt64_t,</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            jDouble,</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            jNullArray,</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            jStringArray,</div>
@@ -152,9 +152,9 @@ $(document).ready(function(){initNavTree('bin_2_production_release-_win32_2_j_s_
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            std::unique_ptr&lt;jsonStruct&gt;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// JSON_DLL&gt;</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            &gt; ;</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="structjson_1_1utility_1_1json_parser_struct.html">   75</a></span>&#160;        <span class="keyword">struct </span>JSON_API <a class="code" href="structjson_1_1utility_1_1json_parser_struct.html">jsonParserStruct</a></div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="structjson_1_1utility_1_1json_parser_struct.html">   75</a></span>&#160;        <span class="keyword">struct </span>JSON_API <a class="code" href="structjson_1_1utility_1_1json_parser_struct.html">jsonObject</a></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">using</span> variantType = baseVariantType&lt;jsonParserStruct&gt;;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">using</span> variantType = baseVariantType&lt;jsonObject&gt;;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            std::unordered_map&lt;std::string, variantType&gt; data;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        };</div>
@@ -208,7 +208,7 @@ $(document).ready(function(){initNavTree('bin_2_production_release-_win32_2_j_s_
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordflow">case</span> utility::variantTypeEnum::jUint64_t:</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordflow">case</span> utility::variantTypeEnum::JUInt64_t:</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        outputStream &lt;&lt; std::get&lt;uint64_t&gt;(value);</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordflow">break</span>;</div>
@@ -323,7 +323,7 @@ $(document).ready(function(){initNavTree('bin_2_production_release-_win32_2_j_s_
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <span class="keywordflow">return</span> outputStream;</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;}</div>
 <div class="ttc" id="astructjson_1_1utility_1_1json_builder_struct_html"><div class="ttname"><a href="structjson_1_1utility_1_1json_builder_struct.html">json::utility::jsonBuilderStruct</a></div><div class="ttdoc">Utility struct for JSONBuilder</div><div class="ttdef"><b>Definition:</b> JSONUtility.h:86</div></div>
-<div class="ttc" id="astructjson_1_1utility_1_1json_parser_struct_html"><div class="ttname"><a href="structjson_1_1utility_1_1json_parser_struct.html">json::utility::jsonParserStruct</a></div><div class="ttdoc">Utility struct for JSONParser</div><div class="ttdef"><b>Definition:</b> JSONUtility.h:76</div></div>
+<div class="ttc" id="astructjson_1_1utility_1_1json_parser_struct_html"><div class="ttname"><a href="structjson_1_1utility_1_1json_parser_struct.html">json::utility::jsonObject</a></div><div class="ttdoc">Utility struct for JSONParser</div><div class="ttdef"><b>Definition:</b> JSONUtility.h:76</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

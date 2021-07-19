@@ -108,11 +108,11 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a9b26c7157829bd798e87428c3f706010"><td class="memItemLeft" align="right" valign="top"><a id="a9b26c7157829bd798e87428c3f706010"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a9b26c7157829bd798e87428c3f706010">variantType</a> = utility::jsonParserStruct::variantType</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a9b26c7157829bd798e87428c3f706010">variantType</a> = utility::jsonObject::variantType</td></tr>
 <tr class="memdesc:a9b26c7157829bd798e87428c3f706010"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::variant specialization for <a class="el" href="classjson_1_1_j_s_o_n_parser.html" title="Parser for JSON.">JSONParser</a> <br /></td></tr>
 <tr class="separator:a9b26c7157829bd798e87428c3f706010"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcf23ba236e23de6a96821f93e19a4bc"><td class="memItemLeft" align="right" valign="top"><a id="afcf23ba236e23de6a96821f93e19a4bc"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#afcf23ba236e23de6a96821f93e19a4bc">objectType</a> = <a class="el" href="structjson_1_1utility_1_1json_parser_struct.html">utility::jsonParserStruct</a></td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#afcf23ba236e23de6a96821f93e19a4bc">objectType</a> = <a class="el" href="structjson_1_1utility_1_1json_parser_struct.html">utility::jsonObject</a></td></tr>
 <tr class="memdesc:afcf23ba236e23de6a96821f93e19a4bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">JSON object for <a class="el" href="classjson_1_1_j_s_o_n_parser.html" title="Parser for JSON.">JSONParser</a>. <br /></td></tr>
 <tr class="separator:afcf23ba236e23de6a96821f93e19a4bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -153,7 +153,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3dd0583b33740befc96541ff2de2ac9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f438fff8da0de6e14096f1a1af542df"><td class="memTemplParams" colspan="2"><a id="a2f438fff8da0de6e14096f1a1af542df"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2f438fff8da0de6e14096f1a1af542df"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>insertDataIntoArray</b> (const string &amp;key, T &amp;&amp;value, <a class="el" href="structjson_1_1utility_1_1json_parser_struct.html">utility::jsonParserStruct</a> *&amp;ptr)</td></tr>
+<tr class="memitem:a2f438fff8da0de6e14096f1a1af542df"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>insertDataIntoArray</b> (const string &amp;key, T &amp;&amp;value, <a class="el" href="structjson_1_1utility_1_1json_parser_struct.html">utility::jsonObject</a> *&amp;ptr)</td></tr>
 <tr class="separator:a2f438fff8da0de6e14096f1a1af542df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -341,7 +341,7 @@ template&lt;typename T &gt; </div>
 
 <p></p>
 <p>Getter for all JSON parsed values</p>
-<p>T is one of json::utility::jsonParserStruct::variantType template parameters</p>
+<p>T is one of json::utility::jsonObject::variantType template parameters</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>T is one of JSONParser::jsonStruct::variantType template parameters</td></tr>

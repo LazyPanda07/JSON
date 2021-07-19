@@ -9,7 +9,7 @@
 
 #undef max
 
-#define INSERT_DATA(key, value) if(isArrayData) { insertDataIntoArray(key, value, ptr); } else { ptr->data.insert(make_pair(move(key), value)); }
+#define INSERT_DATA(key, value) if(isArrayData) { insertDataIntoArray(key, value, ptr); } else { ptr->data.push_back({ move(key), value }); }
 
 #define GET_METHOD(templateType) template<> \
 JSON_API const templateType& JSONParser::get<templateType>(const string& key) const \
@@ -108,7 +108,7 @@ namespace json
 	}
 
 	template<typename T>
-	void JSONParser::insertDataIntoArray(const string& key, T&& value, utility::jsonParserStruct*& ptr)
+	void JSONParser::insertDataIntoArray(const string& key, T&& value, utility::jsonObject*& ptr)
 	{
 		try
 		{
@@ -120,49 +120,54 @@ namespace json
 		}
 	}
 
-	void JSONParser::insertData(string&& key, const string& value, utility::jsonParserStruct*& ptr)
+	void JSONParser::insertData(string&& key, const string& value, utility::jsonObject*& ptr)
 	{
-		bool isArrayData = ptr->data.find(key) != ptr->data.end();
+#pragma warning(push)
+#pragma warning(disable: 4018)
+
+		bool isArrayData = std::find_if(ptr->data.begin(), ptr->data.end(), [&key](const pair<string, variantType>& value) { return value.first == key;  }) != ptr->data.end();
 
 		if (isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin()))
 		{
-			INSERT_DATA(key, string(value.begin() + 1, value.end() - 1));
+			// INSERT_DATA(key, string(value.begin() + 1, value.end() - 1));
 		}
 		else if (value == "true" || value == "false")
 		{
-			INSERT_DATA(key, value == "true" ? true : false);
+			// INSERT_DATA(key, value == "true" ? true : false);
 		}
 		else if (value == "null")
 		{
-			INSERT_DATA(key, nullptr);
+			// INSERT_DATA(key, nullptr);
 		}
 		else if (isNumber(value))
 		{
 			if (value.find('.') != string::npos)
 			{
-				INSERT_DATA(key, stod(value));
+				// INSERT_DATA(key, stod(value));
 			}
 			else
 			{
 				if (value.find('-'))
 				{
-					INSERT_DATA(key, stoll(value));
+					// INSERT_DATA(key, stoll(value));
 				}
 				else if (uint64_t valueToInsert = stoull(value) > numeric_limits<int64_t>::max())
 				{
-					INSERT_DATA(key, move(valueToInsert));
+					// INSERT_DATA(key, move(valueToInsert));
 				}
 				else
 				{
-					INSERT_DATA(key, stoll(value));
+					// INSERT_DATA(key, stoll(value));
 				}
 			}
 		}
+
+#pragma warning(pop)
 	}
 
-	pair<unordered_map<string, JSONParser::variantType>::const_iterator, bool> JSONParser::find(const string& key, const unordered_map<string, variantType>& start)
+	pair<vector<pair<string, JSONParser::variantType>>::const_iterator, bool> JSONParser::find(const string& key, const vector<pair<string, variantType>>& start)
 	{
-		auto it = start.find(key);
+		auto it = std::find_if(start.begin(), start.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
 
 		if (it != start.end())
 		{
@@ -174,15 +179,15 @@ namespace json
 
 		while (it != end)
 		{
-			if (it->second.index() == utility::variantTypeEnum::jJsonStruct)
+			if (it->second.index() == static_cast<int>(utility::variantTypeEnum::jJSONObject))
 			{
 #ifdef JSON_DLL
-				const unordered_map<string, variantType>& data = ::get<shared_ptr<utility::jsonParserStruct>>(it->second)->data;
+				const vector<pair<string, variantType>>& data = ::get<shared_ptr<utility::jsonObject>>(it->second)->data;
 #else
-				const unordered_map<string, variantType>& data = ::get<unique_ptr<utility::jsonParserStruct>>(it->second)->data;
+				const vector<pair<string, variantType>>& data = ::get<unique_ptr<utility::jsonObject>>(it->second)->data;
 #endif // JSON_DLL
 
-				auto result = find(key, data);
+				auto result =  find(key, data);
 
 				if (result.second)
 				{
@@ -203,10 +208,10 @@ namespace json
 
 	void JSONParser::parse()
 	{
-		stack<pair<string, utility::jsonParserStruct*>> maps;
+		stack<pair<string, utility::jsonObject*>> maps;
 		string key;
 		string value;
-		pair<string, utility::jsonParserStruct*> ptr = { "", nullptr };
+		pair<string, utility::jsonObject*> ptr = { "", nullptr };
 		bool startString = false;
 
 		for (const auto& i : rawData)
@@ -241,7 +246,7 @@ namespace json
 				}
 				else
 				{
-					maps.push(make_pair(move(key), new utility::jsonParserStruct()));
+					maps.push(make_pair(move(key), new utility::jsonObject()));
 				}
 
 				break;
@@ -260,13 +265,13 @@ namespace json
 
 				if (ptr.second != &parsedData)
 				{
-					maps.top().second->data.insert(make_pair(move(ptr.first), unique_ptr<utility::jsonParserStruct>(ptr.second)));
+					maps.top().second->data.push_back(make_pair(move(ptr.first), unique_ptr<utility::jsonObject>(ptr.second)));
 				}
 
 				break;
 
 			case openSquareBracket:
-				maps.top().second->data.insert(make_pair(key, variantType(vector<nullptr_t>())));
+				maps.top().second->data.push_back(make_pair(key, unique_ptr<utility::jsonObject>()));
 
 				break;
 
@@ -376,34 +381,34 @@ namespace json
 		return rawData;
 	}
 
-	GET_METHOD(nullptr_t);
-
-	GET_METHOD(string);
-
-	GET_METHOD(bool);
-
-	GET_METHOD(int64_t);
-
-	GET_METHOD(uint64_t);
-
-	GET_METHOD(double);
-
-	GET_METHOD(vector<nullptr_t>);
-
-	GET_METHOD(vector<string>);
-
-	GET_METHOD(vector<bool>);
-
-	GET_METHOD(vector<int64_t>);
-
-	GET_METHOD(vector<uint64_t>);
-
-	GET_METHOD(vector<double>);
+	// GET_METHOD(nullptr_t);
+	// 
+	// GET_METHOD(string);
+	// 
+	// GET_METHOD(bool);
+	// 
+	// GET_METHOD(int64_t);
+	// 
+	// GET_METHOD(uint64_t);
+	// 
+	// GET_METHOD(double);
+	// 
+	// GET_METHOD(vector<nullptr_t>);
+	// 
+	// GET_METHOD(vector<string>);
+	// 
+	// GET_METHOD(vector<bool>);
+	// 
+	// GET_METHOD(vector<int64_t>);
+	// 
+	// GET_METHOD(vector<uint64_t>);
+	// 
+	// GET_METHOD(vector<double>);
 
 #ifdef JSON_DLL
-	GET_METHOD(shared_ptr<utility::jsonParserStruct>);
+	GET_METHOD(shared_ptr<utility::jsonObject>);
 #else
-	GET_METHOD(unique_ptr<utility::jsonParserStruct>);
+	GET_METHOD(unique_ptr<utility::jsonObject>);
 #endif // JSON_DLL
 
 	istream& operator >> (istream& inputStream, JSONParser& parser)

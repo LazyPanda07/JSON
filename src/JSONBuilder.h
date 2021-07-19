@@ -8,14 +8,14 @@ namespace json
 	class JSON_API JSONBuilder
 	{
 	public:
-		/// @brief std::variant specialization for JSONBuilder
-		using variantType = utility::jsonBuilderStruct::variantType;
+		/// @brief std::variant specialization for JSON
+		using variantType = utility::jsonObject::variantType;
 
-		/// @brief JSON object for JSONBuilder
-		using objectType = utility::jsonBuilderStruct;
+		/// @brief JSON object
+		using objectType = utility::jsonObject;
 
-		/// @brief JSON array for JSONBuilder
-		using arrayType = utility::jsonBuilderArray;
+		/// @brief JSON array
+		using arrayType = utility::jsonArray;
 
 		/// @brief Output type for istream operator
 		enum class outputType
@@ -32,7 +32,7 @@ namespace json
 		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(const std::string& key, const std::vector<std::pair<std::string, variantType>>& start);
 
 	private:
-		utility::jsonBuilderStruct builderData;
+		utility::jsonObject builderData;
 		unsigned int codepage;
 		outputType type;
 

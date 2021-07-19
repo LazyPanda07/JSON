@@ -10,21 +10,21 @@ namespace json
 	class JSON_API JSONParser
 	{
 	public:
-		/// @brief std::variant specialization for JSONParser
-		using variantType = utility::jsonParserStruct::variantType;
+		/// @brief std::variant specialization for JSON
+		using variantType = utility::jsonObject::variantType;
 		
-		/// @brief JSON object for JSONParser
-		using objectType = utility::jsonParserStruct;
+		/// @brief JSON object
+		using objectType = utility::jsonObject;
 
-		/// @brief JSON array for JSONParser
-		using arrayType = utility::jsonParserArray;
+		/// @brief JSON array
+		using arrayType = utility::jsonArray;
 
 	public:
 		/// @brief Iterator through JSONParser
 		class JSON_API ConstIterator
 		{
 		private:
-			using ConstIteratorType = std::unordered_map<std::string, variantType>::const_iterator;
+			using ConstIteratorType = std::vector<std::pair<std::string, variantType>>::const_iterator;
 
 		private:
 			ConstIteratorType begin;
@@ -59,15 +59,15 @@ namespace json
 
 	private:
 		std::string rawData;
-		utility::jsonParserStruct parsedData;
+		utility::jsonObject parsedData;
 
 	private:
 		template<typename T>
-		static void insertDataIntoArray(const std::string& key, T&& value, utility::jsonParserStruct*& ptr);
+		static void insertDataIntoArray(const std::string& key, T&& value, utility::jsonObject*& ptr);
 
-		static void insertData(std::string&& key, const std::string& value, utility::jsonParserStruct*& ptr);
+		static void insertData(std::string&& key, const std::string& value, utility::jsonObject*& ptr);
 
-		static std::pair<std::unordered_map<std::string, variantType>::const_iterator, bool> find(const std::string& key, const std::unordered_map<std::string, variantType>& start);
+		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(const std::string& key, const std::vector<std::pair<std::string, variantType>>& start);
 
 		static bool isStringSymbol(char symbol);
 
@@ -140,7 +140,7 @@ namespace json
 
 		/// <summary>
 		/// <para>Getter for all JSON parsed values</para>
-		/// <para>T is one of json::utility::jsonParserStruct::variantType template parameters</para>
+		/// <para>T is one of json::utility::jsonObject::variantType template parameters</para>
 		/// </summary>
 		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
 		/// <param name="key">JSON key</param>

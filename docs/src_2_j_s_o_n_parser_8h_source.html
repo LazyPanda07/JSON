@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('src_2_j_s_o_n_parser_8h_source.html','
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">class </span>JSON_API JSONParser</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    {</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keyword">using</span> variantType = utility::jsonParserStruct::variantType;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keyword">using</span> objectType = utility::jsonParserStruct;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keyword">using</span> variantType = utility::jsonObject::variantType;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keyword">using</span> objectType = utility::jsonObject;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">class </span>JSON_API ConstIterator</div>
@@ -140,13 +140,13 @@ $(document).ready(function(){initNavTree('src_2_j_s_o_n_parser_8h_source.html','
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    private:</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        std::<span class="keywordtype">string</span> rawData;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        utility::jsonParserStruct parsedData;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        utility::jsonObject parsedData;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    private:</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        template&lt;typename T&gt;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        static <span class="keywordtype">void</span> insertDataIntoArray(const std::<span class="keywordtype">string</span>&amp; key, T&amp;&amp; value, utility::jsonParserStruct*&amp; ptr);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        static <span class="keywordtype">void</span> insertDataIntoArray(const std::<span class="keywordtype">string</span>&amp; key, T&amp;&amp; value, utility::jsonObject*&amp; ptr);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        static <span class="keywordtype">void</span> insertData(std::<span class="keywordtype">string</span>&amp;&amp; key, const std::<span class="keywordtype">string</span>&amp; value, utility::jsonParserStruct*&amp; ptr);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        static <span class="keywordtype">void</span> insertData(std::<span class="keywordtype">string</span>&amp;&amp; key, const std::<span class="keywordtype">string</span>&amp; value, utility::jsonObject*&amp; ptr);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        static std::pair&lt;std::unordered_map&lt;std::<span class="keywordtype">string</span>, variantType&gt;::const_iterator, <span class="keywordtype">bool</span>&gt; find(const std::<span class="keywordtype">string</span>&amp; key, const std::unordered_map&lt;std::<span class="keywordtype">string</span>, variantType&gt;&amp; start);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>

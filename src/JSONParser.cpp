@@ -4,7 +4,6 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
-#include <iostream>
 
 #include "Exceptions/CantFindValueException.h"
 
@@ -148,19 +147,28 @@ namespace json
 #pragma warning(pop)
 	}
 
-	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject*& ptr, vector<unique_ptr<utility::jsonObject>>* currentArray)
+	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject*& ptr, vector<utility::objectSmartPointer<utility::jsonObject>>* currentArray)
 	{
 		if (key.empty())
 		{
-			unique_ptr<utility::jsonObject> object(new utility::jsonObject());
+			utility::objectSmartPointer<utility::jsonObject> object(new utility::jsonObject());
 
 			object->data.push_back({ ""s, JSONParser::getValue(value) });
+
+			cout << value << '\t' << currentArray << endl;
 
 			currentArray->push_back(move(object));
 		}
 		else
 		{
-			ptr->data.push_back({ move(key), JSONParser::getValue(value) });
+			if (currentArray)
+			{
+				std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(currentArray->back()->data.back().second)->data.push_back({ move(key), JSONParser::getValue(value) });
+			}
+			else
+			{
+				ptr->data.push_back({ move(key), JSONParser::getValue(value) });
+			}
 		}
 	}
 
@@ -180,11 +188,7 @@ namespace json
 		{
 			if (it->second.index() == static_cast<int>(utility::variantTypeEnum::jJSONObject))
 			{
-#ifdef JSON_DLL
-				const vector<pair<string, variantType>>& data = ::get<shared_ptr<utility::jsonObject>>(it->second)->data;
-#else
-				const vector<pair<string, variantType>>& data = ::get<unique_ptr<utility::jsonObject>>(it->second)->data;
-#endif // JSON_DLL
+				const vector<pair<string, variantType>>& data = ::get<utility::objectSmartPointer<utility::jsonObject>>(it->second)->data;
 
 				auto result = find(key, data);
 
@@ -208,7 +212,7 @@ namespace json
 	void JSONParser::parse()
 	{
 		stack<pair<string, utility::jsonObject*>> dictionaries;
-		stack<vector<unique_ptr<utility::jsonObject>>*> arrays;
+		stack<vector<utility::objectSmartPointer<utility::jsonObject>>*> arrays;
 		string key;
 		string value;
 		pair<string, utility::jsonObject*> ptr = { "", nullptr };
@@ -242,7 +246,13 @@ namespace json
 			case openCurlyBracket:
 				if (dictionaries.empty())
 				{
-					dictionaries.push({ "", &parsedData });
+					dictionaries.push({ ""s, &parsedData });
+				}
+				else if (arrays.size())
+				{
+					auto& newlyObject = arrays.top()->emplace_back(utility::objectSmartPointer<utility::jsonObject>(new utility::jsonObject()))->data;
+
+					newlyObject.push_back({ ""s, utility::objectSmartPointer<utility::jsonObject>(new utility::jsonObject()) });
 				}
 				else
 				{
@@ -259,13 +269,18 @@ namespace json
 					value.clear();
 				}
 
+				if (arrays.size())
+				{
+					continue;
+				}
+
 				ptr = dictionaries.top();
 
 				dictionaries.pop();
 
-				if (ptr.second != &parsedData)
+				if (ptr.first.size())
 				{
-					dictionaries.top().second->data.push_back({ move(ptr.first), unique_ptr<utility::jsonObject>(ptr.second) });
+					dictionaries.top().second->data.push_back({ move(ptr.first), utility::objectSmartPointer<utility::jsonObject>(ptr.second) });
 				}
 
 				break;
@@ -275,9 +290,9 @@ namespace json
 				{
 					auto& currentArray = arrays.top();
 
-					unique_ptr<utility::jsonObject> object(new utility::jsonObject());
+					utility::objectSmartPointer<utility::jsonObject> object(new utility::jsonObject());
 
-					auto& newArray = object->data.emplace_back(make_pair(""s, vector<unique_ptr<utility::jsonObject>>())).second;
+					auto& newArray = object->data.emplace_back(make_pair(""s, vector<utility::objectSmartPointer<utility::jsonObject>>())).second;
 
 					arrays.push(&std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(newArray));
 
@@ -285,7 +300,7 @@ namespace json
 				}
 				else
 				{
-					auto& newArray = dictionaries.top().second->data.emplace_back(make_pair(move(key), vector<unique_ptr<utility::jsonObject>>())).second;
+					auto& newArray = dictionaries.top().second->data.emplace_back(make_pair(move(key), vector<utility::objectSmartPointer<utility::jsonObject>>())).second;
 
 					arrays.push(&std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(newArray));
 				}
@@ -298,9 +313,9 @@ namespace json
 					JSONParser::insertKeyValueData(""s, value, dictionaries.top().second, arrays.size() ? arrays.top() : nullptr);
 
 					value.clear();
-
-					arrays.pop();
 				}
+
+				arrays.pop();
 
 				break;
 
@@ -426,7 +441,7 @@ namespace json
 #ifdef JSON_DLL
 	GET_METHOD(shared_ptr<utility::jsonObject>);
 #else
-	GET_METHOD(unique_ptr<utility::jsonObject>);
+	GET_METHOD(utility::objectSmartPointer<utility::jsonObject>);
 #endif // JSON_DLL
 
 	istream& operator >> (istream& inputStream, JSONParser& parser)

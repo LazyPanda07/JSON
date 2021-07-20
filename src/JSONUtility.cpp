@@ -200,11 +200,7 @@ namespace json
 
 			case variantTypeEnum::jJSONObject:
 			{
-#ifdef JSON_DLL
-				const shared_ptr<jsonObject>& ref = get<shared_ptr<jsonObject>>(value);
-#else
-				const unique_ptr<jsonObject>& ref = get<unique_ptr<jsonObject>>(value);
-#endif // JSON_DLL
+				const objectSmartPointer<jsonObject>& ref = get<objectSmartPointer<jsonObject>>(value);
 
 				auto start = ref->data.begin();
 				auto end = ref->data.end();

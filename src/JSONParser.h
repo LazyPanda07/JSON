@@ -61,7 +61,7 @@ namespace json
 	private:
 		static utility::jsonObject::variantType getValue(const std::string& value);
 
-		static void insertKeyValueData(std::string&& key, const std::string& value, utility::jsonObject*& ptr, std::vector<std::unique_ptr<utility::jsonObject>>* currentArray);
+		static void insertKeyValueData(std::string&& key, const std::string& value, utility::jsonObject*& ptr, std::vector<utility::objectSmartPointer<utility::jsonObject>>* currentArray);
 
 		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(const std::string& key, const std::vector<std::pair<std::string, variantType>>& start);
 

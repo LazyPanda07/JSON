@@ -22,11 +22,7 @@ namespace json
 		{
 			if (it->second.index() == static_cast<int>(utility::variantTypeEnum::jJSONObject))
 			{
-#ifdef JSON_DLL
-				vector<pair<string, variantType>>& data = ::get<shared_ptr<utility::jsonObject>>(it->second)->data;
-#else
-				vector<pair<string, variantType>>& data = ::get<unique_ptr<utility::jsonObject>>(it->second)->data;
-#endif // JSON_DLL
+				vector<pair<string, variantType>>& data = ::get<utility::objectSmartPointer<utility::jsonObject>>(it->second)->data;
 
 				auto result = find(key, data);
 
@@ -58,11 +54,7 @@ namespace json
 		{
 			if (it->second.index() == static_cast<int>(utility::variantTypeEnum::jJSONObject))
 			{
-#ifdef JSON_DLL
-				const vector<pair<string, variantType>>& data = ::get<shared_ptr<utility::jsonObject>>(it->second)->data;
-#else
-				const vector<pair<string, variantType>>& data = ::get<unique_ptr<utility::jsonObject>>(it->second)->data;
-#endif // JSON_DLL
+				const vector<pair<string, variantType>>& data = ::get<utility::objectSmartPointer<utility::jsonObject>>(it->second)->data;
 
 				auto result = find(key, data);
 
@@ -168,11 +160,7 @@ namespace json
 	template<>
 	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject*>(const pair<string, utility::jsonObject*>& value)
 	{
-#ifdef JSON_DLL
-		builderData.data.push_back(make_pair(value.first, shared_ptr<utility::jsonObject>(value.second)));
-#else
-		builderData.data.push_back(make_pair(value.first, unique_ptr<utility::jsonObject>(value.second)));
-#endif // JSON_DLL
+		builderData.data.push_back(make_pair(value.first, utility::objectSmartPointer<utility::jsonObject>(value.second)));
 
 		return *this;
 	}
@@ -180,32 +168,18 @@ namespace json
 	template<>
 	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject*>(pair<string, utility::jsonObject*>&& value) noexcept
 	{
-#ifdef JSON_DLL
-		builderData.data.push_back(make_pair(value.first, shared_ptr<utility::jsonObject>(value.second)));
-#else
-		builderData.data.push_back(make_pair(value.first, unique_ptr<utility::jsonObject>(value.second)));
-#endif // JSON_DLL
+		builderData.data.push_back(make_pair(value.first, utility::objectSmartPointer<utility::jsonObject>(value.second)));
 
 		return *this;
 	}
 
-#ifdef JSON_DLL
 	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<shared_ptr<utility::jsonObject>>(pair<string, shared_ptr<utility::jsonObject>>&& value) noexcept
+	JSON_API JSONBuilder& JSONBuilder::push_back<utility::objectSmartPointer<utility::jsonObject>>(pair<string, utility::objectSmartPointer<utility::jsonObject>>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
 		return *this;
 	}
-#else
-	template<>
-	JSONBuilder& JSONBuilder::push_back<unique_ptr<utility::jsonObject>>(pair<string, unique_ptr<utility::jsonObject>>&& value) noexcept
-	{
-		builderData.data.push_back(move(value));
-
-		return *this;
-	}
-#endif // JSON_DLL
 
 	template<>
 	JSONBuilder& JSONBuilder::push_back<int>(const pair<string, int>& value)

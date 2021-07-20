@@ -38,6 +38,14 @@ namespace json
 			jJSONObject
 		};
 
+#ifdef JSON_DLL
+		template<typename T>
+		using objectSmartPointer = std::shared_ptr<T>;
+#else
+		template<typename T>
+		using objectSmartPointer = std::unique_ptr<T>;
+#endif // JSON_API
+
 		/// <summary>
 		/// Describes all JSON types
 		/// </summary>
@@ -50,13 +58,8 @@ namespace json
 			int64_t,
 			uint64_t,
 			double,
-#ifdef JSON_DLL
-			std::vector<std::shared_ptr<jsonStruct>>,
-			std::shared_ptr<jsonStruct>
-#else
-			std::vector<std::unique_ptr<jsonStruct>>,
-			std::unique_ptr<jsonStruct>
-#endif // JSON_DLL>
+			std::vector<objectSmartPointer<jsonStruct>>,
+			objectSmartPointer<jsonStruct>
 			>;
 
 		/// @brief JSON object

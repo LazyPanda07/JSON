@@ -4,6 +4,7 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
+#include <iostream>
 
 #include "Exceptions/CantFindValueException.h"
 
@@ -149,13 +150,21 @@ namespace json
 
 	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject*& ptr)
 	{
-		if (ptr->data.size() && ptr->data.back().second.index() == static_cast<int>(utility::variantTypeEnum::jJSONArray))
+		if (key.empty())
 		{
 			unique_ptr<utility::jsonObject> object(new utility::jsonObject());
+			auto& data = std::get<vector<unique_ptr<utility::jsonObject>>>(ptr->data.back().second);
 
-			object->data.push_back({ move(key), JSONParser::getValue(value) });
+			object->data.push_back({ ""s, JSONParser::getValue(value) });
 
-			std::get<vector<unique_ptr<utility::jsonObject>>>(ptr->data.back().second).push_back(move(object));
+			if (data.size() && data.back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONArray))
+			{
+				std::get<vector<unique_ptr<utility::jsonObject>>>(data.back()->data.back().second).push_back(move(object));
+			}
+			else
+			{
+				data.push_back(move(object));
+			}
 		}
 		else
 		{
@@ -252,7 +261,7 @@ namespace json
 			case closeCurlyBracket:
 				if (value.size())
 				{
-					insertKeyValueData(move(key), value, dictionaries.top().second);
+					JSONParser::insertKeyValueData(move(key), value, dictionaries.top().second);
 
 					value.clear();
 				}
@@ -269,14 +278,30 @@ namespace json
 				break;
 
 			case openSquareBracket:
-				dictionaries.top().second->data.push_back({ move(key), vector<unique_ptr<utility::jsonObject>>() });
+			{
+				auto& check = dictionaries.top().second->data;
+
+				if (check.size() && check.back().second.index() == static_cast<int>(utility::variantTypeEnum::jJSONArray))
+				{
+					unique_ptr<utility::jsonObject> object(new utility::jsonObject());
+
+					object->data.push_back({ ""s, vector<unique_ptr<utility::jsonObject>>() });
+
+					std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(check.back().second).push_back(move(object));
+				}
+				else
+				{
+					check.push_back({ move(key), vector<unique_ptr<utility::jsonObject>>() });
+				}
+			}
+				
 
 				break;
 
 			case closeSquareBracket:
 				if (value.size())
 				{
-					insertKeyValueData(""s, value, dictionaries.top().second);
+					JSONParser::insertKeyValueData(""s, value, dictionaries.top().second);
 
 					value.clear();
 				}
@@ -286,7 +311,7 @@ namespace json
 			case comma:
 				if (isNumber(value) || (value.size() && isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin())) || (value == "true" || value == "false" || value == "null"))
 				{
-					insertKeyValueData(move(key), value, dictionaries.top().second);
+					JSONParser::insertKeyValueData(move(key), value, dictionaries.top().second);
 
 					value.clear();
 				}
@@ -423,7 +448,7 @@ namespace json
 		parser.parse();
 
 		return inputStream;
-}
+	}
 
 	ostream& operator << (ostream& outputStream, const JSONParser& parser)
 	{

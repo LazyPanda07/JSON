@@ -4,6 +4,7 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
+#include <iostream>
 
 #include "Exceptions/CantFindValueException.h"
 
@@ -152,27 +153,10 @@ namespace json
 		if (key.empty())
 		{
 			unique_ptr<utility::jsonObject> object(new utility::jsonObject());
-			auto& data = std::get<vector<unique_ptr<utility::jsonObject>>>(ptr->data.back().second);
 
 			object->data.push_back({ ""s, JSONParser::getValue(value) });
 
-			if (data.size() && data.back()->data.size() && data.back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONArray))
-			{
-				auto* lastArray = &std::get<vector<unique_ptr<utility::jsonObject>>>(data.back()->data.back().second);
-
-				if (lastArray == currentArray)
-				{
-					lastArray->push_back(move(object));
-				}
-				else
-				{
-					data.push_back(move(object));
-				}
-			}
-			else
-			{
-				data.push_back(move(object));
-			}
+			currentArray->push_back(move(object));
 		}
 		else
 		{
@@ -207,14 +191,14 @@ namespace json
 				if (result.second)
 				{
 					return result;
-				}
 			}
-
-			++it;
 		}
 
-		return { end, false };
+			++it;
 	}
+
+		return { end, false };
+}
 
 	bool JSONParser::isStringSymbol(char symbol)
 	{
@@ -290,9 +274,9 @@ namespace json
 				if (arrays.size())
 				{
 					auto& currentArray = arrays.top();
-				
+
 					unique_ptr<utility::jsonObject> object(new utility::jsonObject());
-				
+
 					auto& newArray = object->data.emplace_back(make_pair(""s, vector<unique_ptr<utility::jsonObject>>())).second;
 
 					arrays.push(&std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(newArray));
@@ -492,7 +476,7 @@ namespace json
 
 		return outputStream;
 	}
-}
+	}
 
 bool isNumber(const string& source)
 {

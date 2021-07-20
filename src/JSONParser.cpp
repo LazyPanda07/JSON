@@ -4,7 +4,6 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
-#include <iostream>
 
 #include "Exceptions/CantFindValueException.h"
 
@@ -148,7 +147,7 @@ namespace json
 #pragma warning(pop)
 	}
 
-	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject*& ptr)
+	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject*& ptr, vector<unique_ptr<utility::jsonObject>>* currentArray)
 	{
 		if (key.empty())
 		{
@@ -157,9 +156,18 @@ namespace json
 
 			object->data.push_back({ ""s, JSONParser::getValue(value) });
 
-			if (data.size() && data.back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONArray))
+			if (data.size() && data.back()->data.size() && data.back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONArray))
 			{
-				std::get<vector<unique_ptr<utility::jsonObject>>>(data.back()->data.back().second).push_back(move(object));
+				auto* lastArray = &std::get<vector<unique_ptr<utility::jsonObject>>>(data.back()->data.back().second);
+
+				if (lastArray == currentArray)
+				{
+					lastArray->push_back(move(object));
+				}
+				else
+				{
+					data.push_back(move(object));
+				}
 			}
 			else
 			{
@@ -216,6 +224,7 @@ namespace json
 	void JSONParser::parse()
 	{
 		stack<pair<string, utility::jsonObject*>> dictionaries;
+		stack<vector<unique_ptr<utility::jsonObject>>*> arrays;
 		string key;
 		string value;
 		pair<string, utility::jsonObject*> ptr = { "", nullptr };
@@ -261,7 +270,7 @@ namespace json
 			case closeCurlyBracket:
 				if (value.size())
 				{
-					JSONParser::insertKeyValueData(move(key), value, dictionaries.top().second);
+					JSONParser::insertKeyValueData(move(key), value, dictionaries.top().second, arrays.size() ? arrays.top() : nullptr);
 
 					value.clear();
 				}
@@ -278,32 +287,35 @@ namespace json
 				break;
 
 			case openSquareBracket:
-			{
-				auto& check = dictionaries.top().second->data;
-
-				if (check.size() && check.back().second.index() == static_cast<int>(utility::variantTypeEnum::jJSONArray))
+				if (arrays.size())
 				{
+					auto& currentArray = arrays.top();
+				
 					unique_ptr<utility::jsonObject> object(new utility::jsonObject());
+				
+					auto& newArray = object->data.emplace_back(make_pair(""s, vector<unique_ptr<utility::jsonObject>>())).second;
 
-					object->data.push_back({ ""s, vector<unique_ptr<utility::jsonObject>>() });
+					arrays.push(&std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(newArray));
 
-					std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(check.back().second).push_back(move(object));
+					currentArray->push_back(move(object));
 				}
 				else
 				{
-					check.push_back({ move(key), vector<unique_ptr<utility::jsonObject>>() });
+					auto& newArray = dictionaries.top().second->data.emplace_back(make_pair(move(key), vector<unique_ptr<utility::jsonObject>>())).second;
+
+					arrays.push(&std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(newArray));
 				}
-			}
-				
 
 				break;
 
 			case closeSquareBracket:
 				if (value.size())
 				{
-					JSONParser::insertKeyValueData(""s, value, dictionaries.top().second);
+					JSONParser::insertKeyValueData(""s, value, dictionaries.top().second, arrays.size() ? arrays.top() : nullptr);
 
 					value.clear();
+
+					arrays.pop();
 				}
 
 				break;
@@ -311,7 +323,7 @@ namespace json
 			case comma:
 				if (isNumber(value) || (value.size() && isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin())) || (value == "true" || value == "false" || value == "null"))
 				{
-					JSONParser::insertKeyValueData(move(key), value, dictionaries.top().second);
+					JSONParser::insertKeyValueData(move(key), value, dictionaries.top().second, arrays.size() ? arrays.top() : nullptr);
 
 					value.clear();
 				}

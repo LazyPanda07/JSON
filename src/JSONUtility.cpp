@@ -152,7 +152,7 @@ namespace json
 			return result;
 		}
 
-		void outputJSONType(std::ostream& outputStream, const jsonObject::variantType& value, bool isLast)
+		void outputJSONType(ostream& outputStream, const jsonObject::variantType& value, bool isLast)
 		{
 			variantTypeEnum type = static_cast<variantTypeEnum>(value.index());
 
@@ -169,42 +169,41 @@ namespace json
 				break;
 
 			case variantTypeEnum::jString:
-				outputStream << '"' << std::get<std::string>(value) << '"';
+				outputStream << '"' << get<string>(value) << '"';
 
 				break;
 
 			case variantTypeEnum::jBool:
-				outputStream << std::boolalpha << std::get<bool>(value);
+				outputStream << boolalpha << get<bool>(value);
 
 				break;
 
 			case variantTypeEnum::jInt64_t:
-				outputStream << std::get<int64_t>(value);
+				outputStream << get<int64_t>(value);
 
 				break;
 
 			case variantTypeEnum::JUInt64_t:
-				outputStream << std::get<uint64_t>(value);
+				outputStream << get<uint64_t>(value);
 
 				break;
 
 			case variantTypeEnum::jDouble:
-				outputStream << std::fixed << std::get<double>(value);
+				outputStream << fixed << get<double>(value);
 
 				break;
 
-				// TODO: доделать
 			case variantTypeEnum::jJSONArray:
-				outputStream << value << std::string(jsonObject::offset.begin(), jsonObject::offset.end() - 2) << ']';
+				outputStream << value << string(jsonObject::offset.begin(), jsonObject::offset.end() - 2) << ']';
 
 				break;
 
 			case variantTypeEnum::jJSONObject:
 			{
 #ifdef JSON_DLL
-				const std::shared_ptr<jsonObject>& ref = std::get<std::shared_ptr<jsonObject>>(value);
+				const shared_ptr<jsonObject>& ref = get<shared_ptr<jsonObject>>(value);
 #else
-				const std::unique_ptr<jsonObject>& ref = std::get<std::unique_ptr<jsonObject>>(value);
+				const unique_ptr<jsonObject>& ref = get<unique_ptr<jsonObject>>(value);
 #endif // JSON_DLL
 
 				auto start = ref->data.begin();
@@ -216,14 +215,21 @@ namespace json
 				{
 					auto check = start;
 
-					outputStream << jsonObject::offset << '"' << start->first << '"' << ": ";
+					if (start->first.size())
+					{
+						outputStream << jsonObject::offset << '"' << start->first << '"' << ": ";
+					}
+					else
+					{
+						outputStream << utility::jsonObject::offset;
+					}
 
 					outputJSONType(outputStream, start->second, ++check == end);
 
 					++start;
 				}
 
-				outputStream << std::string(jsonObject::offset.begin(), jsonObject::offset.end() - 2) << '}';
+				outputStream << string(jsonObject::offset.begin(), jsonObject::offset.end() - 2) << '}';
 			}
 
 			break;
@@ -240,7 +246,7 @@ namespace json
 				outputStream << ',';
 			}
 
-			outputStream << std::endl;
+			outputStream << endl;
 		}
 
 		ostream& operator << (ostream& outputStream, const jsonObject::variantType& jsonData)
@@ -253,46 +259,9 @@ namespace json
 			{
 				for (const auto& j : jsonArray[i]->data)
 				{
-					variantTypeEnum type = static_cast<variantTypeEnum>(j.second.index());
-					bool isLast = i + 1 == jsonArray.size();
-
 					outputStream << jsonObject::offset;
 
-					switch (type)
-					{
-					case variantTypeEnum::jNull:
-						outputJSONType(outputStream, j.second, isLast);
-
-						break;
-					case variantTypeEnum::jString:
-						outputJSONType(outputStream, j.second, isLast);
-
-						break;
-					case variantTypeEnum::jBool:
-						outputJSONType(outputStream, j.second, isLast);
-
-						break;
-					case variantTypeEnum::jInt64_t:
-						outputJSONType(outputStream, j.second, isLast);
-
-						break;
-					case variantTypeEnum::JUInt64_t:
-						outputJSONType(outputStream, j.second, isLast);
-
-						break;
-					case variantTypeEnum::jDouble:
-						outputJSONType(outputStream, j.second, isLast);
-
-						break;
-					case variantTypeEnum::jJSONArray:
-						outputStream << j.second;
-
-						break;
-					case variantTypeEnum::jJSONObject:
-						
-
-						break;
-					}
+					outputJSONType(outputStream, j.second, i + 1 == jsonArray.size());
 				}
 			}
 

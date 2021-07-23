@@ -4,24 +4,10 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
-#include <iostream>
 
 #include "Exceptions/CantFindValueException.h"
 
-#undef max
-
-#define GET_METHOD(templateType) template<> \
-JSON_API const templateType& JSONParser::get<templateType>(const string& key) const \
-{ \
-	auto [result, success] = find(key, parsedData.data); \
-	  \
-	if(!success) \
-	{ \
-		throw exceptions::CantFindValueException(key); \
-	} \
-	  \
-	return ::get<templateType>(result->second); \
-}
+#pragma warning(disable: 4715)
 
 using namespace std;
 
@@ -470,47 +456,121 @@ namespace json
 		return rawData;
 	}
 
-	// GET_METHOD(nullptr_t);
-	// 
-	// GET_METHOD(string);
-	// 
-	// GET_METHOD(bool);
-	// 
-	// GET_METHOD(int64_t);
-	// 
-	// GET_METHOD(uint64_t);
-	// 
-	// GET_METHOD(double);
-	// 
-	// GET_METHOD(vector<nullptr_t>);
-	// 
-	// GET_METHOD(vector<string>);
-	// 
-	// GET_METHOD(vector<bool>);
-	// 
-	// GET_METHOD(vector<int64_t>);
-	// 
-	// GET_METHOD(vector<uint64_t>);
-	// 
-	// GET_METHOD(vector<double>);
+	template<>
+	JSON_API const nullptr_t& JSONParser::get<nullptr_t>(const string& key) const
+	{
+		auto [result, success] = find(key, parsedData.data);
 
-#ifdef JSON_DLL
-	GET_METHOD(shared_ptr<utility::jsonObject>);
-#else
-	GET_METHOD(utility::objectSmartPointer<utility::jsonObject>);
-#endif // JSON_DLL
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		return std::get<nullptr_t>(result->second);
+	}
+
+	template<>
+	JSON_API const string& JSONParser::get<string>(const string& key) const
+	{
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		return std::get<string>(result->second);
+	}
+
+	template<>
+	JSON_API const bool& JSONParser::get<bool>(const string& key) const
+	{
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		return std::get<bool>(result->second);
+	}
+
+	template<>
+	JSON_API const int64_t& JSONParser::get<int64_t>(const string& key) const
+	{
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		return std::get<int64_t>(result->second);
+	}
+
+	template<>
+	JSON_API const uint64_t& JSONParser::get<uint64_t>(const string& key) const
+	{
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		return std::get<uint64_t>(result->second);
+	}
+
+	template<>
+	JSON_API const double& JSONParser::get<double>(const string& key) const
+	{
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		return std::get<double>(result->second);
+	}
+
+	template<>
+	JSON_API const vector<utility::objectSmartPointer<utility::jsonObject>>& JSONParser::get<vector<utility::objectSmartPointer<utility::jsonObject>>>(const string& key) const
+	{
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		return std::get<vector<utility::objectSmartPointer<utility::jsonObject>>>(result->second);
+	}
+
+	template<>
+	JSON_API const utility::objectSmartPointer<utility::jsonObject>& JSONParser::get<utility::objectSmartPointer<utility::jsonObject>>(const string& key) const
+	{
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		return std::get<utility::objectSmartPointer<utility::jsonObject>>(result->second);
+	}
 
 	istream& operator >> (istream& inputStream, JSONParser& parser)
 	{
-		string data;
+		ostringstream data;
 		string tem;
 
 		while (getline(inputStream, tem))
 		{
-			data += tem + '\n';
+			data << tem << endl;
 		}
 
-		parser.rawData = utility::toUTF8JSON(data, CP_UTF8);
+		parser.rawData = utility::toUTF8JSON(data.str(), CP_UTF8);
 
 		parser.parse();
 
@@ -519,11 +579,11 @@ namespace json
 
 	ostream& operator << (ostream& outputStream, const JSONParser& parser)
 	{
-		auto start = parser.begin();
-		auto end = parser.end();
+		ConstIterator start = parser.begin();
+		ConstIterator end = parser.end();
 		utility::jsonObject::offset = "  ";
 
-		outputStream << "{\n";
+		outputStream << '{' << endl;
 
 		while (start != end)
 		{

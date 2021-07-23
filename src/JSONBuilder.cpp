@@ -2,6 +2,8 @@
 
 #include "Exceptions/CantFindValueException.h"
 
+#pragma warning(disable: 4715)
+
 using namespace std;
 
 namespace json
@@ -246,7 +248,7 @@ namespace json
 		ostringstream outputStream;
 		utility::jsonObject::offset = "  ";
 
-		outputStream << "{\n";
+		outputStream << '{' << endl;
 
 		while (start != end)
 		{

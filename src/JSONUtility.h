@@ -14,6 +14,11 @@
 #ifdef JSON_DLL
 #define JSON_API __declspec(dllexport)
 #define JSON_API_FUNCTION extern "C" __declspec(dllexport)
+
+#pragma warning(disable: 4297)
+#pragma warning(disable: 4251)
+#pragma warning(disable: 4190)
+
 #else
 #define JSON_API
 #define JSON_API_FUNCTION

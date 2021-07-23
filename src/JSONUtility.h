@@ -130,6 +130,4 @@ json::utility::objectSmartPointer<T> json::utility::make_object(Args&&... args)
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
-
-	//static_assert(false, "Wrong objectSmartPointer");
 }

@@ -162,7 +162,16 @@ namespace json
 		{
 			if (currentArray)
 			{
-				std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(currentArray->back()->data.back().second)->data.push_back({ move(key), JSONParser::getValue(value) });
+				utility::jsonObject::variantType* object = JSONParser::findObject(*currentArray);
+
+				if (object)
+				{
+					std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object)->data.push_back({ move(key), JSONParser::getValue(value) });
+				}
+				else
+				{
+					std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(currentArray->back()->data.back().second)->data.push_back({ move(key), JSONParser::getValue(value) });
+				}
 			}
 			else
 			{
@@ -194,14 +203,40 @@ namespace json
 				if (result.second)
 				{
 					return result;
+				}
 			}
-		}
 
 			++it;
-	}
+		}
 
 		return { end, false };
-}
+	}
+
+	utility::jsonObject::variantType* JSONParser::findObject(const vector<utility::objectSmartPointer<utility::jsonObject>>& currentArray)
+	{
+		if (currentArray.back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+		{
+			utility::jsonObject::variantType* object = &currentArray.back()->data.back().second;
+
+			while (object->index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+			{
+				auto& data = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object)->data;
+
+				if (data.size() && data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+				{
+					object = &data.back().second;
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			return object;
+		}
+
+		return nullptr;
+	}
 
 	bool JSONParser::isStringSymbol(char symbol)
 	{
@@ -255,25 +290,10 @@ namespace json
 				else if (arrays.size())
 				{
 					vector<pair<string, utility::jsonObject::variantType>>* newlyObject = nullptr;
+					utility::jsonObject::variantType* object = JSONParser::findObject(*arrays.top());
 
-					if (arrays.top()->back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+					if (object)
 					{
-						utility::jsonObject::variantType* object = &arrays.top()->back()->data.back().second;
-
-						while (object->index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
-						{
-							auto& data = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object)->data;
-
-							if (data.size() && data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
-							{
-								object = &data.back().second;
-							}
-							else
-							{
-								break;
-							}
-						}
-
 						newlyObject = &std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object)->data;
 					}
 					else
@@ -522,7 +542,7 @@ namespace json
 
 		return outputStream;
 	}
-	}
+}
 
 bool isNumber(const string& source)
 {

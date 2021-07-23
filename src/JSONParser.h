@@ -65,6 +65,8 @@ namespace json
 
 		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(const std::string& key, const std::vector<std::pair<std::string, variantType>>& start);
 
+		static utility::jsonObject::variantType* findObject(const std::vector<utility::objectSmartPointer<utility::jsonObject>>& currentArray);
+
 		static bool isStringSymbol(char symbol);
 
 	private:

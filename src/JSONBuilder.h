@@ -30,7 +30,7 @@ namespace json
 
 	private:
 		utility::jsonObject builderData;
-		unsigned int codepage;
+		uint32_t codepage;
 		outputType type;
 
 	public:
@@ -39,7 +39,7 @@ namespace json
 		/// </summary>
 		/// <param name="codepage">codepage of your system</param>
 		/// <param name="type">value from json::JSONBuilder::outputType</param>
-		JSONBuilder(unsigned int codepage, outputType type = outputType::standard);
+		JSONBuilder(uint32_t codepage, outputType type = outputType::standard);
 
 		/// <summary>
 		/// <para>Add JSON key - value</para>

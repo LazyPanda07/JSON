@@ -72,7 +72,7 @@ namespace json
 		return { end, false };
 	}
 
-	JSONBuilder::JSONBuilder(unsigned int codepage, outputType type) :
+	JSONBuilder::JSONBuilder(uint32_t codepage, outputType type) :
 		codepage(codepage),
 		type(type)
 	{
@@ -200,7 +200,7 @@ namespace json
 	}
 
 	template<>
-	JSONBuilder& JSONBuilder::push_back<unsigned int>(const pair<string, unsigned int>& value)
+	JSONBuilder& JSONBuilder::push_back<uint32_t>(const pair<string, uint32_t>& value)
 	{
 		this->push_back<uint64_t>(value);
 
@@ -208,7 +208,7 @@ namespace json
 	}
 
 	template<>
-	JSONBuilder& JSONBuilder::push_back<unsigned int>(pair<string, unsigned int>&& value) noexcept
+	JSONBuilder& JSONBuilder::push_back<uint32_t>(pair<string, uint32_t>&& value) noexcept
 	{
 		this->push_back<uint64_t>(move(value));
 

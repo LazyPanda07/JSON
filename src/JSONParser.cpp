@@ -180,7 +180,21 @@ namespace json
 
 		while (it != end)
 		{
-			if (it->second.index() == static_cast<int>(utility::variantTypeEnum::jJSONObject))
+			if (it->second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONArray))
+			{
+				const vector<utility::objectSmartPointer<utility::jsonObject>>& jsonArray = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(it->second);
+
+				for (const auto& i : jsonArray)
+				{
+					auto result = find(key, i->data);
+
+					if (result.second)
+					{
+						return result;
+					}
+				}
+			}
+			else if (it->second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 			{
 				const vector<pair<string, variantType>>& data = ::get<utility::objectSmartPointer<utility::jsonObject>>(it->second)->data;
 

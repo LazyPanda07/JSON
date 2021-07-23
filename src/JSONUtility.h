@@ -44,9 +44,13 @@ namespace json
 		};
 
 #ifdef JSON_DLL
+		/// @brief Using declaration for smart pointers
+		/// @tparam T Data type of smart pointer
 		template<typename T>
 		using objectSmartPointer = std::shared_ptr<T>;
 #else
+		/// @brief Using declaration for smart pointers
+		/// @tparam T Data type of smart pointer
 		template<typename T>
 		using objectSmartPointer = std::unique_ptr<T>;
 #endif // JSON_API
@@ -112,8 +116,14 @@ namespace json
 		/// <returns>outputStream</returns>
 		JSON_API_FUNCTION std::ostream& operator << (std::ostream& outputStream, const jsonObject::variantType& jsonData);
 
+		/// @brief Append jsonObject::variantType value to array
+		/// @param value JSON value
 		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, std::vector<objectSmartPointer<jsonObject>>& jsonArray);
 
+		/// @brief Make function for objectSmartPointer
+		/// @tparam T Data type of smart pointer
+		/// @param ...args Construct arguments
+		/// @return Newly created objectSmartPointer
 		template<typename T, typename... Args>
 		objectSmartPointer<T> make_object(Args&&... args);
 	}

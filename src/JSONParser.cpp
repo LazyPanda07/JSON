@@ -4,6 +4,7 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
+#include <iostream>
 
 #include "Exceptions/CantFindValueException.h"
 
@@ -155,8 +156,6 @@ namespace json
 
 			object->data.push_back({ ""s, JSONParser::getValue(value) });
 
-			cout << value << '\t' << currentArray << endl;
-
 			currentArray->push_back(move(object));
 		}
 		else
@@ -215,8 +214,13 @@ namespace json
 		stack<vector<utility::objectSmartPointer<utility::jsonObject>>*> arrays;
 		string key;
 		string value;
-		pair<string, utility::jsonObject*> ptr = { "", nullptr };
 		bool startString = false;
+
+		/*
+		Сделать stack для хранения текущего состояния dictionaries.top(). true - вне массива, false - в массиве.
+		Передавать в insertKeyValueData текущее состояние.
+		Добавлять объект только в случае нахождения вне массива.
+		*/
 
 		for (const auto& i : rawData)
 		{
@@ -250,9 +254,34 @@ namespace json
 				}
 				else if (arrays.size())
 				{
-					auto& newlyObject = arrays.top()->emplace_back(utility::objectSmartPointer<utility::jsonObject>(new utility::jsonObject()))->data;
+					vector<pair<string, utility::jsonObject::variantType>>* newlyObject = nullptr;
 
-					newlyObject.push_back({ ""s, utility::objectSmartPointer<utility::jsonObject>(new utility::jsonObject()) });
+					if (arrays.top()->back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+					{
+						utility::jsonObject::variantType* object = &arrays.top()->back()->data.back().second;
+
+						while (object->index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+						{
+							auto& data = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object)->data;
+
+							if (data.size() && data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+							{
+								object = &data.back().second;
+							}
+							else
+							{
+								break;
+							}
+						}
+
+						newlyObject = &std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object)->data;
+					}
+					else
+					{
+						newlyObject = &arrays.top()->emplace_back(utility::objectSmartPointer<utility::jsonObject>(new utility::jsonObject()))->data;
+					}
+
+					newlyObject->push_back({ move(key), utility::objectSmartPointer<utility::jsonObject>(new utility::jsonObject()) });
 				}
 				else
 				{
@@ -269,18 +298,20 @@ namespace json
 					value.clear();
 				}
 
-				if (arrays.size())
 				{
-					continue;
-				}
+					pair<string, utility::jsonObject*> ptr = dictionaries.top();
 
-				ptr = dictionaries.top();
+					if (arrays.size())
+					{
+						continue;
+					}
 
-				dictionaries.pop();
+					dictionaries.pop();
 
-				if (ptr.first.size())
-				{
-					dictionaries.top().second->data.push_back({ move(ptr.first), utility::objectSmartPointer<utility::jsonObject>(ptr.second) });
+					if (ptr.second != &parsedData)
+					{
+						dictionaries.top().second->data.push_back({ move(ptr.first), utility::objectSmartPointer<utility::jsonObject>(ptr.second) });
+					}
 				}
 
 				break;

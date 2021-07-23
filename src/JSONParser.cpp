@@ -247,6 +247,7 @@ namespace json
 	{
 		stack<pair<string, utility::jsonObject*>> dictionaries;
 		stack<vector<utility::objectSmartPointer<utility::jsonObject>>*> arrays;
+		bool checkNestedObject = false;
 		string key;
 		string value;
 		bool startString = false;
@@ -292,7 +293,7 @@ namespace json
 					vector<pair<string, utility::jsonObject::variantType>>* newlyObject = nullptr;
 					utility::jsonObject::variantType* object = JSONParser::findObject(*arrays.top());
 
-					if (object)
+					if (object && checkNestedObject)
 					{
 						newlyObject = &std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object)->data;
 					}
@@ -308,9 +309,13 @@ namespace json
 					dictionaries.push({ move(key), new utility::jsonObject() });
 				}
 
+				checkNestedObject = true;
+
 				break;
 
 			case closeCurlyBracket:
+				checkNestedObject = false;
+
 				if (value.size())
 				{
 					JSONParser::insertKeyValueData(move(key), value, dictionaries.top().second, arrays.size() ? arrays.top() : nullptr);

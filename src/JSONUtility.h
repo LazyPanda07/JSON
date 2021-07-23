@@ -111,5 +111,25 @@ namespace json
 		/// <param name="jsonData">JSON array</param>
 		/// <returns>outputStream</returns>
 		JSON_API_FUNCTION std::ostream& operator << (std::ostream& outputStream, const jsonObject::variantType& jsonData);
+
+		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, std::vector<objectSmartPointer<jsonObject>>& jsonArray);
+
+		template<typename T, typename... Args>
+		objectSmartPointer<T> make_object(Args&&... args);
 	}
+}
+
+template<typename T, typename... Args>
+json::utility::objectSmartPointer<T> json::utility::make_object(Args&&... args)
+{
+	if constexpr (std::is_same_v<objectSmartPointer<T>, std::unique_ptr<T>>)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
+	else if constexpr (std::is_same_v<objectSmartPointer<T>, std::shared_ptr<T>>)
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
+
+	//static_assert(false, "Wrong objectSmartPointer");
 }

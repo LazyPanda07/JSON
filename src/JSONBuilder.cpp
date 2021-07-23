@@ -112,6 +112,23 @@ namespace json
 	}
 
 	template<>
+	JSON_API JSONBuilder& JSONBuilder::push_back(const pair<string, bool>& value)
+	{
+		builderData.data.push_back(value);
+
+		return *this;
+	}
+
+	template<>
+	JSON_API JSONBuilder& JSONBuilder::push_back(pair<string, bool>&& value) noexcept
+	{
+		builderData.data.push_back(move(value));
+
+		return *this;
+	}
+
+
+	template<>
 	JSON_API JSONBuilder& JSONBuilder::push_back(const pair<string, int64_t>& value)
 	{
 		builderData.data.push_back(value);
@@ -159,6 +176,24 @@ namespace json
 		return *this;
 	}
 
+#ifdef JSON_DLL
+	template<>
+	JSON_API JSONBuilder& JSONBuilder::push_back(const pair<string, vector<utility::objectSmartPointer<utility::jsonObject>>>& value)
+	{
+		builderData.data.push_back(value);
+
+		return *this;
+	}
+#endif // JSON_DLL
+
+	template<>
+	JSON_API JSONBuilder& JSONBuilder::push_back(pair<string, vector<utility::objectSmartPointer<utility::jsonObject>>>&& value) noexcept
+	{
+		builderData.data.push_back(move(value));
+
+		return *this;
+	}
+
 	template<>
 	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject*>(const pair<string, utility::jsonObject*>& value)
 	{
@@ -174,6 +209,16 @@ namespace json
 
 		return *this;
 	}
+
+#ifdef JSON_DLL
+	template<>
+	JSON_API JSONBuilder& JSONBuilder::push_back<utility::objectSmartPointer<utility::jsonObject>>(const pair<string, utility::objectSmartPointer<utility::jsonObject>>& value)
+	{
+		builderData.data.push_back(value);
+
+		return *this;
+	}
+#endif // JSON_DLL
 
 	template<>
 	JSON_API JSONBuilder& JSONBuilder::push_back<utility::objectSmartPointer<utility::jsonObject>>(pair<string, utility::objectSmartPointer<utility::jsonObject>>&& value) noexcept

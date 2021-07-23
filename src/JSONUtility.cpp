@@ -217,7 +217,7 @@ namespace json
 					}
 					else
 					{
-						outputStream << utility::jsonObject::offset;
+						outputStream << jsonObject::offset;
 					}
 
 					outputJSONType(outputStream, start->second, ++check == end);
@@ -231,7 +231,7 @@ namespace json
 			break;
 			}
 
-			if (type >= utility::variantTypeEnum::jJSONArray)
+			if (type >= variantTypeEnum::jJSONArray)
 			{
 				jsonObject::offset.pop_back();
 				jsonObject::offset.pop_back();
@@ -247,7 +247,7 @@ namespace json
 
 		ostream& operator << (ostream& outputStream, const jsonObject::variantType& jsonData)
 		{
-			outputStream << "[\n";
+			outputStream << '[' << endl;
 
 			auto& jsonArray = get<static_cast<size_t>(variantTypeEnum::jJSONArray)>(jsonData);
 
@@ -262,6 +262,15 @@ namespace json
 			}
 
 			return outputStream;
+		}
+
+		void appendArray(jsonObject::variantType&& value, vector<objectSmartPointer<jsonObject>>& jsonArray)
+		{
+			objectSmartPointer<jsonObject> object = make_object<jsonObject>();
+
+			object->data.push_back(make_pair(""s, move(value)));
+
+			jsonArray.push_back(move(object));
 		}
 	}
 }

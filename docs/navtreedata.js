@@ -25,7 +25,9 @@
 var NAVTREE =
 [
   [ "JSON", "index.html", [
-    [ "JSON", "md__r_e_a_d_m_e.html", null ],
+    [ "JSON", "md__r_e_a_d_m_e.html", [
+      [ "Documentation", "md__r_e_a_d_m_e.html#autotoc_md1", null ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -46,7 +48,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_base_j_s_o_n_exception_8h_source.html"
+"_base_j_s_o_n_exception_8h_source.html",
+"classjson_1_1_j_s_o_n_parser.html#afd115348d0ecd5b9469b7262efb992dc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

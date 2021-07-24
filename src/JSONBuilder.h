@@ -41,6 +41,21 @@ namespace json
 		/// <param name="type">value from json::JSONBuilder::outputType</param>
 		JSONBuilder(uint32_t codepage, outputType type = outputType::standard);
 
+		/// @brief Deleted copy constructor
+		JSONBuilder(const JSONBuilder&) = delete;
+
+		/// @brief Move constructor
+		/// @param other Other JSONBuilder
+		JSONBuilder(JSONBuilder&& other) noexcept;
+
+		/// @brief Deleted copy operator 
+		JSONBuilder& operator = (const JSONBuilder&) = delete;
+
+		/// @brief Move operator
+		/// @param other Other JSONBuilder
+		/// @return Self 
+		JSONBuilder& operator = (JSONBuilder&& other) noexcept;
+
 		/// <summary>
 		/// <para>Add JSON key - value</para>
 		/// <para>Always use std::string as parameter or ""s literal</para>

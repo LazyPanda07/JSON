@@ -79,6 +79,23 @@ namespace json
 
 	}
 
+	JSONBuilder::JSONBuilder(JSONBuilder&& other) noexcept :
+		builderData(move(other.builderData)),
+		codepage(other.codepage),
+		type(other.type)
+	{
+
+	}
+
+	JSONBuilder& JSONBuilder::operator = (JSONBuilder&& other) noexcept
+	{
+		builderData = move(other.builderData);
+		codepage = other.codepage;
+		type = other.type;
+
+		return *this;
+	}
+
 	template<>
 	JSON_API JSONBuilder& JSONBuilder::push_back<nullptr_t>(const pair<string, nullptr_t>& value)
 	{

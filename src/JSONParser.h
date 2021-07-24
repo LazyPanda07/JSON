@@ -92,6 +92,20 @@ namespace json
 		/// @exception json::exceptions::WrongEncodingException Can't convert JSON formatted string to UTF8 encoding
 		JSONParser(std::ifstream&& inputStream);
 
+		/// @brief Deleted copy constructor 
+		JSONParser(const JSONParser&) = delete;
+
+		/// @brief Move constructor
+		/// @param other Other JSONParser
+		JSONParser(JSONParser&& other) noexcept;
+
+		/// @brief Deleted copy operator 
+		JSONParser& operator = (const JSONParser&) = delete;
+
+		/// @brief Move operator
+		/// @param other Other JSONParser
+		JSONParser& operator = (JSONParser&& other) noexcept;
+
 		/// <summary>
 		/// Setter for rawData
 		/// </summary>

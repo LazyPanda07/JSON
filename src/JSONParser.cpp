@@ -429,6 +429,21 @@ namespace json
 
 	}
 
+	JSONParser::JSONParser(JSONParser&& other) noexcept :
+		rawData(move(other.rawData)),
+		parsedData(move(other.parsedData))
+	{
+
+	}
+
+	JSONParser& JSONParser::operator = (JSONParser&& other) noexcept
+	{
+		rawData = move(other.rawData);
+		parsedData = move(other.parsedData);
+
+		return *this;
+	}
+
 	void JSONParser::setJSONData(const string& jsonData, uint32_t codePage)
 	{
 		rawData = utility::toUTF8JSON(jsonData, codePage);

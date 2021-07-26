@@ -17,8 +17,8 @@
 
 #pragma warning(disable: 4297)
 #pragma warning(disable: 4251)
+#pragma warning(disable: 4275)
 #pragma warning(disable: 4190)
-
 #else
 #define JSON_API
 #define JSON_API_FUNCTION

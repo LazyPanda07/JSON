@@ -1,5 +1,7 @@
 #include "JSONBuilder.h"
 
+#include <queue>
+
 #include "Exceptions/CantFindValueException.h"
 
 #pragma warning(disable: 4715)
@@ -274,6 +276,37 @@ namespace json
 		this->push_back<uint64_t>(move(value));
 
 		return *this;
+	}
+
+	bool JSONBuilder::contains(const string& key, utility::variantTypeEnum type)
+	{
+		queue<utility::jsonObject*> objects;
+
+		objects.push(&builderData);
+
+		while (objects.size())
+		{
+			utility::jsonObject* current = objects.front();
+
+			objects.pop();
+
+			for (const auto& i : current->data)
+			{
+				if (i.first == key && i.second.index() == static_cast<size_t>(type))
+				{
+					return true;
+				}
+
+				if (i.second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+				{
+					const auto& object = get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(i.second);
+
+					objects.push(object.get());
+				}
+			}
+		}
+
+		return false;
 	}
 
 	JSONBuilder::variantType& JSONBuilder::operator [] (const string& key)

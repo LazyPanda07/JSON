@@ -48,8 +48,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_base_j_s_o_n_exception_8h_source.html",
-"classjson_1_1_j_s_o_n_parser.html#af364a56b2b4457e0b3d022efb0c94654"
+"_base_j_s_o_n_exception_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

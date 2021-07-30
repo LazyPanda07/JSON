@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">JSON
-   &#160;<span id="projectnumber">1.2</span>
+   &#160;<span id="projectnumber">1.3</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++17.</div>
   </td>
@@ -166,33 +166,42 @@ $(document).ready(function(){initNavTree('bin_2_production_release-_win32_2_j_s_
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
 <div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a2bf20d1e0a259688b9a5dd74890c9f8f">   93</a></span>&#160;        <a class="code" href="classjson_1_1_j_s_o_n_parser.html#a2bf20d1e0a259688b9a5dd74890c9f8f">JSONParser</a>(std::ifstream&amp;&amp; inputStream);</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">  101</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">setJSONData</a>(<span class="keyword">const</span> std::string&amp; jsonData, uint32_t codePage);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">  107</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">setJSONData</a>(<span class="keyword">const</span> std::string&amp; jsonData);</div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a12510d2fc4973692df5b163cfcb43fbb">   96</a></span>&#160;        <a class="code" href="classjson_1_1_j_s_o_n_parser.html#a12510d2fc4973692df5b163cfcb43fbb">JSONParser</a>(<span class="keyword">const</span> <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>(<a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp;&amp; other) noexcept;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#ad07aad977015082526ccbe865a2d014d">  103</a></span>&#160;        <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; operator = (<span class="keyword">const</span> <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; operator = (<a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp;&amp; other) noexcept;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88">  113</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88">setJSONData</a>(std::string&amp;&amp; jsonData) noexcept;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keyword">const</span> std::string&amp; getRawData() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keyword">const</span> std::string&amp; operator * () <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <a class="code" href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">ConstIterator</a> begin() const noexcept;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <a class="code" href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">ConstIterator</a> end() const noexcept;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        template&lt;typename T&gt;</div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a3dd0583b33740befc96541ff2de2ac9f">  148</a></span>&#160;        const T&amp; get(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a862b4bf1ab76809c693c77d0d0586133">  157</a></span>&#160;        friend JSON_API std::istream&amp; operator &gt;&gt; (std::istream&amp; inputStream, <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#aa7086c35d79973935b393c1d487d6d34">  165</a></span>&#160;        friend JSON_API std::ostream&amp; operator &lt;&lt; (std::ostream&amp; outputStream, const <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        ~<a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>() = default;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    };</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;}</div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">  115</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">setJSONData</a>(<span class="keyword">const</span> std::string&amp; jsonData, uint32_t codePage);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">  121</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">setJSONData</a>(<span class="keyword">const</span> std::string&amp; jsonData);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88">  127</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88">setJSONData</a>(std::string&amp;&amp; jsonData) noexcept;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keyword">const</span> std::string&amp; getRawData() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keyword">const</span> std::string&amp; operator * () <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <a class="code" href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">ConstIterator</a> begin() const noexcept;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <a class="code" href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">ConstIterator</a> end() const noexcept;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        template&lt;typename T&gt;</div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a3dd0583b33740befc96541ff2de2ac9f">  162</a></span>&#160;        const T&amp; get(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a862b4bf1ab76809c693c77d0d0586133">  171</a></span>&#160;        friend JSON_API std::istream&amp; operator &gt;&gt; (std::istream&amp; inputStream, <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#aa7086c35d79973935b393c1d487d6d34">  179</a></span>&#160;        friend JSON_API std::ostream&amp; operator &lt;&lt; (std::ostream&amp; outputStream, const <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        ~<a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>() = default;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    };</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;}</div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_1_1_const_iterator_html"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">json::JSONParser::ConstIterator</a></div><div class="ttdoc">Iterator through JSONParser.</div><div class="ttdef"><b>Definition:</b> JSONParser.h:22</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html">json::JSONParser</a></div><div class="ttdoc">Parser for JSON.</div><div class="ttdef"><b>Definition:</b> JSONParser.h:11</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_a120bec0db8f7e423ac8f700c3b33f5a2"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">json::JSONParser::setJSONData</a></div><div class="ttdeci">void setJSONData(const std::string &amp;jsonData)</div><div class="ttdoc">Setter for rawData</div></div>
+<div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_a12510d2fc4973692df5b163cfcb43fbb"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#a12510d2fc4973692df5b163cfcb43fbb">json::JSONParser::JSONParser</a></div><div class="ttdeci">JSONParser(const JSONParser &amp;)=delete</div><div class="ttdoc">Deleted copy constructor.</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_a19fe9231149199232c9b81986ec5b983"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">json::JSONParser::setJSONData</a></div><div class="ttdeci">void setJSONData(const std::string &amp;jsonData, uint32_t codePage)</div><div class="ttdoc">Setter for rawData</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_a2bf20d1e0a259688b9a5dd74890c9f8f"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#a2bf20d1e0a259688b9a5dd74890c9f8f">json::JSONParser::JSONParser</a></div><div class="ttdeci">JSONParser(std::ifstream &amp;&amp;inputStream)</div><div class="ttdoc">Parse data.</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_a4878fe23b655bdc6b87296875bb4ec88"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88">json::JSONParser::setJSONData</a></div><div class="ttdeci">void setJSONData(std::string &amp;&amp;jsonData) noexcept</div><div class="ttdoc">Setter for rawData</div></div>

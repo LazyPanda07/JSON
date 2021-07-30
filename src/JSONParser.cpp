@@ -4,6 +4,7 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
+#include <queue>
 
 #include "Exceptions/CantFindValueException.h"
 
@@ -442,6 +443,37 @@ namespace json
 		parsedData = move(other.parsedData);
 
 		return *this;
+	}
+
+	bool JSONParser::contains(const string& key, utility::variantTypeEnum type)
+	{
+		queue<utility::jsonObject*> objects;
+
+		objects.push(&parsedData);
+
+		while (objects.size())
+		{
+			utility::jsonObject* current = objects.front();
+
+			objects.pop();
+
+			for (const auto& i : current->data)
+			{
+				if (i.first == key && i.second.index() == static_cast<size_t>(type))
+				{
+					return true;
+				}
+
+				if (i.second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+				{
+					const auto& object = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(i.second);
+
+					objects.push(object.get());
+				}
+			}
+		}
+
+		return false;
 	}
 
 	void JSONParser::setJSONData(const string& jsonData, uint32_t codePage)

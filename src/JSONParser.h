@@ -69,6 +69,8 @@ namespace json
 
 		static bool isStringSymbol(char symbol);
 
+		static char interpretEscapeSymbol(char symbol);
+
 	private:
 		void parse();
 

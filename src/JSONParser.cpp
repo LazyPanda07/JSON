@@ -241,7 +241,44 @@ namespace json
 
 	bool JSONParser::isStringSymbol(char symbol)
 	{
-		return symbol == '"' || symbol == '\'';
+		return symbol == '"';
+	}
+
+	char JSONParser::interpretEscapeSymbol(char symbol)
+	{
+		switch (symbol)
+		{
+		case 'n':
+
+			return '\n';
+
+		case 't':
+
+			return '\t';
+
+		case '"':
+
+			return '"';
+
+		case '\\':
+
+			return '\\';
+
+		case 'r':
+
+			return '\r';
+
+		case 'b':
+
+			return '\b';
+
+		case 'f':
+
+			return '\f';
+
+		default:
+			return symbol;
+		}
 	}
 
 	void JSONParser::parse()
@@ -252,15 +289,25 @@ namespace json
 		string key;
 		string value;
 		bool startString = false;
-
-		/*
-		Сделать stack для хранения текущего состояния dictionaries.top(). true - вне массива, false - в массиве.
-		Передавать в insertKeyValueData текущее состояние.
-		Добавлять объект только в случае нахождения вне массива.
-		*/
+		bool escapeSymbol = false;
 
 		for (const auto& i : rawData)
 		{
+			if (!escapeSymbol && i == '\\')
+			{
+				escapeSymbol = true;
+
+				continue;
+			}
+			else if (escapeSymbol)
+			{
+				escapeSymbol = false;
+
+				value += JSONParser::interpretEscapeSymbol(i);
+
+				continue;
+			}
+
 			if (!startString && isStringSymbol(i))
 			{
 				startString = true;

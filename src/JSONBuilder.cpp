@@ -278,6 +278,41 @@ namespace json
 		return *this;
 	}
 
+	JSONBuilder& JSONBuilder::appendNull(const string& key)
+	{
+		return this->append(key, nullptr);
+	}
+
+	JSONBuilder& JSONBuilder::appendString(const string& key, const string& value)
+	{
+		return this->append(key, value);
+	}
+
+	JSONBuilder& JSONBuilder::appendString(const string& key, string&& value)
+	{
+		return this->append(key, move(value));
+	}
+
+	JSONBuilder& JSONBuilder::appendInt(const string& key, int64_t value)
+	{
+		return this->append(key, value);
+	}
+
+	JSONBuilder& JSONBuilder::appendUnsignedInt(const string& key, uint64_t value)
+	{
+		return this->append(key, value);
+	}
+
+	JSONBuilder& JSONBuilder::appendArray(const string& key, vector<utility::objectSmartPointer<utility::jsonObject>>&& value)
+	{
+		return this->append(key, move(value));
+	}
+
+	JSONBuilder& JSONBuilder::appendObject(const string& key, utility::objectSmartPointer<utility::jsonObject>&& value)
+	{
+		return this->append(key, move(value));
+	}
+
 	bool JSONBuilder::contains(const string& key, utility::variantTypeEnum type)
 	{
 		queue<utility::jsonObject*> objects;

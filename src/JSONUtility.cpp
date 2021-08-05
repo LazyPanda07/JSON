@@ -3,6 +3,7 @@
 #include <Windows.h>
 
 #include "Exceptions/WrongEncodingException.h"
+#include "Exceptions/CantFindValueException.h"
 
 using namespace std;
 
@@ -10,6 +11,90 @@ namespace json
 {
 	namespace utility
 	{
+		nullptr_t jsonObject::getNull(const string& key) const
+		{
+			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+
+			if (it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return get<nullptr_t>(it->second);
+		}
+
+		const string& jsonObject::getString(const string& key) const
+		{
+			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+
+			if (it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return get<string>(it->second);
+		}
+
+		int64_t jsonObject::getInt(const string& key) const
+		{
+			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+
+			if (it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return get<int64_t>(it->second);
+		}
+
+		uint64_t jsonObject::getUnsignedInt(const string& key) const
+		{
+			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+
+			if (it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return get<uint64_t>(it->second);
+		}
+
+		double jsonObject::getDouble(const string& key) const
+		{
+			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+
+			if (it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return get<double>(it->second);
+		}
+
+		const vector<objectSmartPointer<jsonObject>>& jsonObject::getArray(const string& key) const
+		{
+			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+
+			if (it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return get<vector<objectSmartPointer<jsonObject>>>(it->second);
+		}
+
+		const objectSmartPointer<jsonObject>& jsonObject::getObject(const string& key) const
+		{
+			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+
+			if (it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return get<objectSmartPointer<jsonObject>>( it->second);
+		}
+
 		string toUTF8JSON(const string& source, uint32_t sourceCodePage)
 		{
 			string result;

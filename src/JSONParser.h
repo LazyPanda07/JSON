@@ -160,13 +160,64 @@ namespace json
 		/// <summary>
 		/// <para>Getter for all JSON parsed values</para>
 		/// <para>T is one of json::utility::jsonObject::variantType template parameters</para>
+		/// <para>Find and get first value of given key</para>
 		/// </summary>
 		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
 		/// <param name="key">JSON key</param>
 		/// <returns>JSON value</returns>
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
+		/// <exception cref="std::bad_variant_access">Other type found</exception>
 		template<typename T>
 		const T& get(const std::string& key) const;
+
+		/// @brief Get null value. Find and get first value of given key
+		/// @param key JSON key
+		/// @return nullptr value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		nullptr_t getNull(const std::string& key) const;
+
+		/// @brief Get string value. Find and get first value of given key
+		/// @param key JSON key
+		/// @return string value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		const std::string& getString(const std::string& key) const;
+
+		/// @brief Get int64_t value. Find and get first value of given key
+		/// @param key JSON key
+		/// @return int64_t value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		int64_t getInt(const std::string& key) const;
+
+		/// @brief Get uint64_t value. Find and get first value of given key
+		/// @param key JSON key
+		/// @return uint64_t value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		uint64_t getUnsignedInt(const std::string& key) const;
+
+		/// @brief Get double value. Find and get first value of given key
+		/// @param key JSON key
+		/// @return double value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		double getDouble(const std::string& key) const;
+
+		/// @brief Get JSON array. Find and get first value of given key
+		/// @param key JSON key
+		/// @return JSON array
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		const std::vector<utility::objectSmartPointer<utility::jsonObject>>& getArray(const std::string& key) const;
+
+		/// @brief Get JSON object. Find and get first value of given key
+		/// @param key JSON Key
+		/// @return JSON object
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		const utility::objectSmartPointer<utility::jsonObject>& getObject(const std::string& key) const;
 
 		/// <summary>
 		/// Get JSON from input stream

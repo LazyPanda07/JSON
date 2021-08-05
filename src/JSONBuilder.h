@@ -80,7 +80,7 @@ namespace json
 		/// @tparam T is one of json::utility::jsonBuilderStruct::variantType template parameters
 		/// @param key JSON key
 		/// @param value JSON value
-		/// @return reference to current JSONBuilder instance
+		/// @return Reference to current JSONBuilder instance
 		template<typename T>
 		JSONBuilder& append(const std::string& key, T&& value);
 
@@ -88,9 +88,50 @@ namespace json
 		/// @tparam T is one of json::utility::jsonBuilderStruct::variantType template parameters
 		/// @param key JSON key
 		/// @param value JSON value
-		/// @return reference to current JSONBuilder instance
+		/// @return Reference to current JSONBuilder instance
 		template<typename T>
 		JSONBuilder& append(std::string&& key, T&& value);
+
+		/// @brief Add JSON key - null
+		/// @param key JSON key
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendNull(const std::string& key);
+
+		/// @brief Add JSON key - string
+		/// @param key JSON key
+		/// @param value Current codepage encoded value
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendString(const std::string& key, const std::string& value);
+
+		/// @brief Add JSON key - string
+		/// @param key JSON key
+		/// @param value Current codepage encoded value
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendString(const std::string& key, std::string&& value);
+
+		/// @brief Add JSON key - integer
+		/// @param key JSON key
+		/// @param value Integer
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendInt(const std::string& key, int64_t value);
+
+		/// @brief Add JSON key - unsigned integer
+		/// @param key JSON key
+		/// @param value Unsigned integer
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendUnsignedInt(const std::string& key, uint64_t value);
+
+		/// @brief Add JSON key - JSON array
+		/// @param key JSON key
+		/// @param value JSON array
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendArray(const std::string& key, std::vector<utility::objectSmartPointer<utility::jsonObject>>&& value);
+
+		/// @brief Add JSON key - JSON object
+		/// @param key JSON key
+		/// @param value JSON object
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendObject(const std::string& key, utility::objectSmartPointer<utility::jsonObject>&& value);
 
 		/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
 		/// @param key Object name

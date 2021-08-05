@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">JSON
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.5</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++17.</div>
   </td>
@@ -168,6 +168,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3dd0583b33740befc96541ff2de2ac9f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a3dd0583b33740befc96541ff2de2ac9f"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a3dd0583b33740befc96541ff2de2ac9f">get</a> (const std::string &amp;key) const</td></tr>
 <tr class="separator:a3dd0583b33740befc96541ff2de2ac9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc0fd47400e3d2a873286982650a0355"><td class="memItemLeft" align="right" valign="top">nullptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#adc0fd47400e3d2a873286982650a0355">getNull</a> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:adc0fd47400e3d2a873286982650a0355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get null value. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#adc0fd47400e3d2a873286982650a0355">More...</a><br /></td></tr>
+<tr class="separator:adc0fd47400e3d2a873286982650a0355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493de1a702337da552a89015148c060f"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a493de1a702337da552a89015148c060f">getString</a> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:a493de1a702337da552a89015148c060f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get string value. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#a493de1a702337da552a89015148c060f">More...</a><br /></td></tr>
+<tr class="separator:a493de1a702337da552a89015148c060f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb131fa3cee206891703f834228d1eac"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#aeb131fa3cee206891703f834228d1eac">getInt</a> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:aeb131fa3cee206891703f834228d1eac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get int64_t value. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#aeb131fa3cee206891703f834228d1eac">More...</a><br /></td></tr>
+<tr class="separator:aeb131fa3cee206891703f834228d1eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26d1b999aed730ce41b21b4af4c49b9e"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a26d1b999aed730ce41b21b4af4c49b9e">getUnsignedInt</a> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:a26d1b999aed730ce41b21b4af4c49b9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get uint64_t value. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#a26d1b999aed730ce41b21b4af4c49b9e">More...</a><br /></td></tr>
+<tr class="separator:a26d1b999aed730ce41b21b4af4c49b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace6823a38cce1aa3fd0f93eb13b8a575"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#ace6823a38cce1aa3fd0f93eb13b8a575">getDouble</a> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:ace6823a38cce1aa3fd0f93eb13b8a575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get double value. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#ace6823a38cce1aa3fd0f93eb13b8a575">More...</a><br /></td></tr>
+<tr class="separator:ace6823a38cce1aa3fd0f93eb13b8a575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca41b1dfb7165cf3018e6133a89ddd93"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; utility::objectSmartPointer&lt; <a class="el" href="structjson_1_1utility_1_1json_object.html">utility::jsonObject</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#aca41b1dfb7165cf3018e6133a89ddd93">getArray</a> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:aca41b1dfb7165cf3018e6133a89ddd93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get JSON array. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#aca41b1dfb7165cf3018e6133a89ddd93">More...</a><br /></td></tr>
+<tr class="separator:aca41b1dfb7165cf3018e6133a89ddd93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0f1ad08102d265231fbf22d07ec2dbf"><td class="memItemLeft" align="right" valign="top">const utility::objectSmartPointer&lt; <a class="el" href="structjson_1_1utility_1_1json_object.html">utility::jsonObject</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#aa0f1ad08102d265231fbf22d07ec2dbf">getObject</a> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:aa0f1ad08102d265231fbf22d07ec2dbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get JSON object. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#aa0f1ad08102d265231fbf22d07ec2dbf">More...</a><br /></td></tr>
+<tr class="separator:aa0f1ad08102d265231fbf22d07ec2dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43436d8769fb0151e9d88b23d9cb068f"><td class="memItemLeft" align="right" valign="top"><a id="a43436d8769fb0151e9d88b23d9cb068f"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:a43436d8769fb0151e9d88b23d9cb068f"><td class="memTemplItemLeft" align="right" valign="top">JSON_API const nullptr_t &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> (const string &amp;key) const</td></tr>
@@ -450,6 +471,7 @@ template&lt;typename T &gt; </div>
 <p></p>
 <p>Getter for all JSON parsed values</p>
 <p>T is one of json::utility::jsonObject::variantType template parameters</p>
+<p>Find and get first value of given key</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>T is one of JSONParser::jsonStruct::variantType template parameters</td></tr>
@@ -466,6 +488,177 @@ template&lt;typename T &gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td>can't find JSON value</td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aca41b1dfb7165cf3018e6133a89ddd93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca41b1dfb7165cf3018e6133a89ddd93">&#9670;&nbsp;</a></span>getArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const vector&lt; utility::objectSmartPointer&lt; <a class="el" href="structjson_1_1utility_1_1json_object.html">utility::jsonObject</a> &gt; &gt; &amp; json::JSONParser::getArray </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get JSON array. Find and get first value of given key. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>JSON array </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ace6823a38cce1aa3fd0f93eb13b8a575"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace6823a38cce1aa3fd0f93eb13b8a575">&#9670;&nbsp;</a></span>getDouble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double json::JSONParser::getDouble </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get double value. Find and get first value of given key. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>double value </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aeb131fa3cee206891703f834228d1eac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb131fa3cee206891703f834228d1eac">&#9670;&nbsp;</a></span>getInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int64_t json::JSONParser::getInt </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get int64_t value. Find and get first value of given key. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int64_t value </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="adc0fd47400e3d2a873286982650a0355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc0fd47400e3d2a873286982650a0355">&#9670;&nbsp;</a></span>getNull()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">nullptr_t json::JSONParser::getNull </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get null value. Find and get first value of given key. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>nullptr value </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa0f1ad08102d265231fbf22d07ec2dbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0f1ad08102d265231fbf22d07ec2dbf">&#9670;&nbsp;</a></span>getObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const utility::objectSmartPointer&lt; <a class="el" href="structjson_1_1utility_1_1json_object.html">utility::jsonObject</a> &gt; &amp; json::JSONParser::getObject </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get JSON object. Find and get first value of given key. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON Key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>JSON object </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found </td></tr>
   </table>
   </dd>
 </dl>
@@ -489,6 +682,74 @@ template&lt;typename T &gt; </div>
 
 <p>Getter for rawData </p>
 <dl class="section return"><dt>Returns</dt><dd>rawData</dd></dl>
+
+</div>
+</div>
+<a id="a493de1a702337da552a89015148c060f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a493de1a702337da552a89015148c060f">&#9670;&nbsp;</a></span>getString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const string &amp; json::JSONParser::getString </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get string value. Find and get first value of given key. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>string value </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a26d1b999aed730ce41b21b4af4c49b9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26d1b999aed730ce41b21b4af4c49b9e">&#9670;&nbsp;</a></span>getUnsignedInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t json::JSONParser::getUnsignedInt </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get uint64_t value. Find and get first value of given key. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint64_t value </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

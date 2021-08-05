@@ -668,6 +668,41 @@ namespace json
 		return std::get<utility::objectSmartPointer<utility::jsonObject>>(result->second);
 	}
 
+	nullptr_t JSONParser::getNull(const string& key) const
+	{
+		return this->get<nullptr_t>(key);
+	}
+
+	const string& JSONParser::getString(const string& key) const
+	{
+		return this->get<string>(key);
+	}
+
+	int64_t JSONParser::getInt(const string& key) const
+	{
+		return this->get<int64_t>(key);
+	}
+
+	uint64_t JSONParser::getUnsignedInt(const string& key) const
+	{
+		return this->get<uint64_t>(key);
+	}
+
+	double JSONParser::getDouble(const string& key) const
+	{
+		return this->get<double>(key);
+	}
+
+	const vector<utility::objectSmartPointer<utility::jsonObject>>& JSONParser::getArray(const string& key) const
+	{
+		return this->get<vector<utility::objectSmartPointer<utility::jsonObject>>>(key);
+	}
+
+	const utility::objectSmartPointer<utility::jsonObject>& JSONParser::getObject(const string& key) const
+	{
+		return this->get<utility::objectSmartPointer<utility::jsonObject>>(key);
+	}
+
 	istream& operator >> (istream& inputStream, JSONParser& parser)
 	{
 		ostringstream data;

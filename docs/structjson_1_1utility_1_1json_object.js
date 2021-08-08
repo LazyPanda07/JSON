@@ -2,6 +2,7 @@ var structjson_1_1utility_1_1json_object =
 [
     [ "variantType", "structjson_1_1utility_1_1json_object.html#a4e0537f31cb6cfeafcbc339375313f5c", null ],
     [ "getArray", "structjson_1_1utility_1_1json_object.html#ad8422e51484d13b2fca073101891624c", null ],
+    [ "getBool", "structjson_1_1utility_1_1json_object.html#a27b161e7c92fc41b2053281b275b8adb", null ],
     [ "getDouble", "structjson_1_1utility_1_1json_object.html#a8d55483e4b2113652d4318d6a210910d", null ],
     [ "getInt", "structjson_1_1utility_1_1json_object.html#a5b0954200ef06a70e2cf9b3a4afdf3db", null ],
     [ "getNull", "structjson_1_1utility_1_1json_object.html#a5fa34da0933d80241946a7eb6d361d1c", null ],

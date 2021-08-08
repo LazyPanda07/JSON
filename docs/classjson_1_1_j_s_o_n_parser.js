@@ -21,6 +21,7 @@ var classjson_1_1_j_s_o_n_parser =
     [ "get", "classjson_1_1_j_s_o_n_parser.html#a3c01e897c2e0becc2f73f785807f8120", null ],
     [ "get", "classjson_1_1_j_s_o_n_parser.html#a51f3f460768482dced48faa91dd7687f", null ],
     [ "getArray", "classjson_1_1_j_s_o_n_parser.html#aca41b1dfb7165cf3018e6133a89ddd93", null ],
+    [ "getBool", "classjson_1_1_j_s_o_n_parser.html#ae1fc196418ba8e513359911cae12125f", null ],
     [ "getDouble", "classjson_1_1_j_s_o_n_parser.html#ace6823a38cce1aa3fd0f93eb13b8a575", null ],
     [ "getInt", "classjson_1_1_j_s_o_n_parser.html#aeb131fa3cee206891703f834228d1eac", null ],
     [ "getNull", "classjson_1_1_j_s_o_n_parser.html#adc0fd47400e3d2a873286982650a0355", null ],

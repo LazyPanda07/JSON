@@ -174,6 +174,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a493de1a702337da552a89015148c060f"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a493de1a702337da552a89015148c060f">getString</a> (const std::string &amp;key) const</td></tr>
 <tr class="memdesc:a493de1a702337da552a89015148c060f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get string value. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#a493de1a702337da552a89015148c060f">More...</a><br /></td></tr>
 <tr class="separator:a493de1a702337da552a89015148c060f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1fc196418ba8e513359911cae12125f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#ae1fc196418ba8e513359911cae12125f">getBool</a> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:ae1fc196418ba8e513359911cae12125f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get bool value. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#ae1fc196418ba8e513359911cae12125f">More...</a><br /></td></tr>
+<tr class="separator:ae1fc196418ba8e513359911cae12125f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb131fa3cee206891703f834228d1eac"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#aeb131fa3cee206891703f834228d1eac">getInt</a> (const std::string &amp;key) const</td></tr>
 <tr class="memdesc:aeb131fa3cee206891703f834228d1eac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get int64_t value. Find and get first value of given key.  <a href="classjson_1_1_j_s_o_n_parser.html#aeb131fa3cee206891703f834228d1eac">More...</a><br /></td></tr>
 <tr class="separator:aeb131fa3cee206891703f834228d1eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -519,6 +522,40 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>JSON array </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae1fc196418ba8e513359911cae12125f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1fc196418ba8e513359911cae12125f">&#9670;&nbsp;</a></span>getBool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool json::JSONParser::getBool </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get bool value. Find and get first value of given key. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool value </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>

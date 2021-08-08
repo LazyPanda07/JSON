@@ -113,6 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a60c5e1e45ea291be5f3aa67d143d61ce"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjson_1_1utility_1_1json_object.html#a60c5e1e45ea291be5f3aa67d143d61ce">getString</a> (const std::string &amp;key) const</td></tr>
 <tr class="memdesc:a60c5e1e45ea291be5f3aa67d143d61ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get string value. Find and get value only for this JSON object.  <a href="structjson_1_1utility_1_1json_object.html#a60c5e1e45ea291be5f3aa67d143d61ce">More...</a><br /></td></tr>
 <tr class="separator:a60c5e1e45ea291be5f3aa67d143d61ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27b161e7c92fc41b2053281b275b8adb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjson_1_1utility_1_1json_object.html#a27b161e7c92fc41b2053281b275b8adb">getBool</a> (const std::string &amp;key) const</td></tr>
+<tr class="memdesc:a27b161e7c92fc41b2053281b275b8adb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get bool value. Find and get value only for this JSON object.  <a href="structjson_1_1utility_1_1json_object.html#a27b161e7c92fc41b2053281b275b8adb">More...</a><br /></td></tr>
+<tr class="separator:a27b161e7c92fc41b2053281b275b8adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b0954200ef06a70e2cf9b3a4afdf3db"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjson_1_1utility_1_1json_object.html#a5b0954200ef06a70e2cf9b3a4afdf3db">getInt</a> (const std::string &amp;key) const</td></tr>
 <tr class="memdesc:a5b0954200ef06a70e2cf9b3a4afdf3db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get int64_t value. Find and get value only for this JSON object.  <a href="structjson_1_1utility_1_1json_object.html#a5b0954200ef06a70e2cf9b3a4afdf3db">More...</a><br /></td></tr>
 <tr class="separator:a5b0954200ef06a70e2cf9b3a4afdf3db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,6 +171,40 @@ static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>offset<
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>JSON array </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a27b161e7c92fc41b2053281b275b8adb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27b161e7c92fc41b2053281b275b8adb">&#9670;&nbsp;</a></span>getBool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool json::utility::jsonObject::getBool </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get bool value. Find and get value only for this JSON object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool value </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>

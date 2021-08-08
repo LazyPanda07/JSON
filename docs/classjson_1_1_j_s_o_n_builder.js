@@ -13,6 +13,7 @@ var classjson_1_1_j_s_o_n_builder =
     [ "append", "classjson_1_1_j_s_o_n_builder.html#ae6a78fb640da25c5e464dd7dc77e6832", null ],
     [ "append", "classjson_1_1_j_s_o_n_builder.html#a314b9612355a80b72fb7f67cda640c01", null ],
     [ "appendArray", "classjson_1_1_j_s_o_n_builder.html#ae7a1df863a7ae7971dd2ff0f6c3f2833", null ],
+    [ "appendBool", "classjson_1_1_j_s_o_n_builder.html#a825abf18140d27f6dd54c1acb7ee8103", null ],
     [ "appendInt", "classjson_1_1_j_s_o_n_builder.html#aced46c7f6493f19a58734b96c2b101ca", null ],
     [ "appendNull", "classjson_1_1_j_s_o_n_builder.html#a4801dc877ae1ccd48bf21b5a9269567d", null ],
     [ "appendObject", "classjson_1_1_j_s_o_n_builder.html#a47110cd35f5f2e8b0fa884e020a4a811", null ],

@@ -94,6 +94,13 @@ namespace json
 			/// @exception std::bad_variant_access Other type found
 			const std::string& getString(const std::string& key) const;
 
+			/// @brief Get bool value. Find and get value only for this JSON object
+			/// @param key JSON key
+			/// @return bool value
+			/// @exception json::exceptions::CantFindValueException 
+			/// @exception std::bad_variant_access Other type found
+			bool getBool(const std::string& key) const;
+
 			/// @brief Get int64_t value. Find and get value only for this JSON object
 			/// @param key JSON key
 			/// @return int64_t value

@@ -35,6 +35,18 @@ namespace json
 			return get<string>(it->second);
 		}
 
+		bool jsonObject::getBool(const string& key) const
+		{
+			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+
+			if (it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return get<bool>(it->second);
+		}
+
 		int64_t jsonObject::getInt(const string& key) const
 		{
 			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });

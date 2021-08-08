@@ -678,6 +678,11 @@ namespace json
 		return this->get<string>(key);
 	}
 
+	bool JSONParser::getBool(const string& key) const
+	{
+		return this->get<bool>(key);
+	}
+
 	int64_t JSONParser::getInt(const string& key) const
 	{
 		return this->get<int64_t>(key);

@@ -293,6 +293,11 @@ namespace json
 		return this->append(key, move(value));
 	}
 
+	JSONBuilder& JSONBuilder::appendBool(const string& key, bool value)
+	{
+		return this->append(key, value);
+	}
+
 	JSONBuilder& JSONBuilder::appendInt(const string& key, int64_t value)
 	{
 		return this->append(key, value);

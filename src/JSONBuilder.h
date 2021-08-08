@@ -109,6 +109,12 @@ namespace json
 		/// @return Reference to current JSONBuilder instance
 		JSONBuilder& appendString(const std::string& key, std::string&& value);
 
+		/// @brief Add JSON key - boolean
+		/// @param key JSON key
+		/// @param value boolean
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendBool(const std::string& key, bool value);
+
 		/// @brief Add JSON key - integer
 		/// @param key JSON key
 		/// @param value Integer

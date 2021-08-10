@@ -215,7 +215,7 @@ namespace json
 
 	utility::jsonObject::variantType* JSONParser::findObject(const vector<utility::objectSmartPointer<utility::jsonObject>>& currentArray)
 	{
-		if (currentArray.back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+		if (currentArray.size() && currentArray.back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 		{
 			utility::jsonObject::variantType* object = &currentArray.back()->data.back().second;
 

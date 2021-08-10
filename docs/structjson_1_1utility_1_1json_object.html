@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">JSON
-   &#160;<span id="projectnumber">1.5</span>
+   &#160;<span id="projectnumber">1.6</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++17.</div>
   </td>
@@ -131,6 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0bbac37023cbe317eabd1b8208ae8a0e"><td class="memItemLeft" align="right" valign="top">const objectSmartPointer&lt; <a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjson_1_1utility_1_1json_object.html#a0bbac37023cbe317eabd1b8208ae8a0e">getObject</a> (const std::string &amp;key) const</td></tr>
 <tr class="memdesc:a0bbac37023cbe317eabd1b8208ae8a0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get JSON object. Find and get value only for this JSON object.  <a href="structjson_1_1utility_1_1json_object.html#a0bbac37023cbe317eabd1b8208ae8a0e">More...</a><br /></td></tr>
 <tr class="separator:a0bbac37023cbe317eabd1b8208ae8a0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82052adba91df4500a4cb41c43d18132"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjson_1_1utility_1_1json_object.html#a82052adba91df4500a4cb41c43d18132">contains</a> (const std::string &amp;key, utility::variantTypeEnum type) const</td></tr>
+<tr class="memdesc:a82052adba91df4500a4cb41c43d18132"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container.  <a href="structjson_1_1utility_1_1json_object.html#a82052adba91df4500a4cb41c43d18132">More...</a><br /></td></tr>
+<tr class="separator:a82052adba91df4500a4cb41c43d18132"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -147,6 +150,43 @@ static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>offset<
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>JSON object. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a82052adba91df4500a4cb41c43d18132"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82052adba91df4500a4cb41c43d18132">&#9670;&nbsp;</a></span>contains()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool json::utility::jsonObject::contains </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">utility::variantTypeEnum&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>Object name </td></tr>
+    <tr><td class="paramname">type</td><td>Object type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ad8422e51484d13b2fca073101891624c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad8422e51484d13b2fca073101891624c">&#9670;&nbsp;</a></span>getArray()</h2>
 

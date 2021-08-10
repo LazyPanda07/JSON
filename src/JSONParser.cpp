@@ -492,15 +492,15 @@ namespace json
 		return *this;
 	}
 
-	bool JSONParser::contains(const string& key, utility::variantTypeEnum type)
+	bool JSONParser::contains(const string& key, utility::variantTypeEnum type) const
 	{
-		queue<utility::jsonObject*> objects;
+		queue<const utility::jsonObject*> objects;
 
 		objects.push(&parsedData);
 
 		while (objects.size())
 		{
-			utility::jsonObject* current = objects.front();
+			const utility::jsonObject* current = objects.front();
 
 			objects.pop();
 
@@ -685,17 +685,71 @@ namespace json
 
 	int64_t JSONParser::getInt(const string& key) const
 	{
-		return this->get<int64_t>(key);
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		utility::variantTypeEnum type = static_cast<utility::variantTypeEnum>(result->second.index());
+
+		switch (type)
+		{
+		case json::utility::variantTypeEnum::jUInt64_t:
+			return static_cast<int64_t>(std::get<uint64_t>(result->second));
+
+		case json::utility::variantTypeEnum::jDouble:
+			return static_cast<int64_t>(std::get<double>(result->second));
+		}
+
+		return std::get<int64_t>(result->second);
 	}
 
 	uint64_t JSONParser::getUnsignedInt(const string& key) const
 	{
-		return this->get<uint64_t>(key);
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		utility::variantTypeEnum type = static_cast<utility::variantTypeEnum>(result->second.index());
+
+		switch (type)
+		{
+		case json::utility::variantTypeEnum::jInt64_t:
+			return static_cast<uint64_t>(std::get<int64_t>(result->second));
+
+		case json::utility::variantTypeEnum::jDouble:
+			return static_cast<uint64_t>(std::get<double>(result->second));
+		}
+
+		return std::get<uint64_t>(result->second);
 	}
 
 	double JSONParser::getDouble(const string& key) const
 	{
-		return this->get<double>(key);
+		auto [result, success] = find(key, parsedData.data);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		utility::variantTypeEnum type = static_cast<utility::variantTypeEnum>(result->second.index());
+
+		switch (type)
+		{
+		case json::utility::variantTypeEnum::jInt64_t:
+			return static_cast<double>(std::get<int64_t>(result->second));
+
+		case json::utility::variantTypeEnum::jUInt64_t:
+			return static_cast<double>(std::get<uint64_t>(result->second));
+		}
+
+		return std::get<double>(result->second);
 	}
 
 	const vector<utility::objectSmartPointer<utility::jsonObject>>& JSONParser::getArray(const string& key) const

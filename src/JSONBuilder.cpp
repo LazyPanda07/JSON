@@ -318,15 +318,15 @@ namespace json
 		return this->append(key, move(value));
 	}
 
-	bool JSONBuilder::contains(const string& key, utility::variantTypeEnum type)
+	bool JSONBuilder::contains(const string& key, utility::variantTypeEnum type) const
 	{
-		queue<utility::jsonObject*> objects;
+		queue<const utility::jsonObject*> objects;
 
 		objects.push(&builderData);
 
 		while (objects.size())
 		{
-			utility::jsonObject* current = objects.front();
+			const utility::jsonObject* current = objects.front();
 
 			objects.pop();
 

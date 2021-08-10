@@ -111,7 +111,7 @@ namespace json
 		/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
 		/// @param key Object name
 		/// @param type Object type
-		bool contains(const std::string& key, utility::variantTypeEnum type);
+		bool contains(const std::string& key, utility::variantTypeEnum type) const;
 
 		/// <summary>
 		/// Setter for rawData

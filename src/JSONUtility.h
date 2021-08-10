@@ -37,7 +37,7 @@ namespace json
 			jString,
 			jBool,
 			jInt64_t,
-			JUInt64_t,
+			jUInt64_t,
 			jDouble,
 			jJSONArray,
 			jJSONObject
@@ -135,6 +135,11 @@ namespace json
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
 			const objectSmartPointer<jsonObject>& getObject(const std::string& key) const;
+
+			/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
+			/// @param key Object name
+			/// @param type Object type
+			bool contains(const std::string& key, utility::variantTypeEnum type) const;
 		};
 
 		/// <summary>

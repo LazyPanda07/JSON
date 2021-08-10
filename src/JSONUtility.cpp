@@ -1,5 +1,7 @@
 #include "JSONUtility.h"
 
+#include <algorithm>
+
 #include <Windows.h>
 
 #include "Exceptions/WrongEncodingException.h"
@@ -55,6 +57,17 @@ namespace json
 			{
 				throw exceptions::CantFindValueException(key);
 			}
+			
+			variantTypeEnum type = static_cast<variantTypeEnum>(it->second.index());
+
+			switch (type)
+			{
+			case json::utility::variantTypeEnum::jUInt64_t:
+				return static_cast<int64_t>(get<uint64_t>(it->second));
+
+			case json::utility::variantTypeEnum::jDouble:
+				return static_cast<int64_t>(get<double>(it->second));
+			}
 
 			return get<int64_t>(it->second);
 		}
@@ -68,6 +81,17 @@ namespace json
 				throw exceptions::CantFindValueException(key);
 			}
 
+			variantTypeEnum type = static_cast<variantTypeEnum>(it->second.index());
+
+			switch (type)
+			{
+			case json::utility::variantTypeEnum::jInt64_t:
+				return static_cast<uint64_t>(get<int64_t>(it->second));
+
+			case json::utility::variantTypeEnum::jDouble:
+				return static_cast<uint64_t>(get<double>(it->second));
+			}
+
 			return get<uint64_t>(it->second);
 		}
 
@@ -78,6 +102,17 @@ namespace json
 			if (it == data.end())
 			{
 				throw exceptions::CantFindValueException(key);
+			}
+
+			variantTypeEnum type = static_cast<variantTypeEnum>(it->second.index());
+
+			switch (type)
+			{
+			case json::utility::variantTypeEnum::jInt64_t:
+				return static_cast<double>(get<int64_t>(it->second));
+
+			case json::utility::variantTypeEnum::jUInt64_t:
+				return static_cast<double>(get<uint64_t>(it->second));
 			}
 
 			return get<double>(it->second);
@@ -105,6 +140,11 @@ namespace json
 			}
 
 			return get<objectSmartPointer<jsonObject>>( it->second);
+		}
+
+		bool jsonObject::contains(const string& key, utility::variantTypeEnum type) const
+		{
+			return any_of(data.begin(), data.end(), [&key, &type](const pair<string, jsonObject::variantType>& data) { return data.first == key && data.second.index() == static_cast<size_t>(type); });
 		}
 
 		string toUTF8JSON(const string& source, uint32_t sourceCodePage)
@@ -280,7 +320,7 @@ namespace json
 
 				break;
 
-			case variantTypeEnum::JUInt64_t:
+			case variantTypeEnum::jUInt64_t:
 				outputStream << get<uint64_t>(value);
 
 				break;

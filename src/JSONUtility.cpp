@@ -147,7 +147,7 @@ namespace json
 			return any_of(data.begin(), data.end(), [&key, &type](const pair<string, jsonObject::variantType>& data) { return data.first == key && data.second.index() == static_cast<size_t>(type); });
 		}
 
-		string toUTF8JSON(const string& source, uint32_t sourceCodePage)
+		JSON_API_FUNCTION string toUTF8JSON(const string& source, uint32_t sourceCodePage)
 		{
 			string result;
 			wstring tem;
@@ -218,7 +218,7 @@ namespace json
 			return result;
 		}
 
-		string fromUTF8JSON(const string& source, uint32_t resultCodePage)
+		JSON_API_FUNCTION string fromUTF8JSON(const string& source, uint32_t resultCodePage)
 		{
 			string result;
 			wstring tem;
@@ -289,7 +289,7 @@ namespace json
 			return result;
 		}
 
-		void outputJSONType(ostream& outputStream, const jsonObject::variantType& value, bool isLast)
+		JSON_API_FUNCTION void outputJSONType(ostream& outputStream, const jsonObject::variantType& value, bool isLast)
 		{
 			variantTypeEnum type = static_cast<variantTypeEnum>(value.index());
 
@@ -382,7 +382,7 @@ namespace json
 			outputStream << endl;
 		}
 
-		ostream& operator << (ostream& outputStream, const jsonObject::variantType& jsonData)
+		JSON_API_FUNCTION ostream& operator << (ostream& outputStream, const jsonObject::variantType& jsonData)
 		{
 			outputStream << '[' << endl;
 
@@ -401,7 +401,7 @@ namespace json
 			return outputStream;
 		}
 
-		void appendArray(jsonObject::variantType&& value, vector<objectSmartPointer<jsonObject>>& jsonArray)
+		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, vector<objectSmartPointer<jsonObject>>& jsonArray)
 		{
 			objectSmartPointer<jsonObject> object = make_object<jsonObject>();
 

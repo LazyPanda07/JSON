@@ -94,15 +94,22 @@ namespace json
 		/// @exception json::exceptions::WrongEncodingException Can't convert JSON formatted string to UTF8 encoding
 		JSONParser(std::ifstream&& inputStream);
 
-		/// @brief Deleted copy constructor 
-		JSONParser(const JSONParser&) = delete;
+		/// @brief Construct from parsed or builded data 
+		/// @param data Data from JSONBuilder or JSONParser
+		JSONParser(const utility::jsonObject& data);
+
+		/// @brief Copy constructor
+		/// @param other Other JSONParser
+		JSONParser(const JSONParser& other);
 
 		/// @brief Move constructor
 		/// @param other Other JSONParser
 		JSONParser(JSONParser&& other) noexcept;
 
-		/// @brief Deleted copy operator 
-		JSONParser& operator = (const JSONParser&) = delete;
+		/// @brief Copy operator
+		/// @param other Other JSONParser
+		/// @return Self
+		JSONParser& operator = (const JSONParser& other);
 
 		/// @brief Move operator
 		/// @param other Other JSONParser
@@ -225,6 +232,10 @@ namespace json
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
 		const utility::objectSmartPointer<utility::jsonObject>& getObject(const std::string& key) const;
+
+		/// @brief Getter for parsedData
+		/// @return parsedData
+		const utility::jsonObject& getParsedData() const;
 
 		/// <summary>
 		/// Get JSON from input stream

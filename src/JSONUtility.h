@@ -80,6 +80,17 @@ namespace json
 
 			std::vector<std::pair<std::string, variantType>> data;
 
+			jsonObject() = default;
+
+			/// @brief Copy constructor
+			/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
+			jsonObject(const jsonObject& other);
+
+			/// @brief Copy operator
+			/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
+			/// @return Self
+			jsonObject& operator = (const jsonObject& other);
+
 			/// @brief Get null value. Find and get value only for this JSON object
 			/// @param key JSON key
 			/// @return nullptr value

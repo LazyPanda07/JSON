@@ -1,6 +1,7 @@
 #include "JSONUtility.h"
 
 #include <algorithm>
+#include <functional>
 
 #include <Windows.h>
 
@@ -13,6 +14,90 @@ namespace json
 {
 	namespace utility
 	{
+		jsonObject::jsonObject(const jsonObject& other)
+		{
+			(*this) = other;
+		}
+
+		jsonObject& jsonObject::operator = (const jsonObject& other)
+		{
+			function<void(const string&, const variantType&, vector<pair<string, variantType>>&)> appendData = [&appendData](const string& key, const variantType& value, vector<pair<string, variantType>>& data)
+			{
+				switch (static_cast<variantTypeEnum>(value.index()))
+				{
+				case json::utility::variantTypeEnum::jNull:
+					data.push_back({ key, get<nullptr_t>(value) });
+
+					break;
+
+				case json::utility::variantTypeEnum::jString:
+					data.push_back({ key, get<string>(value) });
+
+					break;
+
+				case json::utility::variantTypeEnum::jBool:
+					data.push_back({ key, get<bool>(value) });
+
+					break;
+
+				case json::utility::variantTypeEnum::jInt64_t:
+					data.push_back({ key, get<int64_t>(value) });
+
+					break;
+
+				case json::utility::variantTypeEnum::jUInt64_t:
+					data.push_back({ key, get<uint64_t>(value) });
+
+					break;
+
+				case json::utility::variantTypeEnum::jDouble:
+					data.push_back({ key, get<double>(value) });
+
+					break;
+
+				case json::utility::variantTypeEnum::jJSONArray:
+				{
+					const vector<objectSmartPointer<jsonObject>>& currentArray = get<vector<objectSmartPointer<jsonObject>>>(value);
+					vector<objectSmartPointer<jsonObject>> tem;
+
+					for (const auto& i : currentArray)
+					{
+						objectSmartPointer<jsonObject> object = make_object<jsonObject>();
+
+						appendData("", i->data.front().second, object->data);
+
+						appendArray(move(object->data.front().second), tem);
+					}
+
+					data.push_back({ key, move(tem) });
+				}
+
+				break;
+
+				case json::utility::variantTypeEnum::jJSONObject:
+				{
+					objectSmartPointer<jsonObject> tem = make_object<jsonObject>(*get<objectSmartPointer<jsonObject>>(value));
+
+					data.push_back({ key, move(tem) });
+				}
+
+				break;
+
+				default:
+					break;
+				}
+			};
+
+			data.clear();
+
+			for (const auto& [key, value] : other.data)
+			{
+				appendData(key, value, data);
+			}
+
+			return *this;
+		}
+
 		nullptr_t jsonObject::getNull(const string& key) const
 		{
 			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });

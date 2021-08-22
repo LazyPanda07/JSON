@@ -81,12 +81,37 @@ namespace json
 
 	}
 
+	JSONBuilder::JSONBuilder(const JSONBuilder& other) :
+		builderData(other.builderData),
+		codepage(other.codepage),
+		type(other.type)
+	{
+
+	}
+
 	JSONBuilder::JSONBuilder(JSONBuilder&& other) noexcept :
 		builderData(move(other.builderData)),
 		codepage(other.codepage),
 		type(other.type)
 	{
 
+	}
+
+	JSONBuilder::JSONBuilder(const utility::jsonObject& data, uint32_t codepage, outputType type) :
+		builderData(data),
+		codepage(codepage),
+		type(type)
+	{
+
+	}
+
+	JSONBuilder& JSONBuilder::operator = (const JSONBuilder& other)
+	{
+		builderData = other.builderData;
+		codepage = other.codepage;
+		type = other.type;
+
+		return *this;
 	}
 
 	JSONBuilder& JSONBuilder::operator = (JSONBuilder&& other) noexcept
@@ -421,7 +446,7 @@ namespace json
 		type = outputType::minimize;
 	}
 
-	ostream& operator << (ostream& outputStream, const JSONBuilder& builder)
+	JSON_API ostream& operator << (ostream& outputStream, const JSONBuilder& builder)
 	{
 		return outputStream << builder.build();
 	}

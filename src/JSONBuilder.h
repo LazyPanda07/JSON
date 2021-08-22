@@ -41,15 +41,23 @@ namespace json
 		/// <param name="type">value from json::JSONBuilder::outputType</param>
 		JSONBuilder(uint32_t codepage, outputType type = outputType::standard);
 
-		/// @brief Deleted copy constructor
-		JSONBuilder(const JSONBuilder&) = delete;
+		/// @brief Copy constructor
+		/// @param other Other JSONBuilder
+		JSONBuilder(const JSONBuilder& other);
 
 		/// @brief Move constructor
 		/// @param other Other JSONBuilder
 		JSONBuilder(JSONBuilder&& other) noexcept;
 
-		/// @brief Deleted copy operator 
-		JSONBuilder& operator = (const JSONBuilder&) = delete;
+		/// @brief Construct from parsed or builded data 
+		/// @param data Data from JSONBuilder or JSONParser
+		/// @param codepage data's codepage
+		JSONBuilder(const utility::jsonObject& data, uint32_t codepage, outputType type = outputType::standard);
+
+		/// @brief Copy operator
+		/// @param other Other JSONBuilder
+		/// @return Self
+		JSONBuilder& operator = (const JSONBuilder& other);
 
 		/// @brief Move operator
 		/// @param other Other JSONBuilder

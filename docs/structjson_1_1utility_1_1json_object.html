@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">JSON
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++17.</div>
   </td>
@@ -107,6 +107,12 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>variantType</b> = ba
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ad380414c04269e67093770a9ac55f78c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjson_1_1utility_1_1json_object.html#ad380414c04269e67093770a9ac55f78c">jsonObject</a> (const <a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &amp;other)</td></tr>
+<tr class="memdesc:ad380414c04269e67093770a9ac55f78c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="structjson_1_1utility_1_1json_object.html#ad380414c04269e67093770a9ac55f78c">More...</a><br /></td></tr>
+<tr class="separator:ad380414c04269e67093770a9ac55f78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ed3e97aa6075b874f9044e60fd7debe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjson_1_1utility_1_1json_object.html#a6ed3e97aa6075b874f9044e60fd7debe">operator=</a> (const <a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &amp;other)</td></tr>
+<tr class="memdesc:a6ed3e97aa6075b874f9044e60fd7debe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy operator.  <a href="structjson_1_1utility_1_1json_object.html#a6ed3e97aa6075b874f9044e60fd7debe">More...</a><br /></td></tr>
+<tr class="separator:a6ed3e97aa6075b874f9044e60fd7debe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fa34da0933d80241946a7eb6d361d1c"><td class="memItemLeft" align="right" valign="top">nullptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structjson_1_1utility_1_1json_object.html#a5fa34da0933d80241946a7eb6d361d1c">getNull</a> (const std::string &amp;key) const</td></tr>
 <tr class="memdesc:a5fa34da0933d80241946a7eb6d361d1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get null value. Find and get value only for this JSON object.  <a href="structjson_1_1utility_1_1json_object.html#a5fa34da0933d80241946a7eb6d361d1c">More...</a><br /></td></tr>
 <tr class="separator:a5fa34da0933d80241946a7eb6d361d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,7 +155,34 @@ static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>offset<
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>JSON object. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ad380414c04269e67093770a9ac55f78c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad380414c04269e67093770a9ac55f78c">&#9670;&nbsp;</a></span>jsonObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">json::utility::jsonObject::jsonObject </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>Another <a class="el" href="structjson_1_1utility_1_1json_object.html" title="JSON object.">jsonObject</a> from <a class="el" href="classjson_1_1_j_s_o_n_parser.html" title="Parser for JSON.">JSONParser</a> or <a class="el" href="classjson_1_1_j_s_o_n_builder.html" title="Builder for JSON.">JSONBuilder</a> or custom </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a82052adba91df4500a4cb41c43d18132"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a82052adba91df4500a4cb41c43d18132">&#9670;&nbsp;</a></span>contains()</h2>
 
@@ -456,6 +489,33 @@ static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>offset<
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a6ed3e97aa6075b874f9044e60fd7debe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ed3e97aa6075b874f9044e60fd7debe">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &amp; json::utility::jsonObject::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy operator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>Another <a class="el" href="structjson_1_1utility_1_1json_object.html" title="JSON object.">jsonObject</a> from <a class="el" href="classjson_1_1_j_s_o_n_parser.html" title="Parser for JSON.">JSONParser</a> or <a class="el" href="classjson_1_1_j_s_o_n_builder.html" title="Builder for JSON.">JSONBuilder</a> or custom </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Self </dd></dl>
 
 </div>
 </div>

@@ -7,6 +7,7 @@ var annotated_dup =
         [ "WrongEncodingException", "classjson_1_1exceptions_1_1_wrong_encoding_exception.html", "classjson_1_1exceptions_1_1_wrong_encoding_exception" ]
       ] ],
       [ "utility", null, [
+        [ "JSONArrayWrapper", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper" ],
         [ "jsonObject", "structjson_1_1utility_1_1json_object.html", "structjson_1_1utility_1_1json_object" ]
       ] ],
       [ "JSONBuilder", "classjson_1_1_j_s_o_n_builder.html", "classjson_1_1_j_s_o_n_builder" ],

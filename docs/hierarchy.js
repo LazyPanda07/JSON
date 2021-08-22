@@ -1,6 +1,7 @@
 var hierarchy =
 [
     [ "json::JSONParser::ConstIterator", "classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html", null ],
+    [ "json::utility::JSONArrayWrapper", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html", null ],
     [ "json::JSONBuilder", "classjson_1_1_j_s_o_n_builder.html", null ],
     [ "json::utility::jsonObject", "structjson_1_1utility_1_1json_object.html", null ],
     [ "json::JSONParser", "classjson_1_1_j_s_o_n_parser.html", null ],

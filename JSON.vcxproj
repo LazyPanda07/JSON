@@ -468,6 +468,7 @@ COPY /Y $(ProjectDir)src\JSONUtility.h $(Outdir)</Command>
     <ClCompile Include="src\Exceptions\BaseJSONException.cpp" />
     <ClCompile Include="src\Exceptions\CantFindValueException.cpp" />
     <ClCompile Include="src\Exceptions\WrongEncodingException.cpp" />
+    <ClCompile Include="src\JSONArrayWrapper.cpp" />
     <ClCompile Include="src\JSONBuilder.cpp" />
     <ClCompile Include="src\JSONParser.cpp" />
     <ClCompile Include="src\JSONUtility.cpp" />
@@ -476,6 +477,7 @@ COPY /Y $(ProjectDir)src\JSONUtility.h $(Outdir)</Command>
     <ClInclude Include="src\Exceptions\BaseJSONException.h" />
     <ClInclude Include="src\Exceptions\CantFindValueException.h" />
     <ClInclude Include="src\Exceptions\WrongEncodingException.h" />
+    <ClInclude Include="src\JSONArrayWrapper.h" />
     <ClInclude Include="src\JSONBuilder.h" />
     <ClInclude Include="src\JSONParser.h" />
     <ClInclude Include="src\JSONUtility.h" />

@@ -429,8 +429,24 @@ namespace json
 
 		case json::JSONBuilder::outputType::minimize:
 			result = outputStream.str();
+			bool jsonString = false;
 
-			result.erase(remove_if(result.begin(), result.end(), [](unsigned char c) { return isspace(c); }), result.end());
+			for (size_t i = 0; i < result.size(); i++)
+			{
+				if (result[i] == '\"')
+				{
+					if (result[i - 1] != '\\')
+					{
+						jsonString = !jsonString;
+					}
+				}
+				else if (isspace(result[i]) && !jsonString)
+				{
+					result.erase(result.begin() + i);
+
+					i--;
+				}
+			}
 
 			return json::utility::toUTF8JSON(result, codepage);
 		}

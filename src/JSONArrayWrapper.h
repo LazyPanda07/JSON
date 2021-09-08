@@ -25,62 +25,62 @@ namespace json
 
 			/// @brief Get value as string
 			/// @param index Array index
-			/// @return string
+			/// @return 
 			/// @exception std::out_of_range
 			std::string getString(size_t index) const;
 
 			/// @brief Get value as bool
 			/// @param index Array index
-			/// @return bool
+			/// @return 
 			/// @exception std::out_of_range
 			bool getBool(size_t index) const;
 
 			/// @brief Get value as int64_t
 			/// @param index Array index
-			/// @return int64_t
+			/// @return 
 			/// @exception std::out_of_range
 			int64_t getInt64_t(size_t index) const;
 
 			/// @brief Get value as uint64_t
 			/// @param index Array index
-			/// @return uint64_t
+			/// @return 
 			/// @exception std::out_of_range
 			uint64_t getUInt64_t(size_t index) const;
 
 			/// @brief Get value as double
 			/// @param index Array index
-			/// @return double
+			/// @return 
 			/// @exception std::out_of_range
 			double getDouble(size_t index) const;
 
 			/// @brief Get value as object
 			/// @param index Array index
-			/// @return const objectSmartPointer<jsonObject>&
+			/// @return 
 			/// @exception std::out_of_range 
 			const objectSmartPointer<jsonObject>& getObject(size_t index) const;
 
 			/// @brief Convert wrapped array into array with nullptr_t values
-			/// @return vector<nullptr_t>
+			/// @return 
 			std::vector<nullptr_t> getAsNullArray() const;
 
 			/// @brief Convert wrapped array into array with string values
-			/// @return vector<string>
+			/// @return 
 			std::vector<std::string> getAsStringArray() const;
 
 			/// @brief Convert wrapped array into array with bool values
-			/// @return vector<bool>
+			/// @return 
 			std::vector<bool> getAsBoolArray() const;
 
 			/// @brief Convert wrapped array into array with int64_t values
-			/// @return vector<int64_t>
+			/// @return 
 			std::vector<int64_t> getAsInt64_tArray() const;
 
 			/// @brief Convert wrapped array into array with uint64_t values
-			/// @return vector<uint64_t>
+			/// @return 
 			std::vector<uint64_t> getAsUInt64_tArray() const;
 
 			/// @brief Convert wrapped array into array with double values
-			/// @return vector<double>
+			/// @return 
 			std::vector<double> getAsDoubleArray() const;
 
 			/// @brief Get reference to wrapped array
@@ -89,7 +89,7 @@ namespace json
 
 			/// @brief Get objectSmartPointer<jsonObject> at given index
 			/// @param index Array index
-			/// @return const objectSmartPointer<jsonObject>&
+			/// @return 
 			/// @exception std::out_of_range 
 			const objectSmartPointer<jsonObject>& operator [] (size_t index) const;
 

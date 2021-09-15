@@ -121,7 +121,7 @@ namespace json
 				{
 					return stoll(value);
 				}
-				else if (uint64_t valueToInsert = stoull(value) > numeric_limits<int64_t>::max())
+				else if (uint64_t valueToInsert = stoull(value); valueToInsert > numeric_limits<int64_t>::max())
 				{
 					return valueToInsert;
 				}

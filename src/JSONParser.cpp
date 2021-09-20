@@ -412,6 +412,11 @@ namespace json
 				}
 				else
 				{
+					if (dictionaries.empty())
+					{
+						dictionaries.push({ ""s, &parsedData });
+					}
+
 					auto& newArray = dictionaries.top().second->data.emplace_back(make_pair(move(key), vector<objectSmartPointer<jsonObject>>())).second;
 
 					arrays.push(&std::get<static_cast<size_t>(variantTypeEnum::jJSONArray)>(newArray));

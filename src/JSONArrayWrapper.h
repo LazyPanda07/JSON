@@ -11,11 +11,12 @@ namespace json
 		{
 		private:
 			const std::vector<objectSmartPointer<jsonObject>>& array;
+			std::string* offset;
 
 		public:
-			JSONArrayWrapper(const std::vector<objectSmartPointer<jsonObject>>& array);
+			explicit JSONArrayWrapper(const std::vector<objectSmartPointer<jsonObject>>& array, std::string* offset = nullptr);
 
-			JSONArrayWrapper(const jsonObject::variantType& array);
+			explicit JSONArrayWrapper(const jsonObject::variantType& array, std::string* offset = nullptr);
 
 			/// @brief Get value as nullptr
 			/// @param index Array index
@@ -82,6 +83,14 @@ namespace json
 			/// @brief Convert wrapped array into array with double values
 			/// @return 
 			std::vector<double> getAsDoubleArray() const;
+
+			/// @brief Get offset for output
+			/// @return 
+			const std::string* getOffset() const;
+
+			/// @brief Get offset for output
+			/// @return 
+			std::string* getOffset();
 
 			/// @brief Get reference to wrapped array
 			/// @return array

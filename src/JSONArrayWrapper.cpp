@@ -6,14 +6,16 @@ namespace json
 {
 	namespace utility
 	{
-		JSONArrayWrapper::JSONArrayWrapper(const vector<objectSmartPointer<jsonObject>>& array) :
-			array(array)
+		JSONArrayWrapper::JSONArrayWrapper(const vector<objectSmartPointer<jsonObject>>& array, string* offset) :
+			array(array),
+			offset(offset)
 		{
 
 		}
 
-		JSONArrayWrapper::JSONArrayWrapper(const jsonObject::variantType& array) :
-			array(get<vector<objectSmartPointer<jsonObject>>>(array))
+		JSONArrayWrapper::JSONArrayWrapper(const jsonObject::variantType& array, string* offset) :
+			array(get<vector<objectSmartPointer<jsonObject>>>(array)),
+			offset(offset)
 		{
 
 		}
@@ -135,6 +137,16 @@ namespace json
 			}
 
 			return result;
+		}
+
+		const string* JSONArrayWrapper::getOffset() const
+		{
+			return offset;
+		}
+
+		string* JSONArrayWrapper::getOffset()
+		{
+			return offset;
 		}
 
 		const vector<objectSmartPointer<jsonObject>>& JSONArrayWrapper::operator * () const

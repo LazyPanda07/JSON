@@ -405,7 +405,7 @@ namespace json
 		auto start = builderData.data.begin();
 		auto end = builderData.data.end();
 		ostringstream outputStream;
-		utility::jsonObject::offset = "  ";
+		string offset = "  ";
 
 		outputStream << '{' << endl;
 
@@ -413,9 +413,9 @@ namespace json
 		{
 			auto check = start;
 
-			outputStream << utility::jsonObject::offset << '"' << start->first << '"' << ": ";
+			outputStream << offset << '"' << start->first << '"' << ": ";
 
-			utility::outputJSONType(outputStream, start->second, ++check == end);
+			utility::outputJSONType(outputStream, start->second, ++check == end, offset);
 
 			++start;
 		}

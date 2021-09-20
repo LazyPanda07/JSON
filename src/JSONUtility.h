@@ -74,8 +74,6 @@ namespace json
 		/// @brief JSON object
 		struct JSON_API jsonObject
 		{
-			static inline std::string offset;
-
 			using variantType = baseVariantType<jsonObject>;
 
 			std::vector<std::pair<std::string, variantType>> data;
@@ -178,7 +176,7 @@ namespace json
 		/// <param name="outputStream">std::ostream subclass</param>
 		/// <param name="value">JSON value</param>
 		/// <param name="isLast">is description ends</param>
-		JSON_API_FUNCTION void outputJSONType(std::ostream& outputStream, const jsonObject::variantType& value, bool isLast);
+		JSON_API_FUNCTION void outputJSONType(std::ostream& outputStream, const jsonObject::variantType& value, bool isLast, std::string& offset);
 
 		/// <summary>
 		/// Output JSON arrays to std::ostream
@@ -186,7 +184,8 @@ namespace json
 		/// <param name="outputStream">std::ostream subclass</param>
 		/// <param name="jsonData">JSON array</param>
 		/// <returns>outputStream</returns>
-		JSON_API_FUNCTION std::ostream& operator << (std::ostream& outputStream, const jsonObject::variantType& jsonData);
+		/// <exception cref="std::runtime_error"></exception>
+		JSON_API_FUNCTION std::ostream& operator << (std::ostream& outputStream, class JSONArrayWrapper jsonData);
 
 		/// @brief Append jsonObject::variantType value to array
 		/// @param value JSON value

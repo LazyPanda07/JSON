@@ -464,18 +464,9 @@ namespace json
 		this->parse();
 	}
 
-	JSONParser::JSONParser(ifstream& inputStream)
+	JSONParser::JSONParser(ifstream& inputStream) :
+		rawData(utility::toUTF8JSON((ostringstream() << inputStream.rdbuf()).str(), CP_UTF8))
 	{
-		string line;
-		string data;
-
-		while (getline(inputStream, line))
-		{
-			data += line + '\n';
-		}
-
-		rawData = utility::toUTF8JSON(data, CP_UTF8);
-
 		this->parse();
 	}
 
@@ -817,7 +808,7 @@ namespace json
 	{
 		ConstIterator start = parser.begin();
 		ConstIterator end = parser.end();
-		utility::jsonObject::offset = "  ";
+		string offset = "  ";
 
 		outputStream << '{' << endl;
 
@@ -827,14 +818,14 @@ namespace json
 
 			if (start->first.size())
 			{
-				outputStream << utility::jsonObject::offset << '"' << start->first << '"' << ": ";
+				outputStream << offset << '"' << start->first << '"' << ": ";
 			}
 			else
 			{
-				outputStream << utility::jsonObject::offset;
+				outputStream << offset;
 			}
 
-			utility::outputJSONType(outputStream, start->second, ++check == end);
+			utility::outputJSONType(outputStream, start->second, ++check == end, offset);
 
 			++start;
 		}

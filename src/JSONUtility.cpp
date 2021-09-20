@@ -5,6 +5,8 @@
 
 #include <Windows.h>
 
+#include "JSONArrayWrapper.h"
+
 #include "Exceptions/WrongEncodingException.h"
 #include "Exceptions/CantFindValueException.h"
 
@@ -374,13 +376,13 @@ namespace json
 			return result;
 		}
 
-		JSON_API_FUNCTION void outputJSONType(ostream& outputStream, const jsonObject::variantType& value, bool isLast)
+		JSON_API_FUNCTION void outputJSONType(ostream& outputStream, const jsonObject::variantType& value, bool isLast, string& offset)
 		{
 			variantTypeEnum type = static_cast<variantTypeEnum>(value.index());
 
 			if (type >= variantTypeEnum::jJSONArray)
 			{
-				jsonObject::offset += "  ";
+				offset += "  ";
 			}
 
 			switch (type)
@@ -416,7 +418,7 @@ namespace json
 				break;
 
 			case variantTypeEnum::jJSONArray:
-				outputStream << value << string(jsonObject::offset.begin(), jsonObject::offset.end() - 2) << ']';
+				outputStream << JSONArrayWrapper(value, &offset) << string(offset.begin(), offset.end() - 2) << ']';
 
 				break;
 
@@ -435,19 +437,19 @@ namespace json
 
 					if (start->first.size())
 					{
-						outputStream << jsonObject::offset << '"' << start->first << '"' << ": ";
+						outputStream << offset << '"' << start->first << '"' << ": ";
 					}
 					else
 					{
-						outputStream << jsonObject::offset;
+						outputStream << offset;
 					}
 
-					outputJSONType(outputStream, start->second, ++check == end);
+					outputJSONType(outputStream, start->second, ++check == end, offset);
 
 					++start;
 				}
 
-				outputStream << string(jsonObject::offset.begin(), jsonObject::offset.end() - 2) << '}';
+				outputStream << string(offset.begin(), offset.end() - 2) << '}';
 			}
 
 			break;
@@ -455,8 +457,8 @@ namespace json
 
 			if (type >= variantTypeEnum::jJSONArray)
 			{
-				jsonObject::offset.pop_back();
-				jsonObject::offset.pop_back();
+				offset.pop_back();
+				offset.pop_back();
 			}
 
 			if (!isLast)
@@ -467,19 +469,26 @@ namespace json
 			outputStream << endl;
 		}
 
-		JSON_API_FUNCTION ostream& operator << (ostream& outputStream, const jsonObject::variantType& jsonData)
+		JSON_API_FUNCTION ostream& operator << (ostream& outputStream, JSONArrayWrapper jsonData)
 		{
 			outputStream << '[' << endl;
 
-			auto& jsonArray = get<static_cast<size_t>(variantTypeEnum::jJSONArray)>(jsonData);
+			auto& jsonArray = *jsonData;
+
+			if (!jsonData.getOffset())
+			{
+				throw runtime_error("JSONArrayWrapper offset was nullptr");
+			}
+
+			string& offset = *jsonData.getOffset();
 
 			for (size_t i = 0; i < jsonArray.size(); i++)
 			{
 				for (const auto& j : jsonArray[i]->data)
 				{
-					outputStream << jsonObject::offset;
+					outputStream << offset;
 
-					outputJSONType(outputStream, j.second, i + 1 == jsonArray.size());
+					outputJSONType(outputStream, j.second, i + 1 == jsonArray.size(), offset);
 				}
 			}
 

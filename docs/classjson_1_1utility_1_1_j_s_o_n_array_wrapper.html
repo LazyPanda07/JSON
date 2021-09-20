@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">JSON
-   &#160;<span id="projectnumber">1.7.2</span>
+   &#160;<span id="projectnumber">1.8.0</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++17.</div>
   </td>
@@ -98,12 +98,12 @@ $(document).ready(function(){initNavTree('classjson_1_1utility_1_1_j_s_o_n_array
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af2cb3eb51bd75c1b6103c676bc4590a8"><td class="memItemLeft" align="right" valign="top"><a id="af2cb3eb51bd75c1b6103c676bc4590a8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>JSONArrayWrapper</b> (const std::vector&lt; objectSmartPointer&lt; <a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &gt;&gt; &amp;array)</td></tr>
-<tr class="separator:af2cb3eb51bd75c1b6103c676bc4590a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d4b245a5b8735ec431d235dd3aaeee8"><td class="memItemLeft" align="right" valign="top"><a id="a0d4b245a5b8735ec431d235dd3aaeee8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>JSONArrayWrapper</b> (const jsonObject::variantType &amp;array)</td></tr>
-<tr class="separator:a0d4b245a5b8735ec431d235dd3aaeee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c6a3248009d4662c98495e066e1993a"><td class="memItemLeft" align="right" valign="top"><a id="a5c6a3248009d4662c98495e066e1993a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>JSONArrayWrapper</b> (const std::vector&lt; objectSmartPointer&lt; <a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &gt;&gt; &amp;array, std::string *offset=nullptr)</td></tr>
+<tr class="separator:a5c6a3248009d4662c98495e066e1993a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad542989524bd224bc9f4531a45fcc25f"><td class="memItemLeft" align="right" valign="top"><a id="ad542989524bd224bc9f4531a45fcc25f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>JSONArrayWrapper</b> (const jsonObject::variantType &amp;array, std::string *offset=nullptr)</td></tr>
+<tr class="separator:ad542989524bd224bc9f4531a45fcc25f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4be325fc2faa2b37c60275e7314ae0a"><td class="memItemLeft" align="right" valign="top">nullptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#ae4be325fc2faa2b37c60275e7314ae0a">getNull</a> (size_t index) const</td></tr>
 <tr class="memdesc:ae4be325fc2faa2b37c60275e7314ae0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value as nullptr.  <a href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#ae4be325fc2faa2b37c60275e7314ae0a">More...</a><br /></td></tr>
 <tr class="separator:ae4be325fc2faa2b37c60275e7314ae0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,6 +143,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a35311f31c943b6a546cf602294b05f90"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a35311f31c943b6a546cf602294b05f90">getAsDoubleArray</a> () const</td></tr>
 <tr class="memdesc:a35311f31c943b6a546cf602294b05f90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert wrapped array into array with double values.  <a href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a35311f31c943b6a546cf602294b05f90">More...</a><br /></td></tr>
 <tr class="separator:a35311f31c943b6a546cf602294b05f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe23a16435f74e45eb26658b3b330fea"><td class="memItemLeft" align="right" valign="top">const std::string *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#afe23a16435f74e45eb26658b3b330fea">getOffset</a> () const</td></tr>
+<tr class="memdesc:afe23a16435f74e45eb26658b3b330fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get offset for output.  <a href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#afe23a16435f74e45eb26658b3b330fea">More...</a><br /></td></tr>
+<tr class="separator:afe23a16435f74e45eb26658b3b330fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98792098faf4061192b7ba218c9c1ad3"><td class="memItemLeft" align="right" valign="top">std::string *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a98792098faf4061192b7ba218c9c1ad3">getOffset</a> ()</td></tr>
+<tr class="memdesc:a98792098faf4061192b7ba218c9c1ad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get offset for output.  <a href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a98792098faf4061192b7ba218c9c1ad3">More...</a><br /></td></tr>
+<tr class="separator:a98792098faf4061192b7ba218c9c1ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d5c7581b1993420dd5ca5059fc8505a"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; objectSmartPointer&lt; <a class="el" href="structjson_1_1utility_1_1json_object.html">jsonObject</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a4d5c7581b1993420dd5ca5059fc8505a">operator*</a> () const</td></tr>
 <tr class="memdesc:a4d5c7581b1993420dd5ca5059fc8505a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference to wrapped array.  <a href="classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a4d5c7581b1993420dd5ca5059fc8505a">More...</a><br /></td></tr>
 <tr class="separator:a4d5c7581b1993420dd5ca5059fc8505a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -442,6 +448,48 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a98792098faf4061192b7ba218c9c1ad3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98792098faf4061192b7ba218c9c1ad3">&#9670;&nbsp;</a></span>getOffset() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string * json::utility::JSONArrayWrapper::getOffset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get offset for output. </p>
+<dl class="section return"><dt>Returns</dt><dd><br  />
+ </dd></dl>
+
+</div>
+</div>
+<a id="afe23a16435f74e45eb26658b3b330fea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe23a16435f74e45eb26658b3b330fea">&#9670;&nbsp;</a></span>getOffset() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const string * json::utility::JSONArrayWrapper::getOffset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get offset for output. </p>
+<dl class="section return"><dt>Returns</dt><dd><br  />
+ </dd></dl>
 
 </div>
 </div>

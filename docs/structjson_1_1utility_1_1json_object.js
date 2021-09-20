@@ -13,6 +13,5 @@ var structjson_1_1utility_1_1json_object =
     [ "getString", "structjson_1_1utility_1_1json_object.html#a60c5e1e45ea291be5f3aa67d143d61ce", null ],
     [ "getUnsignedInt", "structjson_1_1utility_1_1json_object.html#ac4c9d994ce1347043481306e1b164bdb", null ],
     [ "operator=", "structjson_1_1utility_1_1json_object.html#a6ed3e97aa6075b874f9044e60fd7debe", null ],
-    [ "data", "structjson_1_1utility_1_1json_object.html#a11907ca2d4fdbc9048669d3d522f00a8", null ],
-    [ "offset", "structjson_1_1utility_1_1json_object.html#af527ae506ade008855069a7f79d0506c", null ]
+    [ "data", "structjson_1_1utility_1_1json_object.html#a11907ca2d4fdbc9048669d3d522f00a8", null ]
 ];

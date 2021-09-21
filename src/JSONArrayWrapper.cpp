@@ -20,6 +20,11 @@ namespace json
 
 		}
 
+		size_t JSONArrayWrapper::size() const
+		{
+			return array.size();
+		}
+
 		nullptr_t JSONArrayWrapper::getNull(size_t index) const
 		{
 			return get<nullptr_t>(array.at(index)->data.front().second);

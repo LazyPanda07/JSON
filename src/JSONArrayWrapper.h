@@ -18,6 +18,8 @@ namespace json
 
 			explicit JSONArrayWrapper(const jsonObject::variantType& array, std::string* offset = nullptr);
 
+			size_t size() const;
+
 			/// @brief Get value as nullptr
 			/// @param index Array index
 			/// @return nullptr

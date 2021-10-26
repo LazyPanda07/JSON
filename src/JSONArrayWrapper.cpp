@@ -144,6 +144,20 @@ namespace json
 			return result;
 		}
 
+		vector<objectSmartPointer<jsonObject>> JSONArrayWrapper::getAsObjectArray() const
+		{
+			vector<objectSmartPointer<jsonObject>> result;
+
+			for (const auto& i : array)
+			{
+				const objectSmartPointer<jsonObject>& item = get<objectSmartPointer<jsonObject>>(i->data.front().second);
+
+				result.push_back(make_object<jsonObject>(*(item.get())));
+			}
+
+			return result;
+		}
+
 		const string* JSONArrayWrapper::getOffset() const
 		{
 			return offset;

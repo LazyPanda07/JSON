@@ -7,6 +7,7 @@ var classjson_1_1utility_1_1_j_s_o_n_array_wrapper =
     [ "getAsDoubleArray", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a35311f31c943b6a546cf602294b05f90", null ],
     [ "getAsInt64_tArray", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a930d80841904b409807e6562430beaef", null ],
     [ "getAsNullArray", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a4a07e0e9bfd9d1c7f29043df0d8b2961", null ],
+    [ "getAsObjectArray", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a9058205d29b1191d89dc8da522cb9bb1", null ],
     [ "getAsStringArray", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a2a95f7892d6ea85ee5c49135d5b32e43", null ],
     [ "getAsUInt64_tArray", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#ae2917d56af64b8e863f272ffbc0d7918", null ],
     [ "getBool", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a85e6b36e76afcdb76d29229b89b6a9d4", null ],
@@ -19,5 +20,6 @@ var classjson_1_1utility_1_1_j_s_o_n_array_wrapper =
     [ "getString", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a701af9690937fec556ca08dd4db8bb9f", null ],
     [ "getUInt64_t", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a5042e891ab320f418b90f2dfa8caa14e", null ],
     [ "operator*", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a4d5c7581b1993420dd5ca5059fc8505a", null ],
-    [ "operator[]", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a7a0bce398c5267bc70b869da4d54b416", null ]
+    [ "operator[]", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a7a0bce398c5267bc70b869da4d54b416", null ],
+    [ "size", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html#a05b47d10c90463cf9cc84d690675b3b4", null ]
 ];

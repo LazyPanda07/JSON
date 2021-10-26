@@ -86,6 +86,10 @@ namespace json
 			/// @return 
 			std::vector<double> getAsDoubleArray() const;
 
+			/// @brief Convert wrapped array into array with object values
+			/// @return 
+			std::vector<objectSmartPointer<jsonObject>> getAsObjectArray() const;
+
 			/// @brief Get offset for output
 			/// @return 
 			const std::string* getOffset() const;

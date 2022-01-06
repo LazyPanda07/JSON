@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JSON: json::exceptions::BaseJSONException Class Reference</title>
+<title>JSON: json::exceptions::WrongInputStreamException Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('classjson_1_1exceptions_1_1_base_j_s_o_n_exception.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('classjson_1_1exceptions_1_1_wrong_input_stream_exception.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -85,46 +85,48 @@ $(document).ready(function(){initNavTree('classjson_1_1exceptions_1_1_base_j_s_o
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classjson_1_1exceptions_1_1_base_j_s_o_n_exception-members.html">List of all members</a>  </div>
+<a href="classjson_1_1exceptions_1_1_wrong_input_stream_exception-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">json::exceptions::BaseJSONException Class Reference</div>  </div>
+<div class="title">json::exceptions::WrongInputStreamException Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Base class for JSON exceptions.  
- <a href="classjson_1_1exceptions_1_1_base_j_s_o_n_exception.html#details">More...</a></p>
+<p>Thrown in <a class="el" href="classjson_1_1_j_s_o_n_parser.html" title="Parser for JSON.">JSONParser</a> constructor if wrong input stream was passed.  
+ <a href="classjson_1_1exceptions_1_1_wrong_input_stream_exception.html#details">More...</a></p>
 
-<p><code>#include &quot;<a class="el" href="_base_j_s_o_n_exception_8h_source.html">BaseJSONException.h</a>&quot;</code></p>
+<p><code>#include &quot;<a class="el" href="_wrong_input_stream_exception_8h_source.html">WrongInputStreamException.h</a>&quot;</code></p>
 <div class="dynheader">
-Inheritance diagram for json::exceptions::BaseJSONException:</div>
+Inheritance diagram for json::exceptions::WrongInputStreamException:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classjson_1_1exceptions_1_1_base_j_s_o_n_exception.png" usemap="#json::exceptions::BaseJSONException_map" alt=""/>
-  <map id="json::exceptions::BaseJSONException_map" name="json::exceptions::BaseJSONException_map">
-<area href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;" alt="json::exceptions::CantFindValueException" shape="rect" coords="0,112,265,136"/>
-<area href="classjson_1_1exceptions_1_1_wrong_encoding_exception.html" title="Thrown if can&#39;t encode or decode to UTF8 or from UTF8." alt="json::exceptions::WrongEncodingException" shape="rect" coords="275,112,540,136"/>
-<area href="classjson_1_1exceptions_1_1_wrong_input_stream_exception.html" title="Thrown in JSONParser constructor if wrong input stream was passed." alt="json::exceptions::WrongInputStreamException" shape="rect" coords="550,112,815,136"/>
+  <img src="classjson_1_1exceptions_1_1_wrong_input_stream_exception.png" usemap="#json::exceptions::WrongInputStreamException_map" alt=""/>
+  <map id="json::exceptions::WrongInputStreamException_map" name="json::exceptions::WrongInputStreamException_map">
+<area href="classjson_1_1exceptions_1_1_base_j_s_o_n_exception.html" title="Base class for JSON exceptions." alt="json::exceptions::BaseJSONException" shape="rect" coords="0,56,265,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2e2cb9912bae870c1e8e42d404461045"><td class="memItemLeft" align="right" valign="top"><a id="a2e2cb9912bae870c1e8e42d404461045"></a>
+<tr class="memitem:af30e17f9d8b29eb6100c5ca9e1fe48aa"><td class="memItemLeft" align="right" valign="top"><a id="af30e17f9d8b29eb6100c5ca9e1fe48aa"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>WrongInputStreamException</b> (const std::istream &amp;stream)</td></tr>
+<tr class="separator:af30e17f9d8b29eb6100c5ca9e1fe48aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classjson_1_1exceptions_1_1_base_j_s_o_n_exception"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classjson_1_1exceptions_1_1_base_j_s_o_n_exception')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classjson_1_1exceptions_1_1_base_j_s_o_n_exception.html">json::exceptions::BaseJSONException</a></td></tr>
+<tr class="memitem:a2e2cb9912bae870c1e8e42d404461045 inherit pub_methods_classjson_1_1exceptions_1_1_base_j_s_o_n_exception"><td class="memItemLeft" align="right" valign="top"><a id="a2e2cb9912bae870c1e8e42d404461045"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>BaseJSONException</b> (const std::string &amp;errorMessage)</td></tr>
-<tr class="separator:a2e2cb9912bae870c1e8e42d404461045"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a2e2cb9912bae870c1e8e42d404461045 inherit pub_methods_classjson_1_1exceptions_1_1_base_j_s_o_n_exception"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Base class for JSON exceptions. </p>
+<div class="textblock"><p>Thrown in <a class="el" href="classjson_1_1_j_s_o_n_parser.html" title="Parser for JSON.">JSONParser</a> constructor if wrong input stream was passed. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/Exceptions/<a class="el" href="_base_j_s_o_n_exception_8h_source.html">BaseJSONException.h</a></li>
-<li>src/Exceptions/BaseJSONException.cpp</li>
+<li>src/Exceptions/<a class="el" href="_wrong_input_stream_exception_8h_source.html">WrongInputStreamException.h</a></li>
+<li>src/Exceptions/WrongInputStreamException.cpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>json</b></li><li class="navelem"><b>exceptions</b></li><li class="navelem"><a class="el" href="classjson_1_1exceptions_1_1_base_j_s_o_n_exception.html">BaseJSONException</a></li>
+    <li class="navelem"><b>json</b></li><li class="navelem"><b>exceptions</b></li><li class="navelem"><a class="el" href="classjson_1_1exceptions_1_1_wrong_input_stream_exception.html">WrongInputStreamException</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

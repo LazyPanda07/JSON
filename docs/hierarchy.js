@@ -8,7 +8,8 @@ var hierarchy =
     [ "std::runtime_error", null, [
       [ "json::exceptions::BaseJSONException", "classjson_1_1exceptions_1_1_base_j_s_o_n_exception.html", [
         [ "json::exceptions::CantFindValueException", "classjson_1_1exceptions_1_1_cant_find_value_exception.html", null ],
-        [ "json::exceptions::WrongEncodingException", "classjson_1_1exceptions_1_1_wrong_encoding_exception.html", null ]
+        [ "json::exceptions::WrongEncodingException", "classjson_1_1exceptions_1_1_wrong_encoding_exception.html", null ],
+        [ "json::exceptions::WrongInputStreamException", "classjson_1_1exceptions_1_1_wrong_input_stream_exception.html", null ]
       ] ]
     ] ]
 ];

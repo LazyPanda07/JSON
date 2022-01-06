@@ -191,6 +191,10 @@ namespace json
 		/// @param value JSON value
 		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, std::vector<objectSmartPointer<jsonObject>>& jsonArray);
 
+		/// @brief Get current version of JSON project
+		/// @return Current version of JSON project
+		JSON_API_FUNCTION std::string getJSONVersion();
+
 		/// @brief Make function for objectSmartPointer
 		/// @tparam T Data type of smart pointer
 		/// @param ...args Construct arguments

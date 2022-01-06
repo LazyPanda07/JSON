@@ -6,9 +6,8 @@
 #include <algorithm>
 #include <queue>
 
-#include "Exceptions/CantFindValueException.h"
-
 #pragma warning(disable: 4715)
+#pragma warning(disable: 26800)
 
 using namespace std;
 
@@ -469,13 +468,19 @@ namespace json
 		this->parse();
 	}
 
-	JSONParser::JSONParser(ifstream& inputStream) :
-		rawData(utility::toUTF8JSON((ostringstream() << inputStream.rdbuf()).str(), CP_UTF8))
+	JSONParser::JSONParser(istream& inputStream)
 	{
+		if (!inputStream.good())
+		{
+			throw exceptions::WrongInputStreamException(inputStream);
+		}
+
+		rawData = utility::toUTF8JSON((ostringstream() << inputStream.rdbuf()).str(), CP_UTF8);
+
 		this->parse();
 	}
 
-	JSONParser::JSONParser(ifstream&& inputStream) :
+	JSONParser::JSONParser(istream&& inputStream) :
 		JSONParser(inputStream)
 	{
 

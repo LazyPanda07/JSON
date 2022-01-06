@@ -503,5 +503,10 @@ namespace json
 
 			jsonArray.push_back(move(object));
 		}
+
+		JSON_API_FUNCTION string getJSONVersion()
+		{
+			return "1.8.2"s;
+		}
 	}
 }

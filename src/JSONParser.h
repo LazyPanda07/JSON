@@ -1,8 +1,11 @@
 #pragma once
 
-#include <fstream>
+#include <istream>
 
 #include "JSONUtility.h"
+
+#include "Exceptions/CantFindValueException.h"
+#include "Exceptions/WrongInputStreamException.h"
 
 namespace json
 {
@@ -87,12 +90,14 @@ namespace json
 		/// @brief Parse data
 		/// @param inputStream JSON formatted data from stream
 		/// @exception json::exceptions::WrongEncodingException Can't convert JSON formatted string to UTF8 encoding
-		JSONParser(std::ifstream& inputStream);
+		/// @exception json::exceptions::WrongInputStreamException Can't read JSON formatted data from inputStream
+		JSONParser(std::istream& inputStream);
 
 		/// @brief Parse data
 		/// @param inputStream JSON formatted data from stream
 		/// @exception json::exceptions::WrongEncodingException Can't convert JSON formatted string to UTF8 encoding
-		JSONParser(std::ifstream&& inputStream);
+		/// @exception json::exceptions::WrongInputStreamException Can't read JSON formatted data from inputStream
+		JSONParser(std::istream&& inputStream);
 
 		/// @brief Construct from parsed or builded data 
 		/// @param data Data from JSONBuilder or JSONParser

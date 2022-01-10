@@ -567,6 +567,30 @@ namespace json
 		this->parse();
 	}
 
+	void JSONParser::setJSONData(istream& inputStream)
+	{
+		if (!inputStream.good())
+		{
+			throw exceptions::WrongInputStreamException(inputStream);
+		}
+
+		rawData = utility::toUTF8JSON((ostringstream() << inputStream.rdbuf()).str(), CP_UTF8);
+
+		this->parse();
+	}
+
+	void JSONParser::setJSONData(istream&& inputStream)
+	{
+		if (!inputStream.good())
+		{
+			throw exceptions::WrongInputStreamException(inputStream);
+		}
+
+		rawData = utility::toUTF8JSON((ostringstream() << inputStream.rdbuf()).str(), CP_UTF8);
+
+		this->parse();
+	}
+
 	void JSONParser::setJSONData(string&& jsonData) noexcept
 	{
 		rawData = move(jsonData);
@@ -799,17 +823,7 @@ namespace json
 
 	JSON_API istream& operator >> (istream& inputStream, JSONParser& parser)
 	{
-		ostringstream data;
-		string tem;
-
-		while (getline(inputStream, tem))
-		{
-			data << tem << endl;
-		}
-
-		parser.rawData = utility::toUTF8JSON(data.str(), CP_UTF8);
-
-		parser.parse();
+		parser.setJSONData(inputStream);
 
 		return inputStream;
 	}

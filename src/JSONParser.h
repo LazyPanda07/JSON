@@ -145,6 +145,16 @@ namespace json
 		/// <param name="jsonData">JSON formatted UTF8 string</param>
 		void setJSONData(std::string&& jsonData) noexcept;
 
+		/// @brief Setter for rawData
+		/// @param inputStream Stream that contains JSON formatted UTF8 string
+		/// @exception json::exceptions::WrongInputStreamException Can't read JSON formatted data from inputStream
+		void setJSONData(std::istream& inputStream);
+
+		/// @brief Setter for rawData
+		/// @param inputStream Stream that contains JSON formatted UTF8 string
+		/// @exception json::exceptions::WrongInputStreamException Can't read JSON formatted data from inputStream
+		void setJSONData(std::istream&& inputStream);
+
 		/// <summary>
 		/// Getter for rawData
 		/// </summary>
@@ -249,6 +259,7 @@ namespace json
 		/// <param name="parser">reference to JSONParser instance</param>
 		/// <returns>inputStream</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
+		/// @exception json::exceptions::WrongInputStreamException Can't read JSON formatted data from inputStream
 		friend JSON_API std::istream& operator >> (std::istream& inputStream, JSONParser& parser);
 
 		/// <summary>

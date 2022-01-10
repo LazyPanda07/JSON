@@ -36,6 +36,8 @@ var classjson_1_1_j_s_o_n_parser =
     [ "operator=", "classjson_1_1_j_s_o_n_parser.html#a936a650fdaa8aa0931547f1d755e775a", null ],
     [ "setJSONData", "classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2", null ],
     [ "setJSONData", "classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983", null ],
+    [ "setJSONData", "classjson_1_1_j_s_o_n_parser.html#abad51b30cac1d5948dce5fa761d45c75", null ],
+    [ "setJSONData", "classjson_1_1_j_s_o_n_parser.html#a29e800cbdef3b530f108be8aa4450efe", null ],
     [ "setJSONData", "classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88", null ],
     [ "operator<<", "classjson_1_1_j_s_o_n_parser.html#aa7086c35d79973935b393c1d487d6d34", null ],
     [ "operator>>", "classjson_1_1_j_s_o_n_parser.html#a862b4bf1ab76809c693c77d0d0586133", null ]

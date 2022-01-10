@@ -506,7 +506,7 @@ namespace json
 
 		JSON_API_FUNCTION string getJSONVersion()
 		{
-			return "1.8.2"s;
+			return "1.8.3"s;
 		}
 	}
 }

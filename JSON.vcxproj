@@ -207,9 +207,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)src\JSONParser.h $(Outdir)
-COPY /Y $(ProjectDir)src\JSONBuilder.h $(Outdir)
-COPY /Y $(ProjectDir)src\JSONUtility.h $(Outdir)</Command>
+      <Command>xcopy $(ProjectDir)src $(OutDir)include\ /E /H /C /I</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>
@@ -232,9 +230,7 @@ COPY /Y $(ProjectDir)src\JSONUtility.h $(Outdir)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <CustomBuildStep>
-      <Command>COPY /Y $(ProjectDir)src\JSONParser.h $(Outdir)
-COPY /Y $(ProjectDir)src\JSONBuilder.h $(Outdir)
-COPY /Y $(ProjectDir)src\JSONUtility.h $(Outdir)</Command>
+      <Command>xcopy $(ProjectDir)src $(OutDir)include\ /E /H /C /I</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>output.txt</Outputs>

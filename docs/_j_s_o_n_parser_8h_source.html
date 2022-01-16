@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">JSON
-   &#160;<span id="projectnumber">1.8.3</span>
+   &#160;<span id="projectnumber">1.9.0</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++17.</div>
   </td>
@@ -149,11 +149,11 @@ $(document).ready(function(){initNavTree('_j_s_o_n_parser_8h_source.html',''); i
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">static</span> utility::jsonObject::variantType getValue(<span class="keyword">const</span> std::string&amp; value);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> insertKeyValueData(std::string&amp;&amp; key, <span class="keyword">const</span> std::string&amp; value, <a class="code" href="structjson_1_1utility_1_1json_object.html">utility::jsonObject</a>*&amp; ptr, std::vector&lt;utility::objectSmartPointer&lt;utility::jsonObject&gt;&gt;* currentArray);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">void</span> insertKeyValueData(std::string&amp;&amp; key, <span class="keyword">const</span> std::string&amp; value, <a class="code" href="structjson_1_1utility_1_1json_object.html">utility::jsonObject</a>*&amp; ptr, std::vector&lt;utility::jsonObject&gt;* currentArray);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">static</span> std::pair&lt;std::vector&lt;std::pair&lt;std::string, variantType&gt;&gt;::const_iterator, <span class="keywordtype">bool</span>&gt; find(<span class="keyword">const</span> std::string&amp; key, <span class="keyword">const</span> std::vector&lt;std::pair&lt;std::string, variantType&gt;&gt;&amp; start);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">static</span> utility::jsonObject::variantType* findObject(<span class="keyword">const</span> std::vector&lt;utility::objectSmartPointer&lt;utility::jsonObject&gt;&gt;&amp; currentArray);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">static</span> utility::jsonObject::variantType* findObject(<span class="keyword">const</span> std::vector&lt;utility::jsonObject&gt;&amp; currentArray);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">static</span> <span class="keywordtype">bool</span> isStringSymbol(<span class="keywordtype">char</span> symbol);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
@@ -216,19 +216,21 @@ $(document).ready(function(){initNavTree('_j_s_o_n_parser_8h_source.html',''); i
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <span class="keywordtype">double</span> getDouble(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        const std::vector&lt;utility::objectSmartPointer&lt;utility::jsonObject&gt;&gt;&amp; getArray(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        const std::vector&lt;utility::jsonObject&gt;&amp; getArray(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        const utility::objectSmartPointer&lt;utility::jsonObject&gt;&amp; getObject(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        const utility::jsonObject&amp; getObject(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        const utility::jsonObject&amp; getParsedData() const;</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a862b4bf1ab76809c693c77d0d0586133">  263</a></span>&#160;        friend JSON_API std::istream&amp; operator &gt;&gt; (std::istream&amp; inputStream, <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#aa7086c35d79973935b393c1d487d6d34">  271</a></span>&#160;        friend JSON_API std::ostream&amp; operator &lt;&lt; (std::ostream&amp; outputStream, const <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        ~<a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>() = default;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    };</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;}</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="keywordtype">void</span> getParsedData(utility::jsonObject&amp; <span class="keywordtype">object</span>) noexcept;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a862b4bf1ab76809c693c77d0d0586133">  267</a></span>&#160;        friend JSON_API std::istream&amp; operator &gt;&gt; (std::istream&amp; inputStream, <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#aa7086c35d79973935b393c1d487d6d34">  275</a></span>&#160;        friend JSON_API std::ostream&amp; operator &lt;&lt; (std::ostream&amp; outputStream, const <a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        ~<a class="code" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>() = default;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    };</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;}</div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_1_1_const_iterator_html"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">json::JSONParser::ConstIterator</a></div><div class="ttdoc">Iterator through JSONParser.</div><div class="ttdef"><b>Definition:</b> JSONParser.h:25</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html">json::JSONParser</a></div><div class="ttdoc">Parser for JSON.</div><div class="ttdef"><b>Definition:</b> JSONParser.h:14</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_a120bec0db8f7e423ac8f700c3b33f5a2"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">json::JSONParser::setJSONData</a></div><div class="ttdeci">void setJSONData(const std::string &amp;jsonData)</div><div class="ttdoc">Setter for rawData</div></div>
@@ -240,7 +242,7 @@ $(document).ready(function(){initNavTree('_j_s_o_n_parser_8h_source.html',''); i
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_abad51b30cac1d5948dce5fa761d45c75"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#abad51b30cac1d5948dce5fa761d45c75">json::JSONParser::setJSONData</a></div><div class="ttdeci">void setJSONData(std::istream &amp;&amp;inputStream)</div><div class="ttdoc">Setter for rawData.</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_aebacadf170056bcd9df95310de946d43"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#aebacadf170056bcd9df95310de946d43">json::JSONParser::JSONParser</a></div><div class="ttdeci">JSONParser(std::istream &amp;inputStream)</div><div class="ttdoc">Parse data.</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_af850c82aa16b8620ea514209a5374bb2"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#af850c82aa16b8620ea514209a5374bb2">json::JSONParser::JSONParser</a></div><div class="ttdeci">JSONParser(const std::string &amp;data)</div><div class="ttdoc">Parse data</div></div>
-<div class="ttc" id="astructjson_1_1utility_1_1json_object_html"><div class="ttname"><a href="structjson_1_1utility_1_1json_object.html">json::utility::jsonObject</a></div><div class="ttdoc">JSON object.</div><div class="ttdef"><b>Definition:</b> JSONUtility.h:76</div></div>
+<div class="ttc" id="astructjson_1_1utility_1_1json_object_html"><div class="ttname"><a href="structjson_1_1utility_1_1json_object.html">json::utility::jsonObject</a></div><div class="ttdoc">JSON object.</div><div class="ttdef"><b>Definition:</b> JSONUtility.h:64</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

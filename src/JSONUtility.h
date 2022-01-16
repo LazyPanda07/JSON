@@ -72,10 +72,19 @@ namespace json
 			/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
 			jsonObject(const jsonObject& other);
 
-			/// @brief Copy operator
+			/// @brief Move constructor
+			/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
+			jsonObject(jsonObject&& other) noexcept;
+
+			/// @brief Copy assignment operator
 			/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
 			/// @return Self
 			jsonObject& operator = (const jsonObject& other);
+
+			/// @brief Move assignment operator
+			/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
+			/// @return Self
+			jsonObject& operator = (jsonObject&& other) noexcept;
 
 			/// @brief Get null value. Find and get value only for this JSON object
 			/// @param key JSON key

@@ -228,17 +228,9 @@ namespace json
 	}
 
 	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject*>(const pair<string, utility::jsonObject*>& value)
+	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject>(const pair<string, utility::jsonObject>& value)
 	{
-		builderData.data.push_back(make_pair(value.first, utility::jsonObject(*value.second)));
-
-		return *this;
-	}
-
-	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject*>(pair<string, utility::jsonObject*>&& value) noexcept
-	{
-		builderData.data.push_back(make_pair(value.first, utility::jsonObject(*value.second)));
+		builderData.data.push_back(make_pair(value.first, value.second));
 
 		return *this;
 	}

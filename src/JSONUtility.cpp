@@ -21,6 +21,11 @@ namespace json
 			(*this) = other;
 		}
 
+		jsonObject::jsonObject(jsonObject&& other) noexcept
+		{
+			(*this) = move(other);
+		}
+		
 		jsonObject& jsonObject::operator = (const jsonObject& other)
 		{
 			function<void(const string&, const variantType&, vector<pair<string, variantType>>&)> appendData = [&appendData](const string& key, const variantType& value, vector<pair<string, variantType>>& data)
@@ -96,6 +101,13 @@ namespace json
 			{
 				appendData(key, value, data);
 			}
+
+			return *this;
+		}
+
+		jsonObject& jsonObject::operator = (jsonObject&& other) noexcept
+		{
+			data = move(other.data);
 
 			return *this;
 		}

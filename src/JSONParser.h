@@ -252,6 +252,10 @@ namespace json
 		/// @return parsedData
 		const utility::jsonObject& getParsedData() const;
 
+		/// @brief Move parsed data
+		/// @param object Result of moving
+		void getParsedData(utility::jsonObject& object) noexcept;
+
 		/// <summary>
 		/// Get JSON from input stream
 		/// </summary>

@@ -444,6 +444,16 @@ namespace json
 		type = outputType::minimize;
 	}
 
+	const utility::jsonObject& JSONBuilder::getObject() const
+	{
+		return builderData;
+	}
+
+	void JSONBuilder::getObject(utility::jsonObject& object) noexcept
+	{
+		object = move(builderData);
+	}
+
 	JSON_API ostream& operator << (ostream& outputStream, const JSONBuilder& builder)
 	{
 		return outputStream << builder.build();

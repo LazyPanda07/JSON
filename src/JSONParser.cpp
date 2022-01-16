@@ -830,6 +830,11 @@ namespace json
 		return parsedData;
 	}
 
+	void JSONParser::getParsedData(utility::jsonObject& object) noexcept
+	{
+		object = move(parsedData);
+	}
+
 	JSON_API istream& operator >> (istream& inputStream, JSONParser& parser)
 	{
 		parser.setJSONData(inputStream);

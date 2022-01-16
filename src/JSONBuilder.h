@@ -199,6 +199,14 @@ namespace json
 		/// </summary>
 		void minimize();
 
+		/// @brief Getter for builded JSON object
+		/// @return JSON object
+		const utility::jsonObject& getObject() const;
+
+		/// @brief Move builded JSON object from JSONBuilder
+		/// @param object Result of moving
+		void getObject(utility::jsonObject& object) noexcept;
+
 		/// <summary>
 		/// Set JSON to output stream
 		/// </summary>

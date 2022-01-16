@@ -134,13 +134,13 @@ namespace json
 #pragma warning(pop)
 	}
 
-	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject*& ptr, vector<utility::objectSmartPointer<utility::jsonObject>>* currentArray)
+	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject*& ptr, vector<utility::jsonObject>* currentArray)
 	{
 		if (key.empty())
 		{
-			utility::objectSmartPointer<utility::jsonObject> object(new utility::jsonObject());
+			utility::jsonObject object;
 
-			object->data.push_back({ ""s, JSONParser::getValue(value) });
+			object.data.push_back({ ""s, JSONParser::getValue(value) });
 
 			currentArray->push_back(move(object));
 		}
@@ -152,11 +152,11 @@ namespace json
 
 				if (object)
 				{
-					std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object)->data.push_back({ move(key), JSONParser::getValue(value) });
+					std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object).data.push_back({ move(key), JSONParser::getValue(value) });
 				}
 				else
 				{
-					std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(currentArray->back()->data.back().second)->data.push_back({ move(key), JSONParser::getValue(value) });
+					std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(currentArray->back().data.back().second).data.push_back({ move(key), JSONParser::getValue(value) });
 				}
 			}
 			else
@@ -182,11 +182,11 @@ namespace json
 		{
 			if (it->second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONArray))
 			{
-				const vector<utility::objectSmartPointer<utility::jsonObject>>& jsonArray = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(it->second);
+				const vector<utility::jsonObject>& jsonArray = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(it->second);
 
 				for (const auto& i : jsonArray)
 				{
-					auto result = find(key, i->data);
+					auto result = find(key, i.data);
 
 					if (result.second)
 					{
@@ -196,7 +196,7 @@ namespace json
 			}
 			else if (it->second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 			{
-				const vector<pair<string, variantType>>& data = ::get<utility::objectSmartPointer<utility::jsonObject>>(it->second)->data;
+				const vector<pair<string, variantType>>& data = ::get<utility::jsonObject>(it->second).data;
 
 				auto result = find(key, data);
 
@@ -212,15 +212,15 @@ namespace json
 		return { end, false };
 	}
 
-	utility::jsonObject::variantType* JSONParser::findObject(const vector<utility::objectSmartPointer<utility::jsonObject>>& currentArray)
+	utility::jsonObject::variantType* JSONParser::findObject(const vector<utility::jsonObject>& currentArray)
 	{
-		if (currentArray.size() && currentArray.back()->data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+		if (currentArray.size() && currentArray.back().data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 		{
-			utility::jsonObject::variantType* object = &currentArray.back()->data.back().second;
+			const utility::jsonObject::variantType* object = &currentArray.back().data.back().second;
 
 			while (object->index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 			{
-				auto& data = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object)->data;
+				auto& data = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object).data;
 
 				if (data.size() && data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 				{
@@ -232,7 +232,7 @@ namespace json
 				}
 			}
 
-			return object;
+			return const_cast<utility::jsonObject::variantType*>(object);
 		}
 
 		return nullptr;
@@ -285,7 +285,7 @@ namespace json
 		using namespace json::utility;
 
 		stack<pair<string, utility::jsonObject*>> dictionaries;
-		stack<vector<utility::objectSmartPointer<utility::jsonObject>>*> arrays;
+		stack<vector<utility::jsonObject>*> arrays;
 		bool checkNestedObject = false;
 		string key;
 		string value;
@@ -344,14 +344,14 @@ namespace json
 
 					if (object && checkNestedObject)
 					{
-						newlyObject = &std::get<static_cast<size_t>(variantTypeEnum::jJSONObject)>(*object)->data;
+						newlyObject = &std::get<static_cast<size_t>(variantTypeEnum::jJSONObject)>(*object).data;
 					}
 					else
 					{
-						newlyObject = &arrays.top()->emplace_back(objectSmartPointer<jsonObject>(new jsonObject()))->data;
+						newlyObject = &arrays.top()->emplace_back().data;
 					}
 
-					newlyObject->push_back({ move(key), objectSmartPointer<jsonObject>(new jsonObject()) });
+					newlyObject->push_back({ move(key), jsonObject() });
 				}
 				else
 				{
@@ -384,7 +384,7 @@ namespace json
 
 					if (ptr.second != &parsedData)
 					{
-						dictionaries.top().second->data.push_back({ move(ptr.first), objectSmartPointer<jsonObject>(ptr.second) });
+						dictionaries.top().second->data.push_back({ move(ptr.first), jsonObject(*ptr.second) });
 					}
 				}
 
@@ -395,9 +395,9 @@ namespace json
 				{
 					auto& currentArray = arrays.top();
 
-					objectSmartPointer<jsonObject> object(new jsonObject());
+					jsonObject object;
 
-					auto& newArray = object->data.emplace_back(make_pair(""s, vector<objectSmartPointer<jsonObject>>())).second;
+					auto& newArray = object.data.emplace_back(make_pair(""s, vector<jsonObject>())).second;
 
 					arrays.push(&std::get<static_cast<size_t>(variantTypeEnum::jJSONArray)>(newArray));
 
@@ -405,7 +405,7 @@ namespace json
 				}
 				else if (arrays.size())
 				{
-					auto& newArray = std::get<objectSmartPointer<jsonObject>>(*JSONParser::findObject(*arrays.top()))->data.emplace_back(make_pair(move(key), vector<objectSmartPointer<jsonObject>>())).second;
+					auto& newArray = std::get<jsonObject>(*JSONParser::findObject(*arrays.top())).data.emplace_back(make_pair(move(key), vector<jsonObject>())).second;
 
 					arrays.push(&std::get<static_cast<size_t>(variantTypeEnum::jJSONArray)>(newArray));
 				}
@@ -416,7 +416,7 @@ namespace json
 						dictionaries.push({ ""s, &parsedData });
 					}
 
-					auto& newArray = dictionaries.top().second->data.emplace_back(make_pair(move(key), vector<objectSmartPointer<jsonObject>>())).second;
+					auto& newArray = dictionaries.top().second->data.emplace_back(make_pair(move(key), vector<jsonObject>())).second;
 
 					arrays.push(&std::get<static_cast<size_t>(variantTypeEnum::jJSONArray)>(newArray));
 				}
@@ -545,7 +545,7 @@ namespace json
 				{
 					const auto& object = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(i.second);
 
-					objects.push(object.get());
+					objects.push(&object);
 				}
 			}
 		}
@@ -697,7 +697,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API const vector<utility::objectSmartPointer<utility::jsonObject>>& JSONParser::get<vector<utility::objectSmartPointer<utility::jsonObject>>>(const string& key) const
+	JSON_API const vector<utility::jsonObject>& JSONParser::get<vector<utility::jsonObject>>(const string& key) const
 	{
 		auto [result, success] = find(key, parsedData.data);
 
@@ -706,11 +706,11 @@ namespace json
 			throw exceptions::CantFindValueException(key);
 		}
 
-		return std::get<vector<utility::objectSmartPointer<utility::jsonObject>>>(result->second);
+		return std::get<vector<utility::jsonObject>>(result->second);
 	}
 
 	template<>
-	JSON_API const utility::objectSmartPointer<utility::jsonObject>& JSONParser::get<utility::objectSmartPointer<utility::jsonObject>>(const string& key) const
+	JSON_API const utility::jsonObject& JSONParser::get<utility::jsonObject>(const string& key) const
 	{
 		auto [result, success] = find(key, parsedData.data);
 
@@ -719,7 +719,7 @@ namespace json
 			throw exceptions::CantFindValueException(key);
 		}
 
-		return std::get<utility::objectSmartPointer<utility::jsonObject>>(result->second);
+		return std::get<utility::jsonObject>(result->second);
 	}
 
 	nullptr_t JSONParser::getNull(const string& key) const
@@ -806,14 +806,14 @@ namespace json
 		return std::get<double>(result->second);
 	}
 
-	const vector<utility::objectSmartPointer<utility::jsonObject>>& JSONParser::getArray(const string& key) const
+	const vector<utility::jsonObject>& JSONParser::getArray(const string& key) const
 	{
-		return this->get<vector<utility::objectSmartPointer<utility::jsonObject>>>(key);
+		return this->get<vector<utility::jsonObject>>(key);
 	}
 
-	const utility::objectSmartPointer<utility::jsonObject>& JSONParser::getObject(const string& key) const
+	const utility::jsonObject& JSONParser::getObject(const string& key) const
 	{
-		return this->get<utility::objectSmartPointer<utility::jsonObject>>(key);
+		return this->get<utility::jsonObject>(key);
 	}
 
 	const utility::jsonObject& JSONParser::getParsedData() const

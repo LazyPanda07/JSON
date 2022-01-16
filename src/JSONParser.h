@@ -64,11 +64,11 @@ namespace json
 	private:
 		static utility::jsonObject::variantType getValue(const std::string& value);
 
-		static void insertKeyValueData(std::string&& key, const std::string& value, utility::jsonObject*& ptr, std::vector<utility::objectSmartPointer<utility::jsonObject>>* currentArray);
+		static void insertKeyValueData(std::string&& key, const std::string& value, utility::jsonObject*& ptr, std::vector<utility::jsonObject>* currentArray);
 
 		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(const std::string& key, const std::vector<std::pair<std::string, variantType>>& start);
 
-		static utility::jsonObject::variantType* findObject(const std::vector<utility::objectSmartPointer<utility::jsonObject>>& currentArray);
+		static utility::jsonObject::variantType* findObject(const std::vector<utility::jsonObject>& currentArray);
 
 		static bool isStringSymbol(char symbol);
 
@@ -239,14 +239,14 @@ namespace json
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const std::vector<utility::objectSmartPointer<utility::jsonObject>>& getArray(const std::string& key) const;
+		const std::vector<utility::jsonObject>& getArray(const std::string& key) const;
 
 		/// @brief Get JSON object. Find and get first value of given key
 		/// @param key JSON Key
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const utility::objectSmartPointer<utility::jsonObject>& getObject(const std::string& key) const;
+		const utility::jsonObject& getObject(const std::string& key) const;
 
 		/// @brief Getter for parsedData
 		/// @return parsedData

@@ -59,16 +59,16 @@ namespace json
 
 				case json::utility::variantTypeEnum::jJSONArray:
 				{
-					const vector<objectSmartPointer<jsonObject>>& currentArray = get<vector<objectSmartPointer<jsonObject>>>(value);
-					vector<objectSmartPointer<jsonObject>> tem;
+					const vector<jsonObject>& currentArray = get<vector<jsonObject>>(value);
+					vector<jsonObject> tem;
 
 					for (const auto& i : currentArray)
 					{
-						objectSmartPointer<jsonObject> object = make_object<jsonObject>();
+						jsonObject object;
 
-						appendData("", i->data.front().second, object->data);
+						appendData("", i.data.front().second, object.data);
 
-						appendArray(move(object->data.front().second), tem);
+						appendArray(move(object.data.front().second), tem);
 					}
 
 					data.push_back({ key, move(tem) });
@@ -78,7 +78,7 @@ namespace json
 
 				case json::utility::variantTypeEnum::jJSONObject:
 				{
-					objectSmartPointer<jsonObject> tem = make_object<jsonObject>(*get<objectSmartPointer<jsonObject>>(value));
+					jsonObject tem = get<jsonObject>(value);
 
 					data.push_back({ key, move(tem) });
 				}
@@ -205,7 +205,7 @@ namespace json
 			return get<double>(it->second);
 		}
 
-		const vector<objectSmartPointer<jsonObject>>& jsonObject::getArray(const string& key) const
+		const vector<jsonObject>& jsonObject::getArray(const string& key) const
 		{
 			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
 
@@ -214,10 +214,10 @@ namespace json
 				throw exceptions::CantFindValueException(key);
 			}
 
-			return get<vector<objectSmartPointer<jsonObject>>>(it->second);
+			return get<vector<jsonObject>>(it->second);
 		}
 
-		const objectSmartPointer<jsonObject>& jsonObject::getObject(const string& key) const
+		const jsonObject& jsonObject::getObject(const string& key) const
 		{
 			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
 
@@ -226,7 +226,7 @@ namespace json
 				throw exceptions::CantFindValueException(key);
 			}
 
-			return get<objectSmartPointer<jsonObject>>( it->second);
+			return get<jsonObject>( it->second);
 		}
 
 		bool jsonObject::contains(const string& key, utility::variantTypeEnum type) const
@@ -424,10 +424,10 @@ namespace json
 
 			case variantTypeEnum::jJSONObject:
 			{
-				const objectSmartPointer<jsonObject>& ref = get<objectSmartPointer<jsonObject>>(value);
+				const jsonObject& ref = get<jsonObject>(value);
 
-				auto start = ref->data.begin();
-				auto end = ref->data.end();
+				auto start = ref.data.begin();
+				auto end = ref.data.end();
 
 				outputStream << "{\n";
 
@@ -484,7 +484,7 @@ namespace json
 
 			for (size_t i = 0; i < jsonArray.size(); i++)
 			{
-				for (const auto& j : jsonArray[i]->data)
+				for (const auto& j : jsonArray[i].data)
 				{
 					outputStream << offset;
 
@@ -495,18 +495,18 @@ namespace json
 			return outputStream;
 		}
 
-		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, vector<objectSmartPointer<jsonObject>>& jsonArray)
+		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, vector<jsonObject>& jsonArray)
 		{
-			objectSmartPointer<jsonObject> object = make_object<jsonObject>();
+			jsonObject object;
 
-			object->data.push_back(make_pair(""s, move(value)));
+			object.data.push_back(make_pair(""s, move(value)));
 
 			jsonArray.push_back(move(object));
 		}
 
 		JSON_API_FUNCTION string getJSONVersion()
 		{
-			return "1.8.3"s;
+			return "1.9.0"s;
 		}
 	}
 }

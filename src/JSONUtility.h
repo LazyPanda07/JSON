@@ -43,18 +43,6 @@ namespace json
 			jJSONObject
 		};
 
-#ifdef JSON_DLL
-		/// @brief Using declaration for smart pointers
-		/// @tparam T Data type of smart pointer
-		template<typename T>
-		using objectSmartPointer = std::shared_ptr<T>;
-#else
-		/// @brief Using declaration for smart pointers
-		/// @tparam T Data type of smart pointer
-		template<typename T>
-		using objectSmartPointer = std::unique_ptr<T>;
-#endif // JSON_API
-
 		/// <summary>
 		/// Describes all JSON types
 		/// </summary>
@@ -67,8 +55,8 @@ namespace json
 			int64_t,
 			uint64_t,
 			double,
-			std::vector<objectSmartPointer<jsonStruct>>,
-			objectSmartPointer<jsonStruct>
+			std::vector<jsonStruct>,
+			jsonStruct
 			>;
 
 		/// @brief JSON object
@@ -136,14 +124,14 @@ namespace json
 			/// @return JSON array
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			const std::vector<objectSmartPointer<jsonObject>>& getArray(const std::string& key) const;
+			const std::vector<jsonObject>& getArray(const std::string& key) const;
 
 			/// @brief Get JSON object. Find and get value only for this JSON object
 			/// @param key JSON Key
 			/// @return JSON object
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			const objectSmartPointer<jsonObject>& getObject(const std::string& key) const;
+			const jsonObject& getObject(const std::string& key) const;
 
 			/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
 			/// @param key Object name
@@ -189,30 +177,10 @@ namespace json
 
 		/// @brief Append jsonObject::variantType value to array
 		/// @param value JSON value
-		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, std::vector<objectSmartPointer<jsonObject>>& jsonArray);
+		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, std::vector<jsonObject>& jsonArray);
 
 		/// @brief Get current version of JSON project
 		/// @return Current version of JSON project
 		JSON_API_FUNCTION std::string getJSONVersion();
-
-		/// @brief Make function for objectSmartPointer
-		/// @tparam T Data type of smart pointer
-		/// @param ...args Construct arguments
-		/// @return Newly created objectSmartPointer
-		template<typename T, typename... Args>
-		objectSmartPointer<T> make_object(Args&&... args);
-	}
-}
-
-template<typename T, typename... Args>
-json::utility::objectSmartPointer<T> json::utility::make_object(Args&&... args)
-{
-	if constexpr (std::is_same_v<objectSmartPointer<T>, std::unique_ptr<T>>)
-	{
-		return std::make_unique<T>(std::forward<Args>(args)...);
-	}
-	else if constexpr (std::is_same_v<objectSmartPointer<T>, std::shared_ptr<T>>)
-	{
-		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 }

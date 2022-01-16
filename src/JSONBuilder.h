@@ -139,13 +139,25 @@ namespace json
 		/// @param key JSON key
 		/// @param value JSON array
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendArray(const std::string& key, std::vector<utility::objectSmartPointer<utility::jsonObject>>&& value);
+		JSONBuilder& appendArray(const std::string& key, std::vector<utility::jsonObject>&& value);
+
+		/// @brief Add JSON key - JSON array
+		/// @param key JSON key
+		/// @param value JSON array
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendArray(const std::string& key, const std::vector<utility::jsonObject>& value);
 
 		/// @brief Add JSON key - JSON object
 		/// @param key JSON key
 		/// @param value JSON object
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendObject(const std::string& key, utility::objectSmartPointer<utility::jsonObject>&& value);
+		JSONBuilder& appendObject(const std::string& key, utility::jsonObject&& value);
+
+		/// @brief Add JSON key - JSON object
+		/// @param key JSON key
+		/// @param value JSON object
+		/// @return Reference to current JSONBuilder instance
+		JSONBuilder& appendObject(const std::string& key, const utility::jsonObject& value);
 
 		/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
 		/// @param key Object name

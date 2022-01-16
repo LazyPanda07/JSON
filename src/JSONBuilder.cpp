@@ -26,7 +26,7 @@ namespace json
 		{
 			if (it->second.index() == static_cast<int>(utility::variantTypeEnum::jJSONObject))
 			{
-				vector<pair<string, variantType>>& data = ::get<utility::objectSmartPointer<utility::jsonObject>>(it->second)->data;
+				vector<pair<string, variantType>>& data = ::get<utility::jsonObject>(it->second).data;
 
 				auto result = find(key, data);
 
@@ -58,7 +58,7 @@ namespace json
 		{
 			if (it->second.index() == static_cast<int>(utility::variantTypeEnum::jJSONObject))
 			{
-				const vector<pair<string, variantType>>& data = ::get<utility::objectSmartPointer<utility::jsonObject>>(it->second)->data;
+				const vector<pair<string, variantType>>& data = ::get<utility::jsonObject>(it->second).data;
 
 				auto result = find(key, data);
 
@@ -219,18 +219,8 @@ namespace json
 		return *this;
 	}
 
-#ifdef JSON_DLL
 	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<vector<utility::objectSmartPointer<utility::jsonObject>>>(const pair<string, vector<utility::objectSmartPointer<utility::jsonObject>>>& value)
-	{
-		builderData.data.push_back(value);
-
-		return *this;
-	}
-#endif // JSON_DLL
-
-	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<vector<utility::objectSmartPointer<utility::jsonObject>>>(pair<string, vector<utility::objectSmartPointer<utility::jsonObject>>>&& value) noexcept
+	JSON_API JSONBuilder& JSONBuilder::push_back<vector<utility::jsonObject>>(pair<string, vector<utility::jsonObject>>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -240,7 +230,7 @@ namespace json
 	template<>
 	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject*>(const pair<string, utility::jsonObject*>& value)
 	{
-		builderData.data.push_back(make_pair(value.first, utility::objectSmartPointer<utility::jsonObject>(value.second)));
+		builderData.data.push_back(make_pair(value.first, utility::jsonObject(*value.second)));
 
 		return *this;
 	}
@@ -248,23 +238,13 @@ namespace json
 	template<>
 	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject*>(pair<string, utility::jsonObject*>&& value) noexcept
 	{
-		builderData.data.push_back(make_pair(value.first, utility::objectSmartPointer<utility::jsonObject>(value.second)));
+		builderData.data.push_back(make_pair(value.first, utility::jsonObject(*value.second)));
 
 		return *this;
 	}
 
-#ifdef JSON_DLL
 	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<utility::objectSmartPointer<utility::jsonObject>>(const pair<string, utility::objectSmartPointer<utility::jsonObject>>& value)
-	{
-		builderData.data.push_back(value);
-
-		return *this;
-	}
-#endif // JSON_DLL
-
-	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<utility::objectSmartPointer<utility::jsonObject>>(pair<string, utility::objectSmartPointer<utility::jsonObject>>&& value) noexcept
+	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject>(pair<string, utility::jsonObject>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -272,7 +252,7 @@ namespace json
 	}
 
 	template<>
-	JSONBuilder& JSONBuilder::push_back<int>(const pair<string, int>& value)
+	JSON_API JSONBuilder& JSONBuilder::push_back<int>(const pair<string, int>& value)
 	{
 		this->push_back<int64_t>(value);
 
@@ -280,7 +260,7 @@ namespace json
 	}
 
 	template<>
-	JSONBuilder& JSONBuilder::push_back<int>(pair<string, int>&& value) noexcept
+	JSON_API JSONBuilder& JSONBuilder::push_back<int>(pair<string, int>&& value) noexcept
 	{
 		this->push_back<int64_t>(move(value));
 
@@ -288,7 +268,7 @@ namespace json
 	}
 
 	template<>
-	JSONBuilder& JSONBuilder::push_back<uint32_t>(const pair<string, uint32_t>& value)
+	JSON_API JSONBuilder& JSONBuilder::push_back<uint32_t>(const pair<string, uint32_t>& value)
 	{
 		this->push_back<uint64_t>(value);
 
@@ -296,7 +276,7 @@ namespace json
 	}
 
 	template<>
-	JSONBuilder& JSONBuilder::push_back<uint32_t>(pair<string, uint32_t>&& value) noexcept
+	JSON_API JSONBuilder& JSONBuilder::push_back<uint32_t>(pair<string, uint32_t>&& value) noexcept
 	{
 		this->push_back<uint64_t>(move(value));
 
@@ -333,14 +313,24 @@ namespace json
 		return this->append(key, value);
 	}
 
-	JSONBuilder& JSONBuilder::appendArray(const string& key, vector<utility::objectSmartPointer<utility::jsonObject>>&& value)
+	JSONBuilder& JSONBuilder::appendArray(const string& key, vector<utility::jsonObject>&& value)
 	{
 		return this->append(key, move(value));
 	}
 
-	JSONBuilder& JSONBuilder::appendObject(const string& key, utility::objectSmartPointer<utility::jsonObject>&& value)
+	JSONBuilder& JSONBuilder::appendArray(const string& key, const vector<utility::jsonObject>& value)
+	{
+		return this->append(key, value);
+	}
+
+	JSONBuilder& JSONBuilder::appendObject(const string& key, utility::jsonObject&& value)
 	{
 		return this->append(key, move(value));
+	}
+
+	JSONBuilder& JSONBuilder::appendObject(const string& key, const utility::jsonObject& value)
+	{
+		return this->append(key, value);
 	}
 
 	bool JSONBuilder::contains(const string& key, utility::variantTypeEnum type) const
@@ -366,7 +356,7 @@ namespace json
 				{
 					const auto& object = get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(i.second);
 
-					objects.push(object.get());
+					objects.push(&object);
 				}
 			}
 		}

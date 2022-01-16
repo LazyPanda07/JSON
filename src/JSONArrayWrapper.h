@@ -6,15 +6,15 @@ namespace json
 {
 	namespace utility
 	{
-		/// @brief Wrapper around vector<objectSmartPointer<jsonObject>> for simplify some operation
+		/// @brief Wrapper around vector<jsonObject> for simplify some operation
 		class JSON_API JSONArrayWrapper
 		{
 		private:
-			const std::vector<objectSmartPointer<jsonObject>>& array;
+			const std::vector<jsonObject>& array;
 			std::string* offset;
 
 		public:
-			explicit JSONArrayWrapper(const std::vector<objectSmartPointer<jsonObject>>& array, std::string* offset = nullptr);
+			explicit JSONArrayWrapper(const std::vector<jsonObject>& array, std::string* offset = nullptr);
 
 			explicit JSONArrayWrapper(const jsonObject::variantType& array, std::string* offset = nullptr);
 
@@ -60,7 +60,7 @@ namespace json
 			/// @param index Array index
 			/// @return 
 			/// @exception std::out_of_range 
-			const objectSmartPointer<jsonObject>& getObject(size_t index) const;
+			const jsonObject& getObject(size_t index) const;
 
 			/// @brief Convert wrapped array into array with nullptr_t values
 			/// @return 
@@ -88,7 +88,7 @@ namespace json
 
 			/// @brief Convert wrapped array into array with object values
 			/// @return 
-			std::vector<objectSmartPointer<jsonObject>> getAsObjectArray() const;
+			std::vector<jsonObject> getAsObjectArray() const;
 
 			/// @brief Get offset for output
 			/// @return 
@@ -100,13 +100,13 @@ namespace json
 
 			/// @brief Get reference to wrapped array
 			/// @return array
-			const std::vector<objectSmartPointer<jsonObject>>& operator * () const;
+			const std::vector<jsonObject>& operator * () const;
 
-			/// @brief Get objectSmartPointer<jsonObject> at given index
+			/// @brief Get jsonObject at given index
 			/// @param index Array index
 			/// @return 
 			/// @exception std::out_of_range 
-			const objectSmartPointer<jsonObject>& operator [] (size_t index) const;
+			const jsonObject& operator [] (size_t index) const;
 
 			~JSONArrayWrapper() = default;
 		};

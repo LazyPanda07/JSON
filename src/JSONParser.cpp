@@ -750,11 +750,14 @@ namespace json
 
 		switch (type)
 		{
-		case json::utility::variantTypeEnum::jUInt64_t:
+		case utility::variantTypeEnum::jUInt64_t:
 			return static_cast<int64_t>(std::get<uint64_t>(result->second));
 
-		case json::utility::variantTypeEnum::jDouble:
+		case utility::variantTypeEnum::jDouble:
 			return static_cast<int64_t>(std::get<double>(result->second));
+
+		case utility::variantTypeEnum::jString:
+			return stoll(std::get<string>(result->second));
 		}
 
 		return std::get<int64_t>(result->second);
@@ -773,11 +776,14 @@ namespace json
 
 		switch (type)
 		{
-		case json::utility::variantTypeEnum::jInt64_t:
+		case utility::variantTypeEnum::jInt64_t:
 			return static_cast<uint64_t>(std::get<int64_t>(result->second));
 
-		case json::utility::variantTypeEnum::jDouble:
+		case utility::variantTypeEnum::jDouble:
 			return static_cast<uint64_t>(std::get<double>(result->second));
+
+		case utility::variantTypeEnum::jString:
+			return stoull(std::get<string>(result->second));
 		}
 
 		return std::get<uint64_t>(result->second);
@@ -796,11 +802,14 @@ namespace json
 
 		switch (type)
 		{
-		case json::utility::variantTypeEnum::jInt64_t:
+		case utility::variantTypeEnum::jInt64_t:
 			return static_cast<double>(std::get<int64_t>(result->second));
 
-		case json::utility::variantTypeEnum::jUInt64_t:
+		case utility::variantTypeEnum::jUInt64_t:
 			return static_cast<double>(std::get<uint64_t>(result->second));
+
+		case utility::variantTypeEnum::jString:
+			return stod(std::get<string>(result->second));
 		}
 
 		return std::get<double>(result->second);

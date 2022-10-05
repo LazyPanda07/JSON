@@ -248,31 +248,24 @@ namespace json
 		switch (symbol)
 		{
 		case 'n':
-
 			return '\n';
 
 		case 't':
-
 			return '\t';
 
 		case '"':
-
 			return '"';
 
 		case '\\':
-
 			return '\\';
 
 		case 'r':
-
 			return '\r';
 
 		case 'b':
-
 			return '\b';
 
 		case 'f':
-
 			return '\f';
 
 		default:

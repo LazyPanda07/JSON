@@ -411,7 +411,7 @@ namespace json
 
 		case json::JSONBuilder::outputType::minimize:
 			result = outputStream.str();
-			bool jsonString = false;
+			bool isJsonString = false;
 
 			for (size_t i = 0; i < result.size(); i++)
 			{
@@ -419,10 +419,10 @@ namespace json
 				{
 					if (result[i - 1] != '\\')
 					{
-						jsonString = !jsonString;
+						isJsonString = !isJsonString;
 					}
 				}
-				else if (isspace(result[i]) && !jsonString)
+				else if (isspace(result[i]) && !isJsonString)
 				{
 					result.erase(result.begin() + i);
 

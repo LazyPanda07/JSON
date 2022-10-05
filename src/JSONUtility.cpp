@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <regex>
 
 #include <Windows.h>
 
@@ -405,8 +406,8 @@ namespace json
 				break;
 
 			case variantTypeEnum::jString:
-				outputStream << '"' << get<string>(value) << '"';
-
+				outputStream << '"' << regex_replace(get<string>(value), regex(R"(\\)"), R"(\\)") << '"';
+			
 				break;
 
 			case variantTypeEnum::jBool:
@@ -518,7 +519,7 @@ namespace json
 
 		JSON_API_FUNCTION string getJSONVersion()
 		{
-			return "1.9.0"s;
+			return "1.9.1"s;
 		}
 	}
 }

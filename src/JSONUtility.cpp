@@ -6,8 +6,7 @@
 
 #include <Windows.h>
 
-#include "JSONArrayWrapper.h"
-
+#include "OutputOperations.h"
 #include "Exceptions/WrongEncodingException.h"
 #include "Exceptions/CantFindValueException.h"
 
@@ -17,6 +16,102 @@ namespace json
 {
 	namespace utility
 	{
+		using ConstJSONIterator = jsonObject::ConstJSONIterator;
+		using ConstJSONIteratorType = jsonObject::ConstJSONIterator::ConstJSONIteratorType;
+
+		ConstJSONIterator::ConstJSONIterator(const ConstJSONIterator& other) :
+			begin(other.begin),
+			end(other.end),
+			current(other.current)
+		{
+
+		}
+
+		ConstJSONIterator::ConstJSONIterator(ConstJSONIteratorType begin, ConstJSONIteratorType end, ConstJSONIteratorType start) :
+			begin(begin),
+			end(end),
+			current(start)
+		{
+
+		}
+
+		const ConstJSONIteratorType& ConstJSONIterator::getBegin() const
+		{
+			return begin;
+		}
+
+		const ConstJSONIteratorType& ConstJSONIterator::getEnd() const
+		{
+			return end;
+		}
+
+		ConstJSONIterator ConstJSONIterator::operator++ (int) noexcept
+		{
+			ConstJSONIterator it(*this);
+
+			++(*this);
+
+			return it;
+		}
+
+		const ConstJSONIterator& ConstJSONIterator::operator++ () noexcept
+		{
+			if (current == end)
+			{
+				return *this;
+			}
+
+			++current;
+
+			return *this;
+		}
+
+		ConstJSONIterator ConstJSONIterator::operator-- (int) noexcept
+		{
+			ConstJSONIterator it(*this);
+
+			--current;
+
+			return it;
+		}
+
+		const ConstJSONIterator& ConstJSONIterator::operator-- () noexcept
+		{
+			if (current == begin)
+			{
+				return *this;
+			}
+
+			--current;
+
+			return *this;
+		}
+
+		const pair<string, jsonObject::variantType>& ConstJSONIterator::operator* () const noexcept
+		{
+			return *current;
+		}
+
+		const ConstJSONIteratorType& ConstJSONIterator::operator-> () const noexcept
+		{
+			return current;
+		}
+
+		bool ConstJSONIterator::operator == (const ConstJSONIterator& other) const noexcept
+		{
+			return current == other.current;
+		}
+
+		bool ConstJSONIterator::operator != (const ConstJSONIterator& other) const noexcept
+		{
+			return current != other.current;
+		}
+
+		ConstJSONIterator::operator ConstJSONIteratorType () const
+		{
+			return current;
+		}
+
 		jsonObject::jsonObject(const jsonObject& other)
 		{
 			(*this) = other;
@@ -247,7 +342,17 @@ namespace json
 			return any_of(data.begin(), data.end(), [&key, &type](const pair<string, jsonObject::variantType>& data) { return data.first == key && data.second.index() == static_cast<size_t>(type); });
 		}
 
-		JSON_API_FUNCTION string toUTF8JSON(const string& source, uint32_t sourceCodePage)
+		ConstJSONIterator jsonObject::begin() const noexcept
+		{
+			return ConstJSONIterator(data.cbegin(), data.cend(), data.cbegin());
+		}
+
+		ConstJSONIterator jsonObject::end() const noexcept
+		{
+			return ConstJSONIterator(data.cbegin(), data.cend(), data.cend());
+		}
+
+		string toUTF8JSON(const string& source, uint32_t sourceCodePage)
 		{
 			string result;
 			wstring tem;
@@ -318,7 +423,7 @@ namespace json
 			return result;
 		}
 
-		JSON_API_FUNCTION string fromUTF8JSON(const string& source, uint32_t resultCodePage)
+		string fromUTF8JSON(const string& source, uint32_t resultCodePage)
 		{
 			string result;
 			wstring tem;
@@ -389,7 +494,7 @@ namespace json
 			return result;
 		}
 
-		JSON_API_FUNCTION void outputJSONType(ostream& outputStream, const jsonObject::variantType& value, bool isLast, string& offset)
+		void outputJSONType(ostream& outputStream, const jsonObject::variantType& value, bool isLast, string& offset)
 		{
 			variantTypeEnum type = static_cast<variantTypeEnum>(value.index());
 
@@ -482,33 +587,7 @@ namespace json
 			outputStream << endl;
 		}
 
-		JSON_API_FUNCTION ostream& operator << (ostream& outputStream, JSONArrayWrapper jsonData)
-		{
-			outputStream << '[' << endl;
-
-			auto& jsonArray = *jsonData;
-
-			if (!jsonData.getOffset())
-			{
-				throw runtime_error("JSONArrayWrapper offset was nullptr");
-			}
-
-			string& offset = *jsonData.getOffset();
-
-			for (size_t i = 0; i < jsonArray.size(); i++)
-			{
-				for (const auto& j : jsonArray[i].data)
-				{
-					outputStream << offset;
-
-					outputJSONType(outputStream, j.second, i + 1 == jsonArray.size(), offset);
-				}
-			}
-
-			return outputStream;
-		}
-
-		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, vector<jsonObject>& jsonArray)
+		void appendArray(jsonObject::variantType&& value, vector<jsonObject>& jsonArray)
 		{
 			jsonObject object;
 
@@ -517,9 +596,9 @@ namespace json
 			jsonArray.push_back(move(object));
 		}
 
-		JSON_API_FUNCTION string getJSONVersion()
+		string getJSONVersion()
 		{
-			return "1.9.1"s;
+			return "2.0";
 		}
 	}
 }

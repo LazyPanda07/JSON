@@ -19,43 +19,8 @@ namespace json
 		/// @brief JSON object
 		using objectType = utility::jsonObject;
 
-	public:
-		/// @brief Iterator through JSONParser
-		class JSON_API ConstIterator
-		{
-		private:
-			using ConstIteratorType = std::vector<std::pair<std::string, variantType>>::const_iterator;
-
-		private:
-			ConstIteratorType begin;
-			ConstIteratorType end;
-			ConstIteratorType current;
-
-		public:
-			ConstIterator() = default;
-
-			ConstIterator(const ConstIterator& other);
-
-			ConstIterator(ConstIteratorType begin, ConstIteratorType end, ConstIteratorType start);
-
-			ConstIterator operator ++ (int) noexcept;
-
-			const ConstIterator& operator ++ () noexcept;
-
-			ConstIterator operator -- (int) noexcept;
-
-			const ConstIterator& operator -- () noexcept;
-
-			const ConstIteratorType& operator * () const noexcept;
-
-			const ConstIteratorType& operator -> () const noexcept;
-
-			bool operator == (const ConstIterator& other) const noexcept;
-
-			bool operator != (const ConstIterator& other) const noexcept;
-
-			~ConstIterator() = default;
-		};
+		/// @brief Iterator for jsonObject
+		using ConstJSONIterator = utility::jsonObject::ConstJSONIterator;
 
 	private:
 		std::string rawData;
@@ -167,17 +132,9 @@ namespace json
 		/// <returns>rawData</returns>
 		const std::string& operator * () const;
 
-		/// <summary>
-		/// Get iterator to begin of the JSON parsedData
-		/// </summary>
-		/// <returns>begin iterator</returns>
-		ConstIterator begin() const noexcept;
+		ConstJSONIterator begin() const noexcept;
 
-		/// <summary>
-		/// Get iterator to end of the JSON parsedData
-		/// </summary>
-		/// <returns>end iterator</returns>
-		ConstIterator end() const noexcept;
+		ConstJSONIterator end() const noexcept;
 
 		/// <summary>
 		/// <para>Getter for all JSON parsed values</para>

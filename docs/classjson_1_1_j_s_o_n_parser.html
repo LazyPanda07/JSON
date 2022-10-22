@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">JSON
-   &#160;<span id="projectnumber">1.9.1</span>
+   &#160;<span id="projectnumber">2.0</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++17.</div>
   </td>
@@ -84,7 +84,6 @@ $(document).ready(function(){initNavTree('classjson_1_1_j_s_o_n_parser.html','')
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
@@ -99,12 +98,6 @@ $(document).ready(function(){initNavTree('classjson_1_1_j_s_o_n_parser.html','')
 
 <p><code>#include &quot;<a class="el" href="_j_s_o_n_parser_8h_source.html">JSONParser.h</a>&quot;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">ConstIterator</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator through <a class="el" href="classjson_1_1_j_s_o_n_parser.html" title="Parser for JSON.">JSONParser</a>.  <a href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a98013c1d3c0661d58ba0fb4fca64f804"><td class="memItemLeft" align="right" valign="top"><a id="a98013c1d3c0661d58ba0fb4fca64f804"></a>
@@ -115,6 +108,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#ad4795080e49dd316122d9b1d67772fb4">objectType</a> = <a class="el" href="structjson_1_1utility_1_1json_object.html">utility::jsonObject</a></td></tr>
 <tr class="memdesc:ad4795080e49dd316122d9b1d67772fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">JSON object. <br /></td></tr>
 <tr class="separator:ad4795080e49dd316122d9b1d67772fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a978acc40730a8d003ebcece6c513a662"><td class="memItemLeft" align="right" valign="top"><a id="a978acc40730a8d003ebcece6c513a662"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a978acc40730a8d003ebcece6c513a662">ConstJSONIterator</a> = <a class="el" href="classjson_1_1utility_1_1json_object_1_1_const_j_s_o_n_iterator.html">utility::jsonObject::ConstJSONIterator</a></td></tr>
+<tr class="memdesc:a978acc40730a8d003ebcece6c513a662"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator for jsonObject. <br /></td></tr>
+<tr class="separator:a978acc40730a8d003ebcece6c513a662"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -166,12 +163,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a686542fead8a129a1e5cc9c5f065f4ea"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a686542fead8a129a1e5cc9c5f065f4ea">operator*</a> () const</td></tr>
 <tr class="memdesc:a686542fead8a129a1e5cc9c5f065f4ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for rawData  <a href="classjson_1_1_j_s_o_n_parser.html#a686542fead8a129a1e5cc9c5f065f4ea">More...</a><br /></td></tr>
 <tr class="separator:a686542fead8a129a1e5cc9c5f065f4ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82f1c544894cd1716f634c29b675099e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">ConstIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a82f1c544894cd1716f634c29b675099e">begin</a> () const noexcept</td></tr>
-<tr class="memdesc:a82f1c544894cd1716f634c29b675099e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get iterator to begin of the JSON parsedData  <a href="classjson_1_1_j_s_o_n_parser.html#a82f1c544894cd1716f634c29b675099e">More...</a><br /></td></tr>
-<tr class="separator:a82f1c544894cd1716f634c29b675099e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab139dd563b39a4c12d85475f77e66da5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">ConstIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#ab139dd563b39a4c12d85475f77e66da5">end</a> () const noexcept</td></tr>
-<tr class="memdesc:ab139dd563b39a4c12d85475f77e66da5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get iterator to end of the JSON parsedData  <a href="classjson_1_1_j_s_o_n_parser.html#ab139dd563b39a4c12d85475f77e66da5">More...</a><br /></td></tr>
-<tr class="separator:ab139dd563b39a4c12d85475f77e66da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a046006b53a3a90f75cb86c349711ad1d"><td class="memItemLeft" align="right" valign="top"><a id="a046006b53a3a90f75cb86c349711ad1d"></a>
+<a class="el" href="classjson_1_1_j_s_o_n_parser.html#a978acc40730a8d003ebcece6c513a662">ConstJSONIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const noexcept</td></tr>
+<tr class="separator:a046006b53a3a90f75cb86c349711ad1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8340d40677de6dde9660165d6c577f2e"><td class="memItemLeft" align="right" valign="top"><a id="a8340d40677de6dde9660165d6c577f2e"></a>
+<a class="el" href="classjson_1_1_j_s_o_n_parser.html#a978acc40730a8d003ebcece6c513a662">ConstJSONIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const noexcept</td></tr>
+<tr class="separator:a8340d40677de6dde9660165d6c577f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dd0583b33740befc96541ff2de2ac9f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a3dd0583b33740befc96541ff2de2ac9f"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a3dd0583b33740befc96541ff2de2ac9f">get</a> (const std::string &amp;key) const</td></tr>
 <tr class="separator:a3dd0583b33740befc96541ff2de2ac9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -427,34 +424,6 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a82f1c544894cd1716f634c29b675099e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82f1c544894cd1716f634c29b675099e">&#9670;&nbsp;</a></span>begin()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">ConstIterator</a> json::JSONParser::begin </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get iterator to begin of the JSON parsedData </p>
-<dl class="section return"><dt>Returns</dt><dd>begin iterator</dd></dl>
-
-</div>
-</div>
 <a id="ae9b1ce07beb57a7af170323a553c23bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9b1ce07beb57a7af170323a553c23bb">&#9670;&nbsp;</a></span>contains()</h2>
 
@@ -489,34 +458,6 @@ Friends</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ab139dd563b39a4c12d85475f77e66da5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab139dd563b39a4c12d85475f77e66da5">&#9670;&nbsp;</a></span>end()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classjson_1_1_j_s_o_n_parser_1_1_const_iterator.html">ConstIterator</a> json::JSONParser::end </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get iterator to end of the JSON parsedData </p>
-<dl class="section return"><dt>Returns</dt><dd>end iterator</dd></dl>
 
 </div>
 </div>

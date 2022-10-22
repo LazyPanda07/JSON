@@ -6,7 +6,7 @@ namespace json
 {
 	namespace utility
 	{
-		/// @brief Wrapper around vector<jsonObject> for simplify some operation
+		/// @brief Wrapper around array of jsonObjects for simplify some operation
 		class JSON_API JSONArrayWrapper
 		{
 		private:

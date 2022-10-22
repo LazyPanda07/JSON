@@ -245,6 +245,7 @@
     <ClCompile Include="src\JSONBuilder.cpp" />
     <ClCompile Include="src\JSONParser.cpp" />
     <ClCompile Include="src\JSONUtility.cpp" />
+    <ClCompile Include="src\RecursiveJSONIterator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Exceptions\BaseJSONException.h" />
@@ -255,6 +256,8 @@
     <ClInclude Include="src\JSONBuilder.h" />
     <ClInclude Include="src\JSONParser.h" />
     <ClInclude Include="src\JSONUtility.h" />
+    <ClInclude Include="src\OutputOperations.h" />
+    <ClInclude Include="src\RecursiveJSONIterator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

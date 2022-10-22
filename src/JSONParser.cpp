@@ -22,75 +22,7 @@ bool isNumber(const string& source);
 
 namespace json
 {
-	using ConstIterator = JSONParser::ConstIterator;
-
-	ConstIterator::ConstIterator(const ConstIterator& other) :
-		begin(other.begin),
-		end(other.end),
-		current(other.current)
-	{
-
-	}
-
-	ConstIterator::ConstIterator(ConstIteratorType begin, ConstIteratorType end, ConstIteratorType start) :
-		begin(begin),
-		end(end),
-		current(start)
-	{
-
-	}
-
-	ConstIterator ConstIterator::operator++ (int) noexcept
-	{
-		ConstIterator it(*this);
-
-		++current;
-
-		return it;
-	}
-
-	const ConstIterator& ConstIterator::operator++ () noexcept
-	{
-		++current;
-
-		return *this;
-	}
-
-	ConstIterator ConstIterator::operator-- (int) noexcept
-	{
-		ConstIterator it(*this);
-
-		--current;
-
-		return it;
-	}
-
-	const ConstIterator& ConstIterator::operator-- () noexcept
-	{
-		--current;
-
-		return *this;
-	}
-
-	const ConstIterator::ConstIteratorType& ConstIterator::operator * () const noexcept
-	{
-		return current;
-	}
-
-	const ConstIterator::ConstIteratorType& ConstIterator::operator -> () const noexcept
-	{
-		return **this;
-	}
-
-	bool ConstIterator::operator == (const ConstIterator& other) const noexcept
-	{
-		return current == other.current;
-	}
-
-	bool ConstIterator::operator != (const ConstIterator& other) const noexcept
-	{
-		return current != other.current;
-	}
+	using ConstJSONIterator = utility::jsonObject::ConstJSONIterator;
 
 	utility::jsonObject::variantType JSONParser::getValue(const string& value)
 	{
@@ -591,14 +523,14 @@ namespace json
 		this->parse();
 	}
 
-	ConstIterator JSONParser::begin() const noexcept
+	ConstJSONIterator JSONParser::begin() const noexcept
 	{
-		return ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cbegin());
+		return parsedData.begin();
 	}
 
-	ConstIterator JSONParser::end() const noexcept
+	ConstJSONIterator JSONParser::end() const noexcept
 	{
-		return ConstIterator(parsedData.data.cbegin(), parsedData.data.cend(), parsedData.data.cend());
+		return parsedData.end();
 	}
 
 	const string& JSONParser::getRawData() const
@@ -837,8 +769,8 @@ namespace json
 
 	JSON_API ostream& operator << (ostream& outputStream, const JSONParser& parser)
 	{
-		ConstIterator start = parser.begin();
-		ConstIterator end = parser.end();
+		ConstJSONIterator start = parser.begin();
+		ConstJSONIterator end = parser.end();
 		string offset = "  ";
 
 		outputStream << '{' << endl;

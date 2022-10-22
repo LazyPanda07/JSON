@@ -62,8 +62,54 @@ namespace json
 		/// @brief JSON object
 		struct JSON_API jsonObject
 		{
+		public:
 			using variantType = baseVariantType<jsonObject>;
 
+		public:
+			/// @brief Iterator through jsonObject
+			class JSON_API ConstJSONIterator
+			{
+			public:
+				using ConstJSONIteratorType = std::vector<std::pair<std::string, variantType>>::const_iterator;
+
+			private:
+				ConstJSONIteratorType begin;
+				ConstJSONIteratorType end;
+				ConstJSONIteratorType current;
+
+			public:
+				ConstJSONIterator() = default;
+
+				ConstJSONIterator(const ConstJSONIterator& other);
+
+				ConstJSONIterator(ConstJSONIteratorType begin, ConstJSONIteratorType end, ConstJSONIteratorType start);
+
+				const ConstJSONIteratorType& getBegin() const;
+
+				const ConstJSONIteratorType& getEnd() const;
+
+				ConstJSONIterator operator++(int) noexcept;
+
+				const ConstJSONIterator& operator++() noexcept;
+
+				ConstJSONIterator operator--(int) noexcept;
+
+				const ConstJSONIterator& operator--() noexcept;
+
+				const std::pair<std::string, variantType>& operator*() const noexcept;
+
+				const ConstJSONIteratorType& operator->() const noexcept;
+
+				bool operator==(const ConstJSONIterator& other) const noexcept;
+
+				bool operator!=(const ConstJSONIterator& other) const noexcept;
+
+				operator ConstJSONIteratorType () const;
+
+				~ConstJSONIterator() = default;
+			};
+
+		public:
 			std::vector<std::pair<std::string, variantType>> data;
 
 			jsonObject() = default;
@@ -79,12 +125,12 @@ namespace json
 			/// @brief Copy assignment operator
 			/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
 			/// @return Self
-			jsonObject& operator = (const jsonObject& other);
+			jsonObject& operator=(const jsonObject& other);
 
 			/// @brief Move assignment operator
 			/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
 			/// @return Self
-			jsonObject& operator = (jsonObject&& other) noexcept;
+			jsonObject& operator=(jsonObject&& other) noexcept;
 
 			/// @brief Get null value. Find and get value only for this JSON object
 			/// @param key JSON key
@@ -146,7 +192,17 @@ namespace json
 			/// @param key Object name
 			/// @param type Object type
 			bool contains(const std::string& key, utility::variantTypeEnum type) const;
+
+			ConstJSONIterator begin() const noexcept;
+
+			ConstJSONIterator end() const noexcept;
 		};
+
+		/// @brief Check current iterator with begin or end iterator
+		/// @param iterator jsonObject::ConstJSONIterator
+		/// @param nestedIterator jsonObject::ConstJSONIterator::getBegin() or jsonObject::ConstJSONIterator::getEnd()
+		/// @return 
+		bool operator== (const jsonObject::ConstJSONIterator& iterator, const jsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator);
 
 		/// <summary>
 		/// Encode string to UTF8
@@ -175,15 +231,6 @@ namespace json
 		/// <param name="isLast">is description ends</param>
 		JSON_API_FUNCTION void outputJSONType(std::ostream& outputStream, const jsonObject::variantType& value, bool isLast, std::string& offset);
 
-		/// <summary>
-		/// Output JSON arrays to std::ostream
-		/// </summary>
-		/// <param name="outputStream">std::ostream subclass</param>
-		/// <param name="jsonData">JSON array</param>
-		/// <returns>outputStream</returns>
-		/// <exception cref="std::runtime_error"></exception>
-		JSON_API_FUNCTION std::ostream& operator << (std::ostream& outputStream, class JSONArrayWrapper jsonData);
-
 		/// @brief Append jsonObject::variantType value to array
 		/// @param value JSON value
 		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, std::vector<jsonObject>& jsonArray);
@@ -192,4 +239,9 @@ namespace json
 		/// @return Current version of JSON project
 		JSON_API_FUNCTION std::string getJSONVersion();
 	}
+}
+
+inline bool json::utility::operator== (const jsonObject::ConstJSONIterator& iterator, const jsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator)
+{
+	return static_cast<jsonObject::ConstJSONIterator::ConstJSONIteratorType>(iterator) == nestedIterator;
 }

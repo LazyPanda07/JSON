@@ -202,7 +202,13 @@ namespace json
 		/// @param iterator jsonObject::ConstJSONIterator
 		/// @param nestedIterator jsonObject::ConstJSONIterator::getBegin() or jsonObject::ConstJSONIterator::getEnd()
 		/// @return 
-		bool operator== (const jsonObject::ConstJSONIterator& iterator, const jsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator);
+		bool operator==(const jsonObject::ConstJSONIterator& iterator, const jsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator);
+
+		/// @brief Compare index from variant with enum
+		/// @param index Index from variant
+		/// @param value Value from variantTypeEnum
+		/// @return 
+		constexpr bool operator==(size_t index, variantTypeEnum value);
 
 		/// <summary>
 		/// Encode string to UTF8
@@ -241,7 +247,12 @@ namespace json
 	}
 }
 
-inline bool json::utility::operator== (const jsonObject::ConstJSONIterator& iterator, const jsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator)
+inline bool json::utility::operator==(const jsonObject::ConstJSONIterator& iterator, const jsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator)
 {
 	return static_cast<jsonObject::ConstJSONIterator::ConstJSONIteratorType>(iterator) == nestedIterator;
+}
+
+inline constexpr bool json::utility::operator==(size_t index, variantTypeEnum value)
+{
+	return index == static_cast<size_t>(value);
 }

@@ -146,7 +146,7 @@ namespace json
 
 	utility::jsonObject::variantType* JSONParser::findObject(const vector<utility::jsonObject>& currentArray)
 	{
-		if (currentArray.size() && currentArray.back().data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+		if (currentArray.size() && currentArray.back().data.back().second.index() == utility::variantTypeEnum::jJSONObject)
 		{
 			const utility::jsonObject::variantType* object = &currentArray.back().data.back().second;
 

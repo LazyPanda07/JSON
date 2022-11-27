@@ -152,9 +152,9 @@ namespace json
 
 			while (object->index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 			{
-				auto& data = std::get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(*object).data;
+				auto& data = std::get<json::utility::jsonObject>(*object).data;
 
-				if (data.size() && data.back().second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+				if (data.size() && data.back().second.index() == utility::variantTypeEnum::jJSONObject)
 				{
 					object = &data.back().second;
 				}
@@ -217,7 +217,7 @@ namespace json
 		bool startString = false;
 		bool escapeSymbol = false;
 
-		for (const auto& i : rawData)
+		for (const char& i : rawData)
 		{
 			if (!escapeSymbol && i == '\\')
 			{
@@ -269,7 +269,7 @@ namespace json
 
 					if (object && checkNestedObject)
 					{
-						newlyObject = &std::get<static_cast<size_t>(variantTypeEnum::jJSONObject)>(*object).data;
+						newlyObject = &std::get<jsonObject>(*object).data;
 					}
 					else
 					{
@@ -310,6 +310,8 @@ namespace json
 					if (ptr.second != &parsedData)
 					{
 						dictionaries.top().second->data.push_back({ move(ptr.first), jsonObject(*ptr.second) });
+
+						delete ptr.second;
 					}
 				}
 

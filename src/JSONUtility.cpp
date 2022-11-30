@@ -577,6 +577,23 @@ namespace json
 
 		void appendArray(jsonObject::variantType&& value, vector<jsonObject>& jsonArray)
 		{
+			if (jsonArray.empty())
+			{
+				jsonArray.emplace_back();
+			}
+			else if (jsonArray.size() != 1)
+			{
+				vector<jsonObject> newArray(1);
+				auto& data = newArray[0].data;
+
+				for (const jsonObject& object : jsonArray)
+				{
+					data.insert(data.end(), object.data.begin(), object.data.begin());
+				}
+
+				jsonArray = newArray;
+			}
+
 			jsonArray[0].data.push_back({ "", move(value) });
 		}
 

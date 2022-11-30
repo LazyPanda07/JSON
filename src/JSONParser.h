@@ -27,13 +27,13 @@ namespace json
 		utility::jsonObject parsedData;
 
 	private:
-		static utility::jsonObject::variantType getValue(const std::string& value);
+		static utility::jsonObject::variantType parseValue(const std::string& value);
 
-		static void insertKeyValueData(std::string&& key, const std::string& value, utility::jsonObject*& ptr, std::vector<utility::jsonObject>* currentArray);
+		static void insertKeyValueData(std::string&& key, const std::string& value, utility::jsonObject& ptr);
 
 		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(const std::string& key, const std::vector<std::pair<std::string, variantType>>& start);
 
-		static utility::jsonObject::variantType* findObject(const std::vector<utility::jsonObject>& currentArray);
+		static utility::jsonObject* findObject(const std::vector<utility::jsonObject>& currentArray);
 
 		static bool isStringSymbol(char symbol);
 
@@ -147,7 +147,7 @@ namespace json
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
 		/// <exception cref="std::bad_variant_access">Other type found</exception>
 		template<typename T>
-		const T& get(const std::string& key) const;
+		const T& getValue(const std::string& key) const;
 
 		/// @brief Get null value. Find and get first value of given key
 		/// @param key JSON key

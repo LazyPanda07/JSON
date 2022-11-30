@@ -160,19 +160,7 @@ namespace json
 
 				case json::utility::variantTypeEnum::jJSONArray:
 				{
-					const vector<jsonObject>& currentArray = get<vector<jsonObject>>(value);
-					vector<jsonObject> tem;
-
-					for (const auto& i : currentArray)
-					{
-						jsonObject object;
-
-						appendData("", i.data.front().second, object.data);
-
-						appendArray(move(object.data.front().second), tem);
-					}
-
-					data.push_back({ key, move(tem) });
+					data.push_back({ key, { get<vector<jsonObject>>(value)[0] } });
 				}
 
 				break;
@@ -589,11 +577,7 @@ namespace json
 
 		void appendArray(jsonObject::variantType&& value, vector<jsonObject>& jsonArray)
 		{
-			jsonObject object;
-
-			object.data.push_back(make_pair(""s, move(value)));
-
-			jsonArray.push_back(move(object));
+			jsonArray[0].data.push_back({ "", move(value) });
 		}
 
 		string getJSONVersion()

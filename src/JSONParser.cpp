@@ -117,32 +117,6 @@ namespace json
 		return { end, false };
 	}
 
-	utility::jsonObject* JSONParser::findObject(const vector<utility::jsonObject>& currentArray)
-	{
-		if (currentArray.size() && currentArray.back().data.back().second.index() == utility::variantTypeEnum::jJSONObject)
-		{
-			const utility::jsonObject::variantType* object = &currentArray.back().data.back().second;
-
-			while (object->index() == utility::variantTypeEnum::jJSONObject)
-			{
-				auto& data = get<json::utility::jsonObject>(*object).data;
-
-				if (data.size() && data.back().second.index() == utility::variantTypeEnum::jJSONObject)
-				{
-					object = &data.back().second;
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			return const_cast<utility::jsonObject*>(&get<utility::jsonObject>(*object));
-		}
-
-		return nullptr;
-	}
-
 	bool JSONParser::isStringSymbol(char symbol)
 	{
 		return symbol == '"';
@@ -278,7 +252,7 @@ namespace json
 						break;
 
 					case type::array:
-						data = &arrays.top().second.back().data;
+						data = &arrays.top().second.emplace_back().data;
 
 						break;
 					}
@@ -293,14 +267,14 @@ namespace json
 			case openSquareBracket:
 				currentTop.push(type::array);
 
-				arrays.push({ move(key), vector<jsonObject>(1) });
+				arrays.push({ move(key), vector<jsonObject>() });
 
 				break;
 
 			case closeSquareBracket:
 				if (value.size())
 				{
-					JSONParser::insertKeyValueData(move(key), value, arrays.top().second.back());
+					JSONParser::insertKeyValueData(move(key), value, arrays.top().second.emplace_back());
 
 					value.clear();
 				}
@@ -320,7 +294,7 @@ namespace json
 						break;
 					
 					case type::array:
-						data = &arrays.top().second.back().data;
+						data = &arrays.top().second.emplace_back().data;
 
 						break;
 					}
@@ -337,7 +311,7 @@ namespace json
 					(
 						move(key),
 						value,
-						currentTop.top() == type::array ? arrays.top().second.back() : *objects.top().second
+						currentTop.top() == type::array ? arrays.top().second.emplace_back() : *objects.top().second
 					);
 
 					value.clear();

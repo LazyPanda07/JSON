@@ -19,6 +19,19 @@ namespace json
 		using ConstJSONIterator = jsonObject::ConstJSONIterator;
 		using ConstJSONIteratorType = jsonObject::ConstJSONIterator::ConstJSONIteratorType;
 
+		template<typename T, typename U>
+		void jsonObject::setValue(T&& key, U&& value)
+		{
+			if constexpr (is_move_constructible_v<T>)
+			{
+				data.emplace_back(move(key), forward<U>(value));
+			}
+			else
+			{
+				data.emplace_back(forward<T>(key), forward<U>(value));
+			}
+		}
+
 		ConstJSONIterator::ConstJSONIterator(const ConstJSONIterator& other) :
 			begin(other.begin),
 			end(other.end),
@@ -121,58 +134,52 @@ namespace json
 		{
 			(*this) = move(other);
 		}
-		
+
 		jsonObject& jsonObject::operator = (const jsonObject& other)
 		{
 			function<void(const string&, const variantType&, vector<pair<string, variantType>>&)> appendData = [&appendData](const string& key, const variantType& value, vector<pair<string, variantType>>& data)
 			{
 				switch (static_cast<variantTypeEnum>(value.index()))
 				{
-				case json::utility::variantTypeEnum::jNull:
+				case variantTypeEnum::jNull:
 					data.push_back({ key, get<nullptr_t>(value) });
 
 					break;
 
-				case json::utility::variantTypeEnum::jString:
+				case variantTypeEnum::jString:
 					data.push_back({ key, get<string>(value) });
 
 					break;
 
-				case json::utility::variantTypeEnum::jBool:
+				case variantTypeEnum::jBool:
 					data.push_back({ key, get<bool>(value) });
 
 					break;
 
-				case json::utility::variantTypeEnum::jInt64_t:
+				case variantTypeEnum::jInt64_t:
 					data.push_back({ key, get<int64_t>(value) });
 
 					break;
 
-				case json::utility::variantTypeEnum::jUInt64_t:
+				case variantTypeEnum::jUInt64_t:
 					data.push_back({ key, get<uint64_t>(value) });
 
 					break;
 
-				case json::utility::variantTypeEnum::jDouble:
+				case variantTypeEnum::jDouble:
 					data.push_back({ key, get<double>(value) });
 
 					break;
 
-				case json::utility::variantTypeEnum::jJSONArray:
-				{
-					data.push_back({ key, { get<vector<jsonObject>>(value)[0] } });
-				}
+				case variantTypeEnum::jJSONArray:
+					data.push_back({ key, get<vector<jsonObject>>(value) });
 
-				break;
+					break;
 
 				case json::utility::variantTypeEnum::jJSONObject:
-				{
-					jsonObject tem = get<jsonObject>(value);
+					data.push_back({ key, get<jsonObject>(value) });
 
-					data.push_back({ key, move(tem) });
-				}
-
-				break;
+					break;
 
 				default:
 					break;
@@ -194,6 +201,116 @@ namespace json
 			data = move(other.data);
 
 			return *this;
+		}
+
+		void jsonObject::setNull(const string& key)
+		{
+			this->setValue(key, nullptr);
+		}
+
+		void jsonObject::setNull(string&& key)
+		{
+			this->setValue(key, nullptr);
+		}
+
+		void jsonObject::setString(const string& key, const string& value)
+		{
+			this->setValue(key, nullptr);
+		}
+
+		void jsonObject::setString(string&& key, const string& value)
+		{
+			this->setValue(key, nullptr);
+		}
+
+		void jsonObject::setString(const string& key, string&& value)
+		{
+			this->setValue(key, nullptr);
+		}
+
+		void jsonObject::setString(string&& key, string&& value)
+		{
+			this->setValue(key, nullptr);
+		}
+
+		void jsonObject::setBool(const string& key, bool value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setBool(string&& key, bool value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setInt(const string& key, int64_t value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setInt(string&& key, int64_t value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setUnsignedInt(const string& key, uint64_t value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setUnsignedInt(string&& key, uint64_t value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setDouble(const string& key, double value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setDouble(string&& key, double value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setArray(const string& key, const vector<jsonObject>& value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setArray(string&& key, const vector<jsonObject>& value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setArray(const string& key, vector<jsonObject>&& value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setArray(string&& key, vector<jsonObject>&& value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setObject(const string& key, const jsonObject& value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setObject(string&& key, const jsonObject& value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setObject(const string& key, jsonObject&& value)
+		{
+			this->setValue(key, value);
+		}
+
+		void jsonObject::setObject(string&& key, jsonObject&& value)
+		{
+			this->setValue(key, value);
 		}
 
 		nullptr_t jsonObject::getNull(const string& key) const
@@ -240,7 +357,7 @@ namespace json
 			{
 				throw exceptions::CantFindValueException(key);
 			}
-			
+
 			variantTypeEnum type = static_cast<variantTypeEnum>(it->second.index());
 
 			switch (type)
@@ -322,7 +439,7 @@ namespace json
 				throw exceptions::CantFindValueException(key);
 			}
 
-			return get<jsonObject>( it->second);
+			return get<jsonObject>(it->second);
 		}
 
 		bool jsonObject::contains(const string& key, utility::variantTypeEnum type) const
@@ -500,7 +617,7 @@ namespace json
 
 			case variantTypeEnum::jString:
 				outputStream << '"' << regex_replace(get<string>(value), regex(R"(\\)"), R"(\\)") << '"';
-			
+
 				break;
 
 			case variantTypeEnum::jBool:
@@ -577,24 +694,11 @@ namespace json
 
 		void appendArray(jsonObject::variantType&& value, vector<jsonObject>& jsonArray)
 		{
-			if (jsonArray.empty())
-			{
-				jsonArray.emplace_back();
-			}
-			else if (jsonArray.size() != 1)
-			{
-				vector<jsonObject> newArray(1);
-				auto& data = newArray[0].data;
+			jsonObject object;
 
-				for (const jsonObject& object : jsonArray)
-				{
-					data.insert(data.end(), object.data.begin(), object.data.begin());
-				}
+			object.data.push_back({ "", move(value) });
 
-				jsonArray = newArray;
-			}
-
-			jsonArray[0].data.push_back({ "", move(value) });
+			jsonArray.push_back(move(object));
 		}
 
 		string getJSONVersion()

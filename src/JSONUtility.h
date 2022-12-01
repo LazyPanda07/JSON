@@ -62,6 +62,10 @@ namespace json
 		/// @brief JSON object
 		struct JSON_API jsonObject
 		{
+		private:
+			template<typename T, typename U>
+			void setValue(T&& key, U&& value);
+
 		public:
 			using variantType = baseVariantType<jsonObject>;
 
@@ -131,6 +135,114 @@ namespace json
 			/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
 			/// @return Self
 			jsonObject& operator=(jsonObject&& other) noexcept;
+
+			/// @brief Set null value with given key
+			/// @param key JSON key
+			void setNull(const std::string& key);
+
+			/// @brief Set null value with given key
+			/// @param key JSON key
+			void setNull(std::string&& key);
+
+			/// @brief Set string value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setString(const std::string& key, const std::string& value);
+
+			/// @brief Set string value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setString(std::string&& key, const std::string& value);
+
+			/// @brief Set string value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setString(const std::string& key, std::string&& value);
+
+			/// @brief Set string value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setString(std::string&& key, std::string&& value);
+
+			/// @brief Set bool value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setBool(const std::string& key, bool value);
+
+			/// @brief Set bool value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setBool(std::string&& key, bool value);
+
+			/// @brief Set int value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setInt(const std::string& key, int64_t value);
+
+			/// @brief Set int value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setInt(std::string&& key, int64_t value);
+
+			/// @brief Set unsigned int value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setUnsignedInt(const std::string& key, uint64_t value);
+
+			/// @brief Set unsigned int value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setUnsignedInt(std::string&& key, uint64_t value);
+
+			/// @brief Set double value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setDouble(const std::string& key, double value);
+
+			/// @brief Set double value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setDouble(std::string&& key, double value);
+
+			/// @brief Set array value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setArray(const std::string& key, const std::vector<jsonObject>& value);
+
+			/// @brief Set array value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setArray(std::string&& key, const std::vector<jsonObject>& value);
+
+			/// @brief Set array value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setArray(const std::string& key, std::vector<jsonObject>&& value);
+
+			/// @brief Set array value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setArray(std::string&& key, std::vector<jsonObject>&& value);
+
+			/// @brief Set object value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setObject(const std::string& key, const jsonObject& value);
+
+			/// @brief Set object value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setObject(std::string&& key, const jsonObject& value);
+
+			/// @brief Set object value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setObject(const std::string& key, jsonObject&& value);
+
+			/// @brief Set object value with given key
+			/// @param key JSON key
+			/// @param value JSON value
+			void setObject(std::string&& key, jsonObject&& value);
 
 			/// @brief Get null value. Find and get value only for this JSON object
 			/// @param key JSON key

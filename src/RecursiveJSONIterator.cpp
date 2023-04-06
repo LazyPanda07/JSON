@@ -36,8 +36,6 @@ namespace json
 
 		ConstJSONIterator& current = depth.top();
 
-		++current;
-
 		if (current == current.getEnd())
 		{
 			depth.pop();
@@ -46,16 +44,43 @@ namespace json
 		}
 		else if (current->second.index() == utility::variantTypeEnum::jJSONObject)
 		{
-			depth.push(get<utility::jsonObject>(current->second).begin());
+			const utility::jsonObject& jsonObject = get<utility::jsonObject>(current->second);
+
+			++current;
+
+			if (current == current.getEnd())
+			{
+				depth.pop();
+			}
+
+			depth.push(jsonObject.begin());
+
+			return *this;
 		}
 		else if (current->second.index() == utility::variantTypeEnum::jJSONArray)
 		{
 			const vector<utility::jsonObject>& jsonArray = get<vector<utility::jsonObject>>(current->second);
 
+			++current;
+
+			if (current == current.getEnd())
+			{
+				depth.pop();
+			}
+
 			for (auto it = jsonArray.rbegin(); it != jsonArray.rend(); ++it)
 			{
 				depth.push(it->begin());
 			}
+
+			return *this;
+		}
+
+		++current;
+
+		if (current == current.getEnd())
+		{
+			depth.pop();
 		}
 
 		return *this;

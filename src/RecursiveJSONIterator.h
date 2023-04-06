@@ -9,6 +9,7 @@ namespace json
 	class JSON_API RecursiveJSONIterator
 	{
 	private:
+		utility::jsonObject object;
 		std::stack<utility::jsonObject::ConstJSONIterator> depth;
 
 	private:

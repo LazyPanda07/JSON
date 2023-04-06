@@ -6,14 +6,16 @@ namespace json
 {
 	using ConstJSONIterator = utility::jsonObject::ConstJSONIterator;
 
-	RecursiveJSONIterator::RecursiveJSONIterator(const JSONParser& parser)
-	{
-		depth.emplace(parser.begin());
-	}
-
-	RecursiveJSONIterator::RecursiveJSONIterator(const utility::jsonObject& object)
+	RecursiveJSONIterator::RecursiveJSONIterator(const JSONParser& parser) :
+		object(parser.getParsedData())
 	{
 		depth.emplace(object.begin());
+	}
+
+	RecursiveJSONIterator::RecursiveJSONIterator(const utility::jsonObject& object) :
+		object(object)
+	{
+		depth.emplace(this->object.begin());
 	}
 
 	RecursiveJSONIterator RecursiveJSONIterator::operator++ (int) noexcept
@@ -41,6 +43,19 @@ namespace json
 			depth.pop();
 
 			return ++(*this);
+		}
+		else if (current->second.index() == utility::variantTypeEnum::jJSONObject)
+		{
+			depth.push(get<utility::jsonObject>(current->second).begin());
+		}
+		else if (current->second.index() == utility::variantTypeEnum::jJSONArray)
+		{
+			const vector<utility::jsonObject>& jsonArray = get<vector<utility::jsonObject>>(current->second);
+
+			for (auto it = jsonArray.rbegin(); it != jsonArray.rend(); ++it)
+			{
+				depth.push(it->begin());
+			}
 		}
 
 		return *this;

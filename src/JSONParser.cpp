@@ -89,9 +89,9 @@ namespace json
 			{
 				const vector<utility::jsonObject>& jsonArray = get<static_cast<size_t>(utility::variantTypeEnum::jJSONArray)>(it->second);
 
-				for (const auto& i : jsonArray)
+				for (const utility::jsonObject& object : jsonArray)
 				{
-					auto result = find(key, i.data);
+					auto result = find(key, object.data);
 
 					if (result.second)
 					{
@@ -169,10 +169,28 @@ namespace json
 		string value;
 		bool startString = false;
 		bool escapeSymbol = false;
+		size_t index = 0;
 
-		for (const char& i : rawData)
+		if (rawData.size() && rawData[0] == '{')
 		{
-			if (!escapeSymbol && i == '\\')
+			objects.push({ "", &parsedData });
+
+			currentTop.push(type::object);
+
+			index = 1;
+		}
+		else if (rawData.size() && rawData[0] == '[')
+		{
+			objects.push({ "", &parsedData });
+
+			currentTop.push(type::object);
+		}
+
+		for (; index < rawData.size(); index++)
+		{
+			char c = rawData[index];
+
+			if (!escapeSymbol && c == '\\')
 			{
 				escapeSymbol = true;
 
@@ -182,44 +200,37 @@ namespace json
 			{
 				escapeSymbol = false;
 
-				value += JSONParser::interpretEscapeSymbol(i);
+				value += JSONParser::interpretEscapeSymbol(c);
 
 				continue;
 			}
 
-			if (!startString && isStringSymbol(i))
+			if (!startString && isStringSymbol(c))
 			{
 				startString = true;
 			}
-			else if (startString && isStringSymbol(i))
+			else if (startString && isStringSymbol(c))
 			{
 				startString = false;
 			}
 
 			if (startString)
 			{
-				value += i;
+				value += c;
 
 				continue;
 			}
 
-			if (isspace(static_cast<unsigned char>(i)))
+			if (isspace(static_cast<unsigned char>(c)))
 			{
 				continue;
 			}
 
-			switch (i)
+			switch (c)
 			{
 			case openCurlyBracket:
-				if (objects.empty())
-				{
-					objects.push({ "", &parsedData });
-				}
-				else
-				{
-					objects.push({ move(key), new jsonObject() });
-				}
-				
+				objects.push({ move(key), new jsonObject() });
+
 				currentTop.push(type::object);
 
 				break;
@@ -318,7 +329,7 @@ namespace json
 				}
 				else if (value.size())
 				{
-					value += i;
+					value += c;
 				}
 
 				break;
@@ -331,7 +342,7 @@ namespace json
 				break;
 
 			default:
-				value += i;
+				value += c;
 			}
 		}
 	}
@@ -408,16 +419,16 @@ namespace json
 
 			objects.pop();
 
-			for (const auto& i : current->data)
+			for (const auto& [currentKey, currentValue] : current->data)
 			{
-				if (i.first == key && i.second.index() == static_cast<size_t>(type))
+				if (currentKey == key && currentValue.index() == static_cast<size_t>(type))
 				{
 					return true;
 				}
 
-				if (i.second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+				if (currentValue.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 				{
-					const auto& object = get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(i.second);
+					const auto& object = get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(currentValue);
 
 					objects.push(&object);
 				}
@@ -761,9 +772,9 @@ bool isNumber(const string& source)
 	{
 		size_t check = 0;
 
-		for (const auto& i : source)
+		for (const auto& c : source)
 		{
-			if (i == '.')
+			if (c == '.')
 			{
 				check++;
 			}

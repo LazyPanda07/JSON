@@ -210,27 +210,27 @@ namespace json
 
 		void jsonObject::setNull(string&& key)
 		{
-			this->setValue(key, nullptr);
+			this->setValue(move(key), nullptr);
 		}
 
 		void jsonObject::setString(const string& key, const string& value)
 		{
-			this->setValue(key, nullptr);
+			this->setValue(key, value);
 		}
 
 		void jsonObject::setString(string&& key, const string& value)
 		{
-			this->setValue(key, nullptr);
+			this->setValue(move(key), value);
 		}
 
 		void jsonObject::setString(const string& key, string&& value)
 		{
-			this->setValue(key, nullptr);
+			this->setValue(key, move(value));
 		}
 
 		void jsonObject::setString(string&& key, string&& value)
 		{
-			this->setValue(key, nullptr);
+			this->setValue(move(key), move(value));
 		}
 
 		void jsonObject::setBool(const string& key, bool value)
@@ -703,7 +703,7 @@ namespace json
 
 		string getJSONVersion()
 		{
-			return "2.1";
+			return "2.1.1";
 		}
 	}
 }

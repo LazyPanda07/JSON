@@ -60,7 +60,7 @@ namespace json
 			>;
 
 		/// @brief JSON object
-		struct JSON_API jsonObject
+		class JSON_API jsonObject
 		{
 		private:
 			template<typename T, typename U>
@@ -116,6 +116,7 @@ namespace json
 		public:
 			std::vector<std::pair<std::string, variantType>> data;
 
+		public:
 			jsonObject() = default;
 
 			/// @brief Copy constructor
@@ -138,111 +139,111 @@ namespace json
 
 			/// @brief Set null value with given key
 			/// @param key JSON key
-			void setNull(const std::string& key);
+			jsonObject& setNull(const std::string& key);
 
 			/// @brief Set null value with given key
 			/// @param key JSON key
-			void setNull(std::string&& key);
+			jsonObject& setNull(std::string&& key);
 
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setString(const std::string& key, const std::string& value);
+			jsonObject& setString(const std::string& key, const std::string& value);
 
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setString(std::string&& key, const std::string& value);
+			jsonObject& setString(std::string&& key, const std::string& value);
 
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setString(const std::string& key, std::string&& value);
+			jsonObject& setString(const std::string& key, std::string&& value);
 
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setString(std::string&& key, std::string&& value);
+			jsonObject& setString(std::string&& key, std::string&& value);
 
 			/// @brief Set bool value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setBool(const std::string& key, bool value);
+			jsonObject& setBool(const std::string& key, bool value);
 
 			/// @brief Set bool value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setBool(std::string&& key, bool value);
+			jsonObject& setBool(std::string&& key, bool value);
 
 			/// @brief Set int value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setInt(const std::string& key, int64_t value);
+			jsonObject& setInt(const std::string& key, int64_t value);
 
 			/// @brief Set int value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setInt(std::string&& key, int64_t value);
+			jsonObject& setInt(std::string&& key, int64_t value);
 
 			/// @brief Set unsigned int value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setUnsignedInt(const std::string& key, uint64_t value);
+			jsonObject& setUnsignedInt(const std::string& key, uint64_t value);
 
 			/// @brief Set unsigned int value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setUnsignedInt(std::string&& key, uint64_t value);
+			jsonObject& setUnsignedInt(std::string&& key, uint64_t value);
 
 			/// @brief Set double value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setDouble(const std::string& key, double value);
+			jsonObject& setDouble(const std::string& key, double value);
 
 			/// @brief Set double value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setDouble(std::string&& key, double value);
+			jsonObject& setDouble(std::string&& key, double value);
 
 			/// @brief Set array value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setArray(const std::string& key, const std::vector<jsonObject>& value);
+			jsonObject& setArray(const std::string& key, const std::vector<jsonObject>& value);
 
 			/// @brief Set array value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setArray(std::string&& key, const std::vector<jsonObject>& value);
+			jsonObject& setArray(std::string&& key, const std::vector<jsonObject>& value);
 
 			/// @brief Set array value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setArray(const std::string& key, std::vector<jsonObject>&& value);
+			jsonObject& setArray(const std::string& key, std::vector<jsonObject>&& value);
 
 			/// @brief Set array value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setArray(std::string&& key, std::vector<jsonObject>&& value);
+			jsonObject& setArray(std::string&& key, std::vector<jsonObject>&& value);
 
 			/// @brief Set object value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setObject(const std::string& key, const jsonObject& value);
+			jsonObject& setObject(const std::string& key, const jsonObject& value);
 
 			/// @brief Set object value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setObject(std::string&& key, const jsonObject& value);
+			jsonObject& setObject(std::string&& key, const jsonObject& value);
 
 			/// @brief Set object value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setObject(const std::string& key, jsonObject&& value);
+			jsonObject& setObject(const std::string& key, jsonObject&& value);
 
 			/// @brief Set object value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			void setObject(std::string&& key, jsonObject&& value);
+			jsonObject& setObject(std::string&& key, jsonObject&& value);
 
 			/// @brief Get null value. Find and get value only for this JSON object
 			/// @param key JSON key
@@ -305,9 +306,33 @@ namespace json
 			/// @param type Object type
 			bool contains(const std::string& key, utility::variantTypeEnum type) const;
 
+			/**
+			 * @brief Begin iterator
+			 * @return 
+			*/
 			ConstJSONIterator begin() const noexcept;
 
+			/**
+			 * @brief End iterator
+			 * @return 
+			*/
 			ConstJSONIterator end() const noexcept;
+
+			/**
+			 * @brief Access JSON value
+			 * @param key 
+			 * @return 
+			*/
+			variantType& operator[](const std::string& key);
+
+			/**
+			 * @brief Access JSON value
+			 * @param key 
+			 * @return 
+			*/
+			const variantType& operator[](const std::string& key) const;
+
+			~jsonObject() = default;
 		};
 
 		/// @brief Check current iterator with begin or end iterator

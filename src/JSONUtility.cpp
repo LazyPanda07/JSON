@@ -203,114 +203,158 @@ namespace json
 			return *this;
 		}
 
-		void jsonObject::setNull(const string& key)
+		jsonObject& jsonObject::setNull(const string& key)
 		{
 			this->setValue(key, nullptr);
+
+			return *this;
 		}
 
-		void jsonObject::setNull(string&& key)
+		jsonObject& jsonObject::setNull(string&& key)
 		{
 			this->setValue(move(key), nullptr);
+
+			return *this;
 		}
 
-		void jsonObject::setString(const string& key, const string& value)
+		jsonObject& jsonObject::setString(const string& key, const string& value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setString(string&& key, const string& value)
+		jsonObject& jsonObject::setString(string&& key, const string& value)
 		{
 			this->setValue(move(key), value);
+
+			return *this;
 		}
 
-		void jsonObject::setString(const string& key, string&& value)
+		jsonObject& jsonObject::setString(const string& key, string&& value)
 		{
 			this->setValue(key, move(value));
+
+			return *this;
 		}
 
-		void jsonObject::setString(string&& key, string&& value)
+		jsonObject& jsonObject::setString(string&& key, string&& value)
 		{
 			this->setValue(move(key), move(value));
+
+			return *this;
 		}
 
-		void jsonObject::setBool(const string& key, bool value)
+		jsonObject& jsonObject::setBool(const string& key, bool value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setBool(string&& key, bool value)
+		jsonObject& jsonObject::setBool(string&& key, bool value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setInt(const string& key, int64_t value)
+		jsonObject& jsonObject::setInt(const string& key, int64_t value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setInt(string&& key, int64_t value)
+		jsonObject& jsonObject::setInt(string&& key, int64_t value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setUnsignedInt(const string& key, uint64_t value)
+		jsonObject& jsonObject::setUnsignedInt(const string& key, uint64_t value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setUnsignedInt(string&& key, uint64_t value)
+		jsonObject& jsonObject::setUnsignedInt(string&& key, uint64_t value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setDouble(const string& key, double value)
+		jsonObject& jsonObject::setDouble(const string& key, double value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setDouble(string&& key, double value)
+		jsonObject& jsonObject::setDouble(string&& key, double value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setArray(const string& key, const vector<jsonObject>& value)
+		jsonObject& jsonObject::setArray(const string& key, const vector<jsonObject>& value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setArray(string&& key, const vector<jsonObject>& value)
+		jsonObject& jsonObject::setArray(string&& key, const vector<jsonObject>& value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setArray(const string& key, vector<jsonObject>&& value)
+		jsonObject& jsonObject::setArray(const string& key, vector<jsonObject>&& value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setArray(string&& key, vector<jsonObject>&& value)
+		jsonObject& jsonObject::setArray(string&& key, vector<jsonObject>&& value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setObject(const string& key, const jsonObject& value)
+		jsonObject& jsonObject::setObject(const string& key, const jsonObject& value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setObject(string&& key, const jsonObject& value)
+		jsonObject& jsonObject::setObject(string&& key, const jsonObject& value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setObject(const string& key, jsonObject&& value)
+		jsonObject& jsonObject::setObject(const string& key, jsonObject&& value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
-		void jsonObject::setObject(string&& key, jsonObject&& value)
+		jsonObject& jsonObject::setObject(string&& key, jsonObject&& value)
 		{
 			this->setValue(key, value);
+
+			return *this;
 		}
 
 		nullptr_t jsonObject::getNull(const string& key) const
@@ -455,6 +499,32 @@ namespace json
 		ConstJSONIterator jsonObject::end() const noexcept
 		{
 			return ConstJSONIterator(data.cbegin(), data.cend(), data.cend());
+		}
+
+		jsonObject::variantType& jsonObject::operator[](const std::string& key)
+		{
+			for (auto& [jsonKey, value] : data)
+			{
+				if (jsonKey == key)
+				{
+					return value;
+				}
+			}
+
+			throw exceptions::CantFindValueException(key);
+		}
+
+		const jsonObject::variantType& jsonObject::operator[](const std::string& key) const
+		{
+			for (const auto& [jsonKey, value] : data)
+			{
+				if (jsonKey == key)
+				{
+					return value;
+				}
+			}
+
+			throw exceptions::CantFindValueException(key);
 		}
 
 		string toUTF8JSON(const string& source, uint32_t sourceCodePage)
@@ -703,7 +773,7 @@ namespace json
 
 		string getJSONVersion()
 		{
-			return "2.1.1";
+			return "2.2.0";
 		}
 	}
 }

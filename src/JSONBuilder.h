@@ -45,6 +45,11 @@ namespace json
 		/// <param name="codePage">codePage of your system</param>
 		/// <param name="type">value from json::JSONBuilder::outputType</param>
 		JSONBuilder(std::string_view codePage, outputType type = outputType::standard);
+
+		/// @brief Construct from parsed or builded data 
+		/// @param data Data from JSONBuilder or JSONParser
+		/// @param codePage data's codePage
+		JSONBuilder(const utility::jsonObject& data, std::string_view codePage, outputType type = outputType::standard);
 #else
 		/// <summary>
 		/// Construct JSONBuilder
@@ -52,6 +57,11 @@ namespace json
 		/// <param name="codePage">codePage of your system</param>
 		/// <param name="type">value from json::JSONBuilder::outputType</param>
 		JSONBuilder(uint32_t codePage, outputType type = outputType::standard);
+
+		/// @brief Construct from parsed or builded data 
+		/// @param data Data from JSONBuilder or JSONParser
+		/// @param codePage data's codePage
+		JSONBuilder(const utility::jsonObject& data, uint32_t codePage, outputType type = outputType::standard);
 #endif
 
 		/// @brief Copy constructor
@@ -61,11 +71,6 @@ namespace json
 		/// @brief Move constructor
 		/// @param other Other JSONBuilder
 		JSONBuilder(JSONBuilder&& other) noexcept;
-
-		/// @brief Construct from parsed or builded data 
-		/// @param data Data from JSONBuilder or JSONParser
-		/// @param codePage data's codePage
-		JSONBuilder(const utility::jsonObject& data, uint32_t codePage, outputType type = outputType::standard);
 
 		/// @brief Copy operator
 		/// @param other Other JSONBuilder

@@ -1,6 +1,7 @@
 #include "JSONBuilder.h"
 
 #include <queue>
+#include <algorithm>
 
 #include "Exceptions/CantFindValueException.h"
 
@@ -81,8 +82,24 @@ namespace json
 	{
 
 	}
+
+	JSONBuilder::JSONBuilder(const utility::jsonObject& data, string_view codePage, outputType type) :
+		builderData(data),
+		codePage(codePage),
+		type(type)
+	{
+
+	}
 #else
 	JSONBuilder::JSONBuilder(uint32_t codePage, outputType type) :
+		codePage(codePage),
+		type(type)
+	{
+
+	}
+
+	JSONBuilder::JSONBuilder(const utility::jsonObject& data, uint32_t codePage, outputType type) :
+		builderData(data),
 		codePage(codePage),
 		type(type)
 	{
@@ -102,14 +119,6 @@ namespace json
 		builderData(move(other.builderData)),
 		codePage(other.codePage),
 		type(other.type)
-	{
-
-	}
-
-	JSONBuilder::JSONBuilder(const utility::jsonObject& data, uint32_t codePage, outputType type) :
-		builderData(data),
-		codePage(codePage),
-		type(type)
 	{
 
 	}

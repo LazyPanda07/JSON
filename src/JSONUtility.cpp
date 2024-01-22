@@ -544,7 +544,7 @@ namespace json
 			string result(resultSize, '\0');
 			char* resultData = const_cast<char*>(result.data());
 
-			size_t error = iconv(convert, &data, &dataSize, &resultData, &resultSize)
+			size_t error = iconv(convert, &data, &dataSize, &resultData, &resultSize);
 
 			iconv_close(convert);
 

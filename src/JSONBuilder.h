@@ -30,16 +30,29 @@ namespace json
 
 	private:
 		utility::jsonObject builderData;
-		uint32_t codepage;
+#ifdef __LINUX__
+		std::string_view codePage;
+#else
+		uint32_t codePage;
+#endif
 		outputType type;
 
 	public:
+#ifdef __LINUX__
 		/// <summary>
 		/// Construct JSONBuilder
 		/// </summary>
-		/// <param name="codepage">codepage of your system</param>
+		/// <param name="codePage">codePage of your system</param>
 		/// <param name="type">value from json::JSONBuilder::outputType</param>
-		JSONBuilder(uint32_t codepage, outputType type = outputType::standard);
+		JSONBuilder(std::string_view codePage, outputType type = outputType::standard);
+#else
+		/// <summary>
+		/// Construct JSONBuilder
+		/// </summary>
+		/// <param name="codePage">codePage of your system</param>
+		/// <param name="type">value from json::JSONBuilder::outputType</param>
+		JSONBuilder(uint32_t codePage, outputType type = outputType::standard);
+#endif
 
 		/// @brief Copy constructor
 		/// @param other Other JSONBuilder
@@ -51,8 +64,8 @@ namespace json
 
 		/// @brief Construct from parsed or builded data 
 		/// @param data Data from JSONBuilder or JSONParser
-		/// @param codepage data's codepage
-		JSONBuilder(const utility::jsonObject& data, uint32_t codepage, outputType type = outputType::standard);
+		/// @param codePage data's codePage
+		JSONBuilder(const utility::jsonObject& data, uint32_t codePage, outputType type = outputType::standard);
 
 		/// @brief Copy operator
 		/// @param other Other JSONBuilder
@@ -107,13 +120,13 @@ namespace json
 
 		/// @brief Add JSON key - string
 		/// @param key JSON key
-		/// @param value Current codepage encoded value
+		/// @param value Current codePage encoded value
 		/// @return Reference to current JSONBuilder instance
 		JSONBuilder& appendString(const std::string& key, const std::string& value);
 
 		/// @brief Add JSON key - string
 		/// @param key JSON key
-		/// @param value Current codepage encoded value
+		/// @param value Current codePage encoded value
 		/// @return Reference to current JSONBuilder instance
 		JSONBuilder& appendString(const std::string& key, std::string&& value);
 

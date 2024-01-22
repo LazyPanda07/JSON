@@ -7,13 +7,16 @@
 #include <memory>
 #include <sstream>
 
-#ifndef CP_UTF8
-#define CP_UTF8 65001
-#endif // !CP_UTF8
+#include "CodePageConstants.h"
 
 #ifdef JSON_DLL
+#ifdef __LINUX__
+#define JSON_API __attribute__((visibility("default")))
+#else
 #define JSON_API __declspec(dllexport)
-#define JSON_API_FUNCTION extern "C" __declspec(dllexport)
+#endif
+
+#define JSON_API_FUNCTION extern "C" JSON_API
 
 #pragma warning(disable: 4297)
 #pragma warning(disable: 4251)
@@ -347,6 +350,7 @@ namespace json
 		/// @return 
 		constexpr bool operator==(size_t index, variantTypeEnum value);
 
+#ifdef __LINUX__
 		/// <summary>
 		/// Encode string to UTF8
 		/// </summary>
@@ -354,7 +358,7 @@ namespace json
 		/// <param name="sourceCodePage">source encoding</param>
 		/// <returns>string in UTF8 encoding</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, uint32_t sourceCodePage);
+		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, std::string_view sourceCodePage);
 
 		/// <summary>
 		/// Decode string from UTF8
@@ -363,8 +367,26 @@ namespace json
 		/// <param name="resultCodePage">decoding code page</param>
 		/// <returns>string in resultCodePage encoding</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-		JSON_API_FUNCTION std::string fromUTF8JSON(const std::string& source, uint32_t resultCodePage);
+		JSON_API_FUNCTION std::string fromUTF8JSON(const std::string& source, std::string_view resultCodePage);
+#else
+		/// <summary>
+		/// Encode string to UTF8
+		/// </summary>
+		/// <param name="source">string to convert</param>
+		/// <param name="sourceCodePage">source encoding from https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers</param>
+		/// <returns>string in UTF8 encoding</returns>
+		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
+		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, uint32_t sourceCodePage);
 
+		/// <summary>
+		/// Decode string from UTF8
+		/// </summary>
+		/// <param name="source">string to convert</param>
+		/// <param name="resultCodePage">decoding code page from https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers</param>
+		/// <returns>string in resultCodePage encoding</returns>
+		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
+		JSON_API_FUNCTION std::string fromUTF8JSON(const std::string& source, uint32_t resultCodePage);
+#endif
 		/// <summary>
 		/// Set to outputStream JSON value
 		/// </summary>

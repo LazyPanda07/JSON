@@ -4,7 +4,11 @@
 #include <functional>
 #include <regex>
 
+#ifdef __LINUX__
+#include <iconv.h>
+#else
 #include <Windows.h>
+#endif
 
 #include "OutputOperations.h"
 #include "Exceptions/WrongEncodingException.h"
@@ -527,6 +531,46 @@ namespace json
 			throw exceptions::CantFindValueException(key);
 		}
 
+#ifdef __LINUX__
+		static string convertString(const string& source, size_t resultSize, iconv_t convert)
+		{
+			if (convert == reinterpret_cast<iconv_t>(string::npos))
+			{
+				throw exceptions::WrongEncodingException();
+			}
+
+			char* data = const_cast<char*>(source.data());
+			size_t dataSize = source.size();
+			string result(resultSize, '\0');
+			char* resultData = const_cast<char*>(result.data());
+
+			size_t error = iconv(convert, &data, &dataSize, &resultData, &resultSize)
+
+			iconv_close(convert);
+
+			if (error == string::npos)
+			{
+				throw exceptions::WrongEncodingException();
+			}
+
+			if (result.size() != resultSize)
+			{
+				result.resize(resultSize);
+			}
+
+			return result;
+		}
+
+		string toUTF8JSON(const string& source, string_view sourceCodePage)
+		{
+			return convertString(source, source.size() * 4, iconv_open(CP_UTF8, sourceCodePage.data()));
+		}
+
+		string fromUTF8JSON(const string& source, string_view resultCodePage)
+		{
+			return convertString(source, source.size(), iconv_open(resultCodePage.data(), CP_UTF8));
+		}
+#else
 		string toUTF8JSON(const string& source, uint32_t sourceCodePage)
 		{
 			string result;
@@ -668,6 +712,7 @@ namespace json
 
 			return result;
 		}
+#endif
 
 		void outputJSONType(ostream& outputStream, const jsonObject::variantType& value, bool isLast, string& offset)
 		{
@@ -773,7 +818,7 @@ namespace json
 
 		string getJSONVersion()
 		{
-			return "2.2.0";
+			return "2.3.0";
 		}
 	}
 }

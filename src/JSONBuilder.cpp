@@ -74,16 +74,25 @@ namespace json
 		return { end, false };
 	}
 
-	JSONBuilder::JSONBuilder(uint32_t codepage, outputType type) :
-		codepage(codepage),
+#ifdef __LINUX__
+	JSONBuilder::JSONBuilder(string_view codePage, outputType type) :
+		codePage(codePage),
 		type(type)
 	{
 
 	}
+#else
+	JSONBuilder::JSONBuilder(uint32_t codePage, outputType type) :
+		codePage(codePage),
+		type(type)
+	{
+
+	}
+#endif
 
 	JSONBuilder::JSONBuilder(const JSONBuilder& other) :
 		builderData(other.builderData),
-		codepage(other.codepage),
+		codePage(other.codePage),
 		type(other.type)
 	{
 
@@ -91,15 +100,15 @@ namespace json
 
 	JSONBuilder::JSONBuilder(JSONBuilder&& other) noexcept :
 		builderData(move(other.builderData)),
-		codepage(other.codepage),
+		codePage(other.codePage),
 		type(other.type)
 	{
 
 	}
 
-	JSONBuilder::JSONBuilder(const utility::jsonObject& data, uint32_t codepage, outputType type) :
+	JSONBuilder::JSONBuilder(const utility::jsonObject& data, uint32_t codePage, outputType type) :
 		builderData(data),
-		codepage(codepage),
+		codePage(codePage),
 		type(type)
 	{
 
@@ -108,7 +117,7 @@ namespace json
 	JSONBuilder& JSONBuilder::operator = (const JSONBuilder& other)
 	{
 		builderData = other.builderData;
-		codepage = other.codepage;
+		codePage = other.codePage;
 		type = other.type;
 
 		return *this;
@@ -117,7 +126,7 @@ namespace json
 	JSONBuilder& JSONBuilder::operator = (JSONBuilder&& other) noexcept
 	{
 		builderData = move(other.builderData);
-		codepage = other.codepage;
+		codePage = other.codePage;
 		type = other.type;
 
 		return *this;
@@ -407,7 +416,7 @@ namespace json
 		switch (string result; type)
 		{
 		case json::JSONBuilder::outputType::standard:
-			return json::utility::toUTF8JSON(outputStream.str(), codepage);
+			return json::utility::toUTF8JSON(outputStream.str(), codePage);
 
 		case json::JSONBuilder::outputType::minimize:
 			result = outputStream.str();
@@ -430,7 +439,7 @@ namespace json
 				}
 			}
 
-			return json::utility::toUTF8JSON(result, codepage);
+			return json::utility::toUTF8JSON(result, codePage);
 		}
 	}
 

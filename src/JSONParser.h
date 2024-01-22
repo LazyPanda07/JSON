@@ -88,13 +88,23 @@ namespace json
 		/// @param type Object type
 		bool contains(const std::string& key, utility::variantTypeEnum type) const;
 
+#ifdef __LINUX__
 		/// <summary>
 		/// Setter for rawData
 		/// </summary>
 		/// <param name="jsonData">JSON formatted string</param>
-		/// <param name="codepage">codepage of jsonData</param>
+		/// <param name="codePage">codePage of jsonData</param>
+		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
+		void setJSONData(const std::string& jsonData, std::string_view codePage);
+#else
+		/// <summary>
+		/// Setter for rawData
+		/// </summary>
+		/// <param name="jsonData">JSON formatted string</param>
+		/// <param name="codePage">codePage of jsonData</param>
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
 		void setJSONData(const std::string& jsonData, uint32_t codePage);
+#endif
 
 		/// <summary>
 		/// Setter for rawData

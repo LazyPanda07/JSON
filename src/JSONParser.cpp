@@ -438,12 +438,21 @@ namespace json
 		return false;
 	}
 
+#ifdef __LINUX__
+	void JSONParser::setJSONData(const string& jsonData, string_view codePage)
+	{
+		rawData = utility::toUTF8JSON(jsonData, codePage);
+
+		this->parse();
+	}
+#else
 	void JSONParser::setJSONData(const string& jsonData, uint32_t codePage)
 	{
 		rawData = utility::toUTF8JSON(jsonData, codePage);
 
 		this->parse();
 	}
+#endif
 
 	void JSONParser::setJSONData(const string& jsonData)
 	{

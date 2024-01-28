@@ -49,6 +49,7 @@ jobs:
       with:
         repository: LazyPanda07/vs_to_cmake
         ref: dev
+        path: vs_to_cmake
 
     - name: Install vs_to_cmake
       run: pip install vs_to_cmake/

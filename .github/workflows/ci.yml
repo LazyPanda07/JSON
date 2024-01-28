@@ -1,0 +1,70 @@
+name: CI
+
+
+on:
+  push:
+   branches: [master, dev]
+
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [Debug, DebugDLL, Release, ReleaseDLL, ProductionRelease, ProductionReleaseDLL]
+    
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@main
+
+    - name: Build
+      run: msbuild /p:Configuration=${{ matrix.configuration }} /p:Platform=x64 JSON.vcxproj
+
+    - name: Create .zip
+      run: Compress-Archive -Path  -DestinationPath ${{ github.workspace }}\${{ matrix.configuration }}_Windows
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_Windows
+        path: bin\${{ matrix.configuration }}-x64\JSON
+
+  linux-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        configuration: [Debug, DebugDLL, Release, ReleaseDLL, ProductionRelease, ProductionReleaseDLL]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Setup build type
+      shell: pwsh
+      run: echo "BUILD_TYPE=$(if ("${{ matrix.configuration }}".Contains("Release")) { echo "Release" } else { echo "Debug" })" >> $Env:GITHUB_ENV
+  
+    - name: Get vs_to_cmake
+      uses: actions/checkout@v4
+      with:
+        repository: LazyPanda07/vs_to_cmake
+        ref: dev
+
+    - name: Install vs_to_cmake
+      run: pip install vs_to_cmake/
+
+    - name: Create CMakeLists.txt
+      run: vs_to_cmake -f JSON.vcxproj -d __LINUX__
+
+    - name: Build
+      run: |
+          mkdir build
+          cd build
+          cmake -DVS_BUILD_CONFIGURATION=${{ matrix.configuration }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} ..
+          make install -j $(nproc)
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_Linux
+        path: bin/${{ matrix.configuration }}-x64/JSON

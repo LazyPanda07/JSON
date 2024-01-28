@@ -256,6 +256,7 @@
     <ClCompile Include="src\RecursiveJSONIterator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\CodePageConstants.h" />
     <ClInclude Include="src\Exceptions\BaseJSONException.h" />
     <ClInclude Include="src\Exceptions\CantFindValueException.h" />
     <ClInclude Include="src\Exceptions\WrongEncodingException.h" />

@@ -1,0 +1,6 @@
+{
+  "someData": 5,
+  "object": {
+    "someRecursiveData": 10
+  }
+}

@@ -24,11 +24,6 @@ namespace json
 		};
 
 	private:
-		static std::pair<std::vector<std::pair<std::string, variantType>>::iterator, bool> find(const std::string& key, std::vector<std::pair<std::string, variantType>>& start);
-
-		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(const std::string& key, const std::vector<std::pair<std::string, variantType>>& start);
-
-	private:
 		utility::jsonObject builderData;
 #ifdef __LINUX__
 		std::string_view codePage;
@@ -153,6 +148,14 @@ namespace json
 		/// @return Reference to current JSONBuilder instance
 		JSONBuilder& appendUnsignedInt(const std::string& key, uint64_t value);
 
+		/**
+		 * @brief Add JSON key - double
+		 * @param key JSON key
+		 * @param value Double
+		 * @return Reference to current JSONBuilder instance
+		*/
+		JSONBuilder& appendDouble(const std::string& key, double value);
+
 		/// @brief Add JSON key - JSON array
 		/// @param key JSON key
 		/// @param value JSON array
@@ -177,10 +180,14 @@ namespace json
 		/// @return Reference to current JSONBuilder instance
 		JSONBuilder& appendObject(const std::string& key, const utility::jsonObject& value);
 
-		/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
-		/// @param key Object name
-		/// @param type Object type
-		bool contains(const std::string& key, utility::variantTypeEnum type) const;
+		/**
+		 * @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
+		 * @param key Object name
+		 * @param type Object type
+		 * @param recursive Recursive search
+		 * @return 
+		*/
+		bool contains(const std::string& key, utility::variantTypeEnum type, bool recursive = false) const;
 
 		/// <summary>
 		/// <para>Access to JSON value operator</para>

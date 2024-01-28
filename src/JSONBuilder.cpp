@@ -11,70 +11,6 @@ using namespace std;
 
 namespace json
 {
-	pair<vector<pair<string, JSONBuilder::variantType>>::iterator, bool> JSONBuilder::find(const string& key, vector<pair<string, variantType>>& start)
-	{
-		auto it = find_if(start.begin(), start.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-		if (it != start.end())
-		{
-			return { it, true };
-		}
-
-		it = start.begin();
-		auto end = start.end();
-
-		while (it != end)
-		{
-			if (it->second.index() == static_cast<int>(utility::variantTypeEnum::jJSONObject))
-			{
-				vector<pair<string, variantType>>& data = ::get<utility::jsonObject>(it->second).data;
-
-				auto result = find(key, data);
-
-				if (result.second)
-				{
-					return result;
-				}
-			}
-
-			++it;
-		}
-
-		return { end, false };
-	}
-
-	pair<vector<pair<string, JSONBuilder::variantType>>::const_iterator, bool> JSONBuilder::find(const string& key, const vector<pair<string, variantType>>& start)
-	{
-		auto it = find_if(start.begin(), start.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-		if (it != start.end())
-		{
-			return { it, true };
-		}
-
-		it = start.begin();
-		auto end = start.end();
-
-		while (it != end)
-		{
-			if (it->second.index() == static_cast<int>(utility::variantTypeEnum::jJSONObject))
-			{
-				const vector<pair<string, variantType>>& data = ::get<utility::jsonObject>(it->second).data;
-
-				auto result = find(key, data);
-
-				if (result.second)
-				{
-					return result;
-				}
-			}
-
-			++it;
-		}
-
-		return { end, false };
-	}
-
 #ifdef __LINUX__
 	JSONBuilder::JSONBuilder(string_view codePage, outputType type) :
 		codePage(codePage),
@@ -323,6 +259,11 @@ namespace json
 		return this->append(key, value);
 	}
 
+	JSONBuilder& JSONBuilder::appendDouble(const string& key, double value)
+	{
+		return this->append(key, value);
+	}
+
 	JSONBuilder& JSONBuilder::appendArray(const string& key, vector<utility::jsonObject>&& value)
 	{
 		return this->append(key, move(value));
@@ -343,7 +284,7 @@ namespace json
 		return this->append(key, value);
 	}
 
-	bool JSONBuilder::contains(const string& key, utility::variantTypeEnum type) const
+	bool JSONBuilder::contains(const string& key, utility::variantTypeEnum type, bool recursive) const
 	{
 		queue<const utility::jsonObject*> objects;
 
@@ -362,7 +303,7 @@ namespace json
 					return true;
 				}
 
-				if (i.second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+				if (recursive && i.second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 				{
 					const auto& object = get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(i.second);
 
@@ -376,9 +317,9 @@ namespace json
 
 	JSONBuilder::variantType& JSONBuilder::operator [] (const string& key)
 	{
-		auto [it, success] = find(key, builderData.data);
+		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
 
-		if (success)
+		if (it != builderData.data.end())
 		{
 			return it->second;
 		}
@@ -390,9 +331,9 @@ namespace json
 
 	const JSONBuilder::variantType& JSONBuilder::operator [] (const string& key) const
 	{
-		auto [it, success] = find(key, builderData.data);
+		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
 
-		if (success)
+		if (it != builderData.data.end())
 		{
 			return it->second;
 		}

@@ -1,0 +1,32 @@
+{
+  "nullValue": null,
+  "boolValue": true,
+  "intValue": 5,
+  "doubleValue": 10.200000,
+  "unsignedIntValue": 15,
+  "stringValue": "qwe",
+  "arrayValue": [
+    null,
+    true,
+    5,
+    10.200000,
+    15,
+    "qwe",
+    {
+      "nullValue": null,
+      "boolValue": true,
+      "intValue": 5,
+      "doubleValue": 10.200000,
+      "unsignedIntValue": 15,
+      "stringValue": "qwe"
+    }
+  ],
+  "objectValue": {
+    "nullValue": null,
+    "boolValue": true,
+    "intValue": 5,
+    "doubleValue": 10.200000,
+    "unsignedIntValue": 15,
+    "stringValue": "qwe"
+  }
+}

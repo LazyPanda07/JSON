@@ -36,6 +36,10 @@
 
 # Binaries
 bin/
+out/
 
 # .sln file
 JSON.sln
+
+# Google Tests
+Tests/gtest

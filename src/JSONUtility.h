@@ -398,6 +398,7 @@ namespace json
 
 		/// @brief Append jsonObject::variantType value to array
 		/// @param value JSON value
+		/// @param jsonArray Modifiable array
 		JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, std::vector<jsonObject>& jsonArray);
 
 		/// @brief Get current version of JSON project

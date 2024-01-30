@@ -72,17 +72,17 @@ namespace json
 		ptr.data.push_back({ move(key), JSONParser::parseValue(value) });
 	}
 
-	pair<vector<pair<string, JSONParser::variantType>>::const_iterator, bool> JSONParser::find(const string& key, const vector<pair<string, variantType>>& start)
+	pair<vector<pair<string, JSONParser::variantType>>::const_iterator, bool> JSONParser::find(const string& key, const vector<pair<string, variantType>>& start, bool recursive)
 	{
-		auto it = std::find_if(start.begin(), start.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+		auto it = find_if(start.begin(), start.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+		auto end = start.end();
 
-		if (it != start.end())
+		if (!recursive || it != end)
 		{
 			return { it, true };
 		}
 
 		it = start.begin();
-		auto end = start.end();
 
 		while (it != end)
 		{
@@ -92,7 +92,7 @@ namespace json
 
 				for (const utility::jsonObject& object : jsonArray)
 				{
-					auto result = find(key, object.data);
+					auto result = JSONParser::find(key, object.data, recursive);
 
 					if (result.second)
 					{
@@ -104,7 +104,7 @@ namespace json
 			{
 				const vector<pair<string, variantType>>& data = ::get<utility::jsonObject>(it->second).data;
 
-				auto result = find(key, data);
+				auto result = JSONParser::find(key, data, recursive);
 
 				if (result.second)
 				{
@@ -408,7 +408,7 @@ namespace json
 		return *this;
 	}
 
-	bool JSONParser::contains(const string& key, utility::variantTypeEnum type) const
+	bool JSONParser::contains(const string& key, utility::variantTypeEnum type, bool recursive) const
 	{
 		queue<const utility::jsonObject*> objects;
 
@@ -427,7 +427,7 @@ namespace json
 					return true;
 				}
 
-				if (currentValue.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+				if (recursive && currentValue.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
 				{
 					const auto& object = get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(currentValue);
 
@@ -514,9 +514,9 @@ namespace json
 	}
 
 	template<>
-	JSON_API const nullptr_t& JSONParser::getValue<nullptr_t>(const string& key) const
+	JSON_API const nullptr_t& JSONParser::getValue<nullptr_t>(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -527,9 +527,9 @@ namespace json
 	}
 
 	template<>
-	JSON_API const string& JSONParser::getValue<string>(const string& key) const
+	JSON_API const string& JSONParser::getValue<string>(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -540,9 +540,9 @@ namespace json
 	}
 
 	template<>
-	JSON_API const bool& JSONParser::getValue<bool>(const string& key) const
+	JSON_API const bool& JSONParser::getValue<bool>(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -553,9 +553,9 @@ namespace json
 	}
 
 	template<>
-	JSON_API const int64_t& JSONParser::getValue<int64_t>(const string& key) const
+	JSON_API const int64_t& JSONParser::getValue<int64_t>(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -566,9 +566,9 @@ namespace json
 	}
 
 	template<>
-	JSON_API const uint64_t& JSONParser::getValue<uint64_t>(const string& key) const
+	JSON_API const uint64_t& JSONParser::getValue<uint64_t>(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -579,9 +579,9 @@ namespace json
 	}
 
 	template<>
-	JSON_API const double& JSONParser::getValue<double>(const string& key) const
+	JSON_API const double& JSONParser::getValue<double>(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -592,9 +592,9 @@ namespace json
 	}
 
 	template<>
-	JSON_API const vector<utility::jsonObject>& JSONParser::getValue<vector<utility::jsonObject>>(const string& key) const
+	JSON_API const vector<utility::jsonObject>& JSONParser::getValue<vector<utility::jsonObject>>(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -605,9 +605,9 @@ namespace json
 	}
 
 	template<>
-	JSON_API const utility::jsonObject& JSONParser::getValue<utility::jsonObject>(const string& key) const
+	JSON_API const utility::jsonObject& JSONParser::getValue<utility::jsonObject>(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -617,24 +617,24 @@ namespace json
 		return get<utility::jsonObject>(result->second);
 	}
 
-	nullptr_t JSONParser::getNull(const string& key) const
+	nullptr_t JSONParser::getNull(const string& key, bool recursive) const
 	{
-		return this->getValue<nullptr_t>(key);
+		return this->getValue<nullptr_t>(key, recursive);
 	}
 
-	const string& JSONParser::getString(const string& key) const
+	const string& JSONParser::getString(const string& key, bool recursive) const
 	{
-		return this->getValue<string>(key);
+		return this->getValue<string>(key, recursive);
 	}
 
-	bool JSONParser::getBool(const string& key) const
+	bool JSONParser::getBool(const string& key, bool recursive) const
 	{
-		return this->getValue<bool>(key);
+		return this->getValue<bool>(key, recursive);
 	}
 
-	int64_t JSONParser::getInt(const string& key) const
+	int64_t JSONParser::getInt(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -658,9 +658,9 @@ namespace json
 		return get<int64_t>(result->second);
 	}
 
-	uint64_t JSONParser::getUnsignedInt(const string& key) const
+	uint64_t JSONParser::getUnsignedInt(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -684,9 +684,9 @@ namespace json
 		return get<uint64_t>(result->second);
 	}
 
-	double JSONParser::getDouble(const string& key) const
+	double JSONParser::getDouble(const string& key, bool recursive) const
 	{
-		auto [result, success] = find(key, parsedData.data);
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -710,12 +710,12 @@ namespace json
 		return get<double>(result->second);
 	}
 
-	const vector<utility::jsonObject>& JSONParser::getArray(const string& key) const
+	const vector<utility::jsonObject>& JSONParser::getArray(const string& key, bool recursive) const
 	{
 		return this->getValue<vector<utility::jsonObject>>(key);
 	}
 
-	const utility::jsonObject& JSONParser::getObject(const string& key) const
+	const utility::jsonObject& JSONParser::getObject(const string& key, bool recursive) const
 	{
 		return this->getValue<utility::jsonObject>(key);
 	}

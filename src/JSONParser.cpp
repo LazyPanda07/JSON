@@ -273,7 +273,7 @@ namespace json
 
 					delete object.second;
 				}
-				
+
 				break;
 
 			case openSquareBracket:
@@ -304,7 +304,7 @@ namespace json
 						data = &objects.top().second->data;
 
 						break;
-					
+
 					case type::array:
 						data = &arrays.top().second.emplace_back().data;
 
@@ -313,7 +313,7 @@ namespace json
 
 					data->push_back(move(array));
 				}
-				
+
 				break;
 
 			case comma:
@@ -617,6 +617,126 @@ namespace json
 		return get<utility::jsonObject>(result->second);
 	}
 
+	template<>
+	JSON_API bool JSONParser::tryGetValue<nullptr_t>(const string& key, nullptr_t& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		value = get<nullptr_t>(result->second);
+
+		return true;
+	}
+
+	template<>
+	JSON_API bool JSONParser::tryGetValue<string>(const string& key, string& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		value = get<string>(result->second);
+
+		return true;
+	}
+
+	template<>
+	JSON_API bool JSONParser::tryGetValue<bool>(const string& key, bool& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		value = get<bool>(result->second);
+
+		return true;
+	}
+
+	template<>
+	JSON_API bool JSONParser::tryGetValue<int64_t>(const string& key, int64_t& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		value = get<int64_t>(result->second);
+
+		return true;
+	}
+
+	template<>
+	JSON_API bool JSONParser::tryGetValue<uint64_t>(const string& key, uint64_t& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		value = get<uint64_t>(result->second);
+
+		return true;
+	}
+
+	template<>
+	JSON_API bool JSONParser::tryGetValue<double>(const string& key, double& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		value = get<double>(result->second);
+
+		return true;
+	}
+
+	template<>
+	JSON_API bool JSONParser::tryGetValue<vector<utility::jsonObject>>(const string& key, vector<utility::jsonObject>& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		value = get<vector<utility::jsonObject>>(result->second);
+
+		return true;
+	}
+
+	template<>
+	JSON_API bool JSONParser::tryGetValue<utility::jsonObject>(const string& key, utility::jsonObject& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		value = get<utility::jsonObject>(result->second);
+
+		return true;
+	}
+
 	nullptr_t JSONParser::getNull(const string& key, bool recursive) const
 	{
 		return this->getValue<nullptr_t>(key, recursive);
@@ -718,6 +838,147 @@ namespace json
 	const utility::jsonObject& JSONParser::getObject(const string& key, bool recursive) const
 	{
 		return this->getValue<utility::jsonObject>(key);
+	}
+
+	bool JSONParser::tryGetNull(const string& key, bool recursive) const
+	{
+		nullptr_t value;
+
+		return this->tryGetValue(key, value, recursive);
+	}
+
+	bool JSONParser::tryGetString(const string& key, string& value, bool recursive) const
+	{
+		return this->tryGetValue(key, value, recursive);
+	}
+
+	bool JSONParser::tryGetBool(const string& key, bool& value, bool recursive) const
+	{
+		return this->tryGetValue(key, value, recursive);
+	}
+
+	bool JSONParser::tryGetInt(const string& key, int64_t& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		utility::variantTypeEnum type = static_cast<utility::variantTypeEnum>(result->second.index());
+
+		switch (type)
+		{
+		case utility::variantTypeEnum::jInt64_t:
+			value = get<int64_t>(result->second);
+
+			return true;
+
+		case utility::variantTypeEnum::jUInt64_t:
+			value = static_cast<int64_t>(get<uint64_t>(result->second));
+
+			return true;
+
+		case utility::variantTypeEnum::jDouble:
+			value = static_cast<int64_t>(get<double>(result->second));
+
+			return true;
+
+		case utility::variantTypeEnum::jString:
+			value = stoll(get<string>(result->second));
+
+			return true;
+
+		default:
+			return false;
+		}
+	}
+
+	bool JSONParser::tryGetUnsignedInt(const string& key, uint64_t& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		utility::variantTypeEnum type = static_cast<utility::variantTypeEnum>(result->second.index());
+
+		switch (type)
+		{
+		case utility::variantTypeEnum::jUInt64_t:
+			value = get<uint64_t>(result->second);
+
+			return true;
+
+		case utility::variantTypeEnum::jInt64_t:
+			value = static_cast<uint64_t>(get<int64_t>(result->second));
+
+			return true;
+
+		case utility::variantTypeEnum::jDouble:
+			value = static_cast<uint64_t>(get<double>(result->second));
+
+			return true;
+
+		case utility::variantTypeEnum::jString:
+			value = stoull(get<string>(result->second));
+
+			return true;
+
+		default:
+			return false;
+		}
+	}
+
+	bool JSONParser::tryGetDouble(const string& key, double& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			return false;
+		}
+
+		utility::variantTypeEnum type = static_cast<utility::variantTypeEnum>(result->second.index());
+
+		switch (type)
+		{
+		case utility::variantTypeEnum::jDouble:
+			value = get<double>(result->second);
+
+			return true;
+
+		case utility::variantTypeEnum::jInt64_t:
+			value = static_cast<double>(get<int64_t>(result->second));
+
+			return true;
+
+		case utility::variantTypeEnum::jUInt64_t:
+			value = static_cast<double>(get<uint64_t>(result->second));
+
+			return true;
+
+		case utility::variantTypeEnum::jString:
+			value = stod(get<string>(result->second));
+
+			return true;
+
+		default:
+			return false;
+		}
+	}
+
+	bool JSONParser::tryGetArray(const string& key, vector<utility::jsonObject>& value, bool recursive) const
+	{
+		return this->tryGetValue(key, value, recursive);
+	}
+
+	bool JSONParser::tryGetObject(const string& key, utility::jsonObject& value, bool recursive) const
+	{
+		return this->tryGetValue(key, value, recursive);
 	}
 
 	const utility::jsonObject& JSONParser::getParsedData() const

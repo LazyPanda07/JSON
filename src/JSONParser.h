@@ -159,7 +159,18 @@ namespace json
 		template<typename T>
 		const T& getValue(const std::string& key, bool recursive = false) const;
 
-		/// @brief Get null value. Find and get first value of given key
+		/**
+		 * @brief Getter for all JSON parsed values
+		 * @tparam T T is one of json::utility::jsonObject::variantType template parameters
+		 * @param key JSON key
+		 * @param value JSON value
+		 * @param recursive Recursive search
+		 * @return True if value found
+		*/
+		template<typename T>
+		bool tryGetValue(const std::string& key, T& value, bool recursive = false) const;
+
+		/// @brief Get null value
 		/// @param key JSON key
 		/// @param recursive Recursive search
 		/// @return nullptr value
@@ -167,7 +178,7 @@ namespace json
 		/// @exception std::bad_variant_access Other type found
 		nullptr_t getNull(const std::string& key, bool recursive = false) const;
 
-		/// @brief Get string value. Find and get first value of given key
+		/// @brief Get string value
 		/// @param key JSON key
 		/// @param recursive Recursive search
 		/// @return string value
@@ -175,7 +186,7 @@ namespace json
 		/// @exception std::bad_variant_access Other type found
 		const std::string& getString(const std::string& key, bool recursive = false) const;
 		
-		/// @brief Get bool value. Find and get first value of given key
+		/// @brief Get bool value
 		/// @param key JSON key
 		/// @param recursive Recursive search
 		/// @return bool value
@@ -183,7 +194,7 @@ namespace json
 		/// @exception std::bad_variant_access Other type found
 		bool getBool(const std::string& key, bool recursive = false) const;
 
-		/// @brief Get int64_t value. Find and get first value of given key
+		/// @brief Get int64_t value
 		/// @param key JSON key
 		/// @param recursive Recursive search
 		/// @return int64_t value
@@ -191,7 +202,7 @@ namespace json
 		/// @exception std::bad_variant_access Other type found
 		int64_t getInt(const std::string& key, bool recursive = false) const;
 
-		/// @brief Get uint64_t value. Find and get first value of given key
+		/// @brief Get uint64_t value
 		/// @param key JSON key
 		/// @param recursive Recursive search
 		/// @return uint64_t value
@@ -199,7 +210,7 @@ namespace json
 		/// @exception std::bad_variant_access Other type found
 		uint64_t getUnsignedInt(const std::string& key, bool recursive = false) const;
 
-		/// @brief Get double value. Find and get first value of given key
+		/// @brief Get double value
 		/// @param key JSON key
 		/// @param recursive Recursive search
 		/// @return double value
@@ -207,7 +218,7 @@ namespace json
 		/// @exception std::bad_variant_access Other type found
 		double getDouble(const std::string& key, bool recursive = false) const;
 
-		/// @brief Get JSON array. Find and get first value of given key
+		/// @brief Get JSON array
 		/// @param key JSON key
 		/// @param recursive Recursive search
 		/// @return JSON array
@@ -215,13 +226,77 @@ namespace json
 		/// @exception std::bad_variant_access Other type found
 		const std::vector<utility::jsonObject>& getArray(const std::string& key, bool recursive = false) const;
 
-		/// @brief Get JSON object. Find and get first value of given key
+		/// @brief Get JSON object
 		/// @param key JSON Key
 		/// @param recursive Recursive search
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
 		const utility::jsonObject& getObject(const std::string& key, bool recursive = false) const;
+
+		/// @brief Try get null value
+		/// @param key JSON key
+		/// @param recursive Recursive search
+		/// @return nullptr value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		bool tryGetNull(const std::string& key, bool recursive = false) const;
+
+		/// @brief Try get string value
+		/// @param key JSON key
+		/// @param recursive Recursive search
+		/// @return string value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		bool tryGetString(const std::string& key, std::string& value, bool recursive = false) const;
+
+		/// @brief Try get bool value
+		/// @param key JSON key
+		/// @param recursive Recursive search
+		/// @return bool value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		bool tryGetBool(const std::string& key, bool& value, bool recursive = false) const;
+
+		/// @brief Try get int64_t value
+		/// @param key JSON key
+		/// @param recursive Recursive search
+		/// @return int64_t value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		bool tryGetInt(const std::string& key, int64_t& value, bool recursive = false) const;
+
+		/// @brief Try get uint64_t value
+		/// @param key JSON key
+		/// @param recursive Recursive search
+		/// @return uint64_t value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		bool tryGetUnsignedInt(const std::string& key, uint64_t& value, bool recursive = false) const;
+
+		/// @brief Try get double value
+		/// @param key JSON key
+		/// @param recursive Recursive search
+		/// @return double value
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		bool tryGetDouble(const std::string& key, double& value, bool recursive = false) const;
+
+		/// @brief Try get JSON array
+		/// @param key JSON key
+		/// @param recursive Recursive search
+		/// @return JSON array
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		bool tryGetArray(const std::string& key, std::vector<utility::jsonObject>& value, bool recursive = false) const;
+
+		/// @brief Try get JSON object
+		/// @param key JSON Key
+		/// @param recursive Recursive search
+		/// @return JSON object
+		/// @exception json::exceptions::CantFindValueException 
+		/// @exception std::bad_variant_access Other type found
+		bool tryGetObject(const std::string& key, utility::jsonObject& value, bool recursive = false) const;
 
 		/// @brief Getter for parsedData
 		/// @return parsedData

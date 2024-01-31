@@ -628,7 +628,7 @@ namespace json
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
-		if (!success)
+		if (!success || JSONParser::checkDifferType<json::utility::variantTypeEnum::jNull>(result->second))
 		{
 			return false;
 		}

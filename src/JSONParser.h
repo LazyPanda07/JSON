@@ -37,6 +37,9 @@ namespace json
 
 		static char interpretEscapeSymbol(char symbol);
 
+		template<utility::variantTypeEnum ResultType>
+		static bool checkDifferType(const variantType& checkType);
+
 	private:
 		void parse();
 

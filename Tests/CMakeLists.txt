@@ -37,4 +37,9 @@ target_link_libraries(
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-install(DIRECTORY data DESTINATION bin)
+
+if (UNIX)
+    install(DIRECTORY data DESTINATION bin/Tests)
+else()
+    install(DIRECTORY data DESTINATION bin)
+endif (UNIX)

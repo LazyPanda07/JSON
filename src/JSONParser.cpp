@@ -153,6 +153,12 @@ namespace json
 		}
 	}
 
+	template<utility::variantTypeEnum ResultType>
+	bool JSONParser::checkDifferType(const variantType& checkType)
+	{
+		return ResultType != static_cast<utility::variantTypeEnum>(checkType.index());
+	}
+
 	void JSONParser::parse()
 	{
 		using namespace json::utility;
@@ -637,7 +643,7 @@ namespace json
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
-		if (!success)
+		if (!success || JSONParser::checkDifferType<json::utility::variantTypeEnum::jString>(result->second))
 		{
 			return false;
 		}

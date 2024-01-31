@@ -79,7 +79,7 @@ namespace json
 
 		if (!recursive || it != end)
 		{
-			return { it, true };
+			return { it, it != end };
 		}
 
 		it = start.begin();

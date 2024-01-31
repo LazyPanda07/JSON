@@ -167,11 +167,14 @@ jobs:
         name: ${{ matrix.configuration }}_Linux
         path: JSON
 
-    - name: Directory
-      run: |
-          ls JSON
-          ls Tests
-          ls Tests/gtest
+    - name: JSON directory
+      run: ls JSON
+    
+    - name: Tests directory
+      run: ls Tests
+    
+    - name: gtest directory
+      run: ls Tests/gtest
 
     - name: Build tests
       working-directory: ${{ github.workspace }}/Tests

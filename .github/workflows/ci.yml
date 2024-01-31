@@ -161,6 +161,12 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/Tests/gtest ..
           make install -j $(nproc)
 
+    - name: Directory
+      run: |
+          ls JSON
+          ls Tests
+          ls Tests/gtest
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:

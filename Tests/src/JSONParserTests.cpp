@@ -36,14 +36,22 @@ TEST(Parser, TryGetters)
 	std::string stringValue;
 
 	ASSERT_TRUE(parser.tryGetNull("nullValue"));
+	std::cout << __LINE__ << std::endl;
 	ASSERT_TRUE(parser.tryGetBool("boolValue", boolValue));
+	std::cout << __LINE__ << std::endl;
 	ASSERT_TRUE(parser.tryGetInt("intValue", intValue));
+	std::cout << __LINE__ << std::endl;
 	ASSERT_TRUE(parser.tryGetDouble("doubleValue", doubleValue));
+	std::cout << __LINE__ << std::endl;
 	ASSERT_TRUE(parser.tryGetUnsignedInt("unsignedIntValue", unsignedIntValue));
+	std::cout << __LINE__ << std::endl;
 	ASSERT_TRUE(parser.tryGetString("stringValue", stringValue));
+	std::cout << __LINE__ << std::endl;
 
 	ASSERT_FALSE(parser.tryGetInt("test", intValue));
+	std::cout << __LINE__ << std::endl;
 	ASSERT_FALSE(parser.tryGetString("doubleValue", stringValue));
+	std::cout << __LINE__ << std::endl;
 }
 
 TEST(Parser, StreamOperators)

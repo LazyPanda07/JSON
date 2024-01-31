@@ -5,6 +5,10 @@ project(Tests)
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
 
+if (UNIX)
+    add_definitions(-D__LINUX__)
+endif (UNIX)
+
 add_executable(
     ${PROJECT_NAME}
     main.cpp

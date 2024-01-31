@@ -174,13 +174,10 @@ jobs:
           cd build
           cmake ..
           make install -j $(nproc)
-
-    - name: Directory
-      run: ls ${{ github.workspace }}/Tests/build/bin
-
+          
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
       run: |
           cd build/bin
-          ./Test
+          ./Tests
           

@@ -658,7 +658,7 @@ namespace json
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
-		if (!success)
+		if (!success || JSONParser::checkDifferType<json::utility::variantTypeEnum::jBool>(result->second))
 		{
 			return false;
 		}
@@ -673,7 +673,7 @@ namespace json
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
-		if (!success)
+		if (!success || JSONParser::checkDifferType<json::utility::variantTypeEnum::jInt64_t>(result->second))
 		{
 			return false;
 		}
@@ -688,7 +688,7 @@ namespace json
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
-		if (!success)
+		if (!success || JSONParser::checkDifferType<json::utility::variantTypeEnum::jUInt64_t>(result->second))
 		{
 			return false;
 		}
@@ -703,7 +703,7 @@ namespace json
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
-		if (!success)
+		if (!success || JSONParser::checkDifferType<json::utility::variantTypeEnum::jDouble>(result->second))
 		{
 			return false;
 		}
@@ -718,7 +718,7 @@ namespace json
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
-		if (!success)
+		if (!success || JSONParser::checkDifferType<json::utility::variantTypeEnum::jJSONArray>(result->second))
 		{
 			return false;
 		}
@@ -733,7 +733,7 @@ namespace json
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
-		if (!success)
+		if (!success || JSONParser::checkDifferType<json::utility::variantTypeEnum::jJSONObject>(result->second))
 		{
 			return false;
 		}

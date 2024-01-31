@@ -79,3 +79,105 @@ jobs:
       with:
         name: ${{ matrix.configuration }}_Linux
         path: bin/${{ matrix.configuration }}-x64/JSON
+
+  windows-test:
+    runs-on: windows-latest
+    needs: [windows-build]
+    strategy:
+      matrix:
+        configuration: [Debug, DebugDLL, Release, ReleaseDLL, ProductionRelease, ProductionReleaseDLL]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@main
+
+    - name: Setup build type
+      shell: pwsh
+      run: echo "BUILD_TYPE=$(if ("${{ matrix.configuration }}".Contains("Release")) { echo "Release" } else { echo "Debug" })" >> $Env:GITHUB_ENV
+
+    - name: Get Google Test
+      uses: actions/checkout@v4
+      with:
+        repository: google/googletest
+        ref: v1.14.x
+        path: gtest
+
+    - name: Build Google Test
+      run: |
+          cd gtest
+          mkdir build
+          cd build
+          cmake -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/Tests/gtest  ..
+          msbuild /p:Configuration=${{ env.BUILD_TYPE }} /p:Platform=x64 INSTALL.vcxproj
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_Windows
+        path: JSON
+
+    - name: Build tests
+      working-directory: ${{ github.workspace }}/Tests
+      run: |
+          mkdir build
+          cd build
+          cmake ..
+          msbuild /p:Configuration=${{ env.BUILD_TYPE }} /p:Platform=x64 INSTALL.vcxproj
+
+    - name: Tests
+      working-directory: ${{ github.workspace }}/Tests
+      run: |
+          cd build/bin
+          .\Tests.exe
+
+  linux-tests:
+    runs-on: ubuntu-latest
+    needs: [linux-build]
+    strategy:
+      matrix:
+        configuration: [Debug, DebugDLL, Release, ReleaseDLL, ProductionRelease, ProductionReleaseDLL]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Setup build type
+      shell: pwsh
+      run: echo "BUILD_TYPE=$(if ("${{ matrix.configuration }}".Contains("Release")) { echo "Release" } else { echo "Debug" })" >> $Env:GITHUB_ENV
+
+    - name: Get Google Test
+      uses: actions/checkout@v4
+      with:
+        repository: google/googletest
+        ref: v1.14.x
+        path: gtest
+
+    - name: Build Google Test
+      run: |
+          cd gtest
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/Tests/gtest ..
+          make install -j $(nproc)
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}_Linux
+        path: JSON
+
+    - name: Build tests
+      working-directory: ${{ github.workspace }}/Tests
+      run: |
+          mkdir build
+          cd build
+          cmake ..
+          make install -j $(nproc)
+
+    - name: Tests
+      working-directory: ${{ github.workspace }}/Tests
+      run: |
+          cd build/bin
+          ./Test
+          

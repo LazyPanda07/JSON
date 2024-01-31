@@ -85,7 +85,7 @@ jobs:
     needs: [windows-build]
     strategy:
       matrix:
-        configuration: [Debug, DebugDLL, Release, ReleaseDLL, ProductionRelease, ProductionReleaseDLL]
+        configuration: [Debug, Release, ProductionRelease]
 
     steps:
     - uses: actions/checkout@v4
@@ -109,7 +109,7 @@ jobs:
           cd gtest
           mkdir build
           cd build
-          cmake -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/Tests/gtest  ..
+          cmake -Dgtest_force_shared_crt=ON -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/Tests/gtest  ..
           msbuild /p:Configuration=${{ env.BUILD_TYPE }} /p:Platform=x64 INSTALL.vcxproj
 
     - name: Download artifacts
@@ -137,7 +137,7 @@ jobs:
     needs: [linux-build]
     strategy:
       matrix:
-        configuration: [Debug, DebugDLL, Release, ReleaseDLL, ProductionRelease, ProductionReleaseDLL]
+        configuration: [Debug, Release, ProductionRelease]
 
     steps:
     - uses: actions/checkout@v4

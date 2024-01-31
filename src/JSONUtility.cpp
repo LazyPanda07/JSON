@@ -553,6 +553,8 @@ namespace json
 				throw exceptions::WrongEncodingException();
 			}
 
+			cout << resultSize << endl;
+
 			if (result.size() != resultSize)
 			{
 				result.resize(resultSize);

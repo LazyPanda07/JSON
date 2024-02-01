@@ -4,7 +4,6 @@ project(Tests)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
-set(VALGRIND false CACHE BOOL "Build with valgrind")
 
 if (UNIX)
     set(DLL ${PROJECT_SOURCE_DIR}/../JSON/libJSON.so)

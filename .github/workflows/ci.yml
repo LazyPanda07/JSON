@@ -85,7 +85,7 @@ jobs:
     needs: [windows-build]
     strategy:
       matrix:
-        configuration: [Debug, Release, ProductionRelease]
+        configuration: [Debug, DebugDLL, Release, ReleaseDLL, ProductionRelease, ProductionReleaseDLL]
 
     steps:
     - uses: actions/checkout@v4

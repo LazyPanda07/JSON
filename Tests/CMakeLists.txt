@@ -4,16 +4,26 @@ project(Tests)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
+set(VALGRIND false CACHE BOOL "Build with valgrind")
 
 if (UNIX)
+    set(DLL ${PROJECT_SOURCE_DIR}/../JSON/libJSON.so)
     add_definitions(-D__LINUX__)
+else ()
+    set(DLL ${PROJECT_SOURCE_DIR}/../JSON/JSON.dll)
 endif (UNIX)
+
+if(EXISTS ${DLL})
+    add_definitions(-DJSON_DLL)
+    install(FILES ${DLL} DESTINATION bin)
+endif()
 
 add_executable(
     ${PROJECT_NAME}
     main.cpp
     src/JSONBuilderTests.cpp
     src/JSONParserTests.cpp
+    src/Utils.cpp
 )
 
 target_include_directories(

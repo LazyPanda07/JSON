@@ -2,14 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "JSONParser.h"
-
-static json::JSONParser createParser()
-{
-	std::ifstream in("data/appends.json");
-
-	return json::JSONParser(in);
-}
+#include "Utils.h"
 
 TEST(Parser, Getters)
 {

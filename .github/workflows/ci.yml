@@ -197,6 +197,11 @@ jobs:
       with:
         name: ${{ matrix.configuration }}_Linux
         path: JSON
+    
+    - name: Get Google Test
+      uses: LazyPanda07/get-gtest@v1
+      with:
+        install-path: Tests
 
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
@@ -212,4 +217,3 @@ jobs:
         path: Tests/build/bin
         name: Tests
         pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
-        

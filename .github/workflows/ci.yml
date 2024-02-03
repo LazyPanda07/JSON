@@ -201,7 +201,7 @@ jobs:
     - name: Get Google Test
       uses: LazyPanda07/get-gtest@v1
       with:
-        install-path: Tests
+        install-path: Tests/gtest
 
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests

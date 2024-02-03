@@ -192,24 +192,12 @@ jobs:
     steps: 
     - uses: actions/checkout@v4
 
-    - name: Install valgrind
-      run: sudo apt install valgrind -y
-      
-    - name: Build GoogleTest
-      run: |
-          git clone https://github.com/google/googletest.git -b v1.14.x gtest
-          cd gtest
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/Tests/gtest ..
-          make install -j $(nproc)
-
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
         name: ${{ matrix.configuration }}_Linux
         path: JSON
-        
+
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
       run: |
@@ -217,15 +205,11 @@ jobs:
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release ..
           make install -j $(nproc)
-          cd bin
-          export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
-          valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=leaks_result.txt ./Tests
           
-    - name: Valgrid result
-      working-directory: ${{ github.workspace }}/Tests
-      run: |
-          cd build/bin
-          export VALGRIND_RESULT=$(grep -Rnw 'leaks_result.txt' -e 'All heap blocks were freed -- no leaks are possible')
-          printf '#!/bin/bash\n\ncat leaks_result.txt\n\nif [[ -z "${VALGRIND_RESULT}" ]];\nthen\n    exit 1\nfi\n' > check.sh
-          chmod +x check.sh
-          ./check.sh
+    - name: Valgrind test
+      uses: LazyPanda07/check-memory-leaks@master
+      with:
+        path: Tests/build/bin
+        name: Tests
+        pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
+        

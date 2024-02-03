@@ -52,7 +52,7 @@ jobs:
       run: pip install vs_to_cmake/
 
     - name: Create CMakeLists.txt
-      run: vs_to_cmake -f JSON.vcxproj -v 3.27.0 -d __LINUX__
+      run: vs_to_cmake -f JSON.vcxproj -d __LINUX__
 
     - name: Build
       run: |

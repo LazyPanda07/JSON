@@ -192,7 +192,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release ..
           make install -j $(nproc)
           
-    - name: Valgrind test
+    - name: Memory leak test
       uses: LazyPanda07/check-memory-leaks@master
       with:
         path: Tests/build/bin

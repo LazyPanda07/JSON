@@ -120,7 +120,7 @@ jobs:
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
       run: |
-          cd build/bin
+          cd build\bin
           .\Tests.exe
 
   linux-tests:

@@ -146,26 +146,16 @@ jobs:
       shell: pwsh
       run: echo "BUILD_TYPE=$(if ("${{ matrix.configuration }}".Contains("Release")) { echo "Release" } else { echo "Debug" })" >> $Env:GITHUB_ENV
 
-    - name: Get Google Test
-      uses: actions/checkout@v4
-      with:
-        repository: google/googletest
-        ref: v1.14.x
-        path: gtest
-
-    - name: Build Google Test
-      run: |
-          cd gtest
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/Tests/gtest ..
-          make install -j $(nproc)
-
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
         name: ${{ matrix.configuration }}_Linux
         path: JSON
+
+    - name: Get Google Test
+      uses: LazyPanda07/get-gtest@v1
+      with:
+        install-path: Tests/gtest
         
     - name: Build tests
       working-directory: ${{ github.workspace }}/Tests

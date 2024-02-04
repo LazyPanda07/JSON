@@ -222,28 +222,23 @@ jobs:
       
     - name: Setup Windows build list
       run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
-          
-    - name: Print
-      run: echo ${{ env.WINDOWS_BUILD_LIST }}
+      
+    # - name: Create Windows zip
+      # run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
 
-    - name: Create Windows zip
-      run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
-
-    - name: Create Linux zip
-      run: zip -r linux.zip ProductionRelease_Linux ProductionReleaseDLL_Linux
-
-    - name: Current directory
-      run: ls
-
+    # - name: Create Linux zip
+      # run: zip -r linux.zip ProductionRelease_Linux ProductionReleaseDLL_Linux
+      
     - name: Upload windows.zip
       uses: actions/upload-artifact@v4
       with:
         name: windows.zip
-        path: windows.zip
+        path: ${{ github.workspace }}/*_Windows/
+            
     
     - name: Upload linux.zip
       uses: actions/upload-artifact@v4
       with:
         name: linux.zip
-        path: linux.zip
+        path: ${{ github.workspace }}/ProductionRelease*_Linux/
         

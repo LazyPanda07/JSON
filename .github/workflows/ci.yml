@@ -221,13 +221,29 @@ jobs:
       run: echo "VERSION=$($($($(Select-String -Path .\src\JSONUtility.cpp -Pattern jsonVersion) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
       
     - name: Setup Windows build list
-      run: |
-          echo $(ls | grep Windows)
-          echo 'WINDOWS_BUILD_LIST="$(ls | grep Windows)"' >> $Env:GITHUB_ENV
+      run: echo 'WINDOWS_BUILD_LIST="$(ls | grep Windows)"' >> $Env:GITHUB_ENV
           
-    - name: Upload build.zip
+    - name: Print
+      run: echo ${{ env.WINDOWS_BUILD_LIST }}
+
+    - name: Create Windows zip
+      run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
+
+    - name: Create Linux zip
+      run: zip -r linux.zip ProductionRelease_Linux ProductionReleaseDLL_Linux
+
+    - name: Current directory
+      run: ls
+
+    - name: Upload windows.zip
       uses: actions/upload-artifact@v4
       with:
-        name: build.zip
-        path: build.zip
+        name: windows.zip
+        path: windows.zip
+    
+    - name: Upload linux.zip
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux.zip
+        path: linux.zip
         

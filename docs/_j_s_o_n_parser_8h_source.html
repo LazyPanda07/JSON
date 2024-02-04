@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JSON<span id="projectnumber">&#160;2.2.0</span>
+   <div id="projectname">JSON<span id="projectnumber">&#160;2.4.0</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++17</div>
   </td>
@@ -128,85 +128,111 @@ $(document).ready(function(){initNavTree('_j_s_o_n_parser_8h_source.html',''); i
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="keyword">static</span> <span class="keywordtype">void</span> insertKeyValueData(std::string&amp;&amp; key, <span class="keyword">const</span> std::string&amp; value, <a class="code hl_class" href="classjson_1_1utility_1_1json_object.html">utility::jsonObject</a>&amp; ptr);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keyword">static</span> std::pair&lt;std::vector&lt;std::pair&lt;std::string, variantType&gt;&gt;::const_iterator, <span class="keywordtype">bool</span>&gt; find(<span class="keyword">const</span> std::string&amp; key, <span class="keyword">const</span> std::vector&lt;std::pair&lt;std::string, variantType&gt;&gt;&amp; start);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keyword">static</span> std::pair&lt;std::vector&lt;std::pair&lt;std::string, variantType&gt;&gt;::const_iterator, <span class="keywordtype">bool</span>&gt; find(<span class="keyword">const</span> std::string&amp; key, <span class="keyword">const</span> std::vector&lt;std::pair&lt;std::string, variantType&gt;&gt;&amp; start, <span class="keywordtype">bool</span> recursive);</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keyword">static</span> <span class="keywordtype">bool</span> isStringSymbol(<span class="keywordtype">char</span> symbol);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="keyword">static</span> <span class="keywordtype">char</span> interpretEscapeSymbol(<span class="keywordtype">char</span> symbol);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keywordtype">void</span> parse();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <span class="keyword">template</span>&lt;utility::variantTypeEnum ResultType&gt;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keyword">static</span> <span class="keywordtype">bool</span> checkDifferType(<span class="keyword">const</span> <a class="code hl_typedef" href="classjson_1_1_j_s_o_n_parser.html#a98013c1d3c0661d58ba0fb4fca64f804">variantType</a>&amp; checkType);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordtype">void</span> parse();</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#af850c82aa16b8620ea514209a5374bb2">   51</a></span>        <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#af850c82aa16b8620ea514209a5374bb2">JSONParser</a>(<span class="keyword">const</span> std::string&amp; data);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#aebacadf170056bcd9df95310de946d43">   57</a></span>        <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#aebacadf170056bcd9df95310de946d43">JSONParser</a>(std::istream&amp; inputStream);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a2b169c81ad50600f5a1fb2708d373ab3">   63</a></span>        <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a2b169c81ad50600f5a1fb2708d373ab3">JSONParser</a>(std::istream&amp;&amp; inputStream);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>(<span class="keyword">const</span> <a class="code hl_class" href="classjson_1_1utility_1_1json_object.html">utility::jsonObject</a>&amp; data);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>(<span class="keyword">const</span> <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; other);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>(<a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp;&amp; other) <span class="keyword">noexcept</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; operator = (<span class="keyword">const</span> <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; other);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; operator = (<a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp;&amp; other) <span class="keyword">noexcept</span>;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keywordtype">bool</span> contains(<span class="keyword">const</span> std::string&amp; key, utility::variantTypeEnum type) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">   97</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">setJSONData</a>(<span class="keyword">const</span> std::string&amp; jsonData, uint32_t codePage);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">  103</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">setJSONData</a>(<span class="keyword">const</span> std::string&amp; jsonData);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88">  109</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88">setJSONData</a>(std::string&amp;&amp; jsonData) <span class="keyword">noexcept</span>;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a29e800cbdef3b530f108be8aa4450efe">  114</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a29e800cbdef3b530f108be8aa4450efe">setJSONData</a>(std::istream&amp; inputStream);</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#abad51b30cac1d5948dce5fa761d45c75">  119</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#abad51b30cac1d5948dce5fa761d45c75">setJSONData</a>(std::istream&amp;&amp; inputStream);</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="keyword">const</span> std::string&amp; getRawData() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keyword">const</span> std::string&amp; operator * () <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <a class="code hl_class" href="classjson_1_1utility_1_1json_object_1_1_const_j_s_o_n_iterator.html">ConstJSONIterator</a> begin() const noexcept;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#af850c82aa16b8620ea514209a5374bb2">   54</a></span>        <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#af850c82aa16b8620ea514209a5374bb2">JSONParser</a>(<span class="keyword">const</span> std::string&amp; data);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#aebacadf170056bcd9df95310de946d43">   60</a></span>        <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#aebacadf170056bcd9df95310de946d43">JSONParser</a>(std::istream&amp; inputStream);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a2b169c81ad50600f5a1fb2708d373ab3">   66</a></span>        <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a2b169c81ad50600f5a1fb2708d373ab3">JSONParser</a>(std::istream&amp;&amp; inputStream);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>(<span class="keyword">const</span> <a class="code hl_class" href="classjson_1_1utility_1_1json_object.html">utility::jsonObject</a>&amp; data);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>(<span class="keyword">const</span> <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; other);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>(<a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp;&amp; other) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; operator = (<span class="keyword">const</span> <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; other);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; operator = (<a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp;&amp; other) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordtype">bool</span> contains(<span class="keyword">const</span> std::string&amp; key, utility::variantTypeEnum type, <span class="keywordtype">bool</span> recursive = <span class="keyword">false</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#ifdef __LINUX__</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordtype">void</span> setJSONData(<span class="keyword">const</span> std::string&amp; jsonData, std::string_view codePage);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">  110</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">setJSONData</a>(<span class="keyword">const</span> std::string&amp; jsonData, uint32_t codePage);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">  117</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">setJSONData</a>(<span class="keyword">const</span> std::string&amp; jsonData);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88">  123</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a4878fe23b655bdc6b87296875bb4ec88">setJSONData</a>(std::string&amp;&amp; jsonData) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a29e800cbdef3b530f108be8aa4450efe">  128</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#a29e800cbdef3b530f108be8aa4450efe">setJSONData</a>(std::istream&amp; inputStream);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#abad51b30cac1d5948dce5fa761d45c75">  133</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classjson_1_1_j_s_o_n_parser.html#abad51b30cac1d5948dce5fa761d45c75">setJSONData</a>(std::istream&amp;&amp; inputStream);</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        <a class="code hl_class" href="classjson_1_1utility_1_1json_object_1_1_const_j_s_o_n_iterator.html">ConstJSONIterator</a> end() const noexcept;</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        template&lt;typename T&gt;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#aea9e31dec785a0aaadbda2bde00c05bf">  148</a></span>        const T&amp; getValue(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        nullptr_t getNull(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        const std::<span class="keywordtype">string</span>&amp; getString(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        <span class="keywordtype">bool</span> getBool(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        int64_t getInt(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        uint64_t getUnsignedInt(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keywordtype">double</span> getDouble(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        const std::vector&lt;utility::jsonObject&gt;&amp; getArray(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        const utility::jsonObject&amp; getObject(const std::<span class="keywordtype">string</span>&amp; key) const;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        const utility::jsonObject&amp; getParsedData() const;</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        <span class="keywordtype">void</span> getParsedData(utility::jsonObject&amp; <span class="keywordtype">object</span>) noexcept;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a6e0f4eae74468bf94663938c50babd3c">  222</a></span>        friend JSON_API std::istream&amp; operator &gt;&gt; (std::istream&amp; inputStream, <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="keyword">const</span> std::string&amp; getRawData() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="keyword">const</span> std::string&amp; operator * () <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <a class="code hl_class" href="classjson_1_1utility_1_1json_object_1_1_const_j_s_o_n_iterator.html">ConstJSONIterator</a> begin() const noexcept;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        <a class="code hl_class" href="classjson_1_1utility_1_1json_object_1_1_const_j_s_o_n_iterator.html">ConstJSONIterator</a> end() const noexcept;</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        template&lt;typename T&gt;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a96fbc3ab20618e40747e7c9ca41bf0f6">  163</a></span>        const T&amp; getValue(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        template&lt;typename T&gt;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#adeb54d6f62f958bb1ce1247b65e6b2f6">  174</a></span>        <span class="keywordtype">bool</span> tryGetValue(const std::<span class="keywordtype">string</span>&amp; key, T&amp; value, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        nullptr_t getNull(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        const std::<span class="keywordtype">string</span>&amp; getString(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        <span class="keywordtype">bool</span> getBool(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        int64_t getInt(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        uint64_t getUnsignedInt(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <span class="keywordtype">double</span> getDouble(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a4570d8aebfd60f9e02368ee5ba7feb03">  230</a></span>        friend JSON_API std::ostream&amp; operator &lt;&lt; (std::ostream&amp; outputStream, const <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        const std::vector&lt;utility::jsonObject&gt;&amp; getArray(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        ~<a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>() = default;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    };</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        const utility::jsonObject&amp; getObject(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        <span class="keywordtype">bool</span> tryGetNull(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        <span class="keywordtype">bool</span> tryGetString(const std::<span class="keywordtype">string</span>&amp; key, std::<span class="keywordtype">string</span>&amp; value, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        <span class="keywordtype">bool</span> tryGetBool(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">bool</span>&amp; value, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <span class="keywordtype">bool</span> tryGetInt(const std::<span class="keywordtype">string</span>&amp; key, int64_t&amp; value, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        <span class="keywordtype">bool</span> tryGetUnsignedInt(const std::<span class="keywordtype">string</span>&amp; key, uint64_t&amp; value, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="keywordtype">bool</span> tryGetDouble(const std::<span class="keywordtype">string</span>&amp; key, <span class="keywordtype">double</span>&amp; value, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keywordtype">bool</span> tryGetArray(const std::<span class="keywordtype">string</span>&amp; key, std::vector&lt;utility::jsonObject&gt;&amp; value, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        <span class="keywordtype">bool</span> tryGetObject(const std::<span class="keywordtype">string</span>&amp; key, utility::jsonObject&amp; value, <span class="keywordtype">bool</span> recursive = false) const;</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>        const utility::jsonObject&amp; getParsedData() const;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        <span class="keywordtype">void</span> getParsedData(utility::jsonObject&amp; <span class="keywordtype">object</span>) noexcept;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a6e0f4eae74468bf94663938c50babd3c">  320</a></span>        friend JSON_API std::istream&amp; operator &gt;&gt; (std::istream&amp; inputStream, <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno"><a class="line" href="classjson_1_1_j_s_o_n_parser.html#a4570d8aebfd60f9e02368ee5ba7feb03">  328</a></span>        friend JSON_API std::ostream&amp; operator &lt;&lt; (std::ostream&amp; outputStream, const <a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>&amp; parser);</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>        ~<a class="code hl_class" href="classjson_1_1_j_s_o_n_parser.html">JSONParser</a>() = default;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    };</div>
 </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>}</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>}</div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html">json::JSONParser</a></div><div class="ttdoc">Parser for JSON.</div><div class="ttdef"><b>Definition</b> JSONParser.h:14</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_a120bec0db8f7e423ac8f700c3b33f5a2"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#a120bec0db8f7e423ac8f700c3b33f5a2">json::JSONParser::setJSONData</a></div><div class="ttdeci">void setJSONData(const std::string &amp;jsonData)</div><div class="ttdoc">Setter for rawData.</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_a19fe9231149199232c9b81986ec5b983"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#a19fe9231149199232c9b81986ec5b983">json::JSONParser::setJSONData</a></div><div class="ttdeci">void setJSONData(const std::string &amp;jsonData, uint32_t codePage)</div><div class="ttdoc">Setter for rawData.</div></div>
@@ -217,8 +243,8 @@ $(document).ready(function(){initNavTree('_j_s_o_n_parser_8h_source.html',''); i
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_abad51b30cac1d5948dce5fa761d45c75"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#abad51b30cac1d5948dce5fa761d45c75">json::JSONParser::setJSONData</a></div><div class="ttdeci">void setJSONData(std::istream &amp;&amp;inputStream)</div><div class="ttdoc">Setter for rawData.</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_aebacadf170056bcd9df95310de946d43"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#aebacadf170056bcd9df95310de946d43">json::JSONParser::JSONParser</a></div><div class="ttdeci">JSONParser(std::istream &amp;inputStream)</div><div class="ttdoc">Parse data.</div></div>
 <div class="ttc" id="aclassjson_1_1_j_s_o_n_parser_html_af850c82aa16b8620ea514209a5374bb2"><div class="ttname"><a href="classjson_1_1_j_s_o_n_parser.html#af850c82aa16b8620ea514209a5374bb2">json::JSONParser::JSONParser</a></div><div class="ttdeci">JSONParser(const std::string &amp;data)</div><div class="ttdoc">Parse data.</div></div>
-<div class="ttc" id="aclassjson_1_1utility_1_1json_object_1_1_const_j_s_o_n_iterator_html"><div class="ttname"><a href="classjson_1_1utility_1_1json_object_1_1_const_j_s_o_n_iterator.html">json::utility::jsonObject::ConstJSONIterator</a></div><div class="ttdoc">Iterator through jsonObject.</div><div class="ttdef"><b>Definition</b> JSONUtility.h:75</div></div>
-<div class="ttc" id="aclassjson_1_1utility_1_1json_object_html"><div class="ttname"><a href="classjson_1_1utility_1_1json_object.html">json::utility::jsonObject</a></div><div class="ttdoc">JSON object.</div><div class="ttdef"><b>Definition</b> JSONUtility.h:64</div></div>
+<div class="ttc" id="aclassjson_1_1utility_1_1json_object_1_1_const_j_s_o_n_iterator_html"><div class="ttname"><a href="classjson_1_1utility_1_1json_object_1_1_const_j_s_o_n_iterator.html">json::utility::jsonObject::ConstJSONIterator</a></div><div class="ttdoc">Iterator through jsonObject.</div><div class="ttdef"><b>Definition</b> JSONUtility.h:78</div></div>
+<div class="ttc" id="aclassjson_1_1utility_1_1json_object_html"><div class="ttname"><a href="classjson_1_1utility_1_1json_object.html">json::utility::jsonObject</a></div><div class="ttdoc">JSON object.</div><div class="ttdef"><b>Definition</b> JSONUtility.h:67</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

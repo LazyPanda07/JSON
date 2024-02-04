@@ -211,34 +211,38 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-
     - uses: LazyPanda07/extract-current-branch@master
     
     - name: Setup release version variable
       shell: pwsh
       run: echo "VERSION=$($($($(Select-String -Path .\src\JSONUtility.cpp -Pattern jsonVersion) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+
+    - name: Download artifacts
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: actions/download-artifact@v4
       
     - name: Setup Windows build list
       run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
       
-    # - name: Create Windows zip
-      # run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
+    - name: Create Windows zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
 
-    # - name: Create Linux zip
-      # run: zip -r linux.zip ProductionRelease_Linux ProductionReleaseDLL_Linux
-      
-    - name: Upload windows.zip
-      uses: actions/upload-artifact@v4
+    - name: Create Linux zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r linux.zip ProductionRelease_Linux ProductionReleaseDLL_Linux
+
+    - name: Publish Windows
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: svenstaro/upload-release-action@master
       with:
-        name: windows.zip
-        path: ${{ github.workspace }}/*_Windows/
-            
-    
-    - name: Upload linux.zip
-      uses: actions/upload-artifact@v4
+        tag: v${{ env.VERSION }}
+        file: windows.zip
+
+    - name: Publish Linux
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: svenstaro/upload-release-action@master
       with:
-        name: linux.zip
-        path: ${{ github.workspace }}/ProductionRelease*_Linux/
+        tag: v${{ env.VERSION }}
+        file: linux.zip
         

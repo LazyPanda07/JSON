@@ -28,6 +28,7 @@ jobs:
         name: ${{ matrix.configuration }}_Windows
         path: bin\${{ matrix.configuration }}-x64\JSON
 
+
   linux-build:
     runs-on: ubuntu-latest
     strategy:
@@ -80,7 +81,8 @@ jobs:
         name: ${{ matrix.configuration }}_Linux
         path: bin/${{ matrix.configuration }}-x64/JSON
 
-  windows-test:
+
+  windows-tests:
     runs-on: windows-latest
     needs: [windows-build]
     strategy:
@@ -123,6 +125,7 @@ jobs:
           cd build\bin
           .\Tests.exe
 
+
   linux-tests:
     runs-on: ubuntu-latest
     needs: [linux-build]
@@ -163,6 +166,7 @@ jobs:
           export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
           ./Tests
   
+
   memory-leak-tests:
     runs-on: ubuntu-latest
     needs: [linux-build]
@@ -193,8 +197,38 @@ jobs:
           make install -j $(nproc)
           
     - name: Memory leak test
-      uses: LazyPanda07/check-memory-leaks@master
+      uses: LazyPanda07/check-memory-leaks@v1
       with:
         path: Tests/build/bin
         name: Tests
         pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
+  
+
+  publish:
+    needs: [windows-tests, linux-tests, memory-leak-tests]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download artifacts
+      uses: actions/download-artifacts@v4
+
+    - name: Current directory
+      run: ls
+
+    - name: Setup release version variable
+      run: echo "VERSION=$($($($(Select-String -Path src\JSONUtility.cpp -Pattern jsonVersion) -split '( = )')[2].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+
+    - name: Current variable
+      run: echo ${{ env.VERSION }}
+
+    - name: Create zip
+      uses: vimtor/action-zip@v1.1
+      with:
+        files: $(ls | grep Windows) ProductionRelease_Linux ProductionReleaseDLL_Linux
+        dest: build.zip
+            
+    - name: Current directory
+      run: ls
+        

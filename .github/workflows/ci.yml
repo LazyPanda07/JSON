@@ -221,7 +221,10 @@ jobs:
       run: echo "VERSION=$($($($(Select-String -Path .\src\JSONUtility.cpp -Pattern jsonVersion) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
       
     - name: Setup Windows build list
-      run: echo 'WINDOWS_BUILD_LIST="$(ls | grep Windows)"' >> $Env:GITHUB_ENV
+      run: |
+          export WINDOWS_LIST='$(ls | grep Windows)'
+          echo ${WINDOWS_LIST}
+          echo "WINDOWS_BUILD_LIST=${WINDOWS_LIST}" >> $Env:GITHUB_ENV
           
     - name: Print
       run: echo ${{ env.WINDOWS_BUILD_LIST }}

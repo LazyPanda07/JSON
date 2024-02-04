@@ -215,12 +215,9 @@ jobs:
       uses: actions/download-artifact@v4
 
     - uses: LazyPanda07/extract-current-branch@master
-
-    - name: Current directory
-      run: ls
-
+    
     - name: Setup release version variable
-      run: echo "VERSION=$($($($(Select-String -Path src\JSONUtility.cpp -Pattern jsonVersion) -split '( = )')[2].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+      run: echo "VERSION=$($($($(Select-String -Path .\src\JSONUtility.cpp -Pattern jsonVersion) -split '( = )')[2].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Current variable
       run: echo ${{ env.VERSION }}

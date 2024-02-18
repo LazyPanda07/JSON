@@ -815,7 +815,7 @@ namespace json
 
 		string getJSONVersion()
 		{
-			string jsonVersion = "2.4.0";
+			string jsonVersion = "2.4.1";
 
 			return jsonVersion;
 		}

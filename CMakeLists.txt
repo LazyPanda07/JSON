@@ -6,6 +6,10 @@ if (UNIX)
     add_definitions(-D__LINUX__)
 endif (UNIX)
 
+if (${BUILD_SHARED_LIBS} STREQUAL "ON")
+	add_definitions(-DJSON_DLL)
+endif ()
+
 project(JSON)
 
 add_library(

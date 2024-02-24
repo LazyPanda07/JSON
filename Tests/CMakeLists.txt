@@ -35,7 +35,7 @@ target_include_directories(
 target_link_directories(
     ${PROJECT_NAME} PUBLIC
     ${PROJECT_SOURCE_DIR}/gtest/lib/
-    ${PROJECT_SOURCE_DIR}/../JSON/
+    ${PROJECT_SOURCE_DIR}/../JSON/lib
 )
 
 target_link_libraries(

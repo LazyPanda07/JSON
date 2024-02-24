@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 option(BUILD_SHARED_LIBS "" OFF)
 
 if (UNIX)
     add_definitions(-D__LINUX__)
 endif (UNIX)
 
-if (${BUILD_SHARED_LIBS} STREQUAL "ON")
+if (${BUILD_SHARED_LIBS})
 	add_definitions(-DJSON_DLL)
 endif ()
 
@@ -26,8 +27,12 @@ add_library(
 	src/Exceptions/WrongInputStreamException.cpp
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR}/bin)
+install(
+	TARGETS ${PROJECT_NAME} 
+	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/install-dir/lib
+	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/install-dir/dll
+)
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-	install(DIRECTORY src/ DESTINATION ${CMAKE_BINARY_DIR}/bin/include FILES_MATCHING PATTERN "*.h")
+	install(DIRECTORY src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/install-dir/include FILES_MATCHING PATTERN "*.h")
 endif ()

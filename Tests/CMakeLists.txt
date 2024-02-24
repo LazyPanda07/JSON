@@ -6,10 +6,10 @@ set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 17)
 
 if (UNIX)
-    set(DLL ${PROJECT_SOURCE_DIR}/../JSON/libJSON.so)
+    set(DLL ${PROJECT_SOURCE_DIR}/../JSON/lib/libJSON.so)
     add_definitions(-D__LINUX__)
 else ()
-    set(DLL ${PROJECT_SOURCE_DIR}/../JSON/JSON.dll)
+    set(DLL ${PROJECT_SOURCE_DIR}/../JSON/dll/JSON.dll)
 endif (UNIX)
 
 if(EXISTS ${DLL})

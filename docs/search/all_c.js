@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['macros_20can_20be_20defined_3a_0',['The following macros can be defined:',['../md__tests_2gtest_2include_2gtest_2internal_2custom_2_r_e_a_d_m_e.html#autotoc_md7',1,'']]],
-  ['macros_3a_1',['Flag related macros:',['../md__tests_2gtest_2include_2gmock_2internal_2custom_2_r_e_a_d_m_e.html#autotoc_md4',1,'']]],
-  ['makeindexsequenceimpl_2',['MakeIndexSequenceImpl',['../structtesting_1_1internal_1_1_make_index_sequence_impl.html',1,'testing::internal']]],
-  ['makeindexsequenceimpl_3c_200_20_3e_3',['MakeIndexSequenceImpl&lt; 0 &gt;',['../structtesting_1_1internal_1_1_make_index_sequence_impl_3_010_01_4.html',1,'testing::internal']]],
-  ['markasignored_4',['MarkAsIgnored',['../structtesting_1_1internal_1_1_mark_as_ignored.html',1,'testing::internal']]],
-  ['matcher_5',['Matcher',['../classtesting_1_1_matcher.html',1,'testing']]],
-  ['message_6',['Message',['../classtesting_1_1_message.html',1,'testing']]],
-  ['minimize_7',['minimize',['../classjson_1_1_j_s_o_n_builder.html#a4d18796164b870a9dd14ac3717919495',1,'json::JSONBuilder::minimize()'],['../classjson_1_1_j_s_o_n_builder.html#a613fcb5202d9a8512787fa10040ef6b8ac018a52c4d1be6a3753382889cbc2115',1,'json::JSONBuilder::minimize']]],
-  ['mutex_8',['Mutex',['../classtesting_1_1internal_1_1_mutex.html',1,'testing::internal']]]
+  ['trygetarray_0',['tryGetArray',['../classjson_1_1_j_s_o_n_parser.html#a512fa66b3d1751e7b738351d19963870',1,'json::JSONParser']]],
+  ['trygetbool_1',['tryGetBool',['../classjson_1_1_j_s_o_n_parser.html#a188fd21d6c6769e1465a15186cf853d4',1,'json::JSONParser']]],
+  ['trygetdouble_2',['tryGetDouble',['../classjson_1_1_j_s_o_n_parser.html#a744b8138a1cfd3ea53112dd316bf0959',1,'json::JSONParser']]],
+  ['trygetint_3',['tryGetInt',['../classjson_1_1_j_s_o_n_parser.html#a45c820bff7925a98e53385cfc73b9e32',1,'json::JSONParser']]],
+  ['trygetnull_4',['tryGetNull',['../classjson_1_1_j_s_o_n_parser.html#a1a63aeb4c99a31409ad13e749fb63733',1,'json::JSONParser']]],
+  ['trygetobject_5',['tryGetObject',['../classjson_1_1_j_s_o_n_parser.html#ab1de4290badcc9c470511fe5e8f9056a',1,'json::JSONParser']]],
+  ['trygetstring_6',['tryGetString',['../classjson_1_1_j_s_o_n_parser.html#abafb1bc5b07e36d067947a43b40272a0',1,'json::JSONParser']]],
+  ['trygetunsignedint_7',['tryGetUnsignedInt',['../classjson_1_1_j_s_o_n_parser.html#aa8581ea1f34ce9ec778c21e077888c09',1,'json::JSONParser']]],
+  ['trygetvalue_8',['tryGetValue',['../classjson_1_1_j_s_o_n_parser.html#adeb54d6f62f958bb1ce1247b65e6b2f6',1,'json::JSONParser']]]
 ];

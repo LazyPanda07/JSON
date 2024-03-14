@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kindof_0',['KindOf',['../structtesting_1_1internal_1_1_kind_of.html',1,'testing::internal']]]
+  ['recursivejsoniterator_0',['RecursiveJSONIterator',['../classjson_1_1_recursive_j_s_o_n_iterator.html',1,'json']]]
 ];

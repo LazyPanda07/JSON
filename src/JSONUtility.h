@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <memory>
 #include <sstream>
+#include <type_traits>
 
 #include "CodePageConstants.h"
 

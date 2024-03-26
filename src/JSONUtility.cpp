@@ -24,7 +24,7 @@ namespace json
 		using ConstJSONIteratorType = jsonObject::ConstJSONIterator::ConstJSONIteratorType;
 
 		template<typename T, typename U>
-		void jsonObject::setValue(T&& key, U&& value)
+		jsonObject& jsonObject::setValue(T&& key, U&& value)
 		{
 			if constexpr (is_move_constructible_v<T>)
 			{
@@ -34,6 +34,35 @@ namespace json
 			{
 				data.emplace_back(forward<T>(key), forward<U>(value));
 			}
+
+			return *this;
+		}
+
+		template<typename T>
+		bool jsonObject::tryGetValue(string_view key, T& value) const
+		{
+			auto it = this->findValue(key, false);
+
+			if (it == data.end())
+			{
+				return false;
+			}
+
+			value = get<value>(it->second);
+
+			return true;
+		}
+
+		auto jsonObject::findValue(string_view key, bool throwException) const
+		{
+			auto it = find_if(data.begin(), data.end(), [key](const auto& value) { return value.first == key; });
+
+			if (throwException && it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return it;
 		}
 
 		ConstJSONIterator::ConstJSONIterator(const ConstJSONIterator& other) :
@@ -142,53 +171,53 @@ namespace json
 		jsonObject& jsonObject::operator = (const jsonObject& other)
 		{
 			function<void(const string&, const variantType&, vector<pair<string, variantType>>&)> appendData = [&appendData](const string& key, const variantType& value, vector<pair<string, variantType>>& data)
-			{
-				switch (static_cast<variantTypeEnum>(value.index()))
 				{
-				case variantTypeEnum::jNull:
-					data.push_back({ key, get<nullptr_t>(value) });
+					switch (static_cast<variantTypeEnum>(value.index()))
+					{
+					case variantTypeEnum::jNull:
+						data.push_back({ key, get<nullptr_t>(value) });
 
-					break;
+						break;
 
-				case variantTypeEnum::jString:
-					data.push_back({ key, get<string>(value) });
+					case variantTypeEnum::jString:
+						data.push_back({ key, get<string>(value) });
 
-					break;
+						break;
 
-				case variantTypeEnum::jBool:
-					data.push_back({ key, get<bool>(value) });
+					case variantTypeEnum::jBool:
+						data.push_back({ key, get<bool>(value) });
 
-					break;
+						break;
 
-				case variantTypeEnum::jInt64_t:
-					data.push_back({ key, get<int64_t>(value) });
+					case variantTypeEnum::jInt64_t:
+						data.push_back({ key, get<int64_t>(value) });
 
-					break;
+						break;
 
-				case variantTypeEnum::jUInt64_t:
-					data.push_back({ key, get<uint64_t>(value) });
+					case variantTypeEnum::jUInt64_t:
+						data.push_back({ key, get<uint64_t>(value) });
 
-					break;
+						break;
 
-				case variantTypeEnum::jDouble:
-					data.push_back({ key, get<double>(value) });
+					case variantTypeEnum::jDouble:
+						data.push_back({ key, get<double>(value) });
 
-					break;
+						break;
 
-				case variantTypeEnum::jJSONArray:
-					data.push_back({ key, get<vector<jsonObject>>(value) });
+					case variantTypeEnum::jJSONArray:
+						data.push_back({ key, get<vector<jsonObject>>(value) });
 
-					break;
+						break;
 
-				case json::utility::variantTypeEnum::jJSONObject:
-					data.push_back({ key, get<jsonObject>(value) });
+					case json::utility::variantTypeEnum::jJSONObject:
+						data.push_back({ key, get<jsonObject>(value) });
 
-					break;
+						break;
 
-				default:
-					break;
-				}
-			};
+					default:
+						break;
+					}
+				};
 
 			data.clear();
 
@@ -207,204 +236,134 @@ namespace json
 			return *this;
 		}
 
-		jsonObject& jsonObject::setNull(const string& key)
+		jsonObject& jsonObject::setNull(string_view key)
 		{
-			this->setValue(key, nullptr);
-
-			return *this;
+			return this->setValue(key, nullptr);
 		}
 
 		jsonObject& jsonObject::setNull(string&& key)
 		{
-			this->setValue(move(key), nullptr);
-
-			return *this;
+			return this->setValue(move(key), nullptr);
 		}
 
-		jsonObject& jsonObject::setString(const string& key, const string& value)
+		jsonObject& jsonObject::setString(string_view key, string_view value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(key, value);
 		}
 
-		jsonObject& jsonObject::setString(string&& key, const string& value)
+		jsonObject& jsonObject::setString(string&& key, string_view value)
 		{
-			this->setValue(move(key), value);
-
-			return *this;
+			return this->setValue(move(key), value);
 		}
 
-		jsonObject& jsonObject::setString(const string& key, string&& value)
+		jsonObject& jsonObject::setString(string_view key, string&& value)
 		{
-			this->setValue(key, move(value));
-
-			return *this;
+			return this->setValue(key, move(value));
 		}
 
 		jsonObject& jsonObject::setString(string&& key, string&& value)
 		{
-			this->setValue(move(key), move(value));
-
-			return *this;
+			return this->setValue(move(key), move(value));
 		}
 
-		jsonObject& jsonObject::setBool(const string& key, bool value)
+		jsonObject& jsonObject::setBool(string_view key, bool value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(key, value);
 		}
 
 		jsonObject& jsonObject::setBool(string&& key, bool value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(move(key), value);
 		}
 
-		jsonObject& jsonObject::setInt(const string& key, int64_t value)
+		jsonObject& jsonObject::setInt(string_view key, int64_t value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(key, value);
 		}
 
 		jsonObject& jsonObject::setInt(string&& key, int64_t value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(move(key), value);
 		}
 
-		jsonObject& jsonObject::setUnsignedInt(const string& key, uint64_t value)
+		jsonObject& jsonObject::setUnsignedInt(string_view key, uint64_t value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(key, value);
 		}
 
 		jsonObject& jsonObject::setUnsignedInt(string&& key, uint64_t value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(move(key), value);
 		}
 
-		jsonObject& jsonObject::setDouble(const string& key, double value)
+		jsonObject& jsonObject::setDouble(string_view key, double value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(key, value);
 		}
 
 		jsonObject& jsonObject::setDouble(string&& key, double value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(move(key), value);
 		}
 
-		jsonObject& jsonObject::setArray(const string& key, const vector<jsonObject>& value)
+		jsonObject& jsonObject::setArray(string_view key, const vector<jsonObject>& value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(key, value);
 		}
 
 		jsonObject& jsonObject::setArray(string&& key, const vector<jsonObject>& value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(move(key), value);
 		}
 
-		jsonObject& jsonObject::setArray(const string& key, vector<jsonObject>&& value)
+		jsonObject& jsonObject::setArray(string_view key, vector<jsonObject>&& value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(key, move(value));
 		}
 
 		jsonObject& jsonObject::setArray(string&& key, vector<jsonObject>&& value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(move(key), move(value));
 		}
 
-		jsonObject& jsonObject::setObject(const string& key, const jsonObject& value)
+		jsonObject& jsonObject::setObject(string_view key, const jsonObject& value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(key, value);
 		}
 
 		jsonObject& jsonObject::setObject(string&& key, const jsonObject& value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(move(key), value);
 		}
 
-		jsonObject& jsonObject::setObject(const string& key, jsonObject&& value)
+		jsonObject& jsonObject::setObject(string_view key, jsonObject&& value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(key, move(value));
 		}
 
 		jsonObject& jsonObject::setObject(string&& key, jsonObject&& value)
 		{
-			this->setValue(key, value);
-
-			return *this;
+			return this->setValue(move(key), value);
 		}
 
-		nullptr_t jsonObject::getNull(const string& key) const
+		nullptr_t jsonObject::getNull(string_view key) const
 		{
-			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-			if (it == data.end())
-			{
-				throw exceptions::CantFindValueException(key);
-			}
-
-			return get<nullptr_t>(it->second);
+			return get<nullptr_t>(this->findValue(key)->second);
 		}
 
-		const string& jsonObject::getString(const string& key) const
+		const string& jsonObject::getString(string_view key) const
 		{
-			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-			if (it == data.end())
-			{
-				throw exceptions::CantFindValueException(key);
-			}
-
-			return get<string>(it->second);
+			return get<string>(this->findValue(key)->second);
 		}
 
-		bool jsonObject::getBool(const string& key) const
+		bool jsonObject::getBool(string_view key) const
 		{
-			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-			if (it == data.end())
-			{
-				throw exceptions::CantFindValueException(key);
-			}
-
-			return get<bool>(it->second);
+			return get<bool>(this->findValue(key)->second);
 		}
 
-		int64_t jsonObject::getInt(const string& key) const
+		int64_t jsonObject::getInt(string_view key) const
 		{
-			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-			if (it == data.end())
-			{
-				throw exceptions::CantFindValueException(key);
-			}
+			auto it = this->findValue(key);
 
 			variantTypeEnum type = static_cast<variantTypeEnum>(it->second.index());
 
@@ -420,14 +379,9 @@ namespace json
 			return get<int64_t>(it->second);
 		}
 
-		uint64_t jsonObject::getUnsignedInt(const string& key) const
+		uint64_t jsonObject::getUnsignedInt(string_view key) const
 		{
-			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-			if (it == data.end())
-			{
-				throw exceptions::CantFindValueException(key);
-			}
+			auto it = this->findValue(key);
 
 			variantTypeEnum type = static_cast<variantTypeEnum>(it->second.index());
 
@@ -443,14 +397,9 @@ namespace json
 			return get<uint64_t>(it->second);
 		}
 
-		double jsonObject::getDouble(const string& key) const
+		double jsonObject::getDouble(string_view key) const
 		{
-			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-			if (it == data.end())
-			{
-				throw exceptions::CantFindValueException(key);
-			}
+			auto it = this->findValue(key);
 
 			variantTypeEnum type = static_cast<variantTypeEnum>(it->second.index());
 
@@ -466,31 +415,57 @@ namespace json
 			return get<double>(it->second);
 		}
 
-		const vector<jsonObject>& jsonObject::getArray(const string& key) const
+		const vector<jsonObject>& jsonObject::getArray(string_view key) const
 		{
-			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-			if (it == data.end())
-			{
-				throw exceptions::CantFindValueException(key);
-			}
-
-			return get<vector<jsonObject>>(it->second);
+			return get<vector<jsonObject>>(this->findValue(key)->second);
 		}
 
-		const jsonObject& jsonObject::getObject(const string& key) const
+		const jsonObject& jsonObject::getObject(string_view key) const
 		{
-			auto it = find_if(data.begin(), data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
-
-			if (it == data.end())
-			{
-				throw exceptions::CantFindValueException(key);
-			}
-
-			return get<jsonObject>(it->second);
+			return get<jsonObject>(this->findValue(key)->second);
 		}
 
-		bool jsonObject::contains(const string& key, utility::variantTypeEnum type) const
+		bool jsonObject::tryGetNull(string_view key) const
+		{
+			return this->findValue(key, false) != data.end();
+		}
+
+		bool jsonObject::tryGetString(string_view key, string& value) const
+		{
+			return this->tryGetValue(key, value);
+		}
+
+		bool jsonObject::tryGetBool(string_view key, bool& value) const
+		{
+			return this->tryGetValue(key, value);
+		}
+
+		bool jsonObject::tryGetInt(string_view key, int64_t& value) const
+		{
+			return this->tryGetValue(key, value);
+		}
+
+		bool jsonObject::tryGetUnsignedInt(string_view key, uint64_t& value) const
+		{
+			return this->tryGetValue(key, value);
+		}
+
+		bool jsonObject::tryGetDouble(string_view key, double& value) const
+		{
+			return this->tryGetValue(key, value);
+		}
+
+		bool jsonObject::tryGetArray(string_view key, vector<utility::jsonObject>& value) const
+		{
+			return this->tryGetValue(key, value);
+		}
+
+		bool jsonObject::tryGetObject(string_view key, utility::jsonObject& value) const
+		{
+			return this->tryGetValue(key, value);
+		}
+
+		bool jsonObject::contains(string_view key, utility::variantTypeEnum type) const
 		{
 			return any_of(data.begin(), data.end(), [&key, &type](const pair<string, jsonObject::variantType>& data) { return data.first == key && data.second.index() == static_cast<size_t>(type); });
 		}
@@ -505,7 +480,7 @@ namespace json
 			return ConstJSONIterator(data.cbegin(), data.cend(), data.cend());
 		}
 
-		jsonObject::variantType& jsonObject::operator[](const std::string& key)
+		jsonObject::variantType& jsonObject::operator[](string_view key)
 		{
 			for (auto& [jsonKey, value] : data)
 			{
@@ -518,7 +493,7 @@ namespace json
 			throw exceptions::CantFindValueException(key);
 		}
 
-		const jsonObject::variantType& jsonObject::operator[](const std::string& key) const
+		const jsonObject::variantType& jsonObject::operator[](string_view key) const
 		{
 			for (const auto& [jsonKey, value] : data)
 			{
@@ -532,7 +507,7 @@ namespace json
 		}
 
 #ifdef __LINUX__
-		static string convertString(const string& source, size_t resultSize, iconv_t convert)
+		static string convertString(string_view source, size_t resultSize, iconv_t convert)
 		{
 			if (convert == reinterpret_cast<iconv_t>(string::npos))
 			{
@@ -558,17 +533,17 @@ namespace json
 			return result;
 		}
 
-		string toUTF8JSON(const string& source, string_view sourceCodePage)
+		string toUTF8JSON(string_view source, string_view sourceCodePage)
 		{
 			return convertString(source, source.size() * 4, iconv_open(CP_UTF8, sourceCodePage.data()));
 		}
 
-		string fromUTF8JSON(const string& source, string_view resultCodePage)
+		string fromUTF8JSON(string_view source, string_view resultCodePage)
 		{
 			return convertString(source, source.size(), iconv_open(resultCodePage.data(), CP_UTF8));
 		}
 #else
-		string toUTF8JSON(const string& source, uint32_t sourceCodePage)
+		string toUTF8JSON(string_view source, uint32_t sourceCodePage)
 		{
 			string result;
 			wstring tem;
@@ -639,7 +614,7 @@ namespace json
 			return result;
 		}
 
-		string fromUTF8JSON(const string& source, uint32_t resultCodePage)
+		string fromUTF8JSON(string_view source, uint32_t resultCodePage)
 		{
 			string result;
 			wstring tem;
@@ -815,7 +790,7 @@ namespace json
 
 		string getJSONVersion()
 		{
-			string jsonVersion = "2.4.4";
+			string jsonVersion = "2.5.0";
 
 			return jsonVersion;
 		}

@@ -10,7 +10,7 @@ namespace json
 		class JSON_API CantFindValueException : public BaseJSONException
 		{
 		public:
-			CantFindValueException(const std::string& key);
+			CantFindValueException(std::string_view key);
 
 			~CantFindValueException() = default;
 		};

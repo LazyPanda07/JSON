@@ -67,7 +67,12 @@ namespace json
 		{
 		private:
 			template<typename T, typename U>
-			void setValue(T&& key, U&& value);
+			jsonObject& setValue(T&& key, U&& value);
+
+			template<typename T>
+			bool tryGetValue(std::string_view key, T& value) const;
+
+			auto findValue(std::string_view key, bool throwException = true) const;
 
 		public:
 			using variantType = baseVariantType<jsonObject>;
@@ -142,7 +147,7 @@ namespace json
 
 			/// @brief Set null value with given key
 			/// @param key JSON key
-			jsonObject& setNull(const std::string& key);
+			jsonObject& setNull(std::string_view key);
 
 			/// @brief Set null value with given key
 			/// @param key JSON key
@@ -151,17 +156,17 @@ namespace json
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setString(const std::string& key, const std::string& value);
+			jsonObject& setString(std::string_view key, std::string_view value);
 
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setString(std::string&& key, const std::string& value);
+			jsonObject& setString(std::string&& key, std::string_view value);
 
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setString(const std::string& key, std::string&& value);
+			jsonObject& setString(std::string_view key, std::string&& value);
 
 			/// @brief Set string value with given key
 			/// @param key JSON key
@@ -171,7 +176,7 @@ namespace json
 			/// @brief Set bool value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setBool(const std::string& key, bool value);
+			jsonObject& setBool(std::string_view key, bool value);
 
 			/// @brief Set bool value with given key
 			/// @param key JSON key
@@ -181,7 +186,7 @@ namespace json
 			/// @brief Set int value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setInt(const std::string& key, int64_t value);
+			jsonObject& setInt(std::string_view key, int64_t value);
 
 			/// @brief Set int value with given key
 			/// @param key JSON key
@@ -191,7 +196,7 @@ namespace json
 			/// @brief Set unsigned int value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setUnsignedInt(const std::string& key, uint64_t value);
+			jsonObject& setUnsignedInt(std::string_view key, uint64_t value);
 
 			/// @brief Set unsigned int value with given key
 			/// @param key JSON key
@@ -201,7 +206,7 @@ namespace json
 			/// @brief Set double value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setDouble(const std::string& key, double value);
+			jsonObject& setDouble(std::string_view key, double value);
 
 			/// @brief Set double value with given key
 			/// @param key JSON key
@@ -211,7 +216,7 @@ namespace json
 			/// @brief Set array value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setArray(const std::string& key, const std::vector<jsonObject>& value);
+			jsonObject& setArray(std::string_view key, const std::vector<jsonObject>& value);
 
 			/// @brief Set array value with given key
 			/// @param key JSON key
@@ -221,7 +226,7 @@ namespace json
 			/// @brief Set array value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setArray(const std::string& key, std::vector<jsonObject>&& value);
+			jsonObject& setArray(std::string_view key, std::vector<jsonObject>&& value);
 
 			/// @brief Set array value with given key
 			/// @param key JSON key
@@ -231,7 +236,7 @@ namespace json
 			/// @brief Set object value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setObject(const std::string& key, const jsonObject& value);
+			jsonObject& setObject(std::string_view key, const jsonObject& value);
 
 			/// @brief Set object value with given key
 			/// @param key JSON key
@@ -241,7 +246,7 @@ namespace json
 			/// @brief Set object value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setObject(const std::string& key, jsonObject&& value);
+			jsonObject& setObject(std::string_view key, jsonObject&& value);
 
 			/// @brief Set object value with given key
 			/// @param key JSON key
@@ -253,87 +258,143 @@ namespace json
 			/// @return nullptr value
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			nullptr_t getNull(const std::string& key) const;
+			nullptr_t getNull(std::string_view key) const;
 
 			/// @brief Get string value. Find and get value only for this JSON object
 			/// @param key JSON key
 			/// @return string value
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			const std::string& getString(const std::string& key) const;
+			const std::string& getString(std::string_view key) const;
 
 			/// @brief Get bool value. Find and get value only for this JSON object
 			/// @param key JSON key
 			/// @return bool value
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			bool getBool(const std::string& key) const;
+			bool getBool(std::string_view key) const;
 
 			/// @brief Get int64_t value. Find and get value only for this JSON object
 			/// @param key JSON key
 			/// @return int64_t value
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			int64_t getInt(const std::string& key) const;
+			int64_t getInt(std::string_view key) const;
 
 			/// @brief Get uint64_t value. Find and get value only for this JSON object
 			/// @param key JSON key
 			/// @return uint64_t value
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			uint64_t getUnsignedInt(const std::string& key) const;
+			uint64_t getUnsignedInt(std::string_view key) const;
 
 			/// @brief Get double value. Find and get value only for this JSON object
 			/// @param key JSON key
 			/// @return double value
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			double getDouble(const std::string& key) const;
+			double getDouble(std::string_view key) const;
 
 			/// @brief Get JSON array. Find and get value only for this JSON object
 			/// @param key JSON key
 			/// @return JSON array
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			const std::vector<jsonObject>& getArray(const std::string& key) const;
+			const std::vector<jsonObject>& getArray(std::string_view key) const;
 
 			/// @brief Get JSON object. Find and get value only for this JSON object
 			/// @param key JSON Key
 			/// @return JSON object
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			const jsonObject& getObject(const std::string& key) const;
+			const jsonObject& getObject(std::string_view key) const;
+
+			/// @brief Try get null value
+			/// @param key JSON key
+			/// @return nullptr value
+			/// @exception json::exceptions::CantFindValueException 
+			/// @exception std::bad_variant_access Other type found
+			bool tryGetNull(std::string_view key) const;
+
+			/// @brief Try get string value
+			/// @param key JSON key
+			/// @return string value
+			/// @exception json::exceptions::CantFindValueException 
+			/// @exception std::bad_variant_access Other type found
+			bool tryGetString(std::string_view key, std::string& value) const;
+
+			/// @brief Try get bool value
+			/// @param key JSON key
+			/// @return bool value
+			/// @exception json::exceptions::CantFindValueException 
+			/// @exception std::bad_variant_access Other type found
+			bool tryGetBool(std::string_view key, bool& value) const;
+
+			/// @brief Try get int64_t value
+			/// @param key JSON key
+			/// @return int64_t value
+			/// @exception json::exceptions::CantFindValueException 
+			/// @exception std::bad_variant_access Other type found
+			bool tryGetInt(std::string_view key, int64_t& value) const;
+
+			/// @brief Try get uint64_t value
+			/// @param key JSON key
+			/// @return uint64_t value
+			/// @exception json::exceptions::CantFindValueException 
+			/// @exception std::bad_variant_access Other type found
+			bool tryGetUnsignedInt(std::string_view key, uint64_t& value) const;
+
+			/// @brief Try get double value
+			/// @param key JSON key
+			/// @return double value
+			/// @exception json::exceptions::CantFindValueException 
+			/// @exception std::bad_variant_access Other type found
+			bool tryGetDouble(std::string_view key, double& value) const;
+
+			/// @brief Try get JSON array
+			/// @param key JSON key
+			/// @return JSON array
+			/// @exception json::exceptions::CantFindValueException 
+			/// @exception std::bad_variant_access Other type found
+			bool tryGetArray(std::string_view key, std::vector<utility::jsonObject>& value) const;
+
+			/// @brief Try get JSON object
+			/// @param key JSON Key
+			/// @return JSON object
+			/// @exception json::exceptions::CantFindValueException 
+			/// @exception std::bad_variant_access Other type found
+			bool tryGetObject(std::string_view key, utility::jsonObject& value) const;
 
 			/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
 			/// @param key Object name
 			/// @param type Object type
-			bool contains(const std::string& key, utility::variantTypeEnum type) const;
+			bool contains(std::string_view key, utility::variantTypeEnum type) const;
 
 			/**
 			 * @brief Begin iterator
-			 * @return 
+			 * @return
 			*/
 			ConstJSONIterator begin() const noexcept;
 
 			/**
 			 * @brief End iterator
-			 * @return 
+			 * @return
 			*/
 			ConstJSONIterator end() const noexcept;
 
 			/**
 			 * @brief Access JSON value
-			 * @param key 
-			 * @return 
+			 * @param key
+			 * @return
 			*/
-			variantType& operator[](const std::string& key);
+			variantType& operator[](std::string_view key);
 
 			/**
 			 * @brief Access JSON value
-			 * @param key 
-			 * @return 
+			 * @param key
+			 * @return
 			*/
-			const variantType& operator[](const std::string& key) const;
+			const variantType& operator[](std::string_view key) const;
 
 			~jsonObject() = default;
 		};
@@ -358,7 +419,7 @@ namespace json
 		/// <param name="sourceCodePage">source encoding</param>
 		/// <returns>string in UTF8 encoding</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, std::string_view sourceCodePage);
+		JSON_API_FUNCTION std::string toUTF8JSON(std::string_view source, std::string_view sourceCodePage);
 
 		/// <summary>
 		/// Decode string from UTF8
@@ -367,7 +428,7 @@ namespace json
 		/// <param name="resultCodePage">decoding code page</param>
 		/// <returns>string in resultCodePage encoding</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-		JSON_API_FUNCTION std::string fromUTF8JSON(const std::string& source, std::string_view resultCodePage);
+		JSON_API_FUNCTION std::string fromUTF8JSON(std::string_view source, std::string_view resultCodePage);
 #else
 		/// <summary>
 		/// Encode string to UTF8
@@ -376,7 +437,7 @@ namespace json
 		/// <param name="sourceCodePage">source encoding from https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers</param>
 		/// <returns>string in UTF8 encoding</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-		JSON_API_FUNCTION std::string toUTF8JSON(const std::string& source, uint32_t sourceCodePage);
+		JSON_API_FUNCTION std::string toUTF8JSON(std::string_view source, uint32_t sourceCodePage);
 
 		/// <summary>
 		/// Decode string from UTF8
@@ -385,7 +446,7 @@ namespace json
 		/// <param name="resultCodePage">decoding code page from https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers</param>
 		/// <returns>string in resultCodePage encoding</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-		JSON_API_FUNCTION std::string fromUTF8JSON(const std::string& source, uint32_t resultCodePage);
+		JSON_API_FUNCTION std::string fromUTF8JSON(std::string_view source, uint32_t resultCodePage);
 #endif
 		/// <summary>
 		/// Set to outputStream JSON value

@@ -31,7 +31,7 @@ namespace json
 
 		static void insertKeyValueData(std::string&& key, const std::string& value, utility::jsonObject& ptr);
 
-		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(const std::string& key, const std::vector<std::pair<std::string, variantType>>& start, bool recursive);
+		static std::pair<std::vector<std::pair<std::string, variantType>>::const_iterator, bool> find(std::string_view key, const std::vector<std::pair<std::string, variantType>>& start, bool recursive);
 
 		static bool isStringSymbol(char symbol);
 
@@ -51,7 +51,7 @@ namespace json
 		/// </summary>
 		/// <param name="data">JSON formatted data</param>
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
-		JSONParser(const std::string& data);
+		JSONParser(std::string_view data);
 
 		/// @brief Parse data
 		/// @param inputStream JSON formatted data from stream
@@ -90,7 +90,7 @@ namespace json
 		/// @param key Object name
 		/// @param recursive Recursive search
 		/// @param type Object type
-		bool contains(const std::string& key, utility::variantTypeEnum type, bool recursive = false) const;
+		bool contains(std::string_view key, utility::variantTypeEnum type, bool recursive = false) const;
 
 #ifdef __LINUX__
 		/// <summary>
@@ -99,7 +99,7 @@ namespace json
 		/// <param name="jsonData">JSON formatted string</param>
 		/// <param name="codePage">codePage of jsonData</param>
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
-		void setJSONData(const std::string& jsonData, std::string_view codePage);
+		void setJSONData(std::string_view jsonData, std::string_view codePage);
 #else
 		/// <summary>
 		/// Setter for rawData
@@ -107,14 +107,14 @@ namespace json
 		/// <param name="jsonData">JSON formatted string</param>
 		/// <param name="codePage">codePage of jsonData</param>
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
-		void setJSONData(const std::string& jsonData, uint32_t codePage);
+		void setJSONData(std::string_view jsonData, uint32_t codePage);
 #endif
 
 		/// <summary>
 		/// Setter for rawData
 		/// </summary>
 		/// <param name="jsonData">JSON formatted UTF8 string</param>
-		void setJSONData(const std::string& jsonData);
+		void setJSONData(std::string_view jsonData);
 
 		/// <summary>
 		/// Setter for rawData
@@ -160,18 +160,18 @@ namespace json
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
 		/// <exception cref="std::bad_variant_access">Other type found</exception>
 		template<typename T>
-		const T& getValue(const std::string& key, bool recursive = false) const;
+		const T& getValue(std::string_view key, bool recursive = false) const;
 
 		/**
 		 * @brief Getter for all JSON parsed values
-		 * @tparam T T is one of json::utility::jsonObject::variantType template parameters
+		 * @tparam T Is one of json::utility::jsonObject::variantType template parameters
 		 * @param key JSON key
 		 * @param value JSON value
 		 * @param recursive Recursive search
 		 * @return True if value found
 		*/
 		template<typename T>
-		bool tryGetValue(const std::string& key, T& value, bool recursive = false) const;
+		bool tryGetValue(std::string_view key, T& value, bool recursive = false) const;
 
 		/// @brief Get null value
 		/// @param key JSON key
@@ -179,7 +179,7 @@ namespace json
 		/// @return nullptr value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		nullptr_t getNull(const std::string& key, bool recursive = false) const;
+		nullptr_t getNull(std::string_view key, bool recursive = false) const;
 
 		/// @brief Get string value
 		/// @param key JSON key
@@ -187,7 +187,7 @@ namespace json
 		/// @return string value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const std::string& getString(const std::string& key, bool recursive = false) const;
+		const std::string& getString(std::string_view key, bool recursive = false) const;
 		
 		/// @brief Get bool value
 		/// @param key JSON key
@@ -195,7 +195,7 @@ namespace json
 		/// @return bool value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool getBool(const std::string& key, bool recursive = false) const;
+		bool getBool(std::string_view key, bool recursive = false) const;
 
 		/// @brief Get int64_t value
 		/// @param key JSON key
@@ -203,7 +203,7 @@ namespace json
 		/// @return int64_t value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		int64_t getInt(const std::string& key, bool recursive = false) const;
+		int64_t getInt(std::string_view key, bool recursive = false) const;
 
 		/// @brief Get uint64_t value
 		/// @param key JSON key
@@ -211,7 +211,7 @@ namespace json
 		/// @return uint64_t value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		uint64_t getUnsignedInt(const std::string& key, bool recursive = false) const;
+		uint64_t getUnsignedInt(std::string_view key, bool recursive = false) const;
 
 		/// @brief Get double value
 		/// @param key JSON key
@@ -219,7 +219,7 @@ namespace json
 		/// @return double value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		double getDouble(const std::string& key, bool recursive = false) const;
+		double getDouble(std::string_view key, bool recursive = false) const;
 
 		/// @brief Get JSON array
 		/// @param key JSON key
@@ -227,7 +227,7 @@ namespace json
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const std::vector<utility::jsonObject>& getArray(const std::string& key, bool recursive = false) const;
+		const std::vector<utility::jsonObject>& getArray(std::string_view key, bool recursive = false) const;
 
 		/// @brief Get JSON object
 		/// @param key JSON Key
@@ -235,7 +235,7 @@ namespace json
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const utility::jsonObject& getObject(const std::string& key, bool recursive = false) const;
+		const utility::jsonObject& getObject(std::string_view key, bool recursive = false) const;
 
 		/// @brief Try get null value
 		/// @param key JSON key
@@ -243,7 +243,7 @@ namespace json
 		/// @return nullptr value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetNull(const std::string& key, bool recursive = false) const;
+		bool tryGetNull(std::string_view key, bool recursive = false) const;
 
 		/// @brief Try get string value
 		/// @param key JSON key
@@ -251,7 +251,7 @@ namespace json
 		/// @return string value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetString(const std::string& key, std::string& value, bool recursive = false) const;
+		bool tryGetString(std::string_view key, std::string& value, bool recursive = false) const;
 
 		/// @brief Try get bool value
 		/// @param key JSON key
@@ -259,7 +259,7 @@ namespace json
 		/// @return bool value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetBool(const std::string& key, bool& value, bool recursive = false) const;
+		bool tryGetBool(std::string_view key, bool& value, bool recursive = false) const;
 
 		/// @brief Try get int64_t value
 		/// @param key JSON key
@@ -267,7 +267,7 @@ namespace json
 		/// @return int64_t value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetInt(const std::string& key, int64_t& value, bool recursive = false) const;
+		bool tryGetInt(std::string_view key, int64_t& value, bool recursive = false) const;
 
 		/// @brief Try get uint64_t value
 		/// @param key JSON key
@@ -275,7 +275,7 @@ namespace json
 		/// @return uint64_t value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetUnsignedInt(const std::string& key, uint64_t& value, bool recursive = false) const;
+		bool tryGetUnsignedInt(std::string_view key, uint64_t& value, bool recursive = false) const;
 
 		/// @brief Try get double value
 		/// @param key JSON key
@@ -283,7 +283,7 @@ namespace json
 		/// @return double value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetDouble(const std::string& key, double& value, bool recursive = false) const;
+		bool tryGetDouble(std::string_view key, double& value, bool recursive = false) const;
 
 		/// @brief Try get JSON array
 		/// @param key JSON key
@@ -291,7 +291,7 @@ namespace json
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetArray(const std::string& key, std::vector<utility::jsonObject>& value, bool recursive = false) const;
+		bool tryGetArray(std::string_view key, std::vector<utility::jsonObject>& value, bool recursive = false) const;
 
 		/// @brief Try get JSON object
 		/// @param key JSON Key
@@ -299,7 +299,7 @@ namespace json
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetObject(const std::string& key, utility::jsonObject& value, bool recursive = false) const;
+		bool tryGetObject(std::string_view key, utility::jsonObject& value, bool recursive = false) const;
 
 		/// @brief Getter for parsedData
 		/// @return parsedData

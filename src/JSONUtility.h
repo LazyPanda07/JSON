@@ -66,8 +66,8 @@ namespace json
 		class JSON_API jsonObject
 		{
 		private:
-			template<typename T, typename U>
-			jsonObject& setValue(T&& key, U&& value);
+			template<typename T>
+			jsonObject& setValue(std::string_view key, T&& value);
 
 			template<typename T>
 			bool tryGetValue(std::string_view key, T& value) const;

@@ -232,6 +232,13 @@ namespace json
 	template<typename T>
 	JSONBuilder& JSONBuilder::append(std::string_view key, T&& value)
 	{
-		return this->push_back(std::make_pair(std::string(key.data(), key.size()), std::forward<decltype(value)>(value)));
+		if constexpr (std::is_same_v<std::string_view, std::remove_cvref_t<T>>)
+		{
+			return this->push_back(std::make_pair(std::string(key.data(), key.size()), std::string(value.data(), value.size())));
+		}
+		else
+		{
+			return this->push_back(std::make_pair(std::string(key.data(), key.size()), std::forward<decltype(value)>(value)));
+		}
 	}
 }

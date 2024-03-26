@@ -23,16 +23,16 @@ namespace json
 		using ConstJSONIterator = jsonObject::ConstJSONIterator;
 		using ConstJSONIteratorType = jsonObject::ConstJSONIterator::ConstJSONIteratorType;
 
-		template<typename T, typename U>
-		jsonObject& jsonObject::setValue(T&& key, U&& value)
+		template<typename T>
+		jsonObject& jsonObject::setValue(string_view key, T&& value)
 		{
-			if constexpr (is_same_v<string_view, remove_cvref_t<U>>)
+			if constexpr (is_same_v<string_view, remove_cvref_t<T>>)
 			{
 				data.emplace_back(string(key.data(), key.size()), string(value.data(), value.size()));
 			}
 			else
 			{
-				data.emplace_back(string(key.data(), key.size()), forward<U>(value));
+				data.emplace_back(string(key.data(), key.size()), forward<T>(value));
 			}
 
 			return *this;

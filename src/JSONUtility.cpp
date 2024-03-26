@@ -26,7 +26,7 @@ namespace json
 		template<typename T>
 		jsonObject& jsonObject::setValue(string_view key, T&& value)
 		{
-			if constexpr (is_same_v<string_view, remove_cvref_t<T>>)
+			if constexpr (is_same_v<string_view&, decltype(value)>)
 			{
 				data.emplace_back(string(key.data(), key.size()), string(value.data(), value.size()));
 			}

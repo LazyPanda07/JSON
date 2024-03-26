@@ -149,69 +149,30 @@ namespace json
 			/// @param key JSON key
 			jsonObject& setNull(std::string_view key);
 
-			/// @brief Set null value with given key
-			/// @param key JSON key
-			jsonObject& setNull(std::string&& key);
-
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setString(std::string_view key, const std::string& value);
-
-			/// @brief Set string value with given key
-			/// @param key JSON key
-			/// @param value JSON value
-			jsonObject& setString(std::string&& key, const std::string& value);
-
-			/// @brief Set string value with given key
-			/// @param key JSON key
-			/// @param value JSON value
-			jsonObject& setString(std::string_view key, std::string&& value);
-
-			/// @brief Set string value with given key
-			/// @param key JSON key
-			/// @param value JSON value
-			jsonObject& setString(std::string&& key, std::string&& value);
+			jsonObject& setString(std::string_view key, std::string_view value);
 
 			/// @brief Set bool value with given key
 			/// @param key JSON key
 			/// @param value JSON value
 			jsonObject& setBool(std::string_view key, bool value);
 
-			/// @brief Set bool value with given key
-			/// @param key JSON key
-			/// @param value JSON value
-			jsonObject& setBool(std::string&& key, bool value);
-
 			/// @brief Set int value with given key
 			/// @param key JSON key
 			/// @param value JSON value
 			jsonObject& setInt(std::string_view key, int64_t value);
-
-			/// @brief Set int value with given key
-			/// @param key JSON key
-			/// @param value JSON value
-			jsonObject& setInt(std::string&& key, int64_t value);
 
 			/// @brief Set unsigned int value with given key
 			/// @param key JSON key
 			/// @param value JSON value
 			jsonObject& setUnsignedInt(std::string_view key, uint64_t value);
 
-			/// @brief Set unsigned int value with given key
-			/// @param key JSON key
-			/// @param value JSON value
-			jsonObject& setUnsignedInt(std::string&& key, uint64_t value);
-
 			/// @brief Set double value with given key
 			/// @param key JSON key
 			/// @param value JSON value
 			jsonObject& setDouble(std::string_view key, double value);
-
-			/// @brief Set double value with given key
-			/// @param key JSON key
-			/// @param value JSON value
-			jsonObject& setDouble(std::string&& key, double value);
 
 			/// @brief Set array value with given key
 			/// @param key JSON key
@@ -221,17 +182,7 @@ namespace json
 			/// @brief Set array value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setArray(std::string&& key, const std::vector<jsonObject>& value);
-
-			/// @brief Set array value with given key
-			/// @param key JSON key
-			/// @param value JSON value
 			jsonObject& setArray(std::string_view key, std::vector<jsonObject>&& value);
-
-			/// @brief Set array value with given key
-			/// @param key JSON key
-			/// @param value JSON value
-			jsonObject& setArray(std::string&& key, std::vector<jsonObject>&& value);
 
 			/// @brief Set object value with given key
 			/// @param key JSON key
@@ -241,17 +192,7 @@ namespace json
 			/// @brief Set object value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setObject(std::string&& key, const jsonObject& value);
-
-			/// @brief Set object value with given key
-			/// @param key JSON key
-			/// @param value JSON value
 			jsonObject& setObject(std::string_view key, jsonObject&& value);
-
-			/// @brief Set object value with given key
-			/// @param key JSON key
-			/// @param value JSON value
-			jsonObject& setObject(std::string&& key, jsonObject&& value);
 
 			/// @brief Get null value. Find and get value only for this JSON object
 			/// @param key JSON key

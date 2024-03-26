@@ -26,9 +26,9 @@ namespace json
 		template<typename T, typename U>
 		jsonObject& jsonObject::setValue(T&& key, U&& value)
 		{
-			if constexpr (is_same_v<T, string> && !is_const_v<decltype(key)>)
+			if constexpr (is_same_v<string_view, remove_cvref_t<U>>)
 			{
-				data.emplace_back(move(key), forward<U>(value));
+				data.emplace_back(string(key.data(), key.size()), string(value.data(), value.size()));
 			}
 			else
 			{
@@ -241,29 +241,9 @@ namespace json
 			return this->setValue(key, nullptr);
 		}
 
-		jsonObject& jsonObject::setNull(string&& key)
-		{
-			return this->setValue(move(key), nullptr);
-		}
-
-		jsonObject& jsonObject::setString(string_view key, const string& value)
+		jsonObject& jsonObject::setString(string_view key, string_view value)
 		{
 			return this->setValue(key, value);
-		}
-
-		jsonObject& jsonObject::setString(string&& key, const string& value)
-		{
-			return this->setValue(move(key), value);
-		}
-
-		jsonObject& jsonObject::setString(string_view key, string&& value)
-		{
-			return this->setValue(key, move(value));
-		}
-
-		jsonObject& jsonObject::setString(string&& key, string&& value)
-		{
-			return this->setValue(move(key), move(value));
 		}
 
 		jsonObject& jsonObject::setBool(string_view key, bool value)
@@ -271,19 +251,9 @@ namespace json
 			return this->setValue(key, value);
 		}
 
-		jsonObject& jsonObject::setBool(string&& key, bool value)
-		{
-			return this->setValue(move(key), value);
-		}
-
 		jsonObject& jsonObject::setInt(string_view key, int64_t value)
 		{
 			return this->setValue(key, value);
-		}
-
-		jsonObject& jsonObject::setInt(string&& key, int64_t value)
-		{
-			return this->setValue(move(key), value);
 		}
 
 		jsonObject& jsonObject::setUnsignedInt(string_view key, uint64_t value)
@@ -291,19 +261,9 @@ namespace json
 			return this->setValue(key, value);
 		}
 
-		jsonObject& jsonObject::setUnsignedInt(string&& key, uint64_t value)
-		{
-			return this->setValue(move(key), value);
-		}
-
 		jsonObject& jsonObject::setDouble(string_view key, double value)
 		{
 			return this->setValue(key, value);
-		}
-
-		jsonObject& jsonObject::setDouble(string&& key, double value)
-		{
-			return this->setValue(move(key), value);
 		}
 
 		jsonObject& jsonObject::setArray(string_view key, const vector<jsonObject>& value)
@@ -311,19 +271,9 @@ namespace json
 			return this->setValue(key, value);
 		}
 
-		jsonObject& jsonObject::setArray(string&& key, const vector<jsonObject>& value)
-		{
-			return this->setValue(move(key), value);
-		}
-
 		jsonObject& jsonObject::setArray(string_view key, vector<jsonObject>&& value)
 		{
 			return this->setValue(key, move(value));
-		}
-
-		jsonObject& jsonObject::setArray(string&& key, vector<jsonObject>&& value)
-		{
-			return this->setValue(move(key), move(value));
 		}
 
 		jsonObject& jsonObject::setObject(string_view key, const jsonObject& value)
@@ -331,19 +281,9 @@ namespace json
 			return this->setValue(key, value);
 		}
 
-		jsonObject& jsonObject::setObject(string&& key, const jsonObject& value)
-		{
-			return this->setValue(move(key), value);
-		}
-
 		jsonObject& jsonObject::setObject(string_view key, jsonObject&& value)
 		{
 			return this->setValue(key, move(value));
-		}
-
-		jsonObject& jsonObject::setObject(string&& key, jsonObject&& value)
-		{
-			return this->setValue(move(key), value);
 		}
 
 		nullptr_t jsonObject::getNull(string_view key) const

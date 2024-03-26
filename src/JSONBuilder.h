@@ -103,50 +103,36 @@ namespace json
 		/// @param value JSON value
 		/// @return Reference to current JSONBuilder instance
 		template<typename T>
-		JSONBuilder& append(const std::string& key, T&& value);
-
-		/// @brief Add JSON key - value
-		/// @tparam T is one of json::utility::jsonBuilderStruct::variantType template parameters
-		/// @param key JSON key
-		/// @param value JSON value
-		/// @return Reference to current JSONBuilder instance
-		template<typename T>
-		JSONBuilder& append(std::string&& key, T&& value);
+		JSONBuilder& append(std::string_view key, T&& value);
 
 		/// @brief Add JSON key - null
 		/// @param key JSON key
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendNull(const std::string& key);
+		JSONBuilder& appendNull(std::string_view key);
 
 		/// @brief Add JSON key - string
 		/// @param key JSON key
 		/// @param value Current codePage encoded value
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendString(const std::string& key, const std::string& value);
-
-		/// @brief Add JSON key - string
-		/// @param key JSON key
-		/// @param value Current codePage encoded value
-		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendString(const std::string& key, std::string&& value);
+		JSONBuilder& appendString(std::string_view key, std::string_view value);
 
 		/// @brief Add JSON key - boolean
 		/// @param key JSON key
 		/// @param value boolean
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendBool(const std::string& key, bool value);
+		JSONBuilder& appendBool(std::string_view key, bool value);
 
 		/// @brief Add JSON key - integer
 		/// @param key JSON key
 		/// @param value Integer
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendInt(const std::string& key, int64_t value);
+		JSONBuilder& appendInt(std::string_view key, int64_t value);
 
 		/// @brief Add JSON key - unsigned integer
 		/// @param key JSON key
 		/// @param value Unsigned integer
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendUnsignedInt(const std::string& key, uint64_t value);
+		JSONBuilder& appendUnsignedInt(std::string_view key, uint64_t value);
 
 		/**
 		 * @brief Add JSON key - double
@@ -154,31 +140,31 @@ namespace json
 		 * @param value Double
 		 * @return Reference to current JSONBuilder instance
 		*/
-		JSONBuilder& appendDouble(const std::string& key, double value);
+		JSONBuilder& appendDouble(std::string_view key, double value);
 
 		/// @brief Add JSON key - JSON array
 		/// @param key JSON key
 		/// @param value JSON array
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendArray(const std::string& key, std::vector<utility::jsonObject>&& value);
+		JSONBuilder& appendArray(std::string_view key, std::vector<utility::jsonObject>&& value);
 
 		/// @brief Add JSON key - JSON array
 		/// @param key JSON key
 		/// @param value JSON array
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendArray(const std::string& key, const std::vector<utility::jsonObject>& value);
+		JSONBuilder& appendArray(std::string_view key, const std::vector<utility::jsonObject>& value);
 
 		/// @brief Add JSON key - JSON object
 		/// @param key JSON key
 		/// @param value JSON object
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendObject(const std::string& key, utility::jsonObject&& value);
+		JSONBuilder& appendObject(std::string_view key, utility::jsonObject&& value);
 
 		/// @brief Add JSON key - JSON object
 		/// @param key JSON key
 		/// @param value JSON object
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendObject(const std::string& key, const utility::jsonObject& value);
+		JSONBuilder& appendObject(std::string_view key, const utility::jsonObject& value);
 
 		/**
 		 * @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
@@ -187,7 +173,7 @@ namespace json
 		 * @param recursive Recursive search
 		 * @return 
 		*/
-		bool contains(const std::string& key, utility::variantTypeEnum type, bool recursive = false) const;
+		bool contains(std::string_view key, utility::variantTypeEnum type, bool recursive = false) const;
 
 		/// <summary>
 		/// <para>Access to JSON value operator</para>
@@ -196,7 +182,7 @@ namespace json
 		/// </summary>
 		/// <param name="key">JSON key</param>
 		/// <returns>JSON value</returns>
-		variantType& operator [] (const std::string& key);
+		variantType& operator [] (std::string_view key);
 
 		/// <summary>
 		/// <para>Access to JSON value operator</para>
@@ -206,7 +192,7 @@ namespace json
 		/// <param name="key">JSON key</param>
 		/// <returns>JSON value</returns>
 		/// <exception cref="json::exceptions::CantFindValueException"></exception>
-		const variantType& operator [] (const std::string& key) const;
+		const variantType& operator [] (std::string_view key) const;
 
 		/// <summary>
 		/// Build JSON formatted string
@@ -244,14 +230,8 @@ namespace json
 	};
 
 	template<typename T>
-	JSONBuilder& JSONBuilder::append(const std::string& key, T&& value)
+	JSONBuilder& JSONBuilder::append(std::string_view key, T&& value)
 	{
-		return this->push_back(std::make_pair(key, std::forward<decltype(value)>(value)));
-	}
-
-	template<typename T>
-	JSONBuilder& JSONBuilder::append(std::string&& key, T&& value)
-	{
-		return this->push_back(std::make_pair(std::move(key), std::forward<decltype(value)>(value)));
+		return this->push_back(std::make_pair(std::string(key.data(), key.size()), std::forward<decltype(value)>(value)));
 	}
 }

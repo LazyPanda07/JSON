@@ -229,62 +229,57 @@ namespace json
 		return *this;
 	}
 
-	JSONBuilder& JSONBuilder::appendNull(const string& key)
+	JSONBuilder& JSONBuilder::appendNull(string_view key)
 	{
 		return this->append(key, nullptr);
 	}
 
-	JSONBuilder& JSONBuilder::appendString(const string& key, const string& value)
+	JSONBuilder& JSONBuilder::appendString(string_view key, string_view value)
 	{
 		return this->append(key, value);
 	}
 
-	JSONBuilder& JSONBuilder::appendString(const string& key, string&& value)
+	JSONBuilder& JSONBuilder::appendBool(string_view key, bool value)
+	{
+		return this->append(key, value);
+	}
+
+	JSONBuilder& JSONBuilder::appendInt(string_view key, int64_t value)
+	{
+		return this->append(key, value);
+	}
+
+	JSONBuilder& JSONBuilder::appendUnsignedInt(string_view key, uint64_t value)
+	{
+		return this->append(key, value);
+	}
+
+	JSONBuilder& JSONBuilder::appendDouble(string_view key, double value)
+	{
+		return this->append(key, value);
+	}
+
+	JSONBuilder& JSONBuilder::appendArray(string_view key, vector<utility::jsonObject>&& value)
 	{
 		return this->append(key, move(value));
 	}
 
-	JSONBuilder& JSONBuilder::appendBool(const string& key, bool value)
+	JSONBuilder& JSONBuilder::appendArray(string_view key, const vector<utility::jsonObject>& value)
 	{
 		return this->append(key, value);
 	}
 
-	JSONBuilder& JSONBuilder::appendInt(const string& key, int64_t value)
-	{
-		return this->append(key, value);
-	}
-
-	JSONBuilder& JSONBuilder::appendUnsignedInt(const string& key, uint64_t value)
-	{
-		return this->append(key, value);
-	}
-
-	JSONBuilder& JSONBuilder::appendDouble(const string& key, double value)
-	{
-		return this->append(key, value);
-	}
-
-	JSONBuilder& JSONBuilder::appendArray(const string& key, vector<utility::jsonObject>&& value)
+	JSONBuilder& JSONBuilder::appendObject(string_view key, utility::jsonObject&& value)
 	{
 		return this->append(key, move(value));
 	}
 
-	JSONBuilder& JSONBuilder::appendArray(const string& key, const vector<utility::jsonObject>& value)
+	JSONBuilder& JSONBuilder::appendObject(string_view key, const utility::jsonObject& value)
 	{
 		return this->append(key, value);
 	}
 
-	JSONBuilder& JSONBuilder::appendObject(const string& key, utility::jsonObject&& value)
-	{
-		return this->append(key, move(value));
-	}
-
-	JSONBuilder& JSONBuilder::appendObject(const string& key, const utility::jsonObject& value)
-	{
-		return this->append(key, value);
-	}
-
-	bool JSONBuilder::contains(const string& key, utility::variantTypeEnum type, bool recursive) const
+	bool JSONBuilder::contains(string_view key, utility::variantTypeEnum type, bool recursive) const
 	{
 		queue<const utility::jsonObject*> objects;
 
@@ -315,7 +310,7 @@ namespace json
 		return false;
 	}
 
-	JSONBuilder::variantType& JSONBuilder::operator [] (const string& key)
+	JSONBuilder::variantType& JSONBuilder::operator [] (string_view key)
 	{
 		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
 
@@ -324,12 +319,12 @@ namespace json
 			return it->second;
 		}
 
-		this->push_back<nullptr_t>(make_pair(key, nullptr));
+		this->push_back<nullptr_t>(make_pair(string(key.data(), key.size()), nullptr));
 
 		return builderData.data.back().second;
 	}
 
-	const JSONBuilder::variantType& JSONBuilder::operator [] (const string& key) const
+	const JSONBuilder::variantType& JSONBuilder::operator [] (string_view key) const
 	{
 		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
 

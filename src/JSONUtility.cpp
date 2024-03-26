@@ -48,7 +48,7 @@ namespace json
 				return false;
 			}
 
-			value = get<value>(it->second);
+			value = get<T>(it->second);
 
 			return true;
 		}

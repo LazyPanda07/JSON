@@ -156,12 +156,12 @@ namespace json
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setString(std::string_view key, std::string_view value);
+			jsonObject& setString(std::string_view key, const std::string& value);
 
 			/// @brief Set string value with given key
 			/// @param key JSON key
 			/// @param value JSON value
-			jsonObject& setString(std::string&& key, std::string_view value);
+			jsonObject& setString(std::string&& key, const std::string& value);
 
 			/// @brief Set string value with given key
 			/// @param key JSON key

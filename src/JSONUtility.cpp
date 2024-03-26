@@ -26,7 +26,14 @@ namespace json
 		template<typename T, typename U>
 		jsonObject& jsonObject::setValue(T&& key, U&& value)
 		{
-			data.emplace_back(forward<T>(key), forward<U>(value));
+			if constexpr (is_same_v<T, string> && !is_const_v<decltype(key)>)
+			{
+				data.emplace_back(move(key), forward<U>(value));
+			}
+			else
+			{
+				data.emplace_back(string(key.data(), key.size()), forward<U>(value));
+			}
 
 			return *this;
 		}
@@ -239,12 +246,12 @@ namespace json
 			return this->setValue(move(key), nullptr);
 		}
 
-		jsonObject& jsonObject::setString(string_view key, string_view value)
+		jsonObject& jsonObject::setString(string_view key, const string& value)
 		{
 			return this->setValue(key, value);
 		}
 
-		jsonObject& jsonObject::setString(string&& key, string_view value)
+		jsonObject& jsonObject::setString(string&& key, const string& value)
 		{
 			return this->setValue(move(key), value);
 		}

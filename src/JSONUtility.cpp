@@ -26,14 +26,7 @@ namespace json
 		template<typename T, typename U>
 		jsonObject& jsonObject::setValue(T&& key, U&& value)
 		{
-			if constexpr (is_move_constructible_v<T>)
-			{
-				data.emplace_back(move(key), forward<U>(value));
-			}
-			else
-			{
-				data.emplace_back(forward<T>(key), forward<U>(value));
-			}
+			data.emplace_back(forward<T>(key), forward<U>(value));
 
 			return *this;
 		}

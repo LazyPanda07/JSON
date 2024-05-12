@@ -179,7 +179,7 @@ namespace json
 		/// @return nullptr value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		nullptr_t getNull(std::string_view key, bool recursive = false) const;
+		std::nullptr_t getNull(std::string_view key, bool recursive = false) const;
 
 		/// @brief Get string value
 		/// @param key JSON key

@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JSON<span id="projectnumber">&#160;2.5.0</span>
+   <div id="projectname">JSON<span id="projectnumber">&#160;2.5.1</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++20</div>
   </td>
@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('_j_s_o_n_utility_8h_source.html',''); 
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keyword">template</span>&lt;<span class="keyword">typename</span> jsonStruct&gt;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keyword">using </span>baseVariantType = std::variant</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            &lt;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            nullptr_t,</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            std::nullptr_t,</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            std::string,</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            bool,</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            int64_t,</div>
@@ -250,7 +250,7 @@ $(document).ready(function(){initNavTree('_j_s_o_n_utility_8h_source.html',''); 
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="classjson_1_1utility_1_1json_object.html#aba52e50c5572d26e7308ec2e32bcc32b">  195</a></span>            <a class="code hl_class" href="classjson_1_1utility_1_1json_object.html">jsonObject</a>&amp; <a class="code hl_function" href="classjson_1_1utility_1_1json_object.html#aba52e50c5572d26e7308ec2e32bcc32b">setObject</a>(std::string_view key, <a class="code hl_class" href="classjson_1_1utility_1_1json_object.html">jsonObject</a>&amp;&amp; value);</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            nullptr_t getNull(std::string_view key) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            std::nullptr_t getNull(std::string_view key) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            <span class="keyword">const</span> std::string&amp; getString(std::string_view key) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>

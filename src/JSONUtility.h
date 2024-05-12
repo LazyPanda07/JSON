@@ -52,7 +52,7 @@ namespace json
 		template<typename jsonStruct>
 		using baseVariantType = std::variant
 			<
-			nullptr_t,
+			std::nullptr_t,
 			std::string,
 			bool,
 			int64_t,
@@ -199,7 +199,7 @@ namespace json
 			/// @return nullptr value
 			/// @exception json::exceptions::CantFindValueException 
 			/// @exception std::bad_variant_access Other type found
-			nullptr_t getNull(std::string_view key) const;
+			std::nullptr_t getNull(std::string_view key) const;
 
 			/// @brief Get string value. Find and get value only for this JSON object
 			/// @param key JSON key

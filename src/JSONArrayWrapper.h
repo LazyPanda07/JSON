@@ -24,7 +24,7 @@ namespace json
 			/// @param index Array index
 			/// @return nullptr
 			/// @exception std::out_of_range
-			nullptr_t getNull(size_t index) const;
+			std::nullptr_t getNull(size_t index) const;
 
 			/// @brief Get value as string
 			/// @param index Array index
@@ -64,7 +64,7 @@ namespace json
 
 			/// @brief Convert wrapped array into array with nullptr_t values
 			/// @return 
-			std::vector<nullptr_t> getAsNullArray() const;
+			std::vector<std::nullptr_t> getAsNullArray() const;
 
 			/// @brief Convert wrapped array into array with string values
 			/// @return 

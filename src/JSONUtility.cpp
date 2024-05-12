@@ -23,48 +23,6 @@ namespace json
 		using ConstJSONIterator = jsonObject::ConstJSONIterator;
 		using ConstJSONIteratorType = jsonObject::ConstJSONIterator::ConstJSONIteratorType;
 
-		template<typename T>
-		jsonObject& jsonObject::setValue(string_view key, T&& value)
-		{
-			if constexpr (is_same_v<string_view&, decltype(value)>)
-			{
-				data.emplace_back(string(key.data(), key.size()), string(value.data(), value.size()));
-			}
-			else
-			{
-				data.emplace_back(string(key.data(), key.size()), forward<T>(value));
-			}
-
-			return *this;
-		}
-
-		template<typename T>
-		bool jsonObject::tryGetValue(string_view key, T& value) const
-		{
-			auto it = this->findValue(key, false);
-
-			if (it == data.end())
-			{
-				return false;
-			}
-
-			value = get<T>(it->second);
-
-			return true;
-		}
-
-		auto jsonObject::findValue(string_view key, bool throwException) const
-		{
-			auto it = find_if(data.begin(), data.end(), [key](const auto& value) { return value.first == key; });
-
-			if (throwException && it == data.end())
-			{
-				throw exceptions::CantFindValueException(key);
-			}
-
-			return it;
-		}
-
 		ConstJSONIterator::ConstJSONIterator(const ConstJSONIterator& other) :
 			begin(other.begin),
 			end(other.end),
@@ -156,6 +114,48 @@ namespace json
 		ConstJSONIterator::operator ConstJSONIteratorType () const
 		{
 			return current;
+		}
+
+		template<typename T>
+		jsonObject& jsonObject::setValue(string_view key, T&& value)
+		{
+			if constexpr (is_same_v<string_view&, decltype(value)>)
+			{
+				data.emplace_back(string(key.data(), key.size()), string(value.data(), value.size()));
+			}
+			else
+			{
+				data.emplace_back(string(key.data(), key.size()), forward<T>(value));
+			}
+
+			return *this;
+		}
+
+		template<typename T>
+		bool jsonObject::tryGetValue(string_view key, T& value) const
+		{
+			auto it = this->findValue(key, false);
+
+			if (it == data.end())
+			{
+				return false;
+			}
+
+			value = get<T>(it->second);
+
+			return true;
+		}
+
+		auto jsonObject::findValue(string_view key, bool throwException) const
+		{
+			auto it = find_if(data.begin(), data.end(), [key](const auto& value) { return value.first == key; });
+
+			if (throwException && it == data.end())
+			{
+				throw exceptions::CantFindValueException(key);
+			}
+
+			return it;
 		}
 
 		jsonObject::jsonObject(const jsonObject& other)

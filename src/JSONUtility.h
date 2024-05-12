@@ -65,15 +65,6 @@ namespace json
 		/// @brief JSON object
 		class JSON_API jsonObject
 		{
-		private:
-			template<typename T>
-			jsonObject& setValue(std::string_view key, T&& value);
-
-			template<typename T>
-			bool tryGetValue(std::string_view key, T& value) const;
-
-			auto findValue(std::string_view key, bool throwException = true) const;
-
 		public:
 			using variantType = baseVariantType<jsonObject>;
 
@@ -120,6 +111,15 @@ namespace json
 
 				~ConstJSONIterator() = default;
 			};
+
+		private:
+			template<typename T>
+			jsonObject& setValue(std::string_view key, T&& value);
+
+			template<typename T>
+			bool tryGetValue(std::string_view key, T& value) const;
+
+			auto findValue(std::string_view key, bool throwException = true) const;
 
 		public:
 			std::vector<std::pair<std::string, variantType>> data;

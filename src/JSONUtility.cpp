@@ -146,7 +146,7 @@ namespace json
 			return true;
 		}
 
-		auto jsonObject::findValue(string_view key, bool throwException) const
+		ConstJSONIteratorType jsonObject::findValue(string_view key, bool throwException) const
 		{
 			auto it = find_if(data.begin(), data.end(), [key](const auto& value) { return value.first == key; });
 

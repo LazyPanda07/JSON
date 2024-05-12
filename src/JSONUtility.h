@@ -119,7 +119,7 @@ namespace json
 			template<typename T>
 			bool tryGetValue(std::string_view key, T& value) const;
 
-			auto findValue(std::string_view key, bool throwException = true) const;
+			ConstJSONIterator::ConstJSONIteratorType findValue(std::string_view key, bool throwException = true) const;
 
 		public:
 			std::vector<std::pair<std::string, variantType>> data;

@@ -1,9 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"classtesting_1_1internal_1_1_universal_terse_printer_3_01std_1_1reference__wrapper_3_01_t_01_4_01_4.html":[3,0,2,0,139],
-"classtesting_1_1internal_1_1_universal_terse_printer_3_01wchar__t_01_5_01_4.html":[3,0,2,0,142],
-"classtesting_1_1internal_1_1_value_array.html":[3,0,2,0,143],
-"classtesting_1_1internal_1_1_values_in_iterator_range_generator.html":[3,0,2,0,144],
 "classtesting_1_1internal_1_1_without_matchers.html":[3,0,2,0,145],
 "custom_2gmock-port_8h_source.html":[4,0,1,0,0,0,0,0,2],
 "custom_2gtest-port_8h_source.html":[4,0,1,0,0,1,0,0,0],

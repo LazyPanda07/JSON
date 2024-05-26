@@ -121,7 +121,7 @@ jobs:
         path: JSON
 
     - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1.1
+      uses: LazyPanda07/get-gtest@v1
       with:
         install-path: Tests/gtest
         
@@ -161,7 +161,7 @@ jobs:
         path: JSON
 
     - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1.1
+      uses: LazyPanda07/get-gtest@v1
       with:
         install-path: Tests/gtest
         
@@ -201,7 +201,7 @@ jobs:
         path: JSON
     
     - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1.1
+      uses: LazyPanda07/get-gtest@v1
       with:
         install-path: Tests/gtest
 
@@ -242,7 +242,7 @@ jobs:
         path: JSON
     
     - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1.1
+      uses: LazyPanda07/get-gtest@v1
       with:
         install-path: Tests/gtest
 

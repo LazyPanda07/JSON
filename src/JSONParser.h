@@ -309,6 +309,22 @@ namespace json
 		/// @param object Result of moving
 		void getParsedData(utility::jsonObject& object) noexcept;
 
+		/**
+		 * @brief Override existing value
+		 * @param key 
+		 * @param value 
+		 * @param recursive Recursive search
+		 */
+		void overrideValue(std::string_view key, const variantType& value, bool recursive = false);
+
+		/**
+		 * @brief Override existing value
+		 * @param key 
+		 * @param value 
+		 * @param recursive Recursive search
+		 */
+		void overrideValue(std::string_view key, variantType&& value, bool recursive = false);
+
 		/// <summary>
 		/// Get JSON from input stream
 		/// </summary>

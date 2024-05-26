@@ -35,19 +35,20 @@ jobs:
 
 
   linux-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
+        compiler: [gcc, clang]
 
     steps:
     - uses: actions/checkout@v4
-  
+
     - name: Build
+      env:
+        CXX: ${{ matrix.compiler }}
       run: |
-          export CC=/usr/bin/gcc-13
-          export CXX=/usr/bin/g++-13
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_SHARED_LIBS=${{ matrix.shared[0] }} ..
@@ -56,7 +57,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux_${{ matrix.compiler }}
         path: build/install-dir
 
 
@@ -102,12 +103,13 @@ jobs:
 
 
   linux-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [linux-build]
     strategy:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
+        compiler: [gcc, clang]
 
     steps:
     - uses: actions/checkout@v4
@@ -115,7 +117,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux_${{ matrix.compiler }}
         path: JSON
 
     - name: Get Google Test
@@ -125,9 +127,9 @@ jobs:
         
     - name: Build tests
       working-directory: ${{ github.workspace }}/Tests
+      env:
+        CXX: ${{ matrix.compiler }}
       run: |
-          export CC=/usr/bin/gcc-13
-          export CXX=/usr/bin/g++-13
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release ..
@@ -141,12 +143,13 @@ jobs:
   
 
   memory-leak-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [linux-build]
     strategy:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
+        compiler: [gcc, clang]
 
     steps: 
     - uses: actions/checkout@v4
@@ -154,7 +157,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux_${{ matrix.compiler }}
         path: JSON
     
     - name: Get Google Test
@@ -164,9 +167,9 @@ jobs:
 
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
+      env:
+        CXX=${{ matrix.compiler }}
       run: |
-          export CC=/usr/bin/gcc-13
-          export CXX=/usr/bin/g++-13
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release ..
@@ -206,7 +209,7 @@ jobs:
 
     - name: Create Linux zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: zip -r linux.zip Release_Linux ReleaseDLL_Linux
+      run: zip -r linux.zip Release_Linux_gcc ReleaseDLL_Linux_gcc Release_Linux_clang ReleaseDLL_Linux_clang
 
     - name: Publish Windows
       if: ${{ env.CURRENT_BRANCH == 'master' }}

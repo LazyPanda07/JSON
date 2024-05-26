@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JSON<span id="projectnumber">&#160;2.5.1</span>
+   <div id="projectname">JSON<span id="projectnumber">&#160;2.6.0</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++20</div>
   </td>
@@ -236,6 +236,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a01395b13e66011b067567d97bedea32c" id="r_a01395b13e66011b067567d97bedea32c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a01395b13e66011b067567d97bedea32c">getParsedData</a> (<a class="el" href="classjson_1_1utility_1_1json_object.html">utility::jsonObject</a> &amp;object) noexcept</td></tr>
 <tr class="memdesc:a01395b13e66011b067567d97bedea32c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move parsed data.  <br /></td></tr>
 <tr class="separator:a01395b13e66011b067567d97bedea32c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afddbea5f0b4cbe2f5053c05c2ee0b3b3" id="r_afddbea5f0b4cbe2f5053c05c2ee0b3b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#afddbea5f0b4cbe2f5053c05c2ee0b3b3">overrideValue</a> (std::string_view key, const <a class="el" href="classjson_1_1_j_s_o_n_parser.html#a98013c1d3c0661d58ba0fb4fca64f804">variantType</a> &amp;value, bool recursive=false)</td></tr>
+<tr class="memdesc:afddbea5f0b4cbe2f5053c05c2ee0b3b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override existing value.  <br /></td></tr>
+<tr class="separator:afddbea5f0b4cbe2f5053c05c2ee0b3b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcc701ac2e897235a9b9818782d6fbf5" id="r_abcc701ac2e897235a9b9818782d6fbf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#abcc701ac2e897235a9b9818782d6fbf5">overrideValue</a> (std::string_view key, <a class="el" href="classjson_1_1_j_s_o_n_parser.html#a98013c1d3c0661d58ba0fb4fca64f804">variantType</a> &amp;&amp;value, bool recursive=false)</td></tr>
+<tr class="memdesc:abcc701ac2e897235a9b9818782d6fbf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override existing value.  <br /></td></tr>
+<tr class="separator:abcc701ac2e897235a9b9818782d6fbf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af836b742d673664e4316ee6de3e16141" id="r_af836b742d673664e4316ee6de3e16141"><td class="memItemLeft" align="right" valign="top"><a id="af836b742d673664e4316ee6de3e16141" name="af836b742d673664e4316ee6de3e16141"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:af836b742d673664e4316ee6de3e16141"><td class="memTemplItemLeft" align="right" valign="top">JSON_API const nullptr_t &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getValue</b> (string_view key, bool recursive) const</td></tr>
@@ -1089,6 +1095,94 @@ template&lt;typename T &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">other</td><td>Other <a class="el" href="classjson_1_1_j_s_o_n_parser.html" title="Parser for JSON.">JSONParser</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afddbea5f0b4cbe2f5053c05c2ee0b3b3" name="afddbea5f0b4cbe2f5053c05c2ee0b3b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afddbea5f0b4cbe2f5053c05c2ee0b3b3">&#9670;&#160;</a></span>overrideValue() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void json::JSONParser::overrideValue </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classjson_1_1_j_s_o_n_parser.html#a98013c1d3c0661d58ba0fb4fca64f804">variantType</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>recursive</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Override existing value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td></td></tr>
+    <tr><td class="paramname">value</td><td></td></tr>
+    <tr><td class="paramname">recursive</td><td>Recursive search </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abcc701ac2e897235a9b9818782d6fbf5" name="abcc701ac2e897235a9b9818782d6fbf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcc701ac2e897235a9b9818782d6fbf5">&#9670;&#160;</a></span>overrideValue() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void json::JSONParser::overrideValue </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classjson_1_1_j_s_o_n_parser.html#a98013c1d3c0661d58ba0fb4fca64f804">variantType</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>recursive</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Override existing value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td></td></tr>
+    <tr><td class="paramname">value</td><td></td></tr>
+    <tr><td class="paramname">recursive</td><td>Recursive search </td></tr>
   </table>
   </dd>
 </dl>

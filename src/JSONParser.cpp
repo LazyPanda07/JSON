@@ -997,6 +997,30 @@ namespace json
 		object = move(parsedData);
 	}
 
+	void JSONParser::overrideValue(string_view key, const variantType& value, bool recursive)
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		const_cast<variantType&>(result->second) = value;
+	}
+
+	void JSONParser::overrideValue(string_view key, variantType&& value, bool recursive)
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		const_cast<variantType&>(result->second) = move(value);
+	}
+
 	JSON_API istream& operator >> (istream& inputStream, JSONParser& parser)
 	{
 		parser.setJSONData(inputStream);

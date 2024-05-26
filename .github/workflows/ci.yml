@@ -40,14 +40,13 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        compiler: [gcc, clang]
+        compiler: [g++, clang++]
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Build
       env:
-        CC: ${{ matrix.compiler }}
         CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
@@ -110,7 +109,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        compiler: [gcc]
+        compiler: [g++]
 
     steps:
     - uses: actions/checkout@v4
@@ -130,7 +129,6 @@ jobs:
     - name: Build tests
       working-directory: ${{ github.workspace }}/Tests
       env:
-        CC: ${{ matrix.compiler }}
         CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
@@ -152,7 +150,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        compiler: [clang]
+        compiler: [clang++]
 
     steps:
     - uses: actions/checkout@v4
@@ -172,7 +170,6 @@ jobs:
     - name: Build tests
       working-directory: ${{ github.workspace }}/Tests
       env:
-        CC: ${{ matrix.compiler }}
         CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
@@ -194,7 +191,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        compiler: [gcc]
+        compiler: [g++]
 
     steps: 
     - uses: actions/checkout@v4
@@ -214,7 +211,6 @@ jobs:
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
       env:
-        CC: ${{ matrix.compiler }}
         CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
@@ -237,7 +233,7 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        compiler: [clang]
+        compiler: [clang++]
 
     steps: 
     - uses: actions/checkout@v4
@@ -257,7 +253,6 @@ jobs:
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
       env:
-        CC: ${{ matrix.compiler }}
         CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
@@ -299,7 +294,7 @@ jobs:
 
     - name: Create Linux zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: zip -r linux.zip Release_Linux_gcc ReleaseDLL_Linux_gcc Release_Linux_clang ReleaseDLL_Linux_clang
+      run: zip -r linux.zip Release_Linux_g++ ReleaseDLL_Linux_g++ Release_Linux_clang++ ReleaseDLL_Linux_clang++
 
     - name: Publish Windows
       if: ${{ env.CURRENT_BRANCH == 'master' }}

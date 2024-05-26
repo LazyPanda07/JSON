@@ -73,14 +73,14 @@ TEST(Builder, Operators)
 	builder["unsignedIntValue"] = 15ULL;
 	builder["stringValue"] = "qwe"s;
 
-	ASSERT_EQ(std::get<nullptr_t>(builder["nullValue"]), nullptr);
+	ASSERT_EQ(std::get<std::nullptr_t>(builder["nullValue"]), nullptr);
 	ASSERT_EQ(std::get<bool>(builder["boolValue"]), true);
 	ASSERT_EQ(std::get<int64_t>(builder["intValue"]), 5LL);
 	ASSERT_EQ(std::get<double>(builder["doubleValue"]), 10.2);
 	ASSERT_EQ(std::get<uint64_t>(builder["unsignedIntValue"]), 15ULL);
 	ASSERT_EQ(std::get<std::string>(builder["stringValue"]), "qwe");
 
-	ASSERT_EQ(std::get<nullptr_t>(builder["qwe"]), nullptr);
+	ASSERT_EQ(std::get<std::nullptr_t>(builder["qwe"]), nullptr);
 
 	EXPECT_THROW
 	(

@@ -47,6 +47,7 @@ jobs:
 
     - name: Build
       env:
+        CC: ${{ matrix.compiler }}
         CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
@@ -128,6 +129,7 @@ jobs:
     - name: Build tests
       working-directory: ${{ github.workspace }}/Tests
       env:
+        CC: ${{ matrix.compiler }}
         CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
@@ -168,7 +170,8 @@ jobs:
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
       env:
-        CXX=${{ matrix.compiler }}
+        CC: ${{ matrix.compiler }}
+        CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
           cd build

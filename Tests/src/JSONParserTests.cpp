@@ -39,6 +39,30 @@ TEST(Parser, TryGetters)
 	ASSERT_FALSE(parser.tryGetString("doubleValue", stringValue));
 }
 
+TEST(Parser, Override)
+{
+	std::string jsonData = R"({
+	"intValue": 5,
+	"stringValue": "data",
+	"object": {
+		"doubleValue": 5.5
+	}
+})";
+
+	json::JSONParser parser(jsonData);
+
+	parser.overrideValue("intValue", 10LL);
+	parser.overrideValue("stringValue", true);
+
+	parser.overrideValue("doubleValue", 13.2, true);
+
+	ASSERT_EQ(parser.getInt("intValue"), 10);
+	ASSERT_EQ(parser.getBool("stringValue"), true);
+	ASSERT_EQ(parser.getDouble("doubleValue", true), 13.2);
+
+	ASSERT_THROW(parser.overrideValue("doubleValue", 13.2), json::exceptions::CantFindValueException);
+}
+
 TEST(Parser, StreamOperators)
 {
 	json::JSONParser parser;

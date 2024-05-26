@@ -124,7 +124,7 @@ jobs:
       uses: LazyPanda07/get-gtest@v1.1
       with:
         install-path: Tests/gtest
-        compiler: ${{ matrix.compiler }}
+        compiler: gcc
         
     - name: Build tests
       working-directory: ${{ github.workspace }}/Tests
@@ -165,7 +165,7 @@ jobs:
       uses: LazyPanda07/get-gtest@v1.1
       with:
         install-path: Tests/gtest
-        compiler: ${{ matrix.compiler }}
+        compiler: clang
         
     - name: Build tests
       working-directory: ${{ github.workspace }}/Tests
@@ -206,7 +206,7 @@ jobs:
       uses: LazyPanda07/get-gtest@v1.1
       with:
         install-path: Tests/gtest
-        compiler: ${{ matrix.compiler }}
+        compiler: gcc
 
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
@@ -248,7 +248,7 @@ jobs:
       uses: LazyPanda07/get-gtest@v1.1
       with:
         install-path: Tests/gtest
-        compiler: ${{ matrix.compiler }}
+        compiler: clang
 
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests

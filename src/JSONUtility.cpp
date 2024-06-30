@@ -382,17 +382,116 @@ namespace json
 
 		bool jsonObject::tryGetInt(string_view key, int64_t& value) const
 		{
-			return this->tryGetValue(key, value);
+			auto it = this->findValue(key, false);
+
+			if (it == data.end())
+			{
+				return false;
+			}
+
+			utility::variantTypeEnum type = static_cast<utility::variantTypeEnum>(it->second.index());
+
+			switch (type)
+			{
+			case utility::variantTypeEnum::jInt64_t:
+				value = get<int64_t>(it->second);
+
+				return true;
+
+			case utility::variantTypeEnum::jUInt64_t:
+				value = static_cast<int64_t>(get<uint64_t>(it->second));
+
+				return true;
+
+			case utility::variantTypeEnum::jDouble:
+				value = static_cast<int64_t>(get<double>(it->second));
+
+				return true;
+
+			case utility::variantTypeEnum::jString:
+				value = stoll(get<string>(it->second));
+
+				return true;
+
+			default:
+				return false;
+			}
 		}
 
 		bool jsonObject::tryGetUnsignedInt(string_view key, uint64_t& value) const
 		{
-			return this->tryGetValue(key, value);
+			auto it = this->findValue(key, false);
+
+			if (it == data.end())
+			{
+				return false;
+			}
+
+			utility::variantTypeEnum type = static_cast<utility::variantTypeEnum>(it->second.index());
+
+			switch (type)
+			{
+			case utility::variantTypeEnum::jUInt64_t:
+				value = get<uint64_t>(it->second);
+
+				return true;
+
+			case utility::variantTypeEnum::jInt64_t:
+				value = static_cast<uint64_t>(get<int64_t>(it->second));
+
+				return true;
+
+			case utility::variantTypeEnum::jDouble:
+				value = static_cast<uint64_t>(get<double>(it->second));
+
+				return true;
+
+			case utility::variantTypeEnum::jString:
+				value = stoull(get<string>(it->second));
+
+				return true;
+
+			default:
+				return false;
+			}
 		}
 
 		bool jsonObject::tryGetDouble(string_view key, double& value) const
 		{
-			return this->tryGetValue(key, value);
+			auto it = this->findValue(key, false);
+
+			if (it == data.end())
+			{
+				return false;
+			}
+
+			utility::variantTypeEnum type = static_cast<utility::variantTypeEnum>(it->second.index());
+
+			switch (type)
+			{
+			case utility::variantTypeEnum::jDouble:
+				value = get<double>(it->second);
+
+				return true;
+
+			case utility::variantTypeEnum::jInt64_t:
+				value = static_cast<double>(get<int64_t>(it->second));
+
+				return true;
+
+			case utility::variantTypeEnum::jUInt64_t:
+				value = static_cast<double>(get<uint64_t>(it->second));
+
+				return true;
+
+			case utility::variantTypeEnum::jString:
+				value = stod(get<string>(it->second));
+
+				return true;
+
+			default:
+				return false;
+			}
 		}
 
 		bool jsonObject::tryGetArray(string_view key, vector<utility::jsonObject>& value) const
@@ -730,7 +829,7 @@ namespace json
 
 		string getJSONVersion()
 		{
-			string jsonVersion = "2.6.0";
+			string jsonVersion = "2.6.1";
 
 			return jsonVersion;
 		}

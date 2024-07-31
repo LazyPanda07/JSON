@@ -11,7 +11,7 @@ using namespace std;
 
 namespace json
 {
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 	JSONBuilder::JSONBuilder(string_view codePage, outputType type) :
 		codePage(codePage),
 		type(type)

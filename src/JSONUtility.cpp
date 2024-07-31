@@ -545,7 +545,7 @@ namespace json
 			throw exceptions::CantFindValueException(key);
 		}
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 		static string convertString(string_view source, size_t resultSize, iconv_t convert)
 		{
 			if (convert == reinterpret_cast<iconv_t>(string::npos))
@@ -829,7 +829,7 @@ namespace json
 
 		string getJSONVersion()
 		{
-			string jsonVersion = "2.6.3";
+			string jsonVersion = "2.6.4";
 
 			return jsonVersion;
 		}

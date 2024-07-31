@@ -92,7 +92,7 @@ namespace json
 		/// @param type Object type
 		bool contains(std::string_view key, utility::variantTypeEnum type, bool recursive = false) const;
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 		/// <summary>
 		/// Setter for rawData
 		/// </summary>

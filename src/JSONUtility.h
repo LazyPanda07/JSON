@@ -10,7 +10,7 @@
 #include "CodePageConstants.h"
 
 #ifdef JSON_DLL
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 #define JSON_API __attribute__((visibility("default")))
 #else
 #define JSON_API __declspec(dllexport)
@@ -352,7 +352,7 @@ namespace json
 		/// @return 
 		constexpr bool operator==(size_t index, variantTypeEnum value);
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 		/// <summary>
 		/// Encode string to UTF8
 		/// </summary>

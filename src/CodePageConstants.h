@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 #define CP_UTF8 "UTF-8"
 #define CP_WINDOWS_1250 "WINDOWS-1250"
 #define CP_WINDOWS_1251 "WINDOWS-1251"

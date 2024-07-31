@@ -445,7 +445,7 @@ namespace json
 		return false;
 	}
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 	void JSONParser::setJSONData(string_view jsonData, string_view codePage)
 	{
 		rawData = utility::toUTF8JSON(jsonData, codePage);

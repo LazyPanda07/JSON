@@ -25,7 +25,7 @@ namespace json
 
 	private:
 		utility::jsonObject builderData;
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 		std::string_view codePage;
 #else
 		uint32_t codePage;
@@ -33,7 +33,7 @@ namespace json
 		outputType type;
 
 	public:
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 		/// <summary>
 		/// Construct JSONBuilder
 		/// </summary>

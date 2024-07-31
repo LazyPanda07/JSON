@@ -4,7 +4,7 @@
 #include <functional>
 #include <regex>
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__ANDROID__)
 #include <iconv.h>
 #else
 #include <Windows.h>
@@ -829,7 +829,7 @@ namespace json
 
 		string getJSONVersion()
 		{
-			string jsonVersion = "2.6.2";
+			string jsonVersion = "2.6.3";
 
 			return jsonVersion;
 		}

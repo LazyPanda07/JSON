@@ -5,9 +5,13 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install-dir CACHE STRING "")
 option(BUILD_SHARED_LIBS "" OFF)
 option(CMAKE_POSITION_INDEPENDENT_CODE "" ON)
 
-if (UNIX)
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+	add_definitions(-D__ANDROID__)
+
+	set(ANDROID_NATIVE_API_LEVEL 28)
+elseif (UNIX)
     add_definitions(-D__LINUX__)
-endif (UNIX)
+endif ()
 
 if (${BUILD_SHARED_LIBS})
 	add_definitions(-DJSON_DLL)
@@ -26,6 +30,11 @@ add_library(
 	src/Exceptions/CantFindValueException.cpp
 	src/Exceptions/WrongEncodingException.cpp
 	src/Exceptions/WrongInputStreamException.cpp
+)
+
+target_include_directories(
+	${PROJECT_NAME} PRIVATE
+	${PROJECT_SOURCE_DIR}/src/
 )
 
 install(

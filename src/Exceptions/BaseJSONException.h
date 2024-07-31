@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "../JSONUtility.h"
+#include "JSONUtility.h"
 
 namespace json
 {

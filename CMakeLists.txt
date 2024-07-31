@@ -10,7 +10,7 @@ project(JSON)
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 	add_definitions(-D__ANDROID__)
 
-	set(ANDROID_NATIVE_API_LEVEL 28)
+	set(ANDROID_NATIVE_API_LEVEL android-28)
 	set(ANDROID_PLATFORM ${ANDROID_NATIVE_API_LEVEL})
 elseif (UNIX)
     add_definitions(-D__LINUX__)

@@ -184,7 +184,7 @@ namespace json
 	template<>
 	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject>(const pair<string, utility::jsonObject>& value)
 	{
-		builderData.data.push_back(make_pair(value.first, value.second));
+		builderData.data.emplace_back(value.first, value.second);
 
 		return *this;
 	}

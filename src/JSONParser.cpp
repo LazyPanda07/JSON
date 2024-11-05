@@ -77,7 +77,7 @@ namespace json
 
 	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject& ptr)
 	{
-		ptr.data.push_back({ move(key), JSONParser::parseValue(value) });
+		ptr.data.emplace_back(move(key), JSONParser::parseValue(value));
 	}
 
 	pair<vector<pair<string, JSONParser::variantType>>::const_iterator, bool> JSONParser::find(string_view key, const vector<pair<string, variantType>>& start, bool recursive)

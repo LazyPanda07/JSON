@@ -23,14 +23,6 @@ namespace json
 		using ConstJSONIterator = jsonObject::ConstJSONIterator;
 		using ConstJSONIteratorType = jsonObject::ConstJSONIterator::ConstJSONIteratorType;
 
-		ConstJSONIterator::ConstJSONIterator(const ConstJSONIterator& other) :
-			begin(other.begin),
-			end(other.end),
-			current(other.current)
-		{
-
-		}
-
 		ConstJSONIterator::ConstJSONIterator(ConstJSONIteratorType begin, ConstJSONIteratorType end, ConstJSONIteratorType start) :
 			begin(begin),
 			end(end),
@@ -158,6 +150,55 @@ namespace json
 			return it;
 		}
 
+		void jsonObject::appendData(const string& key, const json::utility::jsonObject::variantType& value)
+		{
+			switch (static_cast<json::utility::variantTypeEnum>(value.index()))
+			{
+			case json::utility::variantTypeEnum::jNull:
+				data.push_back({ key, get<nullptr_t>(value) });
+
+				break;
+
+			case json::utility::variantTypeEnum::jString:
+				data.push_back({ key, get<string>(value) });
+
+				break;
+
+			case json::utility::variantTypeEnum::jBool:
+				data.push_back({ key, get<bool>(value) });
+
+				break;
+
+			case json::utility::variantTypeEnum::jInt64_t:
+				data.push_back({ key, get<int64_t>(value) });
+
+				break;
+
+			case json::utility::variantTypeEnum::jUInt64_t:
+				data.push_back({ key, get<uint64_t>(value) });
+
+				break;
+
+			case json::utility::variantTypeEnum::jDouble:
+				data.push_back({ key, get<double>(value) });
+
+				break;
+
+			case json::utility::variantTypeEnum::jJSONArray:
+				data.push_back({ key, get<vector<jsonObject>>(value) });
+
+				break;
+
+			case json::utility::variantTypeEnum::jJSONObject:
+				data.push_back({ key, get<jsonObject>(value) });
+
+				break;
+
+			default:
+				break;
+			}
+		}
+
 		jsonObject::jsonObject(const jsonObject& other)
 		{
 			(*this) = other;
@@ -170,60 +211,16 @@ namespace json
 
 		jsonObject& jsonObject::operator = (const jsonObject& other)
 		{
-			function<void(const string&, const variantType&, vector<pair<string, variantType>>&)> appendData = [&appendData](const string& key, const variantType& value, vector<pair<string, variantType>>& data)
-				{
-					switch (static_cast<variantTypeEnum>(value.index()))
-					{
-					case variantTypeEnum::jNull:
-						data.push_back({ key, get<nullptr_t>(value) });
-
-						break;
-
-					case variantTypeEnum::jString:
-						data.push_back({ key, get<string>(value) });
-
-						break;
-
-					case variantTypeEnum::jBool:
-						data.push_back({ key, get<bool>(value) });
-
-						break;
-
-					case variantTypeEnum::jInt64_t:
-						data.push_back({ key, get<int64_t>(value) });
-
-						break;
-
-					case variantTypeEnum::jUInt64_t:
-						data.push_back({ key, get<uint64_t>(value) });
-
-						break;
-
-					case variantTypeEnum::jDouble:
-						data.push_back({ key, get<double>(value) });
-
-						break;
-
-					case variantTypeEnum::jJSONArray:
-						data.push_back({ key, get<vector<jsonObject>>(value) });
-
-						break;
-
-					case json::utility::variantTypeEnum::jJSONObject:
-						data.push_back({ key, get<jsonObject>(value) });
-
-						break;
-
-					default:
-						break;
-					}
-				};
+			if (this == &other)
+			{
+				return *this;
+			}
 
 			data.clear();
 
 			for (const auto& [key, value] : other.data)
 			{
-				appendData(key, value, data);
+				this->appendData(key, value);
 			}
 
 			return *this;
@@ -829,7 +826,7 @@ namespace json
 
 		string getJSONVersion()
 		{
-			string jsonVersion = "2.6.5";
+			string jsonVersion = "2.6.6";
 
 			return jsonVersion;
 		}

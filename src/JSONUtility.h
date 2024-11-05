@@ -83,9 +83,15 @@ namespace json
 			public:
 				ConstJSONIterator() = default;
 
-				ConstJSONIterator(const ConstJSONIterator& other);
-
 				ConstJSONIterator(ConstJSONIteratorType begin, ConstJSONIteratorType end, ConstJSONIteratorType start);
+
+				ConstJSONIterator(const ConstJSONIterator& other) = default;
+
+				ConstJSONIterator(ConstJSONIterator&& other) noexcept = default;
+
+				ConstJSONIterator& operator = (const ConstJSONIterator& other) = default;
+
+				ConstJSONIterator& operator = (ConstJSONIterator&& other) noexcept = default;
 
 				const ConstJSONIteratorType& getBegin() const;
 
@@ -120,6 +126,8 @@ namespace json
 			bool tryGetValue(std::string_view key, T& value) const;
 
 			ConstJSONIterator::ConstJSONIteratorType findValue(std::string_view key, bool throwException = true) const;
+
+			void appendData(const std::string& key, const json::utility::jsonObject::variantType& value);
 
 		public:
 			std::vector<std::pair<std::string, variantType>> data;

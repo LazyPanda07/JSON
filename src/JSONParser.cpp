@@ -27,8 +27,11 @@ namespace json
 
 	utility::jsonObject::variantType JSONParser::parseValue(const string& value)
 	{
+#ifndef __LINUX__
 #pragma warning(push)
 #pragma warning(disable: 4018)
+#endif
+
 		if (isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin()))
 		{
 			return string(value.begin() + 1, value.end() - 1);
@@ -64,7 +67,12 @@ namespace json
 			}
 		}
 
+		throw runtime_error("Can't parse value");
+
+		return nullptr;
+#ifndef __LINUX__
 #pragma warning(pop)
+#endif
 	}
 
 	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::jsonObject& ptr)
@@ -273,6 +281,9 @@ namespace json
 						data = &arrays.top().second.emplace_back().data;
 
 						break;
+
+					default:
+						throw runtime_error("Wrong type");
 					}
 
 					data->push_back({ move(object.first), jsonObject(*object.second) });
@@ -315,6 +326,9 @@ namespace json
 						data = &arrays.top().second.emplace_back().data;
 
 						break;
+
+					default:
+						throw runtime_error("Wrong type");
 					}
 
 					data->push_back(move(array));
@@ -492,7 +506,7 @@ namespace json
 		this->parse();
 	}
 
-	void JSONParser::setJSONData(string&& jsonData) noexcept
+	void JSONParser::setJSONData(string&& jsonData)
 	{
 		rawData = move(jsonData);
 

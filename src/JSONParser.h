@@ -120,7 +120,7 @@ namespace json
 		/// Setter for rawData
 		/// </summary>
 		/// <param name="jsonData">JSON formatted UTF8 string</param>
-		void setJSONData(std::string&& jsonData) noexcept;
+		void setJSONData(std::string&& jsonData);
 
 		/// @brief Setter for rawData
 		/// @param inputStream Stream that contains JSON formatted UTF8 string

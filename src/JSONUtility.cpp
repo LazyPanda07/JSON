@@ -155,42 +155,42 @@ namespace json
 			switch (static_cast<json::utility::variantTypeEnum>(value.index()))
 			{
 			case json::utility::variantTypeEnum::jNull:
-				data.push_back({ key, get<nullptr_t>(value) });
+				data.emplace_back(key, get<nullptr_t>(value));
 
 				break;
 
 			case json::utility::variantTypeEnum::jString:
-				data.push_back({ key, get<string>(value) });
+				data.emplace_back(key, get<string>(value));
 
 				break;
 
 			case json::utility::variantTypeEnum::jBool:
-				data.push_back({ key, get<bool>(value) });
+				data.emplace_back(key, get<bool>(value));
 
 				break;
 
 			case json::utility::variantTypeEnum::jInt64_t:
-				data.push_back({ key, get<int64_t>(value) });
+				data.emplace_back(key, get<int64_t>(value));
 
 				break;
 
 			case json::utility::variantTypeEnum::jUInt64_t:
-				data.push_back({ key, get<uint64_t>(value) });
+				data.emplace_back(key, get<uint64_t>(value));
 
 				break;
 
 			case json::utility::variantTypeEnum::jDouble:
-				data.push_back({ key, get<double>(value) });
+				data.emplace_back(key, get<double>(value));
 
 				break;
 
 			case json::utility::variantTypeEnum::jJSONArray:
-				data.push_back({ key, get<vector<jsonObject>>(value) });
+				data.emplace_back(key, get<vector<jsonObject>>(value));
 
 				break;
 
 			case json::utility::variantTypeEnum::jJSONObject:
-				data.push_back({ key, get<jsonObject>(value) });
+				data.emplace_back(key, get<jsonObject>(value));
 
 				break;
 
@@ -819,14 +819,14 @@ namespace json
 		{
 			jsonObject object;
 
-			object.data.push_back({ "", move(value) });
+			object.data.emplace_back("", move(value));
 
 			jsonArray.push_back(move(object));
 		}
 
 		string getJSONVersion()
 		{
-			string jsonVersion = "2.6.6";
+			string jsonVersion = "2.6.7";
 
 			return jsonVersion;
 		}

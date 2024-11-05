@@ -5,12 +5,12 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install-dir CACHE STRING "")
 option(BUILD_SHARED_LIBS "" OFF)
 option(CMAKE_POSITION_INDEPENDENT_CODE "" ON)
 
-project(JSON VERSION 2.6.6)
+project(JSON VERSION 2.6.7)
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 	add_definitions(-D__ANDROID__)
 
-	set(ANDROID_NATIVE_API_LEVEL android-28)
+	set(ANDROID_NATIVE_API_LEVEL android-35)
 	set(ANDROID_PLATFORM ${ANDROID_NATIVE_API_LEVEL})
 elseif (UNIX)
     add_definitions(-D__LINUX__)

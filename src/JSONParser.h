@@ -364,7 +364,7 @@ namespace json
 	{
 		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<utility::jsonObject>> || std::is_same_v<T, utility::jsonObject>)
 		{
-			std::cout << value.index() << std::endl;
+			std::cout << value.index() << ' ' << std::holds_alternative<T>(value) << std::endl;
 
 			return std::holds_alternative<T>(value);
 		}
@@ -414,6 +414,8 @@ namespace json
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
+			std::cout << "Index: " << value.index() << std::endl;
+
 			return static_cast<T>(std::get<double>(value));
 		}
 		else

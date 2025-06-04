@@ -40,6 +40,9 @@ namespace json
 		template<utility::JsonValues<utility::jsonObject> T>
 		static bool checkSameType(const variantType& value);
 
+		template<std::integral T>
+		static T getValue(const variantType& value);
+
 	private:
 		void parse();
 
@@ -369,16 +372,29 @@ namespace json
 		{
 			return std::holds_alternative<double>(value);
 		}
-		else if constexpr (std::is_unsigned_v<T>)
+		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			return std::holds_alternative<uint64_t>(value);
-		}
-		else if constexpr (std::is_signed_v<T>)
-		{
-			return std::holds_alternative<int64_t>(value);
+			return std::holds_alternative<uint64_t>(value) || std::holds_alternative<int64_t>(value);
 		}
 		
 		return false;
+	}
+
+	template<std::integral T>
+	T JSONParser::getValue(const variantType& value)
+	{
+		if (std::holds_alternative<int64_t>(value))
+		{
+			return static_cast<T>(std::get<int64_t>(value));
+		}
+		else if (std::holds_alternative<uint64_t>(value))
+		{
+			return static_cast<T>(std::get<uint64_t>(value));
+		}
+
+		throw std::runtime_error("Wrong type");
+
+		return T{};
 	}
 
 	template<utility::JsonLightValues T>
@@ -403,15 +419,11 @@ namespace json
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			return static_cast<T>(std::get<5>(value));
+			return static_cast<T>(std::get<double>(value));
 		}
-		else if constexpr (std::is_unsigned_v<T>)
+		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			return static_cast<T>(std::get<uint64_t>(value));
-		}
-		else if constexpr (std::is_signed_v<T>)
-		{
-			return static_cast<T>(std::get<int64_t>(value));
+			return JSONParser::getValue<T>(value);
 		}
 		else
 		{
@@ -489,13 +501,9 @@ namespace json
 		{
 			value = static_cast<T>(std::get<double>(temp));
 		}
-		else if constexpr (std::is_unsigned_v<T>)
+		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			value = static_cast<T>(std::get<uint64_t>(temp));
-		}
-		else if constexpr (std::is_signed_v<T>)
-		{
-			value = static_cast<T>(std::get<int64_t>(temp));
+			value = JSONParser::getValue<T>(temp);
 		}
 		else
 		{

@@ -29,14 +29,14 @@ TEST(Parser, TryGetters)
 	std::string stringValue;
 
 	ASSERT_TRUE(parser.tryGetNull("nullValue"));
-	ASSERT_TRUE(parser.tryGet<bool>("boolValue", boolValue));
-	ASSERT_TRUE(parser.tryGet<int16_t>("intValue", intValue));
-	ASSERT_TRUE(parser.tryGet<float>("doubleValue", floatValue));
-	ASSERT_TRUE(parser.tryGet<uint16_t>("unsignedIntValue", unsignedIntValue));
-	ASSERT_TRUE(parser.tryGet<std::string>("stringValue", stringValue));
+	ASSERT_TRUE(parser.tryGet("boolValue", boolValue));
+	ASSERT_TRUE(parser.tryGet("intValue", intValue));
+	ASSERT_TRUE(parser.tryGet("doubleValue", floatValue));
+	ASSERT_TRUE(parser.tryGet("unsignedIntValue", unsignedIntValue));
+	ASSERT_TRUE(parser.tryGet("stringValue", stringValue));
 
-	ASSERT_FALSE(parser.tryGet<int16_t>("test", intValue));
-	ASSERT_FALSE(parser.tryGet<std::string>("doubleValue", stringValue));
+	ASSERT_FALSE(parser.tryGet("test", intValue));
+	ASSERT_FALSE(parser.tryGet("doubleValue", stringValue));
 }
 
 TEST(Parser, Override)

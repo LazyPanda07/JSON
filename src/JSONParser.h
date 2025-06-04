@@ -404,7 +404,7 @@ namespace json
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			std::cout << "Index: " << value.index() << std::endl;
+			std::cout << key << ": " << "Index: " << value.index() << std::endl;
 
 			return static_cast<T>(std::get<double>(value));
 		}
@@ -490,7 +490,7 @@ namespace json
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			std::cout << "Index: " << temp.index() << std::endl;
+			std::cout << key << ": " << "Index: " << temp.index() << std::endl;
 
 			value = static_cast<T>(std::get<double>(temp));
 		}

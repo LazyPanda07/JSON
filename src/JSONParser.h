@@ -37,8 +37,8 @@ namespace json
 
 		static char interpretEscapeSymbol(char symbol);
 
-		template<utility::variantTypeEnum ResultType>
-		static bool checkDifferType(const variantType& checkType);
+		template<utility::JsonValues<utility::jsonObject> T>
+		static bool checkDifferType(const variantType& value);
 
 	private:
 		void parse();
@@ -148,31 +148,6 @@ namespace json
 
 		ConstJSONIterator end() const noexcept;
 
-		/// <summary>
-		/// <para>Getter for all JSON parsed values</para>
-		/// <para>T is one of json::utility::jsonObject::variantType template parameters</para>
-		/// <para>Find and get first value of given key</para>
-		/// </summary>
-		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
-		/// <param name="key">JSON key</param>
-		/// <param name="recursive">Recursive search</param>
-		/// <returns>JSON value</returns>
-		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
-		/// <exception cref="std::bad_variant_access">Other type found</exception>
-		template<typename T>
-		const T& getValue(std::string_view key, bool recursive = false) const;
-
-		/**
-		 * @brief Getter for all JSON parsed values
-		 * @tparam T Is one of json::utility::jsonObject::variantType template parameters
-		 * @param key JSON key
-		 * @param value JSON value
-		 * @param recursive Recursive search
-		 * @return True if value found
-		*/
-		template<typename T>
-		bool tryGetValue(std::string_view key, T& value, bool recursive = false) const;
-
 		/// @brief Get null value
 		/// @param key JSON key
 		/// @param recursive Recursive search
@@ -264,7 +239,7 @@ namespace json
 		/// @brief Try get int64_t value
 		/// @param key JSON key
 		/// @param recursive Recursive search
-		/// @return int64_t value
+		/// @return Converted to int64_t value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
 		bool tryGetInt(std::string_view key, int64_t& value, bool recursive = false) const;
@@ -272,7 +247,7 @@ namespace json
 		/// @brief Try get uint64_t value
 		/// @param key JSON key
 		/// @param recursive Recursive search
-		/// @return uint64_t value
+		/// @return Converted to uint64_t value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
 		bool tryGetUnsignedInt(std::string_view key, uint64_t& value, bool recursive = false) const;
@@ -280,7 +255,7 @@ namespace json
 		/// @brief Try get double value
 		/// @param key JSON key
 		/// @param recursive Recursive search
-		/// @return double value
+		/// @return Converted to double value
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
 		bool tryGetDouble(std::string_view key, double& value, bool recursive = false) const;
@@ -326,6 +301,31 @@ namespace json
 		void overrideValue(std::string_view key, variantType&& value, bool recursive = false);
 
 		/// <summary>
+		/// <para>Getter for all JSON parsed values</para>
+		/// <para>T is one of json::utility::jsonObject::variantType template parameters</para>
+		/// <para>Find and get first value of given key</para>
+		/// </summary>
+		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
+		/// <param name="key">JSON key</param>
+		/// <param name="recursive">Recursive search</param>
+		/// <returns>JSON value</returns>
+		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
+		/// <exception cref="std::bad_variant_access">Other type found</exception>
+		template<utility::JsonValues<utility::jsonObject> T>
+		const T& get(std::string_view key, bool recursive = false) const;
+
+		/**
+		 * @brief Getter for all JSON parsed values
+		 * @tparam T Is one of json::utility::jsonObject::variantType template parameters
+		 * @param key JSON key
+		 * @param value JSON value
+		 * @param recursive Recursive search
+		 * @return True if value found
+		*/
+		template<utility::JsonValues<utility::jsonObject> T>
+		bool tryGet(std::string_view key, T& value, bool recursive = false) const;
+
+		/// <summary>
 		/// Get JSON from input stream
 		/// </summary>
 		/// <param name="stream">std::istream subclass instance</param>
@@ -345,4 +345,131 @@ namespace json
 
 		~JSONParser() = default;
 	};
+
+	template<utility::JsonValues<utility::jsonObject> T>
+	bool JSONParser::checkDifferType(const variantType& value)
+	{
+		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<utility::jsonObject>> || std::is_same_v<T, utility::jsonObject>)
+		{
+			return std::holds_alternative<T>(value);
+		}
+		else if constexpr (std::is_unsigned_v<T>)
+		{
+			return std::holds_alternative<uint64_t>(value);
+		}
+		else if constexpr (std::is_signed_v<T>)
+		{
+			return std::holds_alternative<int64_t>(value);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			return std::holds_alternative<double>(value);
+		}
+		
+		return false;
+	}
+
+	template<utility::JsonValues<utility::jsonObject> T>
+	const T& JSONParser::get(std::string_view key, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success)
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+		
+		const utility::jsonObject::variantType& value = result->second;
+
+		if constexpr (std::is_same_v<T, bool>)
+		{
+			return std::get<bool>(value);
+		}
+		else if constexpr (std::is_same_v<T, std::nullptr_t>)
+		{
+			return std::get<std::nullptr_t>(value);
+		}
+		else if constexpr (std::is_unsigned_v<T>)
+		{
+			return static_cast<T>(std::get<uint64_t>(value));
+		}
+		else if constexpr (std::is_signed_v<T>)
+		{
+			return static_cast<T>(std::get<int64_t>(value));
+		}
+		else if constexpr (std::is_same_v<T, std::string>)
+		{
+			return std::get<std::string>(value);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			return static_cast<T>(std::get<double>(value));
+		}
+		else if constexpr (std::is_same_v<T, std::vector<utility::jsonObject>>)
+		{
+			return std::get<std::vector<utility::jsonObject>>(value);
+		}
+		else if constexpr (std::is_same_v<T, utility::jsonObject>)
+		{
+			return std::get<utility::jsonObject>(value);
+		}
+		else
+		{
+			throw std::runtime_error("Wrong type");
+		}
+
+		return {};
+	}
+
+	template<utility::JsonValues<utility::jsonObject> T>
+	bool JSONParser::tryGet(std::string_view key, T& value, bool recursive) const
+	{
+		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+
+		if (!success || JSONParser::checkDifferType<T>(result->second))
+		{
+			return false;
+		}
+
+		const utility::jsonObject::variantType& temp = result->second;
+
+		if constexpr (std::is_same_v<T, bool>)
+		{
+			value = std::get<bool>(temp);
+		}
+		else if constexpr (std::is_same_v<T, std::nullptr_t>)
+		{
+			value = std::get<std::nullptr_t>(temp);
+		}
+		else if constexpr (std::is_unsigned_v<T>)
+		{
+			value = static_cast<T>(std::get<uint64_t>(temp));
+		}
+		else if constexpr (std::is_signed_v<T>)
+		{
+			value = static_cast<T>(std::get<int64_t>(temp));
+		}
+		else if constexpr (std::is_same_v<T, std::string>)
+		{
+			value = std::get<std::string>(temp);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			value = static_cast<T>(std::get<double>(temp));
+		}
+		else if constexpr (std::is_same_v<T, std::vector<utility::jsonObject>>)
+		{
+			value = std::get<std::vector<utility::jsonObject>>(temp);
+		}
+		else if constexpr (std::is_same_v<T, utility::jsonObject>)
+		{
+			value = std::get<utility::jsonObject>(temp);
+		}
+		else
+		{
+			throw std::runtime_error("Wrong type");
+		}
+
+		return true;
+	}
 }

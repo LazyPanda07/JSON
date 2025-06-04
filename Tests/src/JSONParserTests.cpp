@@ -8,12 +8,12 @@ TEST(Parser, Getters)
 {
 	json::JSONParser parser(createParser());
 
-	ASSERT_EQ(parser.getNull("nullValue"), nullptr);
-	ASSERT_EQ(parser.getBool("boolValue"), true);
-	ASSERT_EQ(parser.getInt("intValue"), 5);
-	ASSERT_EQ(parser.getDouble("doubleValue"), 10.2);
-	ASSERT_EQ(parser.getUnsignedInt("unsignedIntValue"), 15);
-	ASSERT_EQ(parser.getString("stringValue"), "qwe");
+	ASSERT_EQ(parser.get<std::nullptr_t>("nullValue"), nullptr);
+	ASSERT_EQ(parser.get<bool>("boolValue"), true);
+	ASSERT_EQ(parser.get<int>("intValue"), 5);
+	ASSERT_EQ(parser.get<double>("doubleValue"), 10.2);
+	ASSERT_EQ(parser.get<uint32_t>("unsignedIntValue"), 15);
+	ASSERT_EQ(parser.get<std::string>("stringValue"), "qwe");
 
 	EXPECT_THROW(parser.getInt("test"), json::exceptions::CantFindValueException);
 	EXPECT_THROW(parser.getNull("intValue"), std::bad_variant_access);
@@ -23,20 +23,20 @@ TEST(Parser, TryGetters)
 {
 	json::JSONParser parser(createParser());
 	bool boolValue;
-	int64_t intValue;
-	double doubleValue;
-	uint64_t unsignedIntValue;
+	int16_t intValue;
+	float floatValue;
+	uint16_t unsignedIntValue;
 	std::string stringValue;
 
 	ASSERT_TRUE(parser.tryGetNull("nullValue"));
-	ASSERT_TRUE(parser.tryGetBool("boolValue", boolValue));
-	ASSERT_TRUE(parser.tryGetInt("intValue", intValue));
-	ASSERT_TRUE(parser.tryGetDouble("doubleValue", doubleValue));
-	ASSERT_TRUE(parser.tryGetUnsignedInt("unsignedIntValue", unsignedIntValue));
-	ASSERT_TRUE(parser.tryGetString("stringValue", stringValue));
+	ASSERT_TRUE(parser.tryGet<bool>("boolValue", boolValue));
+	ASSERT_TRUE(parser.tryGet<int16_t>("intValue", intValue));
+	ASSERT_TRUE(parser.tryGet<float>("doubleValue", floatValue));
+	ASSERT_TRUE(parser.tryGet<uint16_t>("unsignedIntValue", unsignedIntValue));
+	ASSERT_TRUE(parser.tryGet<std::string>("stringValue", stringValue));
 
-	ASSERT_FALSE(parser.tryGetInt("test", intValue));
-	ASSERT_FALSE(parser.tryGetString("doubleValue", stringValue));
+	ASSERT_FALSE(parser.tryGet<int16_t>("test", intValue));
+	ASSERT_FALSE(parser.tryGet<std::string>("doubleValue", stringValue));
 }
 
 TEST(Parser, Override)
@@ -56,9 +56,9 @@ TEST(Parser, Override)
 
 	parser.overrideValue("doubleValue", 13.2, true);
 
-	ASSERT_EQ(parser.getInt("intValue"), 10);
-	ASSERT_EQ(parser.getBool("stringValue"), true);
-	ASSERT_EQ(parser.getDouble("doubleValue", true), 13.2);
+	ASSERT_EQ(parser.get<int64_t>("intValue"), 10);
+	ASSERT_EQ(parser.get<bool>("stringValue"), true);
+	ASSERT_EQ(parser.get<double>("doubleValue", true), 13.2);
 
 	ASSERT_THROW(parser.overrideValue("doubleValue", 13.2), json::exceptions::CantFindValueException);
 }

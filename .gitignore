@@ -36,6 +36,7 @@
 
 # Binaries
 bin/
+build/
 out/
 
 # Google Tests

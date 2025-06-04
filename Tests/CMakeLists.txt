@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.27.0)
 project(Tests)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 if (UNIX)
     set(DLL ${PROJECT_SOURCE_DIR}/../JSON/lib/libJSON.so)

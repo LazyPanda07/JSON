@@ -39,7 +39,7 @@ namespace json
 		static char interpretEscapeSymbol(char symbol);
 
 		template<utility::JsonValues<utility::jsonObject> T>
-		static bool checkDifferType(const variantType& value);
+		static bool checkSameType(const variantType& value);
 
 	private:
 		void parse();
@@ -360,26 +360,26 @@ namespace json
 	};
 
 	template<utility::JsonValues<utility::jsonObject> T>
-	bool JSONParser::checkDifferType(const variantType& value)
+	bool JSONParser::checkSameType(const variantType& value)
 	{
 		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<utility::jsonObject>> || std::is_same_v<T, utility::jsonObject>)
 		{
-			return !std::holds_alternative<T>(value);
-		}
-		else if constexpr (std::is_unsigned_v<T>)
-		{
-			return !std::holds_alternative<uint64_t>(value);
-		}
-		else if constexpr (std::is_signed_v<T>)
-		{
-			return !std::holds_alternative<int64_t>(value);
+			return std::holds_alternative<T>(value);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			return !std::holds_alternative<double>(value);
+			return std::holds_alternative<double>(value);
+		}
+		else if constexpr (std::is_unsigned_v<T>)
+		{
+			return std::holds_alternative<uint64_t>(value);
+		}
+		else if constexpr (std::is_signed_v<T>)
+		{
+			return std::holds_alternative<int64_t>(value);
 		}
 		
-		return true;
+		return false;
 	}
 
 	template<utility::JsonLightValues T>
@@ -461,7 +461,7 @@ namespace json
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
 
-		if (!success || JSONParser::checkDifferType<T>(result->second))
+		if (!success || !JSONParser::checkSameType<T>(result->second))
 		{
 			return false;
 		}

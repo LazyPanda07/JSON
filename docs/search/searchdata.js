@@ -6,7 +6,8 @@ var indexSectionsWithContent =
   3: "cov",
   4: "o",
   5: "ms",
-  6: "o"
+  6: "o",
+  7: "j"
 };
 
 var indexSectionNames =
@@ -17,7 +18,8 @@ var indexSectionNames =
   3: "typedefs",
   4: "enums",
   5: "enumvalues",
-  6: "related"
+  6: "related",
+  7: "concepts"
 };
 
 var indexSectionLabels =
@@ -28,6 +30,7 @@ var indexSectionLabels =
   3: "Typedefs",
   4: "Enumerations",
   5: "Enumerator",
-  6: "Friends"
+  6: "Friends",
+  7: "Concepts"
 };
 

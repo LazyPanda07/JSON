@@ -10,6 +10,8 @@ var classjson_1_1_j_s_o_n_parser =
     [ "JSONParser", "classjson_1_1_j_s_o_n_parser.html#a12e9da81defc49b433bc104f10f8464c", null ],
     [ "JSONParser", "classjson_1_1_j_s_o_n_parser.html#a38cc5a98bd3d9ab79dd1d6d14c16dad5", null ],
     [ "contains", "classjson_1_1_j_s_o_n_parser.html#ab1853fe8165e23afae7d92728e9461d7", null ],
+    [ "get", "classjson_1_1_j_s_o_n_parser.html#a51d35a887c690e96ae1762f53c565def", null ],
+    [ "get", "classjson_1_1_j_s_o_n_parser.html#a8d7b9a104eef43798b9f8cfe8f3d38da", null ],
     [ "getArray", "classjson_1_1_j_s_o_n_parser.html#a1690f2adb5837e8724af24c11009db66", null ],
     [ "getBool", "classjson_1_1_j_s_o_n_parser.html#ab1987fc0f8a9ab7cda6b72af3cde4a1c", null ],
     [ "getDouble", "classjson_1_1_j_s_o_n_parser.html#a52b34b90e0c81e4885791b792824e503", null ],
@@ -21,7 +23,6 @@ var classjson_1_1_j_s_o_n_parser =
     [ "getRawData", "classjson_1_1_j_s_o_n_parser.html#ae3382fde4943072afef448781533d241", null ],
     [ "getString", "classjson_1_1_j_s_o_n_parser.html#acbbbbcfec6d3b5f1d60c8eff7250b902", null ],
     [ "getUnsignedInt", "classjson_1_1_j_s_o_n_parser.html#a3e7447a67746f778a3587365c40e7332", null ],
-    [ "getValue", "classjson_1_1_j_s_o_n_parser.html#a2a51366349730b9e7ea2da82603904d9", null ],
     [ "operator*", "classjson_1_1_j_s_o_n_parser.html#a686542fead8a129a1e5cc9c5f065f4ea", null ],
     [ "operator=", "classjson_1_1_j_s_o_n_parser.html#a8cc621411c60e165716416f0909b3e88", null ],
     [ "operator=", "classjson_1_1_j_s_o_n_parser.html#a936a650fdaa8aa0931547f1d755e775a", null ],
@@ -32,6 +33,7 @@ var classjson_1_1_j_s_o_n_parser =
     [ "setJSONData", "classjson_1_1_j_s_o_n_parser.html#af5eda8b42639f909395da504f3a8e074", null ],
     [ "setJSONData", "classjson_1_1_j_s_o_n_parser.html#a82abad11700168b4bb994174fcabe7b8", null ],
     [ "setJSONData", "classjson_1_1_j_s_o_n_parser.html#add8b35c03524a19de42e3ad9fb97d04c", null ],
+    [ "tryGet", "classjson_1_1_j_s_o_n_parser.html#ab111b12ff1625d8721edce7fa61a861d", null ],
     [ "tryGetArray", "classjson_1_1_j_s_o_n_parser.html#a5a836eb7dfec5e8cef9c467643392120", null ],
     [ "tryGetBool", "classjson_1_1_j_s_o_n_parser.html#a40a72606768701b8d75cfe095f36848b", null ],
     [ "tryGetDouble", "classjson_1_1_j_s_o_n_parser.html#a4442cb7ae9c2461523a035e560b65beb", null ],
@@ -40,7 +42,6 @@ var classjson_1_1_j_s_o_n_parser =
     [ "tryGetObject", "classjson_1_1_j_s_o_n_parser.html#a27dabb852c5595ef61479630112579c4", null ],
     [ "tryGetString", "classjson_1_1_j_s_o_n_parser.html#a75863b2f4e96354c6b3b9b24b8d44935", null ],
     [ "tryGetUnsignedInt", "classjson_1_1_j_s_o_n_parser.html#a670e7c83fe4af820d951277fd495d89f", null ],
-    [ "tryGetValue", "classjson_1_1_j_s_o_n_parser.html#aee5fc5ea7cfec9c79d6a8186bb3f3ba1", null ],
     [ "operator<<", "classjson_1_1_j_s_o_n_parser.html#a4570d8aebfd60f9e02368ee5ba7feb03", null ],
     [ "operator>>", "classjson_1_1_j_s_o_n_parser.html#a6e0f4eae74468bf94663938c50babd3c", null ]
 ];

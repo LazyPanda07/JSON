@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JSON<span id="projectnumber">&#160;2.6.8</span>
+   <div id="projectname">JSON<span id="projectnumber">&#160;2.7.0</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++20</div>
   </td>
@@ -182,13 +182,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8340d40677de6dde9660165d6c577f2e" id="r_a8340d40677de6dde9660165d6c577f2e"><td class="memItemLeft" align="right" valign="top"><a id="a8340d40677de6dde9660165d6c577f2e" name="a8340d40677de6dde9660165d6c577f2e"></a>
 <a class="el" href="#a978acc40730a8d003ebcece6c513a662">ConstJSONIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const noexcept</td></tr>
 <tr class="separator:a8340d40677de6dde9660165d6c577f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a51366349730b9e7ea2da82603904d9" id="r_a2a51366349730b9e7ea2da82603904d9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2a51366349730b9e7ea2da82603904d9"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2a51366349730b9e7ea2da82603904d9">getValue</a> (std::string_view key, bool recursive=false) const</td></tr>
-<tr class="separator:a2a51366349730b9e7ea2da82603904d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee5fc5ea7cfec9c79d6a8186bb3f3ba1" id="r_aee5fc5ea7cfec9c79d6a8186bb3f3ba1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aee5fc5ea7cfec9c79d6a8186bb3f3ba1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aee5fc5ea7cfec9c79d6a8186bb3f3ba1">tryGetValue</a> (std::string_view key, T &amp;value, bool recursive=false) const</td></tr>
-<tr class="memdesc:aee5fc5ea7cfec9c79d6a8186bb3f3ba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for all JSON parsed values.  <br /></td></tr>
-<tr class="separator:aee5fc5ea7cfec9c79d6a8186bb3f3ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa645009eaee379cbfddb19c31f82fb5a" id="r_aa645009eaee379cbfddb19c31f82fb5a"><td class="memItemLeft" align="right" valign="top">std::nullptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa645009eaee379cbfddb19c31f82fb5a">getNull</a> (std::string_view key, bool recursive=false) const</td></tr>
 <tr class="memdesc:aa645009eaee379cbfddb19c31f82fb5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get null value.  <br /></td></tr>
 <tr class="separator:aa645009eaee379cbfddb19c31f82fb5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,54 +242,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abcc701ac2e897235a9b9818782d6fbf5" id="r_abcc701ac2e897235a9b9818782d6fbf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcc701ac2e897235a9b9818782d6fbf5">overrideValue</a> (std::string_view key, <a class="el" href="#a98013c1d3c0661d58ba0fb4fca64f804">variantType</a> &amp;&amp;value, bool recursive=false)</td></tr>
 <tr class="memdesc:abcc701ac2e897235a9b9818782d6fbf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override existing value.  <br /></td></tr>
 <tr class="separator:abcc701ac2e897235a9b9818782d6fbf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af836b742d673664e4316ee6de3e16141" id="r_af836b742d673664e4316ee6de3e16141"><td class="memItemLeft" align="right" valign="top"><a id="af836b742d673664e4316ee6de3e16141" name="af836b742d673664e4316ee6de3e16141"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:af836b742d673664e4316ee6de3e16141"><td class="memTemplItemLeft" align="right" valign="top">JSON_API const nullptr_t &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getValue</b> (string_view key, bool recursive) const</td></tr>
-<tr class="separator:af836b742d673664e4316ee6de3e16141"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3965661d1c8a21c3e7d63be62f0df46c" id="r_a3965661d1c8a21c3e7d63be62f0df46c"><td class="memItemLeft" align="right" valign="top"><a id="a3965661d1c8a21c3e7d63be62f0df46c" name="a3965661d1c8a21c3e7d63be62f0df46c"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a3965661d1c8a21c3e7d63be62f0df46c"><td class="memTemplItemLeft" align="right" valign="top">JSON_API const string &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getValue</b> (string_view key, bool recursive) const</td></tr>
-<tr class="separator:a3965661d1c8a21c3e7d63be62f0df46c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ca69ba6ec9c7cf70d7c3867fa8f8183" id="r_a9ca69ba6ec9c7cf70d7c3867fa8f8183"><td class="memItemLeft" align="right" valign="top"><a id="a9ca69ba6ec9c7cf70d7c3867fa8f8183" name="a9ca69ba6ec9c7cf70d7c3867fa8f8183"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a9ca69ba6ec9c7cf70d7c3867fa8f8183"><td class="memTemplItemLeft" align="right" valign="top">JSON_API const bool &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getValue</b> (string_view key, bool recursive) const</td></tr>
-<tr class="separator:a9ca69ba6ec9c7cf70d7c3867fa8f8183"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2d208b13d08a11ac5a2117499b23888" id="r_af2d208b13d08a11ac5a2117499b23888"><td class="memItemLeft" align="right" valign="top"><a id="af2d208b13d08a11ac5a2117499b23888" name="af2d208b13d08a11ac5a2117499b23888"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:af2d208b13d08a11ac5a2117499b23888"><td class="memTemplItemLeft" align="right" valign="top">JSON_API const int64_t &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getValue</b> (string_view key, bool recursive) const</td></tr>
-<tr class="separator:af2d208b13d08a11ac5a2117499b23888"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af205b60f60bf8b8deeff8253e3655dcf" id="r_af205b60f60bf8b8deeff8253e3655dcf"><td class="memItemLeft" align="right" valign="top"><a id="af205b60f60bf8b8deeff8253e3655dcf" name="af205b60f60bf8b8deeff8253e3655dcf"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:af205b60f60bf8b8deeff8253e3655dcf"><td class="memTemplItemLeft" align="right" valign="top">JSON_API const uint64_t &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getValue</b> (string_view key, bool recursive) const</td></tr>
-<tr class="separator:af205b60f60bf8b8deeff8253e3655dcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1267f1c65cdac895e8dcc88f9498fa7" id="r_ab1267f1c65cdac895e8dcc88f9498fa7"><td class="memItemLeft" align="right" valign="top"><a id="ab1267f1c65cdac895e8dcc88f9498fa7" name="ab1267f1c65cdac895e8dcc88f9498fa7"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:ab1267f1c65cdac895e8dcc88f9498fa7"><td class="memTemplItemLeft" align="right" valign="top">JSON_API const double &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getValue</b> (string_view key, bool recursive) const</td></tr>
-<tr class="separator:ab1267f1c65cdac895e8dcc88f9498fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fcdf4e9b893ea4d40bb382e1c721a21" id="r_a7fcdf4e9b893ea4d40bb382e1c721a21"><td class="memItemLeft" align="right" valign="top"><a id="a7fcdf4e9b893ea4d40bb382e1c721a21" name="a7fcdf4e9b893ea4d40bb382e1c721a21"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a7fcdf4e9b893ea4d40bb382e1c721a21"><td class="memTemplItemLeft" align="right" valign="top">JSON_API bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>tryGetValue</b> (string_view key, nullptr_t &amp;value, bool recursive) const</td></tr>
-<tr class="separator:a7fcdf4e9b893ea4d40bb382e1c721a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee1d201c29f7294f9cbbff1afccdf4da" id="r_aee1d201c29f7294f9cbbff1afccdf4da"><td class="memItemLeft" align="right" valign="top"><a id="aee1d201c29f7294f9cbbff1afccdf4da" name="aee1d201c29f7294f9cbbff1afccdf4da"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:aee1d201c29f7294f9cbbff1afccdf4da"><td class="memTemplItemLeft" align="right" valign="top">JSON_API bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>tryGetValue</b> (string_view key, string &amp;value, bool recursive) const</td></tr>
-<tr class="separator:aee1d201c29f7294f9cbbff1afccdf4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac29e424d9f7eb030a5e9051bbbcd3ffc" id="r_ac29e424d9f7eb030a5e9051bbbcd3ffc"><td class="memItemLeft" align="right" valign="top"><a id="ac29e424d9f7eb030a5e9051bbbcd3ffc" name="ac29e424d9f7eb030a5e9051bbbcd3ffc"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:ac29e424d9f7eb030a5e9051bbbcd3ffc"><td class="memTemplItemLeft" align="right" valign="top">JSON_API bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>tryGetValue</b> (string_view key, bool &amp;value, bool recursive) const</td></tr>
-<tr class="separator:ac29e424d9f7eb030a5e9051bbbcd3ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12d1949dd0e278e612725504be81705c" id="r_a12d1949dd0e278e612725504be81705c"><td class="memItemLeft" align="right" valign="top"><a id="a12d1949dd0e278e612725504be81705c" name="a12d1949dd0e278e612725504be81705c"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a12d1949dd0e278e612725504be81705c"><td class="memTemplItemLeft" align="right" valign="top">JSON_API bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>tryGetValue</b> (string_view key, int64_t &amp;value, bool recursive) const</td></tr>
-<tr class="separator:a12d1949dd0e278e612725504be81705c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae512fa5c64ad5624c5497d0f610a8e29" id="r_ae512fa5c64ad5624c5497d0f610a8e29"><td class="memItemLeft" align="right" valign="top"><a id="ae512fa5c64ad5624c5497d0f610a8e29" name="ae512fa5c64ad5624c5497d0f610a8e29"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:ae512fa5c64ad5624c5497d0f610a8e29"><td class="memTemplItemLeft" align="right" valign="top">JSON_API bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>tryGetValue</b> (string_view key, uint64_t &amp;value, bool recursive) const</td></tr>
-<tr class="separator:ae512fa5c64ad5624c5497d0f610a8e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4ab34b8e42b37d5f17d1c04f12d39e3" id="r_ac4ab34b8e42b37d5f17d1c04f12d39e3"><td class="memItemLeft" align="right" valign="top"><a id="ac4ab34b8e42b37d5f17d1c04f12d39e3" name="ac4ab34b8e42b37d5f17d1c04f12d39e3"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:ac4ab34b8e42b37d5f17d1c04f12d39e3"><td class="memTemplItemLeft" align="right" valign="top">JSON_API bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>tryGetValue</b> (string_view key, double &amp;value, bool recursive) const</td></tr>
-<tr class="separator:ac4ab34b8e42b37d5f17d1c04f12d39e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51d35a887c690e96ae1762f53c565def" id="r_a51d35a887c690e96ae1762f53c565def"><td class="memTemplParams" colspan="2">template&lt;utility::JsonLightValues T&gt; </td></tr>
+<tr class="memitem:a51d35a887c690e96ae1762f53c565def"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a51d35a887c690e96ae1762f53c565def">get</a> (std::string_view key, bool recursive=false) const</td></tr>
+<tr class="separator:a51d35a887c690e96ae1762f53c565def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d7b9a104eef43798b9f8cfe8f3d38da" id="r_a8d7b9a104eef43798b9f8cfe8f3d38da"><td class="memTemplParams" colspan="2">template&lt;utility::JsonHeavyValues&lt; <a class="el" href="classjson_1_1utility_1_1json_object.html">utility::jsonObject</a> &gt; T&gt; </td></tr>
+<tr class="memitem:a8d7b9a104eef43798b9f8cfe8f3d38da"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a8d7b9a104eef43798b9f8cfe8f3d38da">get</a> (std::string_view key, bool recursive=false) const</td></tr>
+<tr class="separator:a8d7b9a104eef43798b9f8cfe8f3d38da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab111b12ff1625d8721edce7fa61a861d" id="r_ab111b12ff1625d8721edce7fa61a861d"><td class="memTemplParams" colspan="2">template&lt;utility::JsonValues&lt; <a class="el" href="classjson_1_1utility_1_1json_object.html">utility::jsonObject</a> &gt; T&gt; </td></tr>
+<tr class="memitem:ab111b12ff1625d8721edce7fa61a861d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab111b12ff1625d8721edce7fa61a861d">tryGet</a> (std::string_view key, T &amp;value, bool recursive=false) const</td></tr>
+<tr class="memdesc:ab111b12ff1625d8721edce7fa61a861d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for all JSON parsed values.  <br /></td></tr>
+<tr class="separator:ab111b12ff1625d8721edce7fa61a861d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -519,6 +474,98 @@ Friends</h2></td></tr>
     <tr><td class="paramname">key</td><td>Object name </td></tr>
     <tr><td class="paramname">recursive</td><td>Recursive search </td></tr>
     <tr><td class="paramname">type</td><td>Object type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a51d35a887c690e96ae1762f53c565def" name="a51d35a887c690e96ae1762f53c565def"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51d35a887c690e96ae1762f53c565def">&#9670;&#160;</a></span>get() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;utility::JsonLightValues T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T json::JSONParser::get </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>recursive</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Getter for all JSON parsed values</p>
+<p>Find and get first value of given key</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>T is one of JSONParser::jsonStruct::variantType template parameters</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key</td></tr>
+    <tr><td class="paramname">recursive</td><td>Recursive search</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>JSON value</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td>can't find JSON value</td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8d7b9a104eef43798b9f8cfe8f3d38da" name="a8d7b9a104eef43798b9f8cfe8f3d38da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d7b9a104eef43798b9f8cfe8f3d38da">&#9670;&#160;</a></span>get() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;utility::JsonHeavyValues&lt; <a class="el" href="classjson_1_1utility_1_1json_object.html">utility::jsonObject</a> &gt; T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const T &amp; json::JSONParser::get </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>recursive</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Getter for all JSON parsed values</p>
+<p>Find and get first value of given key</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>T is one of JSONParser::jsonStruct::variantType template parameters</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key</td></tr>
+    <tr><td class="paramname">recursive</td><td>Recursive search</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>JSON value</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td>can't find JSON value</td></tr>
+    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found</td></tr>
   </table>
   </dd>
 </dl>
@@ -902,53 +949,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a2a51366349730b9e7ea2da82603904d9" name="a2a51366349730b9e7ea2da82603904d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a51366349730b9e7ea2da82603904d9">&#9670;&#160;</a></span>getValue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const T &amp; json::JSONParser::getValue </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>recursive</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Getter for all JSON parsed values</p>
-<p>T is one of json::utility::jsonObject::variantType template parameters</p>
-<p>Find and get first value of given key</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>T is one of JSONParser::jsonStruct::variantType template parameters</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td>JSON key</td></tr>
-    <tr><td class="paramname">recursive</td><td>Recursive search</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>JSON value</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td>can't find JSON value</td></tr>
-    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a686542fead8a129a1e5cc9c5f065f4ea" name="a686542fead8a129a1e5cc9c5f065f4ea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a686542fead8a129a1e5cc9c5f065f4ea">&#9670;&#160;</a></span>operator*()</h2>
 
@@ -1248,6 +1248,51 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ab111b12ff1625d8721edce7fa61a861d" name="ab111b12ff1625d8721edce7fa61a861d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab111b12ff1625d8721edce7fa61a861d">&#9670;&#160;</a></span>tryGet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;utility::JsonValues&lt; <a class="el" href="classjson_1_1utility_1_1json_object.html">utility::jsonObject</a> &gt; T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool json::JSONParser::tryGet </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>recursive</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter for all JSON parsed values. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Is one of json::utility::jsonObject::variantType template parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>JSON key </td></tr>
+    <tr><td class="paramname">value</td><td>JSON value </td></tr>
+    <tr><td class="paramname">recursive</td><td>Recursive search </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if value found </dd></dl>
+
+</div>
+</div>
 <a id="a5a836eb7dfec5e8cef9c467643392120" name="a5a836eb7dfec5e8cef9c467643392120"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a836eb7dfec5e8cef9c467643392120">&#9670;&#160;</a></span>tryGetArray()</h2>
 
@@ -1366,7 +1411,7 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>double value </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Converted to double value </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
@@ -1409,7 +1454,7 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>int64_t value </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Converted to int64_t value </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
@@ -1576,7 +1621,7 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>uint64_t value </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Converted to uint64_t value </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JSONParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td></td></tr>
@@ -1584,51 +1629,6 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="aee5fc5ea7cfec9c79d6a8186bb3f3ba1" name="aee5fc5ea7cfec9c79d6a8186bb3f3ba1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee5fc5ea7cfec9c79d6a8186bb3f3ba1">&#9670;&#160;</a></span>tryGetValue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool json::JSONParser::tryGetValue </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>recursive</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter for all JSON parsed values. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>Is one of json::utility::jsonObject::variantType template parameters </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td>JSON key </td></tr>
-    <tr><td class="paramname">value</td><td>JSON value </td></tr>
-    <tr><td class="paramname">recursive</td><td>Recursive search </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if value found </dd></dl>
 
 </div>
 </div>

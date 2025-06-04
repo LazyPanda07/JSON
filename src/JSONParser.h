@@ -1,7 +1,6 @@
 #pragma once
 
 #include <istream>
-#include <iostream>
 
 #include "JSONUtility.h"
 
@@ -364,24 +363,22 @@ namespace json
 	{
 		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<utility::jsonObject>> || std::is_same_v<T, utility::jsonObject>)
 		{
-			std::cout << value.index() << ' ' << std::holds_alternative<T>(value) << std::endl;
-
-			return std::holds_alternative<T>(value);
+			return !std::holds_alternative<T>(value);
 		}
 		else if constexpr (std::is_unsigned_v<T>)
 		{
-			return std::holds_alternative<uint64_t>(value);
+			return !std::holds_alternative<uint64_t>(value);
 		}
 		else if constexpr (std::is_signed_v<T>)
 		{
-			return std::holds_alternative<int64_t>(value);
+			return !std::holds_alternative<int64_t>(value);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			return std::holds_alternative<double>(value);
+			return !std::holds_alternative<double>(value);
 		}
 		
-		return false;
+		return true;
 	}
 
 	template<utility::JsonLightValues T>
@@ -404,6 +401,10 @@ namespace json
 		{
 			return std::get<std::nullptr_t>(value);
 		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			return static_cast<T>(std::get<double>(value));
+		}
 		else if constexpr (std::is_unsigned_v<T>)
 		{
 			return static_cast<T>(std::get<uint64_t>(value));
@@ -411,12 +412,6 @@ namespace json
 		else if constexpr (std::is_signed_v<T>)
 		{
 			return static_cast<T>(std::get<int64_t>(value));
-		}
-		else if constexpr (std::is_floating_point_v<T>)
-		{
-			std::cout << "Index: " << value.index() << std::endl;
-
-			return static_cast<T>(std::get<double>(value));
 		}
 		else
 		{
@@ -478,21 +473,9 @@ namespace json
 		{
 			value = std::get<std::nullptr_t>(temp);
 		}
-		else if constexpr (std::is_unsigned_v<T>)
-		{
-			value = static_cast<T>(std::get<uint64_t>(temp));
-		}
-		else if constexpr (std::is_signed_v<T>)
-		{
-			value = static_cast<T>(std::get<int64_t>(temp));
-		}
 		else if constexpr (std::is_same_v<T, std::string>)
 		{
 			value = std::get<std::string>(temp);
-		}
-		else if constexpr (std::is_floating_point_v<T>)
-		{
-			value = static_cast<T>(std::get<double>(temp));
 		}
 		else if constexpr (std::is_same_v<T, std::vector<utility::jsonObject>>)
 		{
@@ -501,6 +484,18 @@ namespace json
 		else if constexpr (std::is_same_v<T, utility::jsonObject>)
 		{
 			value = std::get<utility::jsonObject>(temp);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			value = static_cast<T>(std::get<double>(temp));
+		}
+		else if constexpr (std::is_unsigned_v<T>)
+		{
+			value = static_cast<T>(std::get<uint64_t>(temp));
+		}
+		else if constexpr (std::is_signed_v<T>)
+		{
+			value = static_cast<T>(std::get<int64_t>(temp));
 		}
 		else
 		{

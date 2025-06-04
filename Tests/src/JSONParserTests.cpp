@@ -8,19 +8,12 @@ TEST(Parser, Getters)
 {
 	json::JSONParser parser(createParser());
 
-	printf("%d\n", __LINE__);
 	ASSERT_EQ(parser.get<std::nullptr_t>("nullValue"), nullptr);
-	printf("%d\n", __LINE__);
 	ASSERT_EQ(parser.get<bool>("boolValue"), true);
-	printf("%d\n", __LINE__);
 	ASSERT_EQ(parser.get<int>("intValue"), 5);
-	printf("%d\n", __LINE__);
 	ASSERT_EQ(parser.get<double>("doubleValue"), 10.2);
-	printf("%d\n", __LINE__);
 	ASSERT_EQ(parser.get<uint32_t>("unsignedIntValue"), 15);
-	printf("%d\n", __LINE__);
 	ASSERT_EQ(parser.get<std::string>("stringValue"), "qwe");
-	printf("%d\n", __LINE__);
 
 	EXPECT_THROW(parser.getInt("test"), json::exceptions::CantFindValueException);
 	EXPECT_THROW(parser.getNull("intValue"), std::bad_variant_access);

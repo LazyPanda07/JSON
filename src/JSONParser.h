@@ -1,6 +1,7 @@
 #pragma once
 
 #include <istream>
+#include <iostream>
 
 #include "JSONUtility.h"
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <istream>
+#include <iostream>
 
 #include "JSONUtility.h"
 
@@ -403,6 +404,8 @@ namespace json
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
+			std::cout << "Index: " << temp.index() << std::endl;
+
 			return static_cast<T>(std::get<double>(value));
 		}
 		else if constexpr (std::is_unsigned_v<T>)
@@ -487,6 +490,8 @@ namespace json
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
+			std::cout << "Index: " << temp.index() << std::endl;
+
 			value = static_cast<T>(std::get<double>(temp));
 		}
 		else if constexpr (std::is_unsigned_v<T>)

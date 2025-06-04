@@ -62,7 +62,7 @@ namespace json::utility
 		>;
 
 	template<typename T>
-	concept JsonLightValues = std::integral<T> || std::floating_point<T> || std::same_as<T, std::nullptr_t>>;
+	concept JsonLightValues = std::integral<T> || std::floating_point<T> || std::same_as<T, std::nullptr_t>;
 
 	template<typename T, typename TJsonStruct>
 	concept JsonHeavyValues = std::same_as<T, std::string> || std::same_as<T, std::vector<TJsonStruct>> || std::same_as<T, TJsonStruct>;

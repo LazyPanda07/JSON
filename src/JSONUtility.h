@@ -61,8 +61,14 @@ namespace json::utility
 		TJsonStruct
 		>;
 
+	template<typename T>
+	concept JsonLightValues = std::integral<T> || std::floating_point<T> || std::same_as<T, std::nullptr_t>>;
+
 	template<typename T, typename TJsonStruct>
-	concept JsonValues = std::integral<T> || std::floating_point<T> || std::same_as<T, std::string> || std::same_as<T, std::nullptr_t> || std::same_as<T, std::vector<TJsonStruct>> || std::same_as<T, TJsonStruct>;
+	concept JsonHeavyValues = std::same_as<T, std::string> || std::same_as<T, std::vector<TJsonStruct>> || std::same_as<T, TJsonStruct>;
+
+	template<typename T, typename TJsonStruct>
+	concept JsonValues = JsonLightValues<T> || JsonHeavyValues<T, TJsonStruct>;
 
 	/// @brief JSON object
 	class JSON_API jsonObject

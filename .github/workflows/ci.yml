@@ -64,6 +64,32 @@ jobs:
         path: build/install-dir
 
 
+  linux-aarch64-build:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/ubuntu_cxx20:aarch64
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        shared: [[ON, DLL], [OFF, ""]]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_SHARED_LIBS=${{ matrix.shared[0] }} ..
+          make install -j $(nproc)
+          
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_LinuxARM
+        path: build/install-dir
+
+
   windows-tests:
     runs-on: windows-latest
     needs: windows-build
@@ -139,6 +165,40 @@ jobs:
           LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests
 
 
+  linux-aarch64-tests:
+    runs-on: ubuntu-latest
+    needs: linux-aarch64-build
+    container:
+      image: lazypanda07/ubuntu_cxx20:aarch64
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        shared: [[ON, DLL], [OFF, ""]]
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_LinuxARM
+        path: JSON
+        
+    - name: Build tests
+      working-directory: ${{ github.workspace }}/Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          make install -j $(nproc)
+          
+    - name: Tests
+      working-directory: ${{ github.workspace }}/Tests
+      run: |
+          cd build/bin
+          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} qemu-aarch64 ./Tests
+
+
   memory-leak-tests:
     runs-on: ubuntu-latest
     container:
@@ -175,7 +235,7 @@ jobs:
   
 
   publish:
-    needs: [windows-tests, linux-tests, memory-leak-tests]
+    needs: [windows-tests, linux-tests, linux-aarch64-tests, memory-leak-tests]
     runs-on: ubuntu-latest
 
     steps:
@@ -201,6 +261,10 @@ jobs:
     - name: Create Linux zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
       run: zip -r linux.zip Release_Linux ReleaseDLL_Linux
+
+    - name: Create Linux ARM zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r linux.zip Release_LinuxARM ReleaseDLL_LinuxARM
 
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'master' }}

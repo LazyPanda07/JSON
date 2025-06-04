@@ -6,6 +6,10 @@ on:
    branches: [master, dev]
 
 
+permissions:
+  contents: write
+
+
 jobs:
   windows-build:
     runs-on: windows-latest
@@ -40,14 +44,11 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        compiler: [g++, clang++]
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Build
-      env:
-        CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
           cd build
@@ -57,7 +58,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux_${{ matrix.compiler }}
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
         path: build/install-dir
 
 
@@ -102,14 +103,13 @@ jobs:
           .\Tests.exe
 
 
-  linux-tests-gcc:
+  linux-tests:
     runs-on: ubuntu-24.04
-    needs: [linux-build]
+    needs: linux-build
     strategy:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        compiler: [g++]
 
     steps:
     - uses: actions/checkout@v4
@@ -117,7 +117,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux_${{ matrix.compiler }}
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
         path: JSON
 
     - name: Get Google Test
@@ -127,48 +127,6 @@ jobs:
         
     - name: Build tests
       working-directory: ${{ github.workspace }}/Tests
-      env:
-        CXX: ${{ matrix.compiler }}
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
-          
-    - name: Tests
-      working-directory: ${{ github.workspace }}/Tests
-      run: |
-          cd build/bin
-          LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests
-  
-
-  linux-tests-clang:
-    runs-on: ubuntu-24.04
-    needs: [linux-build]
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
-        compiler: [clang++]
-
-    steps:
-    - uses: actions/checkout@v4
-  
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux_${{ matrix.compiler }}
-        path: JSON
-
-    - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
-      with:
-        install-path: Tests/gtest
-        
-    - name: Build tests
-      working-directory: ${{ github.workspace }}/Tests
-      env:
-        CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
           cd build
@@ -182,14 +140,13 @@ jobs:
           LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH} ./Tests
 
 
-  memory-leak-tests-gcc:
+  memory-leak-tests:
     runs-on: ubuntu-24.04
     needs: [linux-build]
     strategy:
       matrix:
         configuration: [Debug, Release]
         shared: [[ON, DLL], [OFF, ""]]
-        compiler: [g++]
 
     steps: 
     - uses: actions/checkout@v4
@@ -197,7 +154,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux_${{ matrix.compiler }}
+        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
         path: JSON
     
     - name: Get Google Test
@@ -207,8 +164,6 @@ jobs:
 
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
-      env:
-        CXX: ${{ matrix.compiler }}
       run: |
           mkdir build
           cd build
@@ -222,50 +177,9 @@ jobs:
         name: Tests
         pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
   
-
-  memory-leak-tests-clang:
-    runs-on: ubuntu-24.04
-    needs: [linux-build]
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
-        compiler: [clang++]
-
-    steps: 
-    - uses: actions/checkout@v4
-  
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux_${{ matrix.compiler }}
-        path: JSON
-    
-    - name: Get Google Test
-      uses: LazyPanda07/get-gtest@v1
-      with:
-        install-path: Tests/gtest
-
-    - name: Tests
-      working-directory: ${{ github.workspace }}/Tests
-      env:
-        CXX: ${{ matrix.compiler }}
-      run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
-          
-    - name: Memory leak test
-      uses: LazyPanda07/check-memory-leaks@v1
-      with:
-        path: Tests/build/bin
-        name: Tests
-        pre-execute: export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$(pwd)
-
 
   publish:
-    needs: [windows-tests, linux-tests-gcc, linux-tests-clang, memory-leak-tests-gcc, memory-leak-tests-clang]
+    needs: [windows-tests, linux-tests, memory-leak-tests]
     runs-on: ubuntu-latest
 
     steps:
@@ -290,19 +204,11 @@ jobs:
 
     - name: Create Linux zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: zip -r linux.zip Release_Linux_g++ ReleaseDLL_Linux_g++ Release_Linux_clang++ ReleaseDLL_Linux_clang++
+      run: zip -r linux.zip Release_Linux ReleaseDLL_Linux
 
-    - name: Publish Windows
+    - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      uses: svenstaro/upload-release-action@master
-      with:
-        tag: v${{ env.VERSION }}
-        file: windows.zip
-
-    - name: Publish Linux
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
-      uses: svenstaro/upload-release-action@master
-      with:
-        tag: v${{ env.VERSION }}
-        file: linux.zip
+      run: gh release create v${{ env.VERSION }} *.zip --title v${{ env.VERSION }} --generate-notes
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         

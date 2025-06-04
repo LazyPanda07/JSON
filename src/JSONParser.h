@@ -363,6 +363,8 @@ namespace json
 	{
 		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<utility::jsonObject>> || std::is_same_v<T, utility::jsonObject>)
 		{
+			std::cout << value.index() << std::endl;
+
 			return std::holds_alternative<T>(value);
 		}
 		else if constexpr (std::is_unsigned_v<T>)

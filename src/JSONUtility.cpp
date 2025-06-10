@@ -545,7 +545,7 @@ namespace json::utility
 	{
 		if (convert == reinterpret_cast<iconv_t>(string::npos))
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		char* data = const_cast<char*>(source.data());
@@ -559,7 +559,7 @@ namespace json::utility
 
 		if (error == string::npos)
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		result.resize(result.size() - resultSize);

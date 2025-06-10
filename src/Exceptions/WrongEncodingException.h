@@ -2,17 +2,14 @@
 
 #include "BaseJSONException.h"
 
-namespace json
+namespace json::exceptions
 {
-	namespace exceptions
+	/// @brief Thrown if can't encode or decode to UTF8 or from UTF8
+	class JSON_API WrongEncodingException : public BaseJSONException
 	{
-		/// @brief Thrown if can't encode or decode to UTF8 or from UTF8
-		class JSON_API WrongEncodingException : public BaseJSONException
-		{
-		public:
-			WrongEncodingException();
+	public:
+		WrongEncodingException(std::string_view source);
 
-			~WrongEncodingException() = default;
-		};
-	}
+		~WrongEncodingException() = default;
+	};
 }

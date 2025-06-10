@@ -593,7 +593,7 @@ namespace json::utility
 
 		if (!size)
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		tem.resize(static_cast<size_t>(size) - 1);
@@ -608,7 +608,7 @@ namespace json::utility
 			size
 		))
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		size = WideCharToMultiByte
@@ -625,7 +625,7 @@ namespace json::utility
 
 		if (!size)
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		result.resize(static_cast<size_t>(size) - 1);
@@ -642,7 +642,7 @@ namespace json::utility
 			NULL
 		))
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		return result;
@@ -664,7 +664,7 @@ namespace json::utility
 
 		if (!size)
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		tem.resize(static_cast<size_t>(size) - 1);
@@ -679,7 +679,7 @@ namespace json::utility
 			size
 		))
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		size = WideCharToMultiByte
@@ -696,7 +696,7 @@ namespace json::utility
 
 		if (!size)
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		result.resize(static_cast<size_t>(size) - 1);
@@ -713,7 +713,7 @@ namespace json::utility
 			NULL
 		))
 		{
-			throw exceptions::WrongEncodingException();
+			throw exceptions::WrongEncodingException(source);
 		}
 
 		return result;
@@ -824,7 +824,7 @@ namespace json::utility
 
 	string getJSONVersion()
 	{
-		string jsonVersion = "2.7.0";
+		string jsonVersion = "2.7.1";
 
 		return jsonVersion;
 	}

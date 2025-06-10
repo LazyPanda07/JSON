@@ -1,13 +1,12 @@
 #include "WrongEncodingException.h"
 
-namespace json
-{
-	namespace exceptions
-	{
-		WrongEncodingException::WrongEncodingException() :
-			BaseJSONException("Can't convert to UTF8 encoding")
-		{
+#include <format>
 
-		}
+namespace json::exceptions
+{
+	WrongEncodingException::WrongEncodingException(std::string_view source) :
+		BaseJSONException(std::format("Can't convert {} to another encoding", source))
+	{
+
 	}
 }

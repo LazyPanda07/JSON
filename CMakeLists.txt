@@ -5,7 +5,7 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install-dir CACHE STRING "")
 option(BUILD_SHARED_LIBS "" OFF)
 option(CMAKE_POSITION_INDEPENDENT_CODE "" ON)
 
-project(JSON VERSION 2.7.0)
+project(JSON VERSION 2.7.1)
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 	add_definitions(-D__ANDROID__)

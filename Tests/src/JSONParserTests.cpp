@@ -82,3 +82,85 @@ TEST(Parser, StreamOperators)
 
 	ASSERT_EQ(first.str(), second.str());
 }
+
+TEST(Parser, SimpleLineComment) 
+{
+    std::string input = R"({
+        // single line
+        "a": 1
+    })";
+    
+	json::JSONParser parser(input);
+
+    EXPECT_EQ(parser.get<int>("a"), 1);
+}
+
+TEST(Parser, InlineComment) 
+{
+    std::string input = R"({
+        "a": 1, // after field
+        "b": 2
+    })";
+    std::string expected = R"({
+        "a": 1, 
+        "b": 2
+    })";
+
+	json::JSONParser parser(input);
+
+    EXPECT_EQ(parser.get<int>("a"), 1);
+    EXPECT_EQ(parser.get<int>("b"), 2);
+}
+
+TEST(Parser, MultiLineComment) 
+{
+    std::string input = R"({
+        /* multi
+           line
+           comment */
+        "a": 1
+    })";
+    std::string expected = R"({
+        
+        "a": 1
+    })";
+
+	json::JSONParser parser(input);
+
+	EXPECT_EQ(parser.get<int>("a"), 1);
+}
+
+TEST(Parser, MixedComments) 
+{
+    std::string input = R"({
+        // start comment
+        "a": 1, /* inline */
+        "b": 2 // end
+    })";
+    std::string expected = R"({
+        
+        "a": 1, 
+        "b": 2 
+    })";
+
+	json::JSONParser parser(input);
+
+	EXPECT_EQ(parser.get<int>("a"), 1);
+	EXPECT_EQ(parser.get<int>("b"), 2);
+}
+
+TEST(Parser, TrickyStars) 
+{
+    std::string input = R"({
+        /* comment ** with stars **/
+        "a": 1
+    })";
+    std::string expected = R"({
+        
+        "a": 1
+    })";
+
+	json::JSONParser parser(input);
+
+	EXPECT_EQ(parser.get<int>("a"), 1);
+}

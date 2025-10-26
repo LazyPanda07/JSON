@@ -10,13 +10,13 @@ namespace json
 		class JSON_API JSONArrayWrapper
 		{
 		private:
-			const std::vector<jsonObject>& array;
+			const std::vector<JsonObject>& array;
 			std::string* offset;
 
 		public:
-			explicit JSONArrayWrapper(const std::vector<jsonObject>& array, std::string* offset = nullptr);
+			explicit JSONArrayWrapper(const std::vector<JsonObject>& array, std::string* offset = nullptr);
 
-			explicit JSONArrayWrapper(const jsonObject::variantType& array, std::string* offset = nullptr);
+			explicit JSONArrayWrapper(const JsonObject::VariantType& array, std::string* offset = nullptr);
 
 			size_t size() const;
 
@@ -60,7 +60,7 @@ namespace json
 			/// @param index Array index
 			/// @return 
 			/// @exception std::out_of_range 
-			const jsonObject& getObject(size_t index) const;
+			const JsonObject& getObject(size_t index) const;
 
 			/// @brief Convert wrapped array into array with nullptr_t values
 			/// @return 
@@ -88,7 +88,7 @@ namespace json
 
 			/// @brief Convert wrapped array into array with object values
 			/// @return 
-			std::vector<jsonObject> getAsObjectArray() const;
+			std::vector<JsonObject> getAsObjectArray() const;
 
 			/// @brief Get offset for output
 			/// @return 
@@ -100,13 +100,13 @@ namespace json
 
 			/// @brief Get reference to wrapped array
 			/// @return array
-			const std::vector<jsonObject>& operator * () const;
+			const std::vector<JsonObject>& operator * () const;
 
 			/// @brief Get jsonObject at given index
 			/// @param index Array index
 			/// @return 
 			/// @exception std::out_of_range 
-			const jsonObject& operator [] (size_t index) const;
+			const JsonObject& operator [] (size_t index) const;
 
 			~JSONArrayWrapper() = default;
 		};

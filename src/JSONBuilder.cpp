@@ -27,14 +27,14 @@ namespace json
 
 	}
 #else
-	JSONBuilder::JSONBuilder(uint32_t codePage, outputType type) :
+	JSONBuilder::JSONBuilder(uint32_t codePage, OutputType type) :
 		codePage(codePage),
 		type(type)
 	{
 
 	}
 
-	JSONBuilder::JSONBuilder(const utility::jsonObject& data, uint32_t codePage, outputType type) :
+	JSONBuilder::JSONBuilder(const utility::JsonObject& data, uint32_t codePage, OutputType type) :
 		builderData(data),
 		codePage(codePage),
 		type(type)
@@ -174,7 +174,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<vector<utility::jsonObject>>(pair<string, vector<utility::jsonObject>>&& value) noexcept
+	JSON_API JSONBuilder& JSONBuilder::push_back<vector<utility::JsonObject>>(pair<string, vector<utility::JsonObject>>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -182,7 +182,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject>(const pair<string, utility::jsonObject>& value)
+	JSON_API JSONBuilder& JSONBuilder::push_back<utility::JsonObject>(const pair<string, utility::JsonObject>& value)
 	{
 		builderData.data.emplace_back(value.first, value.second);
 
@@ -190,7 +190,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JSONBuilder& JSONBuilder::push_back<utility::jsonObject>(pair<string, utility::jsonObject>&& value) noexcept
+	JSON_API JSONBuilder& JSONBuilder::push_back<utility::JsonObject>(pair<string, utility::JsonObject>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -259,35 +259,35 @@ namespace json
 		return this->append(key, value);
 	}
 
-	JSONBuilder& JSONBuilder::appendArray(string_view key, vector<utility::jsonObject>&& value)
+	JSONBuilder& JSONBuilder::appendArray(string_view key, vector<utility::JsonObject>&& value)
 	{
 		return this->append(key, move(value));
 	}
 
-	JSONBuilder& JSONBuilder::appendArray(string_view key, const vector<utility::jsonObject>& value)
+	JSONBuilder& JSONBuilder::appendArray(string_view key, const vector<utility::JsonObject>& value)
 	{
 		return this->append(key, value);
 	}
 
-	JSONBuilder& JSONBuilder::appendObject(string_view key, utility::jsonObject&& value)
+	JSONBuilder& JSONBuilder::appendObject(string_view key, utility::JsonObject&& value)
 	{
 		return this->append(key, move(value));
 	}
 
-	JSONBuilder& JSONBuilder::appendObject(string_view key, const utility::jsonObject& value)
+	JSONBuilder& JSONBuilder::appendObject(string_view key, const utility::JsonObject& value)
 	{
 		return this->append(key, value);
 	}
 
-	bool JSONBuilder::contains(string_view key, utility::variantTypeEnum type, bool recursive) const
+	bool JSONBuilder::contains(string_view key, utility::VariantTypeEnum type, bool recursive) const
 	{
-		queue<const utility::jsonObject*> objects;
+		queue<const utility::JsonObject*> objects;
 
 		objects.push(&builderData);
 
 		while (objects.size())
 		{
-			const utility::jsonObject* current = objects.front();
+			const utility::JsonObject* current = objects.front();
 
 			objects.pop();
 
@@ -298,9 +298,9 @@ namespace json
 					return true;
 				}
 
-				if (recursive && i.second.index() == static_cast<size_t>(utility::variantTypeEnum::jJSONObject))
+				if (recursive && i.second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
 				{
-					const auto& object = get<static_cast<size_t>(utility::variantTypeEnum::jJSONObject)>(i.second);
+					const auto& object = get<static_cast<size_t>(utility::VariantTypeEnum::jJSONObject)>(i.second);
 
 					objects.push(&object);
 				}
@@ -310,9 +310,9 @@ namespace json
 		return false;
 	}
 
-	JSONBuilder::variantType& JSONBuilder::operator [] (string_view key)
+	JSONBuilder::VariantType& JSONBuilder::operator [] (string_view key)
 	{
-		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, VariantType>& value) { return value.first == key; });
 
 		if (it != builderData.data.end())
 		{
@@ -324,9 +324,9 @@ namespace json
 		return builderData.data.back().second;
 	}
 
-	const JSONBuilder::variantType& JSONBuilder::operator [] (string_view key) const
+	const JSONBuilder::VariantType& JSONBuilder::operator [] (string_view key) const
 	{
-		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, variantType>& value) { return value.first == key; });
+		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, VariantType>& value) { return value.first == key; });
 
 		if (it != builderData.data.end())
 		{
@@ -360,10 +360,10 @@ namespace json
 
 		switch (string result; type)
 		{
-		case json::JSONBuilder::outputType::standard:
+		case json::JSONBuilder::OutputType::standard:
 			return json::utility::toUTF8JSON(outputStream.str(), codePage);
 
-		case json::JSONBuilder::outputType::minimize:
+		case json::JSONBuilder::OutputType::minimize:
 			result = outputStream.str();
 			bool isJsonString = false;
 
@@ -390,20 +390,20 @@ namespace json
 
 	void JSONBuilder::standard()
 	{
-		type = outputType::standard;
+		type = OutputType::standard;
 	}
 
 	void JSONBuilder::minimize()
 	{
-		type = outputType::minimize;
+		type = OutputType::minimize;
 	}
 
-	const utility::jsonObject& JSONBuilder::getObject() const
+	const utility::JsonObject& JSONBuilder::getObject() const
 	{
 		return builderData;
 	}
 
-	void JSONBuilder::getObject(utility::jsonObject& object) noexcept
+	void JSONBuilder::getObject(utility::JsonObject& object) noexcept
 	{
 		object = move(builderData);
 	}

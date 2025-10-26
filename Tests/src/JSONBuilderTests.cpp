@@ -10,7 +10,7 @@ using namespace std::string_literals;
 TEST(Builder, Appends)
 {
 	std::vector<json::utility::jsonObject> array;
-	json::utility::jsonObject object;
+	json::utility::JsonObject object;
 	std::ostringstream jsonData;
 	std::ifstream referenceData("data/appends.json");
 
@@ -49,16 +49,16 @@ TEST(Builder, Appends)
 TEST(Builder, Contains)
 {
 	json::JSONBuilder builder(CP_UTF8);
-	json::utility::jsonObject object;
+	json::utility::JsonObject object;
 
 	object.setInt("someRecursiveData", 10);
 
 	builder["someData"] = 5LL;
 	builder["object"] = std::move(object);
 
-	ASSERT_TRUE(builder.contains("someData", json::utility::variantTypeEnum::jInt64_t));
-	ASSERT_TRUE(builder.contains("someRecursiveData", json::utility::variantTypeEnum::jInt64_t, true));
-	ASSERT_FALSE(builder.contains("someRecursiveData", json::utility::variantTypeEnum::jInt64_t));
+	ASSERT_TRUE(builder.contains("someData", json::utility::VariantTypeEnum::jInt64_t));
+	ASSERT_TRUE(builder.contains("someRecursiveData", json::utility::VariantTypeEnum::jInt64_t, true));
+	ASSERT_FALSE(builder.contains("someRecursiveData", json::utility::VariantTypeEnum::jInt64_t));
 }
 
 TEST(Builder, Operators)
@@ -92,7 +92,7 @@ TEST(Builder, Operators)
 TEST(Builder, Minimize)
 {
 	json::JSONBuilder builder(CP_UTF8);
-	json::utility::jsonObject object;
+	json::utility::JsonObject object;
 	std::ostringstream referenceData;
 
 	referenceData << std::ifstream("data/minimize.json").rdbuf();

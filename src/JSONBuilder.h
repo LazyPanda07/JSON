@@ -9,13 +9,13 @@ namespace json
 	{
 	public:
 		/// @brief std::variant specialization for JSON
-		using variantType = utility::jsonObject::variantType;
+		using VariantType = utility::JsonObject::VariantType;
 
 		/// @brief JSON object
-		using objectType = utility::jsonObject;
+		using ObjectType = utility::JsonObject;
 
 		/// @brief Output type for istream operator
-		enum class outputType
+		enum class OutputType
 		{
 			/// @brief human readable JSON
 			standard,
@@ -24,13 +24,13 @@ namespace json
 		};
 
 	private:
-		utility::jsonObject builderData;
+		utility::JsonObject builderData;
 #if defined(__LINUX__) || defined(__ANDROID__)
 		std::string_view codePage;
 #else
 		uint32_t codePage;
 #endif
-		outputType type;
+		OutputType type;
 
 	public:
 #if defined(__LINUX__) || defined(__ANDROID__)
@@ -51,12 +51,12 @@ namespace json
 		/// </summary>
 		/// <param name="codePage">codePage of your system</param>
 		/// <param name="type">value from json::JSONBuilder::outputType</param>
-		JSONBuilder(uint32_t codePage, outputType type = outputType::standard);
+		JSONBuilder(uint32_t codePage, OutputType type = OutputType::standard);
 
 		/// @brief Construct from parsed or builded data 
 		/// @param data Data from JSONBuilder or JSONParser
 		/// @param codePage data's codePage
-		JSONBuilder(const utility::jsonObject& data, uint32_t codePage, outputType type = outputType::standard);
+		JSONBuilder(const utility::JsonObject& data, uint32_t codePage, OutputType type = OutputType::standard);
 #endif
 
 		/// @brief Copy constructor
@@ -146,25 +146,25 @@ namespace json
 		/// @param key JSON key
 		/// @param value JSON array
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendArray(std::string_view key, std::vector<utility::jsonObject>&& value);
+		JSONBuilder& appendArray(std::string_view key, std::vector<utility::JsonObject>&& value);
 
 		/// @brief Add JSON key - JSON array
 		/// @param key JSON key
 		/// @param value JSON array
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendArray(std::string_view key, const std::vector<utility::jsonObject>& value);
+		JSONBuilder& appendArray(std::string_view key, const std::vector<utility::JsonObject>& value);
 
 		/// @brief Add JSON key - JSON object
 		/// @param key JSON key
 		/// @param value JSON object
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendObject(std::string_view key, utility::jsonObject&& value);
+		JSONBuilder& appendObject(std::string_view key, utility::JsonObject&& value);
 
 		/// @brief Add JSON key - JSON object
 		/// @param key JSON key
 		/// @param value JSON object
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendObject(std::string_view key, const utility::jsonObject& value);
+		JSONBuilder& appendObject(std::string_view key, const utility::JsonObject& value);
 
 		/**
 		 * @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
@@ -173,7 +173,7 @@ namespace json
 		 * @param recursive Recursive search
 		 * @return 
 		*/
-		bool contains(std::string_view key, utility::variantTypeEnum type, bool recursive = false) const;
+		bool contains(std::string_view key, utility::VariantTypeEnum type, bool recursive = false) const;
 
 		/// <summary>
 		/// <para>Access to JSON value operator</para>
@@ -182,7 +182,7 @@ namespace json
 		/// </summary>
 		/// <param name="key">JSON key</param>
 		/// <returns>JSON value</returns>
-		variantType& operator [] (std::string_view key);
+		VariantType& operator [] (std::string_view key);
 
 		/// <summary>
 		/// <para>Access to JSON value operator</para>
@@ -192,7 +192,7 @@ namespace json
 		/// <param name="key">JSON key</param>
 		/// <returns>JSON value</returns>
 		/// <exception cref="json::exceptions::CantFindValueException"></exception>
-		const variantType& operator [] (std::string_view key) const;
+		const VariantType& operator [] (std::string_view key) const;
 
 		/// <summary>
 		/// Build JSON formatted string
@@ -212,11 +212,11 @@ namespace json
 
 		/// @brief Getter for builded JSON object
 		/// @return JSON object
-		const utility::jsonObject& getObject() const;
+		const utility::JsonObject& getObject() const;
 
 		/// @brief Move builded JSON object from JSONBuilder
 		/// @param object Result of moving
-		void getObject(utility::jsonObject& object) noexcept;
+		void getObject(utility::JsonObject& object) noexcept;
 
 		/// <summary>
 		/// Set JSON to output stream

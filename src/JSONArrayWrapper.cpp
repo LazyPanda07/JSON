@@ -6,15 +6,15 @@ namespace json
 {
 	namespace utility
 	{
-		JSONArrayWrapper::JSONArrayWrapper(const vector<jsonObject>& array, string* offset) :
+		JSONArrayWrapper::JSONArrayWrapper(const vector<JsonObject>& array, string* offset) :
 			array(array),
 			offset(offset)
 		{
 
 		}
 
-		JSONArrayWrapper::JSONArrayWrapper(const jsonObject::variantType& array, string* offset) :
-			array(get<vector<jsonObject>>(array)),
+		JSONArrayWrapper::JSONArrayWrapper(const JsonObject::VariantType& array, string* offset) :
+			array(get<vector<JsonObject>>(array)),
 			offset(offset)
 		{
 
@@ -55,7 +55,7 @@ namespace json
 			return get<double>(array.at(index).data.front().second);
 		}
 
-		const jsonObject& JSONArrayWrapper::getObject(size_t index) const
+		const JsonObject& JSONArrayWrapper::getObject(size_t index) const
 		{
 			return array.at(index);
 		}
@@ -144,13 +144,13 @@ namespace json
 			return result;
 		}
 
-		vector<jsonObject> JSONArrayWrapper::getAsObjectArray() const
+		vector<JsonObject> JSONArrayWrapper::getAsObjectArray() const
 		{
-			vector<jsonObject> result;
+			vector<JsonObject> result;
 
 			for (const auto& i : array)
 			{
-				const jsonObject& item = get<jsonObject>(i.data.front().second);
+				const JsonObject& item = get<JsonObject>(i.data.front().second);
 
 				result.push_back(item);
 			}
@@ -168,12 +168,12 @@ namespace json
 			return offset;
 		}
 
-		const vector<jsonObject>& JSONArrayWrapper::operator * () const
+		const vector<JsonObject>& JSONArrayWrapper::operator * () const
 		{
 			return array;
 		}
 
-		const jsonObject& JSONArrayWrapper::operator [] (size_t index) const
+		const JsonObject& JSONArrayWrapper::operator [] (size_t index) const
 		{
 			return array.at(index);
 		}

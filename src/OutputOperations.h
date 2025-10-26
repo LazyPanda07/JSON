@@ -43,7 +43,7 @@ namespace json
 		/// @param outputStream std::ostream subclass
 		/// @param jsonValue JSON value
 		/// @return outputStream
-		inline std::ostream& operator << (std::ostream& outputStream, const jsonObject::variantType& jsonValue)
+		inline std::ostream& operator << (std::ostream& outputStream, const JsonObject::VariantType& jsonValue)
 		{
 			std::string offset;
 

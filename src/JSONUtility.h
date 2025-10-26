@@ -33,7 +33,7 @@ namespace json::utility
 	/// <summary>
 	/// enum for variantType template arguments
 	/// </summary>
-	enum class variantTypeEnum
+	enum class VariantTypeEnum
 	{
 		jNull,
 		jString,
@@ -49,7 +49,7 @@ namespace json::utility
 	/// Describes all JSON types
 	/// </summary>
 	template<typename TJsonStruct>
-	using baseVariantType = std::variant
+	using BaseVariantType = std::variant
 		<
 		std::nullptr_t,
 		std::string,
@@ -71,17 +71,17 @@ namespace json::utility
 	concept JsonValues = JsonLightValues<T> || JsonHeavyValues<T, TJsonStruct>;
 
 	/// @brief JSON object
-	class JSON_API jsonObject
+	class JSON_API JsonObject
 	{
 	public:
-		using variantType = baseVariantType<jsonObject>;
+		using VariantType = BaseVariantType<JsonObject>;
 
 	public:
 		/// @brief Iterator through jsonObject
 		class JSON_API ConstJSONIterator
 		{
 		public:
-			using ConstJSONIteratorType = std::vector<std::pair<std::string, variantType>>::const_iterator;
+			using ConstJSONIteratorType = std::vector<std::pair<std::string, VariantType>>::const_iterator;
 
 		private:
 			ConstJSONIteratorType begin;
@@ -113,7 +113,7 @@ namespace json::utility
 
 			const ConstJSONIterator& operator--() noexcept;
 
-			const std::pair<std::string, variantType>& operator*() const noexcept;
+			const std::pair<std::string, VariantType>& operator*() const noexcept;
 
 			const ConstJSONIteratorType& operator->() const noexcept;
 
@@ -128,87 +128,87 @@ namespace json::utility
 
 	private:
 		template<typename T>
-		jsonObject& setValue(std::string_view key, T&& value);
+		JsonObject& setValue(std::string_view key, T&& value);
 
 		template<typename T>
 		bool tryGetValue(std::string_view key, T& value) const;
 
 		ConstJSONIterator::ConstJSONIteratorType findValue(std::string_view key, bool throwException = true) const;
 
-		void appendData(const std::string& key, const json::utility::jsonObject::variantType& value);
+		void appendData(const std::string& key, const json::utility::JsonObject::VariantType& value);
 
 	public:
-		std::vector<std::pair<std::string, variantType>> data;
+		std::vector<std::pair<std::string, VariantType>> data;
 
 	public:
-		jsonObject() = default;
+		JsonObject() = default;
 
 		/// @brief Copy constructor
 		/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
-		jsonObject(const jsonObject& other);
+		JsonObject(const JsonObject& other);
 
 		/// @brief Move constructor
 		/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
-		jsonObject(jsonObject&& other) noexcept;
+		JsonObject(JsonObject&& other) noexcept;
 
 		/// @brief Copy assignment operator
 		/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
 		/// @return Self
-		jsonObject& operator=(const jsonObject& other);
+		JsonObject& operator=(const JsonObject& other);
 
 		/// @brief Move assignment operator
 		/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
 		/// @return Self
-		jsonObject& operator=(jsonObject&& other) noexcept;
+		JsonObject& operator=(JsonObject&& other) noexcept;
 
 		/// @brief Set null value with given key
 		/// @param key JSON key
-		jsonObject& setNull(std::string_view key);
+		JsonObject& setNull(std::string_view key);
 
 		/// @brief Set string value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		jsonObject& setString(std::string_view key, std::string_view value);
+		JsonObject& setString(std::string_view key, std::string_view value);
 
 		/// @brief Set bool value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		jsonObject& setBool(std::string_view key, bool value);
+		JsonObject& setBool(std::string_view key, bool value);
 
 		/// @brief Set int value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		jsonObject& setInt(std::string_view key, int64_t value);
+		JsonObject& setInt(std::string_view key, int64_t value);
 
 		/// @brief Set unsigned int value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		jsonObject& setUnsignedInt(std::string_view key, uint64_t value);
+		JsonObject& setUnsignedInt(std::string_view key, uint64_t value);
 
 		/// @brief Set double value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		jsonObject& setDouble(std::string_view key, double value);
+		JsonObject& setDouble(std::string_view key, double value);
 
 		/// @brief Set array value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		jsonObject& setArray(std::string_view key, const std::vector<jsonObject>& value);
+		JsonObject& setArray(std::string_view key, const std::vector<JsonObject>& value);
 
 		/// @brief Set array value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		jsonObject& setArray(std::string_view key, std::vector<jsonObject>&& value);
+		JsonObject& setArray(std::string_view key, std::vector<JsonObject>&& value);
 
 		/// @brief Set object value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		jsonObject& setObject(std::string_view key, const jsonObject& value);
+		JsonObject& setObject(std::string_view key, const JsonObject& value);
 
 		/// @brief Set object value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		jsonObject& setObject(std::string_view key, jsonObject&& value);
+		JsonObject& setObject(std::string_view key, JsonObject&& value);
 
 		/// @brief Get null value. Find and get value only for this JSON object
 		/// @param key JSON key
@@ -257,14 +257,14 @@ namespace json::utility
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const std::vector<jsonObject>& getArray(std::string_view key) const;
+		const std::vector<JsonObject>& getArray(std::string_view key) const;
 
 		/// @brief Get JSON object. Find and get value only for this JSON object
 		/// @param key JSON Key
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const jsonObject& getObject(std::string_view key) const;
+		const JsonObject& getObject(std::string_view key) const;
 
 		/// @brief Try get null value
 		/// @param key JSON key
@@ -313,19 +313,19 @@ namespace json::utility
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetArray(std::string_view key, std::vector<utility::jsonObject>& value) const;
+		bool tryGetArray(std::string_view key, std::vector<utility::JsonObject>& value) const;
 
 		/// @brief Try get JSON object
 		/// @param key JSON Key
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetObject(std::string_view key, utility::jsonObject& value) const;
+		bool tryGetObject(std::string_view key, utility::JsonObject& value) const;
 
 		/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
 		/// @param key Object name
 		/// @param type Object type
-		bool contains(std::string_view key, utility::variantTypeEnum type) const;
+		bool contains(std::string_view key, utility::VariantTypeEnum type) const;
 
 		/**
 		 * @brief Begin iterator
@@ -344,29 +344,29 @@ namespace json::utility
 		 * @param key
 		 * @return
 		*/
-		variantType& operator[](std::string_view key);
+		VariantType& operator [](std::string_view key);
 
 		/**
 		 * @brief Access JSON value
 		 * @param key
 		 * @return
 		*/
-		const variantType& operator[](std::string_view key) const;
+		const VariantType& operator [](std::string_view key) const;
 
-		~jsonObject() = default;
+		~JsonObject() = default;
 	};
 
 	/// @brief Check current iterator with begin or end iterator
 	/// @param iterator jsonObject::ConstJSONIterator
 	/// @param nestedIterator jsonObject::ConstJSONIterator::getBegin() or jsonObject::ConstJSONIterator::getEnd()
 	/// @return 
-	bool operator==(const jsonObject::ConstJSONIterator& iterator, const jsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator);
+	bool operator==(const JsonObject::ConstJSONIterator& iterator, const JsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator);
 
 	/// @brief Compare index from variant with enum
 	/// @param index Index from variant
 	/// @param value Value from variantTypeEnum
 	/// @return 
-	constexpr bool operator==(size_t index, variantTypeEnum value);
+	constexpr bool operator==(size_t index, VariantTypeEnum value);
 
 #if defined(__LINUX__) || defined(__ANDROID__)
 	/// <summary>
@@ -412,24 +412,24 @@ namespace json::utility
 	/// <param name="outputStream">std::ostream subclass</param>
 	/// <param name="value">JSON value</param>
 	/// <param name="isLast">is description ends</param>
-	JSON_API_FUNCTION void outputJSONType(std::ostream& outputStream, const jsonObject::variantType& value, bool isLast, std::string& offset);
+	JSON_API_FUNCTION void outputJSONType(std::ostream& outputStream, const JsonObject::VariantType& value, bool isLast, std::string& offset);
 
 	/// @brief Append jsonObject::variantType value to array
 	/// @param value JSON value
 	/// @param jsonArray Modifiable array
-	JSON_API_FUNCTION void appendArray(jsonObject::variantType&& value, std::vector<jsonObject>& jsonArray);
+	JSON_API_FUNCTION void appendArray(JsonObject::VariantType&& value, std::vector<JsonObject>& jsonArray);
 
 	/// @brief Get current version of JSON project
 	/// @return Current version of JSON project
 	JSON_API_FUNCTION std::string getJSONVersion();
 }
 
-inline bool json::utility::operator==(const jsonObject::ConstJSONIterator& iterator, const jsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator)
+inline bool json::utility::operator==(const JsonObject::ConstJSONIterator& iterator, const JsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator)
 {
-	return static_cast<jsonObject::ConstJSONIterator::ConstJSONIteratorType>(iterator) == nestedIterator;
+	return static_cast<JsonObject::ConstJSONIterator::ConstJSONIteratorType>(iterator) == nestedIterator;
 }
 
-inline constexpr bool json::utility::operator==(size_t index, variantTypeEnum value)
+inline constexpr bool json::utility::operator==(size_t index, VariantTypeEnum value)
 {
 	return index == static_cast<size_t>(value);
 }

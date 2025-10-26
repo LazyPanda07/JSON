@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <queue>
 #include <limits>
+#include <regex>
 
 #pragma warning(disable: 4715)
 #pragma warning(disable: 26800)
@@ -170,6 +171,12 @@ namespace json
 			object,
 			array
 		};
+
+		static const std::regex singleLine(R"(//[^\n\r]*)", std::regex_constants::ECMAScript);
+		static const std::regex multiLine(R"(/\*([^*]|\*+[^*/])*\*+/)", std::regex_constants::ECMAScript);
+
+		rawData = std::regex_replace(rawData, singleLine, ""); // Remove // comments
+		rawData = std::regex_replace(rawData, multiLine, ""); // Remove /* ... */ comments (including multiline)
 
 		stack<pair<string, JsonObject*>> objects;
 		stack<pair<string, vector<JsonObject>>> arrays;

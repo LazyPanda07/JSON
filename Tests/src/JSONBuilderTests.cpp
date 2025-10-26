@@ -9,7 +9,7 @@ using namespace std::string_literals;
 
 TEST(Builder, Appends)
 {
-	std::vector<json::utility::jsonObject> array;
+	std::vector<json::utility::JsonObject> array;
 	json::utility::JsonObject object;
 	std::ostringstream jsonData;
 	std::ifstream referenceData("data/appends.json");

@@ -12,14 +12,14 @@ using namespace std;
 namespace json
 {
 #if defined(__LINUX__) || defined(__ANDROID__)
-	JSONBuilder::JSONBuilder(string_view codePage, outputType type) :
+	JSONBuilder::JSONBuilder(string_view codePage, OutputType type) :
 		codePage(codePage),
 		type(type)
 	{
 
 	}
 
-	JSONBuilder::JSONBuilder(const utility::jsonObject& data, string_view codePage, outputType type) :
+	JSONBuilder::JSONBuilder(const utility::JsonObject& data, string_view codePage, OutputType type) :
 		builderData(data),
 		codePage(codePage),
 		type(type)

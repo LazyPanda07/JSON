@@ -39,12 +39,12 @@ namespace json
 		/// </summary>
 		/// <param name="codePage">codePage of your system</param>
 		/// <param name="type">value from json::JSONBuilder::outputType</param>
-		JSONBuilder(std::string_view codePage, outputType type = outputType::standard);
+		JSONBuilder(std::string_view codePage, OutputType type = OutputType::standard);
 
 		/// @brief Construct from parsed or builded data 
 		/// @param data Data from JSONBuilder or JSONParser
 		/// @param codePage data's codePage
-		JSONBuilder(const utility::jsonObject& data, std::string_view codePage, outputType type = outputType::standard);
+		JSONBuilder(const utility::JsonObject& data, std::string_view codePage, OutputType type = OutputType::standard);
 #else
 		/// <summary>
 		/// Construct JSONBuilder

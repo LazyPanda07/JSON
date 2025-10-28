@@ -1,22 +1,22 @@
 #pragma once
 
-#include "JSONUtility.h"
+#include "JsonObject.h"
 
 namespace json
 {
 	namespace utility
 	{
 		/// @brief Wrapper around array of jsonObjects for simplify some operation
-		class JSON_API JSONArrayWrapper
+		class JSON_API JsonArrayWrapper
 		{
 		private:
-			const std::vector<JSONObject>& array;
+			const std::vector<JsonObject>& array;
 			std::string* offset;
 
 		public:
-			explicit JSONArrayWrapper(const std::vector<JSONObject>& array, std::string* offset = nullptr);
+			explicit JsonArrayWrapper(const std::vector<JsonObject>& array, std::string* offset = nullptr);
 
-			explicit JSONArrayWrapper(const JSONObject::VariantType& array, std::string* offset = nullptr);
+			explicit JsonArrayWrapper(const JsonObject::VariantType& array, std::string* offset = nullptr);
 
 			size_t size() const;
 
@@ -60,7 +60,7 @@ namespace json
 			/// @param index Array index
 			/// @return 
 			/// @exception std::out_of_range 
-			const JSONObject& getObject(size_t index) const;
+			const JsonObject& getObject(size_t index) const;
 
 			/// @brief Convert wrapped array into array with nullptr_t values
 			/// @return 
@@ -88,7 +88,7 @@ namespace json
 
 			/// @brief Convert wrapped array into array with object values
 			/// @return 
-			std::vector<JSONObject> getAsObjectArray() const;
+			std::vector<JsonObject> getAsObjectArray() const;
 
 			/// @brief Get offset for output
 			/// @return 
@@ -100,15 +100,15 @@ namespace json
 
 			/// @brief Get reference to wrapped array
 			/// @return array
-			const std::vector<JSONObject>& operator * () const;
+			const std::vector<JsonObject>& operator * () const;
 
 			/// @brief Get jsonObject at given index
 			/// @param index Array index
 			/// @return 
 			/// @exception std::out_of_range 
-			const JSONObject& operator [] (size_t index) const;
+			const JsonObject& operator [] (size_t index) const;
 
-			~JSONArrayWrapper() = default;
+			~JsonArrayWrapper() = default;
 		};
 	}
 }

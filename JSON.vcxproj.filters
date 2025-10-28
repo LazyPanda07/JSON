@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\JSONParser.cpp">
+    <ClCompile Include="src\JsonParser.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSONBuilder.cpp">
+    <ClCompile Include="src\JsonBuilder.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\BaseJSONException.cpp">
@@ -30,10 +30,10 @@
     <ClCompile Include="src\Exceptions\WrongEncodingException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSONUtility.cpp">
+    <ClCompile Include="src\JsonUtility.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSONArrayWrapper.cpp">
+    <ClCompile Include="src\JsonArrayWrapper.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Exceptions\WrongInputStreamException.cpp">
@@ -42,12 +42,15 @@
     <ClCompile Include="src\RecursiveJSONIterator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\JsonObject.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\JSONParser.h">
+    <ClInclude Include="src\JsonParser.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\JSONBuilder.h">
+    <ClInclude Include="src\JsonBuilder.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\BaseJSONException.h">
@@ -59,10 +62,10 @@
     <ClInclude Include="src\Exceptions\WrongEncodingException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\JSONUtility.h">
+    <ClInclude Include="src\JsonUtility.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\JSONArrayWrapper.h">
+    <ClInclude Include="src\JsonArrayWrapper.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Exceptions\WrongInputStreamException.h">
@@ -75,6 +78,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\CodePageConstants.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\JsonObject.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

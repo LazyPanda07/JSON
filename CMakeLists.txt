@@ -22,10 +22,11 @@ endif ()
 
 add_library(
 	${PROJECT_NAME}
-	src/JSONArrayWrapper.cpp
-	src/JSONBuilder.cpp
-	src/JSONParser.cpp
-	src/JSONUtility.cpp
+	src/JsonObject.cpp
+	src/JsonArrayWrapper.cpp
+	src/JsonBuilder.cpp
+	src/JsonParser.cpp
+	src/JsonUtility.cpp
 	src/RecursiveJSONIterator.cpp
 	src/Exceptions/BaseJSONException.cpp
 	src/Exceptions/CantFindValueException.cpp

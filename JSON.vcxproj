@@ -255,10 +255,11 @@
     <ClCompile Include="src\Exceptions\CantFindValueException.cpp" />
     <ClCompile Include="src\Exceptions\WrongEncodingException.cpp" />
     <ClCompile Include="src\Exceptions\WrongInputStreamException.cpp" />
-    <ClCompile Include="src\JSONArrayWrapper.cpp" />
-    <ClCompile Include="src\JSONBuilder.cpp" />
-    <ClCompile Include="src\JSONParser.cpp" />
-    <ClCompile Include="src\JSONUtility.cpp" />
+    <ClCompile Include="src\JsonArrayWrapper.cpp" />
+    <ClCompile Include="src\JsonBuilder.cpp" />
+    <ClCompile Include="src\JsonObject.cpp" />
+    <ClCompile Include="src\JsonParser.cpp" />
+    <ClCompile Include="src\JsonUtility.cpp" />
     <ClCompile Include="src\RecursiveJSONIterator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -267,10 +268,11 @@
     <ClInclude Include="src\Exceptions\CantFindValueException.h" />
     <ClInclude Include="src\Exceptions\WrongEncodingException.h" />
     <ClInclude Include="src\Exceptions\WrongInputStreamException.h" />
-    <ClInclude Include="src\JSONArrayWrapper.h" />
-    <ClInclude Include="src\JSONBuilder.h" />
-    <ClInclude Include="src\JSONParser.h" />
-    <ClInclude Include="src\JSONUtility.h" />
+    <ClInclude Include="src\JsonArrayWrapper.h" />
+    <ClInclude Include="src\JsonBuilder.h" />
+    <ClInclude Include="src\JsonObject.h" />
+    <ClInclude Include="src\JsonParser.h" />
+    <ClInclude Include="src\JsonUtility.h" />
     <ClInclude Include="src\OutputOperations.h" />
     <ClInclude Include="src\RecursiveJSONIterator.h" />
   </ItemGroup>

@@ -6,7 +6,7 @@
 
 TEST(Parser, Getters)
 {
-	json::JSONParser parser(createParser());
+	json::JsonParser parser(createParser());
 
 	ASSERT_EQ(parser.get<std::nullptr_t>("nullValue"), nullptr);
 	ASSERT_EQ(parser.get<bool>("boolValue"), true);
@@ -21,7 +21,7 @@ TEST(Parser, Getters)
 
 TEST(Parser, TryGetters)
 {
-	json::JSONParser parser(createParser());
+	json::JsonParser parser(createParser());
 	bool boolValue;
 	int16_t intValue;
 	float floatValue;
@@ -49,7 +49,7 @@ TEST(Parser, Override)
 	}
 })";
 
-	json::JSONParser parser(jsonData);
+	json::JsonParser parser(jsonData);
 
 	parser.overrideValue("intValue", 10LL);
 	parser.overrideValue("stringValue", true);
@@ -65,7 +65,7 @@ TEST(Parser, Override)
 
 TEST(Parser, StreamOperators)
 {
-	json::JSONParser parser;
+	json::JsonParser parser;
 	std::ostringstream first;
 	std::ostringstream second;
 
@@ -90,7 +90,7 @@ TEST(Parser, SimpleLineComment)
         "a": 1
     })";
     
-	json::JSONParser parser(input);
+	json::JsonParser parser(input);
 
     EXPECT_EQ(parser.get<int>("a"), 1);
 }
@@ -106,7 +106,7 @@ TEST(Parser, InlineComment)
         "b": 2
     })";
 
-	json::JSONParser parser(input);
+	json::JsonParser parser(input);
 
     EXPECT_EQ(parser.get<int>("a"), 1);
     EXPECT_EQ(parser.get<int>("b"), 2);
@@ -125,7 +125,7 @@ TEST(Parser, MultiLineComment)
         "a": 1
     })";
 
-	json::JSONParser parser(input);
+	json::JsonParser parser(input);
 
 	EXPECT_EQ(parser.get<int>("a"), 1);
 }
@@ -143,7 +143,7 @@ TEST(Parser, MixedComments)
         "b": 2 
     })";
 
-	json::JSONParser parser(input);
+	json::JsonParser parser(input);
 
 	EXPECT_EQ(parser.get<int>("a"), 1);
 	EXPECT_EQ(parser.get<int>("b"), 2);
@@ -160,7 +160,7 @@ TEST(Parser, TrickyStars)
         "a": 1
     })";
 
-	json::JSONParser parser(input);
+	json::JsonParser parser(input);
 
 	EXPECT_EQ(parser.get<int>("a"), 1);
 }

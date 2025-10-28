@@ -6,7 +6,7 @@ namespace json
 {
 	namespace exceptions
 	{
-		/// @brief Thrown in JSONParser constructor if wrong input stream was passed
+		/// @brief Thrown in JsonParser constructor if wrong input stream was passed
 		class JSON_API WrongInputStreamException : public BaseJSONException
 		{
 		private:

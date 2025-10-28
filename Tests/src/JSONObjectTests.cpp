@@ -4,7 +4,7 @@
 
 TEST(Object, DefaultOperations)
 {
-	json::utility::JSONObject object;
+	json::JsonObject object;
 	std::string data;
 	std::nullptr_t null;
 

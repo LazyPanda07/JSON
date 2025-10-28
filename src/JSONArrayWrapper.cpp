@@ -6,61 +6,61 @@ namespace json
 {
 	namespace utility
 	{
-		JSONArrayWrapper::JSONArrayWrapper(const vector<JSONObject>& array, string* offset) :
+		JsonArrayWrapper::JsonArrayWrapper(const vector<JsonObject>& array, string* offset) :
 			array(array),
 			offset(offset)
 		{
 
 		}
 
-		JSONArrayWrapper::JSONArrayWrapper(const JSONObject::VariantType& array, string* offset) :
-			array(get<vector<JSONObject>>(array)),
+		JsonArrayWrapper::JsonArrayWrapper(const JsonObject::VariantType& array, string* offset) :
+			array(get<vector<JsonObject>>(array)),
 			offset(offset)
 		{
 
 		}
 
-		size_t JSONArrayWrapper::size() const
+		size_t JsonArrayWrapper::size() const
 		{
 			return array.size();
 		}
 
-		nullptr_t JSONArrayWrapper::getNull(size_t index) const
+		nullptr_t JsonArrayWrapper::getNull(size_t index) const
 		{
 			return get<nullptr_t>(array.at(index).data.front().second);
 		}
 
-		string JSONArrayWrapper::getString(size_t index) const
+		string JsonArrayWrapper::getString(size_t index) const
 		{
 			return get<string>(array.at(index).data.front().second);
 		}
 
-		bool JSONArrayWrapper::getBool(size_t index) const
+		bool JsonArrayWrapper::getBool(size_t index) const
 		{
 			return get<bool>(array.at(index).data.front().second);
 		}
 
-		int64_t JSONArrayWrapper::getInt64_t(size_t index) const
+		int64_t JsonArrayWrapper::getInt64_t(size_t index) const
 		{
 			return get<int64_t>(array.at(index).data.front().second);
 		}
 
-		uint64_t JSONArrayWrapper::getUInt64_t(size_t index) const
+		uint64_t JsonArrayWrapper::getUInt64_t(size_t index) const
 		{
 			return get<uint64_t>(array.at(index).data.front().second);
 		}
 
-		double JSONArrayWrapper::getDouble(size_t index) const
+		double JsonArrayWrapper::getDouble(size_t index) const
 		{
 			return get<double>(array.at(index).data.front().second);
 		}
 
-		const JSONObject& JSONArrayWrapper::getObject(size_t index) const
+		const JsonObject& JsonArrayWrapper::getObject(size_t index) const
 		{
 			return array.at(index);
 		}
 
-		vector<nullptr_t> JSONArrayWrapper::getAsNullArray() const
+		vector<nullptr_t> JsonArrayWrapper::getAsNullArray() const
 		{
 			vector<nullptr_t> result;
 
@@ -74,7 +74,7 @@ namespace json
 			return result;
 		}
 
-		vector<string> JSONArrayWrapper::getAsStringArray() const
+		vector<string> JsonArrayWrapper::getAsStringArray() const
 		{
 			vector<string> result;
 
@@ -88,7 +88,7 @@ namespace json
 			return result;
 		}
 
-		vector<bool> JSONArrayWrapper::getAsBoolArray() const
+		vector<bool> JsonArrayWrapper::getAsBoolArray() const
 		{
 			vector<bool> result;
 
@@ -102,7 +102,7 @@ namespace json
 			return result;
 		}
 
-		vector<int64_t> JSONArrayWrapper::getAsInt64_tArray() const
+		vector<int64_t> JsonArrayWrapper::getAsInt64_tArray() const
 		{
 			vector<int64_t> result;
 
@@ -116,7 +116,7 @@ namespace json
 			return result;
 		}
 
-		vector<uint64_t> JSONArrayWrapper::getAsUInt64_tArray() const
+		vector<uint64_t> JsonArrayWrapper::getAsUInt64_tArray() const
 		{
 			vector<uint64_t> result;
 
@@ -130,7 +130,7 @@ namespace json
 			return result;
 		}
 
-		vector<double> JSONArrayWrapper::getAsDoubleArray() const
+		vector<double> JsonArrayWrapper::getAsDoubleArray() const
 		{
 			vector<double> result;
 
@@ -144,13 +144,13 @@ namespace json
 			return result;
 		}
 
-		vector<JSONObject> JSONArrayWrapper::getAsObjectArray() const
+		vector<JsonObject> JsonArrayWrapper::getAsObjectArray() const
 		{
-			vector<JSONObject> result;
+			vector<JsonObject> result;
 
 			for (const auto& i : array)
 			{
-				const JSONObject& item = get<JSONObject>(i.data.front().second);
+				const JsonObject& item = get<JsonObject>(i.data.front().second);
 
 				result.push_back(item);
 			}
@@ -158,22 +158,22 @@ namespace json
 			return result;
 		}
 
-		const string* JSONArrayWrapper::getOffset() const
+		const string* JsonArrayWrapper::getOffset() const
 		{
 			return offset;
 		}
 
-		string* JSONArrayWrapper::getOffset()
+		string* JsonArrayWrapper::getOffset()
 		{
 			return offset;
 		}
 
-		const vector<JSONObject>& JSONArrayWrapper::operator * () const
+		const vector<JsonObject>& JsonArrayWrapper::operator * () const
 		{
 			return array;
 		}
 
-		const JSONObject& JSONArrayWrapper::operator [] (size_t index) const
+		const JsonObject& JsonArrayWrapper::operator [] (size_t index) const
 		{
 			return array.at(index);
 		}

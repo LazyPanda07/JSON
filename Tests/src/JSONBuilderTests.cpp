@@ -2,17 +2,19 @@
 
 #include <gtest/gtest.h>
 
-#include "JSONBuilder.h"
+#include "JsonBuilder.h"
 #include "Exceptions/CantFindValueException.h"
 
 using namespace std::string_literals;
 
 TEST(Builder, Appends)
 {
-	std::vector<json::utility::JSONObject> array;
-	json::utility::JSONObject object;
+	std::vector<json::JsonObject> array;
+	json::JsonObject object;
 	std::ostringstream jsonData;
 	std::ifstream referenceData("data/appends.json");
+
+	ASSERT_TRUE(referenceData.is_open());
 
 	object.setNull("nullValue");
 	object.setBool("boolValue", true);
@@ -21,15 +23,15 @@ TEST(Builder, Appends)
 	object.setUnsignedInt("unsignedIntValue", 15);
 	object.setString("stringValue", "qwe");
 
-	json::utility::appendArray(nullptr, array);
-	json::utility::appendArray(true, array);
-	json::utility::appendArray(5LL, array);
-	json::utility::appendArray(10.2, array);
-	json::utility::appendArray(15ULL, array);
-	json::utility::appendArray("qwe"s, array);
-	json::utility::appendArray(object, array);
+	json::JsonObject::appendArray(nullptr, array);
+	json::JsonObject::appendArray(true, array);
+	json::JsonObject::appendArray(5LL, array);
+	json::JsonObject::appendArray(10.2, array);
+	json::JsonObject::appendArray(15ULL, array);
+	json::JsonObject::appendArray("qwe"s, array);
+	json::JsonObject::appendArray(object, array);
 
-	jsonData << json::JSONBuilder(CP_UTF8)
+	jsonData << json::JsonBuilder(CP_UTF8)
 		.appendNull("nullValue")
 		.appendBool("boolValue", true)
 		.appendInt("intValue", 5)
@@ -48,8 +50,8 @@ TEST(Builder, Appends)
 
 TEST(Builder, Contains)
 {
-	json::JSONBuilder builder(CP_UTF8);
-	json::utility::JSONObject object;
+	json::JsonBuilder builder(CP_UTF8);
+	json::JsonObject object;
 
 	object.setInt("someRecursiveData", 10);
 
@@ -63,8 +65,8 @@ TEST(Builder, Contains)
 
 TEST(Builder, Operators)
 {
-	json::JSONBuilder builder(CP_UTF8);
-	const json::JSONBuilder& constReference = builder;
+	json::JsonBuilder builder(CP_UTF8);
+	const json::JsonBuilder& constReference = builder;
 
 	builder["nullValue"] = nullptr;
 	builder["boolValue"] = true;
@@ -91,8 +93,8 @@ TEST(Builder, Operators)
 
 TEST(Builder, Minimize)
 {
-	json::JSONBuilder builder(CP_UTF8);
-	json::utility::JSONObject object;
+	json::JsonBuilder builder(CP_UTF8);
+	json::JsonObject object;
 	std::ostringstream referenceData;
 
 	referenceData << std::ifstream("data/minimize.json").rdbuf();

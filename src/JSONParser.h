@@ -2,7 +2,7 @@
 
 #include <istream>
 
-#include "JSONUtility.h"
+#include "JsonObject.h"
 
 #include "Exceptions/CantFindValueException.h"
 #include "Exceptions/WrongInputStreamException.h"
@@ -10,26 +10,26 @@
 namespace json
 {
 	/// @brief Parser for JSON
-	class JSON_API JSONParser
+	class JSON_API JsonParser
 	{
 	public:
 		/// @brief std::variant specialization for JSON
-		using VariantType = utility::JSONObject::VariantType;
+		using VariantType = JsonObject::VariantType;
 		
 		/// @brief JSON object
-		using ObjectType = utility::JSONObject;
+		using ObjectType = JsonObject;
 
 		/// @brief Iterator for jsonObject
-		using ConstJSONIterator = utility::JSONObject::ConstJSONIterator;
+		using ConstJSONIterator = JsonObject::ConstJSONIterator;
 
 	private:
 		std::string rawData;
-		utility::JSONObject parsedData;
+		JsonObject parsedData;
 
 	private:
-		static utility::JSONObject::VariantType parseValue(const std::string& value);
+		static JsonObject::VariantType parseValue(const std::string& value);
 
-		static void insertKeyValueData(std::string&& key, const std::string& value, utility::JSONObject& ptr);
+		static void insertKeyValueData(std::string&& key, const std::string& value, JsonObject& ptr);
 
 		static std::pair<std::vector<std::pair<std::string, VariantType>>::const_iterator, bool> find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive);
 
@@ -37,7 +37,7 @@ namespace json
 
 		static char interpretEscapeSymbol(char symbol);
 
-		template<utility::JsonValues<utility::JSONObject> T>
+		template<utility::JsonValues<JsonObject> T>
 		static bool checkSameType(const VariantType& value);
 
 		template<std::integral T>
@@ -47,47 +47,47 @@ namespace json
 		void parse();
 
 	public:
-		JSONParser() = default;
+		JsonParser() = default;
 
 		/// <summary>
 		/// Parse data
 		/// </summary>
 		/// <param name="data">JSON formatted data</param>
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
-		JSONParser(std::string_view data);
+		JsonParser(std::string_view data);
 
 		/// @brief Parse data
 		/// @param inputStream JSON formatted data from stream
 		/// @exception json::exceptions::WrongEncodingException Can't convert JSON formatted string to UTF8 encoding
 		/// @exception json::exceptions::WrongInputStreamException Can't read JSON formatted data from inputStream
-		JSONParser(std::istream& inputStream);
+		JsonParser(std::istream& inputStream);
 
 		/// @brief Parse data
 		/// @param inputStream JSON formatted data from stream
 		/// @exception json::exceptions::WrongEncodingException Can't convert JSON formatted string to UTF8 encoding
 		/// @exception json::exceptions::WrongInputStreamException Can't read JSON formatted data from inputStream
-		JSONParser(std::istream&& inputStream);
+		JsonParser(std::istream&& inputStream);
 
 		/// @brief Construct from parsed or builded data 
-		/// @param data Data from JSONBuilder or JSONParser
-		JSONParser(const utility::JSONObject& data);
+		/// @param data Data from JsonBuilder or JsonParser
+		JsonParser(const JsonObject& data);
 
 		/// @brief Copy constructor
-		/// @param other Other JSONParser
-		JSONParser(const JSONParser& other);
+		/// @param other Other JsonParser
+		JsonParser(const JsonParser& other);
 
 		/// @brief Move constructor
-		/// @param other Other JSONParser
-		JSONParser(JSONParser&& other) noexcept;
+		/// @param other Other JsonParser
+		JsonParser(JsonParser&& other) noexcept;
 
 		/// @brief Copy operator
-		/// @param other Other JSONParser
+		/// @param other Other JsonParser
 		/// @return Self
-		JSONParser& operator = (const JSONParser& other);
+		JsonParser& operator = (const JsonParser& other);
 
 		/// @brief Move operator
-		/// @param other Other JSONParser
-		JSONParser& operator = (JSONParser&& other) noexcept;
+		/// @param other Other JsonParser
+		JsonParser& operator = (JsonParser&& other) noexcept;
 
 		/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
 		/// @param key Object name
@@ -205,7 +205,7 @@ namespace json
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const std::vector<utility::JSONObject>& getArray(std::string_view key, bool recursive = false) const;
+		const std::vector<JsonObject>& getArray(std::string_view key, bool recursive = false) const;
 
 		/// @brief Get JSON object
 		/// @param key JSON Key
@@ -213,7 +213,7 @@ namespace json
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const utility::JSONObject& getObject(std::string_view key, bool recursive = false) const;
+		const JsonObject& getObject(std::string_view key, bool recursive = false) const;
 
 		/// @brief Try get null value
 		/// @param key JSON key
@@ -269,7 +269,7 @@ namespace json
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetArray(std::string_view key, std::vector<utility::JSONObject>& value, bool recursive = false) const;
+		bool tryGetArray(std::string_view key, std::vector<JsonObject>& value, bool recursive = false) const;
 
 		/// @brief Try get JSON object
 		/// @param key JSON Key
@@ -277,15 +277,15 @@ namespace json
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetObject(std::string_view key, utility::JSONObject& value, bool recursive = false) const;
+		bool tryGetObject(std::string_view key, JsonObject& value, bool recursive = false) const;
 
 		/// @brief Getter for parsedData
 		/// @return parsedData
-		const utility::JSONObject& getParsedData() const;
+		const JsonObject& getParsedData() const;
 
 		/// @brief Move parsed data
 		/// @param object Result of moving
-		void getParsedData(utility::JSONObject& object) noexcept;
+		void getParsedData(JsonObject& object) noexcept;
 
 		/**
 		 * @brief Override existing value
@@ -307,7 +307,7 @@ namespace json
 		/// <para>Getter for all JSON parsed values</para>
 		/// <para>Find and get first value of given key</para>
 		/// </summary>
-		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
+		/// <typeparam name="T">T is one of JsonParser::jsonStruct::variantType template parameters</typeparam>
 		/// <param name="key">JSON key</param>
 		/// <param name="recursive">Recursive search</param>
 		/// <returns>JSON value</returns>
@@ -320,13 +320,13 @@ namespace json
 		/// <para>Getter for all JSON parsed values</para>
 		/// <para>Find and get first value of given key</para>
 		/// </summary>
-		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
+		/// <typeparam name="T">T is one of JsonParser::jsonStruct::variantType template parameters</typeparam>
 		/// <param name="key">JSON key</param>
 		/// <param name="recursive">Recursive search</param>
 		/// <returns>JSON value</returns>
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
 		/// <exception cref="std::bad_variant_access">Other type found</exception>
-		template<utility::JsonHeavyValues<utility::JSONObject> T>
+		template<utility::JsonHeavyValues<JsonObject> T>
 		const T& get(std::string_view key, bool recursive = false) const;
 
 		/**
@@ -337,34 +337,34 @@ namespace json
 		 * @param recursive Recursive search
 		 * @return True if value found
 		*/
-		template<utility::JsonValues<utility::JSONObject> T>
+		template<utility::JsonValues<JsonObject> T>
 		bool tryGet(std::string_view key, T& value, bool recursive = false) const;
 
 		/// <summary>
 		/// Get JSON from input stream
 		/// </summary>
 		/// <param name="stream">std::istream subclass instance</param>
-		/// <param name="parser">reference to JSONParser instance</param>
+		/// <param name="parser">reference to JsonParser instance</param>
 		/// <returns>inputStream</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
 		/// @exception json::exceptions::WrongInputStreamException Can't read JSON formatted data from inputStream
-		friend JSON_API std::istream& operator >> (std::istream& inputStream, JSONParser& parser);
+		friend JSON_API std::istream& operator >> (std::istream& inputStream, JsonParser& parser);
 
 		/// <summary>
 		/// Set JSON to output stream
 		/// </summary>
 		/// <param name="outputStream">std::ostream subclass instance</param>
-		/// <param name="parser">const reference to JSONParser instance</param>
+		/// <param name="parser">const reference to JsonParser instance</param>
 		/// <returns>outputStream</returns>
-		friend JSON_API std::ostream& operator << (std::ostream& outputStream, const JSONParser& parser);
+		friend JSON_API std::ostream& operator << (std::ostream& outputStream, const JsonParser& parser);
 
-		~JSONParser() = default;
+		~JsonParser() = default;
 	};
 
-	template<utility::JsonValues<utility::JSONObject> T>
-	bool JSONParser::checkSameType(const VariantType& value)
+	template<utility::JsonValues<JsonObject> T>
+	bool JsonParser::checkSameType(const VariantType& value)
 	{
-		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<utility::JSONObject>> || std::is_same_v<T, utility::JSONObject>)
+		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<JsonObject>> || std::is_same_v<T, JsonObject>)
 		{
 			return std::holds_alternative<T>(value);
 		}
@@ -381,7 +381,7 @@ namespace json
 	}
 
 	template<std::integral T>
-	T JSONParser::getValue(const VariantType& value)
+	T JsonParser::getValue(const VariantType& value)
 	{
 		if (std::holds_alternative<int64_t>(value))
 		{
@@ -398,16 +398,16 @@ namespace json
 	}
 
 	template<utility::JsonLightValues T>
-	T JSONParser::get(std::string_view key, bool recursive) const
+	T JsonParser::get(std::string_view key, bool recursive) const
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
 			throw exceptions::CantFindValueException(key);
 		}
 		
-		const utility::JSONObject::VariantType& value = result->second;
+		const JsonObject::VariantType& value = result->second;
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
@@ -423,7 +423,7 @@ namespace json
 		}
 		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			return JSONParser::getValue<T>(value);
+			return JsonParser::getValue<T>(value);
 		}
 		else
 		{
@@ -433,29 +433,29 @@ namespace json
 		return {};
 	}
 
-	template<utility::JsonHeavyValues<utility::JSONObject> T>
-	const T& JSONParser::get(std::string_view key, bool recursive) const
+	template<utility::JsonHeavyValues<JsonObject> T>
+	const T& JsonParser::get(std::string_view key, bool recursive) const
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
 			throw exceptions::CantFindValueException(key);
 		}
 		
-		const utility::JSONObject::VariantType& value = result->second;
+		const JsonObject::VariantType& value = result->second;
 
 		if constexpr (std::is_same_v<T, std::string>)
 		{
 			return std::get<std::string>(value);
 		}
-		else if constexpr (std::is_same_v<T, std::vector<utility::JSONObject>>)
+		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			return std::get<std::vector<utility::JSONObject>>(value);
+			return std::get<std::vector<JsonObject>>(value);
 		}
-		else if constexpr (std::is_same_v<T, utility::JSONObject>)
+		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			return std::get<utility::JSONObject>(value);
+			return std::get<JsonObject>(value);
 		}
 		else
 		{
@@ -465,17 +465,17 @@ namespace json
 		return {};
 	}
 
-	template<utility::JsonValues<utility::JSONObject> T>
-	bool JSONParser::tryGet(std::string_view key, T& value, bool recursive) const
+	template<utility::JsonValues<JsonObject> T>
+	bool JsonParser::tryGet(std::string_view key, T& value, bool recursive) const
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
-		if (!success || !JSONParser::checkSameType<T>(result->second))
+		if (!success || !JsonParser::checkSameType<T>(result->second))
 		{
 			return false;
 		}
 
-		const utility::JSONObject::VariantType& temp = result->second;
+		const JsonObject::VariantType& temp = result->second;
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
@@ -489,13 +489,13 @@ namespace json
 		{
 			value = std::get<std::string>(temp);
 		}
-		else if constexpr (std::is_same_v<T, std::vector<utility::JSONObject>>)
+		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			value = std::get<std::vector<utility::JSONObject>>(temp);
+			value = std::get<std::vector<JsonObject>>(temp);
 		}
-		else if constexpr (std::is_same_v<T, utility::JSONObject>)
+		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			value = std::get<utility::JSONObject>(temp);
+			value = std::get<JsonObject>(temp);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
@@ -503,7 +503,7 @@ namespace json
 		}
 		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			value = JSONParser::getValue<T>(temp);
+			value = JsonParser::getValue<T>(temp);
 		}
 		else
 		{

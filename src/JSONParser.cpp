@@ -1,4 +1,4 @@
-#include "JSONParser.h"
+#include "JsonParser.h"
 
 #include <stack>
 #include <string>
@@ -7,6 +7,9 @@
 #include <queue>
 #include <limits>
 #include <regex>
+
+#include "JsonArrayWrapper.h"
+#include "OutputOperations.h"
 
 #pragma warning(disable: 4715)
 #pragma warning(disable: 26800)
@@ -24,9 +27,9 @@ bool isNumber(const string& source);
 
 namespace json
 {
-	using ConstJSONIterator = utility::JSONObject::ConstJSONIterator;
+	using ConstJSONIterator = JsonObject::ConstJSONIterator;
 
-	utility::JSONObject::VariantType JSONParser::parseValue(const string& value)
+	JsonObject::VariantType JsonParser::parseValue(const string& value)
 	{
 #ifndef __LINUX__
 #pragma warning(push)
@@ -76,12 +79,12 @@ namespace json
 #endif
 	}
 
-	void JSONParser::insertKeyValueData(string&& key, const string& value, utility::JSONObject& ptr)
+	void JsonParser::insertKeyValueData(string&& key, const string& value, JsonObject& ptr)
 	{
-		ptr.data.emplace_back(move(key), JSONParser::parseValue(value));
+		ptr.data.emplace_back(move(key), JsonParser::parseValue(value));
 	}
 
-	pair<vector<pair<string, JSONParser::VariantType>>::const_iterator, bool> JSONParser::find(string_view key, const vector<pair<string, VariantType>>& start, bool recursive)
+	pair<vector<pair<string, JsonParser::VariantType>>::const_iterator, bool> JsonParser::find(string_view key, const vector<pair<string, VariantType>>& start, bool recursive)
 	{
 		auto it = find_if(start.begin(), start.end(), [&key](const pair<string, VariantType>& value) { return value.first == key; });
 		auto end = start.end();
@@ -97,11 +100,11 @@ namespace json
 		{
 			if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONArray))
 			{
-				const vector<utility::JSONObject>& jsonArray = std::get<vector<utility::JSONObject>>(it->second);
+				const vector<JsonObject>& jsonArray = std::get<vector<JsonObject>>(it->second);
 
-				for (const utility::JSONObject& object : jsonArray)
+				for (const JsonObject& object : jsonArray)
 				{
-					auto result = JSONParser::find(key, object.data, recursive);
+					auto result = JsonParser::find(key, object.data, recursive);
 
 					if (result.second)
 					{
@@ -111,9 +114,9 @@ namespace json
 			}
 			else if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
 			{
-				const vector<pair<string, VariantType>>& data = ::std::get<utility::JSONObject>(it->second).data;
+				const vector<pair<string, VariantType>>& data = ::std::get<JsonObject>(it->second).data;
 
-				auto result = JSONParser::find(key, data, recursive);
+				auto result = JsonParser::find(key, data, recursive);
 
 				if (result.second)
 				{
@@ -127,12 +130,12 @@ namespace json
 		return { end, false };
 	}
 
-	bool JSONParser::isStringSymbol(char symbol)
+	bool JsonParser::isStringSymbol(char symbol)
 	{
 		return symbol == '"';
 	}
 
-	char JSONParser::interpretEscapeSymbol(char symbol)
+	char JsonParser::interpretEscapeSymbol(char symbol)
 	{
 		switch (symbol)
 		{
@@ -162,7 +165,7 @@ namespace json
 		}
 	}
 
-	void JSONParser::parse()
+	void JsonParser::parse()
 	{
 		using namespace json::utility;
 
@@ -178,8 +181,8 @@ namespace json
 		rawData = std::regex_replace(rawData, singleLine, ""); // Remove // comments
 		rawData = std::regex_replace(rawData, multiLine, ""); // Remove /* ... */ comments (including multiline)
 
-		stack<pair<string, JSONObject*>> objects;
-		stack<pair<string, vector<JSONObject>>> arrays;
+		stack<pair<string, JsonObject*>> objects;
+		stack<pair<string, vector<JsonObject>>> arrays;
 		stack<type> currentTop;
 		string key;
 		string value;
@@ -216,7 +219,7 @@ namespace json
 			{
 				escapeSymbol = false;
 
-				value += JSONParser::interpretEscapeSymbol(c);
+				value += JsonParser::interpretEscapeSymbol(c);
 
 				continue;
 			}
@@ -245,7 +248,7 @@ namespace json
 			switch (c)
 			{
 			case openCurlyBracket:
-				objects.push({ move(key), new JSONObject() });
+				objects.push({ move(key), new JsonObject() });
 
 				currentTop.push(type::object);
 
@@ -254,14 +257,14 @@ namespace json
 			case closeCurlyBracket:
 				if (value.size())
 				{
-					JSONParser::insertKeyValueData(move(key), value, *objects.top().second);
+					JsonParser::insertKeyValueData(move(key), value, *objects.top().second);
 
 					value.clear();
 				}
 
 				{
-					pair<string, JSONObject*> object = move(objects.top());
-					vector<pair<string, JSONObject::VariantType>>* data = nullptr;
+					pair<string, JsonObject*> object = move(objects.top());
+					vector<pair<string, JsonObject::VariantType>>* data = nullptr;
 
 					objects.pop();
 					currentTop.pop();
@@ -287,7 +290,7 @@ namespace json
 						throw runtime_error("Wrong type");
 					}
 
-					data->push_back({ move(object.first), JSONObject(*object.second) });
+					data->push_back({ move(object.first), JsonObject(*object.second) });
 
 					delete object.second;
 				}
@@ -297,21 +300,21 @@ namespace json
 			case openSquareBracket:
 				currentTop.push(type::array);
 
-				arrays.push({ move(key), vector<JSONObject>() });
+				arrays.push({ move(key), vector<JsonObject>() });
 
 				break;
 
 			case closeSquareBracket:
 				if (value.size())
 				{
-					JSONParser::insertKeyValueData(move(key), value, arrays.top().second.emplace_back());
+					JsonParser::insertKeyValueData(move(key), value, arrays.top().second.emplace_back());
 
 					value.clear();
 				}
 
 				{
-					pair<string, vector<JSONObject>> array = arrays.top();
-					vector<pair<string, JSONObject::VariantType>>* data = nullptr;
+					pair<string, vector<JsonObject>> array = arrays.top();
+					vector<pair<string, JsonObject::VariantType>>* data = nullptr;
 
 					arrays.pop();
 					currentTop.pop();
@@ -340,7 +343,7 @@ namespace json
 			case comma:
 				if (isNumber(value) || (value.size() && isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin())) || (value == "true" || value == "false" || value == "null"))
 				{
-					JSONParser::insertKeyValueData
+					JsonParser::insertKeyValueData
 					(
 						move(key),
 						value,
@@ -369,13 +372,13 @@ namespace json
 		}
 	}
 
-	JSONParser::JSONParser(string_view data) :
+	JsonParser::JsonParser(string_view data) :
 		rawData(utility::toUTF8JSON(data, CP_UTF8))
 	{
 		this->parse();
 	}
 
-	JSONParser::JSONParser(istream& inputStream)
+	JsonParser::JsonParser(istream& inputStream)
 	{
 		if (!inputStream.good())
 		{
@@ -387,33 +390,33 @@ namespace json
 		this->parse();
 	}
 
-	JSONParser::JSONParser(istream&& inputStream) :
-		JSONParser(inputStream)
+	JsonParser::JsonParser(istream&& inputStream) :
+		JsonParser(inputStream)
 	{
 
 	}
 
-	JSONParser::JSONParser(const utility::JSONObject& data) :
+	JsonParser::JsonParser(const JsonObject& data) :
 		parsedData(data)
 	{
 
 	}
 
-	JSONParser::JSONParser(const JSONParser& other) :
+	JsonParser::JsonParser(const JsonParser& other) :
 		rawData(other.rawData),
 		parsedData(other.parsedData)
 	{
 
 	}
 
-	JSONParser::JSONParser(JSONParser&& other) noexcept :
+	JsonParser::JsonParser(JsonParser&& other) noexcept :
 		rawData(move(other.rawData)),
 		parsedData(move(other.parsedData))
 	{
 
 	}
 
-	JSONParser& JSONParser::operator = (const JSONParser& other)
+	JsonParser& JsonParser::operator = (const JsonParser& other)
 	{
 		rawData = other.rawData;
 		parsedData = other.parsedData;
@@ -421,7 +424,7 @@ namespace json
 		return *this;
 	}
 
-	JSONParser& JSONParser::operator = (JSONParser&& other) noexcept
+	JsonParser& JsonParser::operator = (JsonParser&& other) noexcept
 	{
 		rawData = move(other.rawData);
 		parsedData = move(other.parsedData);
@@ -429,15 +432,15 @@ namespace json
 		return *this;
 	}
 
-	bool JSONParser::contains(string_view key, utility::VariantTypeEnum type, bool recursive) const
+	bool JsonParser::contains(string_view key, utility::VariantTypeEnum type, bool recursive) const
 	{
-		queue<const utility::JSONObject*> objects;
+		queue<const JsonObject*> objects;
 
 		objects.push(&parsedData);
 
 		while (objects.size())
 		{
-			const utility::JSONObject* current = objects.front();
+			const JsonObject* current = objects.front();
 
 			objects.pop();
 
@@ -450,7 +453,7 @@ namespace json
 
 				if (recursive && currentValue.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
 				{
-					const utility::JSONObject& object = std::get<utility::JSONObject>(currentValue);
+					const JsonObject& object = std::get<JsonObject>(currentValue);
 
 					objects.push(&object);
 				}
@@ -461,14 +464,14 @@ namespace json
 	}
 
 #if defined(__LINUX__) || defined(__ANDROID__)
-	void JSONParser::setJSONData(string_view jsonData, string_view codePage)
+	void JsonParser::setJSONData(string_view jsonData, string_view codePage)
 	{
 		rawData = utility::toUTF8JSON(jsonData, codePage);
 
 		this->parse();
 	}
 #else
-	void JSONParser::setJSONData(string_view jsonData, uint32_t codePage)
+	void JsonParser::setJSONData(string_view jsonData, uint32_t codePage)
 	{
 		rawData = utility::toUTF8JSON(jsonData, codePage);
 
@@ -476,14 +479,14 @@ namespace json
 	}
 #endif
 
-	void JSONParser::setJSONData(string_view jsonData)
+	void JsonParser::setJSONData(string_view jsonData)
 	{
 		rawData = jsonData;
 
 		this->parse();
 	}
 
-	void JSONParser::setJSONData(istream& inputStream)
+	void JsonParser::setJSONData(istream& inputStream)
 	{
 		if (!inputStream.good())
 		{
@@ -495,7 +498,7 @@ namespace json
 		this->parse();
 	}
 
-	void JSONParser::setJSONData(istream&& inputStream)
+	void JsonParser::setJSONData(istream&& inputStream)
 	{
 		if (!inputStream.good())
 		{
@@ -507,51 +510,51 @@ namespace json
 		this->parse();
 	}
 
-	void JSONParser::setJSONData(string&& jsonData)
+	void JsonParser::setJSONData(string&& jsonData)
 	{
 		rawData = move(jsonData);
 
 		this->parse();
 	}
 
-	ConstJSONIterator JSONParser::begin() const noexcept
+	ConstJSONIterator JsonParser::begin() const noexcept
 	{
 		return parsedData.begin();
 	}
 
-	ConstJSONIterator JSONParser::end() const noexcept
+	ConstJSONIterator JsonParser::end() const noexcept
 	{
 		return parsedData.end();
 	}
 
-	const string& JSONParser::getRawData() const
+	const string& JsonParser::getRawData() const
 	{
 		return rawData;
 	}
 
-	const string& JSONParser::operator * () const
+	const string& JsonParser::operator * () const
 	{
 		return rawData;
 	}
 
-	nullptr_t JSONParser::getNull(string_view key, bool recursive) const
+	nullptr_t JsonParser::getNull(string_view key, bool recursive) const
 	{
 		return this->get<nullptr_t>(key, recursive);
 	}
 
-	const string& JSONParser::getString(string_view key, bool recursive) const
+	const string& JsonParser::getString(string_view key, bool recursive) const
 	{
 		return this->get<string>(key, recursive);
 	}
 
-	bool JSONParser::getBool(string_view key, bool recursive) const
+	bool JsonParser::getBool(string_view key, bool recursive) const
 	{
 		return this->get<bool>(key, recursive);
 	}
 
-	int64_t JSONParser::getInt(string_view key, bool recursive) const
+	int64_t JsonParser::getInt(string_view key, bool recursive) const
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -575,9 +578,9 @@ namespace json
 		return std::get<int64_t>(result->second);
 	}
 
-	uint64_t JSONParser::getUnsignedInt(string_view key, bool recursive) const
+	uint64_t JsonParser::getUnsignedInt(string_view key, bool recursive) const
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -601,9 +604,9 @@ namespace json
 		return std::get<uint64_t>(result->second);
 	}
 
-	double JSONParser::getDouble(string_view key, bool recursive) const
+	double JsonParser::getDouble(string_view key, bool recursive) const
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -627,36 +630,36 @@ namespace json
 		return std::get<double>(result->second);
 	}
 
-	const vector<utility::JSONObject>& JSONParser::getArray(string_view key, bool recursive) const
+	const vector<JsonObject>& JsonParser::getArray(string_view key, bool recursive) const
 	{
-		return this->get<vector<utility::JSONObject>>(key);
+		return this->get<vector<JsonObject>>(key);
 	}
 
-	const utility::JSONObject& JSONParser::getObject(string_view key, bool recursive) const
+	const JsonObject& JsonParser::getObject(string_view key, bool recursive) const
 	{
-		return this->get<utility::JSONObject>(key);
+		return this->get<JsonObject>(key);
 	}
 
-	bool JSONParser::tryGetNull(string_view key, bool recursive) const
+	bool JsonParser::tryGetNull(string_view key, bool recursive) const
 	{
 		nullptr_t value;
 
 		return this->tryGet(key, value, recursive);
 	}
 
-	bool JSONParser::tryGetString(string_view key, string& value, bool recursive) const
+	bool JsonParser::tryGetString(string_view key, string& value, bool recursive) const
 	{
 		return this->tryGet(key, value, recursive);
 	}
 
-	bool JSONParser::tryGetBool(string_view key, bool& value, bool recursive) const
+	bool JsonParser::tryGetBool(string_view key, bool& value, bool recursive) const
 	{
 		return this->tryGet(key, value, recursive);
 	}
 
-	bool JSONParser::tryGetInt(string_view key, int64_t& value, bool recursive) const
+	bool JsonParser::tryGetInt(string_view key, int64_t& value, bool recursive) const
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -692,9 +695,9 @@ namespace json
 		}
 	}
 
-	bool JSONParser::tryGetUnsignedInt(string_view key, uint64_t& value, bool recursive) const
+	bool JsonParser::tryGetUnsignedInt(string_view key, uint64_t& value, bool recursive) const
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -730,9 +733,9 @@ namespace json
 		}
 	}
 
-	bool JSONParser::tryGetDouble(string_view key, double& value, bool recursive) const
+	bool JsonParser::tryGetDouble(string_view key, double& value, bool recursive) const
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -768,29 +771,29 @@ namespace json
 		}
 	}
 
-	bool JSONParser::tryGetArray(string_view key, vector<utility::JSONObject>& value, bool recursive) const
+	bool JsonParser::tryGetArray(string_view key, vector<JsonObject>& value, bool recursive) const
 	{
 		return this->tryGet(key, value, recursive);
 	}
 
-	bool JSONParser::tryGetObject(string_view key, utility::JSONObject& value, bool recursive) const
+	bool JsonParser::tryGetObject(string_view key, JsonObject& value, bool recursive) const
 	{
 		return this->tryGet(key, value, recursive);
 	}
 
-	const utility::JSONObject& JSONParser::getParsedData() const
+	const JsonObject& JsonParser::getParsedData() const
 	{
 		return parsedData;
 	}
 
-	void JSONParser::getParsedData(utility::JSONObject& object) noexcept
+	void JsonParser::getParsedData(JsonObject& object) noexcept
 	{
 		object = move(parsedData);
 	}
 
-	void JSONParser::overrideValue(string_view key, const VariantType& value, bool recursive)
+	void JsonParser::overrideValue(string_view key, const VariantType& value, bool recursive)
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -800,9 +803,9 @@ namespace json
 		const_cast<VariantType&>(result->second) = value;
 	}
 
-	void JSONParser::overrideValue(string_view key, VariantType&& value, bool recursive)
+	void JsonParser::overrideValue(string_view key, VariantType&& value, bool recursive)
 	{
-		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
+		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -812,14 +815,14 @@ namespace json
 		const_cast<VariantType&>(result->second) = move(value);
 	}
 
-	JSON_API istream& operator >> (istream& inputStream, JSONParser& parser)
+	JSON_API istream& operator >> (istream& inputStream, JsonParser& parser)
 	{
 		parser.setJSONData(inputStream);
 
 		return inputStream;
 	}
 
-	JSON_API ostream& operator << (ostream& outputStream, const JSONParser& parser)
+	JSON_API ostream& operator << (ostream& outputStream, const JsonParser& parser)
 	{
 		ConstJSONIterator start = parser.begin();
 		ConstJSONIterator end = parser.end();
@@ -840,7 +843,7 @@ namespace json
 				outputStream << offset;
 			}
 
-			utility::outputJSONType(outputStream, start->second, ++check == end, offset);
+			utility::outputJsonType<JsonParser, utility::JsonArrayWrapper>(outputStream, start->second, ++check == end, offset);
 
 			++start;
 		}

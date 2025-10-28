@@ -2,4 +2,4 @@
 
 #include "JSONParser.h"
 
-json::JSONParser createParser();
+json::JsonParser createParser();

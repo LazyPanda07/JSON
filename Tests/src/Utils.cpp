@@ -2,9 +2,9 @@
 
 #include <fstream>
 
-json::JSONParser createParser()
+json::JsonParser createParser()
 {
 	std::ifstream in("data/appends.json");
 
-	return json::JSONParser(in);
+	return json::JsonParser(in);
 }

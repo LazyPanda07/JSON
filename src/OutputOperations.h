@@ -1,6 +1,6 @@
 #pragma once
 
-#include "JSONArrayWrapper.h"
+#include "JsonArrayWrapper.h"
 
 namespace json::utility
 {
@@ -19,7 +19,7 @@ namespace json::utility
 
 		if (!jsonData.getOffset())
 		{
-			throw std::runtime_error("JSONArrayWrapper offset was nullptr");
+			throw std::runtime_error("JsonArrayWrapper offset was nullptr");
 		}
 
 		std::string& offset = *jsonData.getOffset();

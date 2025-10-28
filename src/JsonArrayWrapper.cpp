@@ -1,4 +1,4 @@
-#include "JSONArrayWrapper.h"
+#include "JsonArrayWrapper.h"
 
 using namespace std;
 

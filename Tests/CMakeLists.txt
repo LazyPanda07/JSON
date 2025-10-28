@@ -27,6 +27,7 @@ endif()
 add_executable(
     ${PROJECT_NAME}
     main.cpp
+    src/JSONObjectTests.cpp
     src/JSONBuilderTests.cpp
     src/JSONParserTests.cpp
     src/Utils.cpp

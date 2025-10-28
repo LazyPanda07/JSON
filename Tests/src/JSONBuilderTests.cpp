@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include "JSONBuilder.h"
 #include "Exceptions/CantFindValueException.h"
@@ -9,8 +9,8 @@ using namespace std::string_literals;
 
 TEST(Builder, Appends)
 {
-	std::vector<json::utility::JsonObject> array;
-	json::utility::JsonObject object;
+	std::vector<json::utility::JSONObject> array;
+	json::utility::JSONObject object;
 	std::ostringstream jsonData;
 	std::ifstream referenceData("data/appends.json");
 
@@ -49,7 +49,7 @@ TEST(Builder, Appends)
 TEST(Builder, Contains)
 {
 	json::JSONBuilder builder(CP_UTF8);
-	json::utility::JsonObject object;
+	json::utility::JSONObject object;
 
 	object.setInt("someRecursiveData", 10);
 
@@ -92,7 +92,7 @@ TEST(Builder, Operators)
 TEST(Builder, Minimize)
 {
 	json::JSONBuilder builder(CP_UTF8);
-	json::utility::JsonObject object;
+	json::utility::JSONObject object;
 	std::ostringstream referenceData;
 
 	referenceData << std::ifstream("data/minimize.json").rdbuf();

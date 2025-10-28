@@ -14,22 +14,22 @@ namespace json
 	{
 	public:
 		/// @brief std::variant specialization for JSON
-		using VariantType = utility::JsonObject::VariantType;
+		using VariantType = utility::JSONObject::VariantType;
 		
 		/// @brief JSON object
-		using ObjectType = utility::JsonObject;
+		using ObjectType = utility::JSONObject;
 
 		/// @brief Iterator for jsonObject
-		using ConstJSONIterator = utility::JsonObject::ConstJSONIterator;
+		using ConstJSONIterator = utility::JSONObject::ConstJSONIterator;
 
 	private:
 		std::string rawData;
-		utility::JsonObject parsedData;
+		utility::JSONObject parsedData;
 
 	private:
-		static utility::JsonObject::VariantType parseValue(const std::string& value);
+		static utility::JSONObject::VariantType parseValue(const std::string& value);
 
-		static void insertKeyValueData(std::string&& key, const std::string& value, utility::JsonObject& ptr);
+		static void insertKeyValueData(std::string&& key, const std::string& value, utility::JSONObject& ptr);
 
 		static std::pair<std::vector<std::pair<std::string, VariantType>>::const_iterator, bool> find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive);
 
@@ -37,7 +37,7 @@ namespace json
 
 		static char interpretEscapeSymbol(char symbol);
 
-		template<utility::JsonValues<utility::JsonObject> T>
+		template<utility::JsonValues<utility::JSONObject> T>
 		static bool checkSameType(const VariantType& value);
 
 		template<std::integral T>
@@ -70,7 +70,7 @@ namespace json
 
 		/// @brief Construct from parsed or builded data 
 		/// @param data Data from JSONBuilder or JSONParser
-		JSONParser(const utility::JsonObject& data);
+		JSONParser(const utility::JSONObject& data);
 
 		/// @brief Copy constructor
 		/// @param other Other JSONParser
@@ -205,7 +205,7 @@ namespace json
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const std::vector<utility::JsonObject>& getArray(std::string_view key, bool recursive = false) const;
+		const std::vector<utility::JSONObject>& getArray(std::string_view key, bool recursive = false) const;
 
 		/// @brief Get JSON object
 		/// @param key JSON Key
@@ -213,7 +213,7 @@ namespace json
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const utility::JsonObject& getObject(std::string_view key, bool recursive = false) const;
+		const utility::JSONObject& getObject(std::string_view key, bool recursive = false) const;
 
 		/// @brief Try get null value
 		/// @param key JSON key
@@ -269,7 +269,7 @@ namespace json
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetArray(std::string_view key, std::vector<utility::JsonObject>& value, bool recursive = false) const;
+		bool tryGetArray(std::string_view key, std::vector<utility::JSONObject>& value, bool recursive = false) const;
 
 		/// @brief Try get JSON object
 		/// @param key JSON Key
@@ -277,15 +277,15 @@ namespace json
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetObject(std::string_view key, utility::JsonObject& value, bool recursive = false) const;
+		bool tryGetObject(std::string_view key, utility::JSONObject& value, bool recursive = false) const;
 
 		/// @brief Getter for parsedData
 		/// @return parsedData
-		const utility::JsonObject& getParsedData() const;
+		const utility::JSONObject& getParsedData() const;
 
 		/// @brief Move parsed data
 		/// @param object Result of moving
-		void getParsedData(utility::JsonObject& object) noexcept;
+		void getParsedData(utility::JSONObject& object) noexcept;
 
 		/**
 		 * @brief Override existing value
@@ -326,7 +326,7 @@ namespace json
 		/// <returns>JSON value</returns>
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
 		/// <exception cref="std::bad_variant_access">Other type found</exception>
-		template<utility::JsonHeavyValues<utility::JsonObject> T>
+		template<utility::JsonHeavyValues<utility::JSONObject> T>
 		const T& get(std::string_view key, bool recursive = false) const;
 
 		/**
@@ -337,7 +337,7 @@ namespace json
 		 * @param recursive Recursive search
 		 * @return True if value found
 		*/
-		template<utility::JsonValues<utility::JsonObject> T>
+		template<utility::JsonValues<utility::JSONObject> T>
 		bool tryGet(std::string_view key, T& value, bool recursive = false) const;
 
 		/// <summary>
@@ -361,10 +361,10 @@ namespace json
 		~JSONParser() = default;
 	};
 
-	template<utility::JsonValues<utility::JsonObject> T>
+	template<utility::JsonValues<utility::JSONObject> T>
 	bool JSONParser::checkSameType(const VariantType& value)
 	{
-		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<utility::JsonObject>> || std::is_same_v<T, utility::JsonObject>)
+		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<utility::JSONObject>> || std::is_same_v<T, utility::JSONObject>)
 		{
 			return std::holds_alternative<T>(value);
 		}
@@ -407,7 +407,7 @@ namespace json
 			throw exceptions::CantFindValueException(key);
 		}
 		
-		const utility::JsonObject::VariantType& value = result->second;
+		const utility::JSONObject::VariantType& value = result->second;
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
@@ -433,7 +433,7 @@ namespace json
 		return {};
 	}
 
-	template<utility::JsonHeavyValues<utility::JsonObject> T>
+	template<utility::JsonHeavyValues<utility::JSONObject> T>
 	const T& JSONParser::get(std::string_view key, bool recursive) const
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
@@ -443,19 +443,19 @@ namespace json
 			throw exceptions::CantFindValueException(key);
 		}
 		
-		const utility::JsonObject::VariantType& value = result->second;
+		const utility::JSONObject::VariantType& value = result->second;
 
 		if constexpr (std::is_same_v<T, std::string>)
 		{
 			return std::get<std::string>(value);
 		}
-		else if constexpr (std::is_same_v<T, std::vector<utility::JsonObject>>)
+		else if constexpr (std::is_same_v<T, std::vector<utility::JSONObject>>)
 		{
-			return std::get<std::vector<utility::JsonObject>>(value);
+			return std::get<std::vector<utility::JSONObject>>(value);
 		}
-		else if constexpr (std::is_same_v<T, utility::JsonObject>)
+		else if constexpr (std::is_same_v<T, utility::JSONObject>)
 		{
-			return std::get<utility::JsonObject>(value);
+			return std::get<utility::JSONObject>(value);
 		}
 		else
 		{
@@ -465,7 +465,7 @@ namespace json
 		return {};
 	}
 
-	template<utility::JsonValues<utility::JsonObject> T>
+	template<utility::JsonValues<utility::JSONObject> T>
 	bool JSONParser::tryGet(std::string_view key, T& value, bool recursive) const
 	{
 		auto [result, success] = JSONParser::find(key, parsedData.data, recursive);
@@ -475,7 +475,7 @@ namespace json
 			return false;
 		}
 
-		const utility::JsonObject::VariantType& temp = result->second;
+		const utility::JSONObject::VariantType& temp = result->second;
 
 		if constexpr (std::is_same_v<T, bool>)
 		{
@@ -489,13 +489,13 @@ namespace json
 		{
 			value = std::get<std::string>(temp);
 		}
-		else if constexpr (std::is_same_v<T, std::vector<utility::JsonObject>>)
+		else if constexpr (std::is_same_v<T, std::vector<utility::JSONObject>>)
 		{
-			value = std::get<std::vector<utility::JsonObject>>(temp);
+			value = std::get<std::vector<utility::JSONObject>>(temp);
 		}
-		else if constexpr (std::is_same_v<T, utility::JsonObject>)
+		else if constexpr (std::is_same_v<T, utility::JSONObject>)
 		{
-			value = std::get<utility::JsonObject>(temp);
+			value = std::get<utility::JSONObject>(temp);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{

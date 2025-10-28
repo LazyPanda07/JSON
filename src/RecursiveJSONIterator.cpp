@@ -4,7 +4,7 @@ using namespace std;
 
 namespace json
 {
-	using ConstJSONIterator = utility::JsonObject::ConstJSONIterator;
+	using ConstJSONIterator = utility::JSONObject::ConstJSONIterator;
 
 	RecursiveJSONIterator::RecursiveJSONIterator(const JSONParser& parser) :
 		object(parser.getParsedData())
@@ -12,7 +12,7 @@ namespace json
 		depth.emplace(object.begin());
 	}
 
-	RecursiveJSONIterator::RecursiveJSONIterator(const utility::JsonObject& object) :
+	RecursiveJSONIterator::RecursiveJSONIterator(const utility::JSONObject& object) :
 		object(object)
 	{
 		depth.emplace(this->object.begin());
@@ -44,7 +44,7 @@ namespace json
 		}
 		else if (current->second.index() == utility::VariantTypeEnum::jJSONObject)
 		{
-			const utility::JsonObject& jsonObject = get<utility::JsonObject>(current->second);
+			const utility::JSONObject& jsonObject = get<utility::JSONObject>(current->second);
 
 			++current;
 
@@ -59,7 +59,7 @@ namespace json
 		}
 		else if (current->second.index() == utility::VariantTypeEnum::jJSONArray)
 		{
-			const vector<utility::JsonObject>& jsonArray = get<vector<utility::JsonObject>>(current->second);
+			const vector<utility::JSONObject>& jsonArray = get<vector<utility::JSONObject>>(current->second);
 
 			++current;
 
@@ -86,12 +86,12 @@ namespace json
 		return *this;
 	}
 
-	const pair<string, utility::JsonObject::VariantType>& RecursiveJSONIterator::operator* () const noexcept
+	const pair<string, utility::JSONObject::VariantType>& RecursiveJSONIterator::operator* () const noexcept
 	{
 		return *depth.top();
 	}
 
-	utility::JsonObject::ConstJSONIterator::ConstJSONIteratorType RecursiveJSONIterator::operator-> () const noexcept
+	utility::JSONObject::ConstJSONIterator::ConstJSONIteratorType RecursiveJSONIterator::operator-> () const noexcept
 	{
 		return depth.top();
 	}

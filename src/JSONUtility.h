@@ -8,8 +8,6 @@
 #include <sstream>
 #include <concepts>
 
-#include "CodePageConstants.h"
-
 #ifdef JSON_DLL
 #if defined(__LINUX__) || defined(__ANDROID__)
 #define JSON_API __attribute__((visibility("default")))
@@ -27,6 +25,8 @@
 #define JSON_API
 #define JSON_API_FUNCTION
 #endif // JSON_DLL
+
+#include "CodePageConstants.h"
 
 namespace json::utility
 {
@@ -71,10 +71,10 @@ namespace json::utility
 	concept JsonValues = JsonLightValues<T> || JsonHeavyValues<T, TJsonStruct>;
 
 	/// @brief JSON object
-	class JSON_API JsonObject
+	class JSON_API JSONObject
 	{
 	public:
-		using VariantType = BaseVariantType<JsonObject>;
+		using VariantType = BaseVariantType<JSONObject>;
 
 	public:
 		/// @brief Iterator through jsonObject
@@ -127,88 +127,99 @@ namespace json::utility
 		};
 
 	private:
+		static std::pair<std::vector<std::pair<std::string, VariantType>>::const_iterator, bool> find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive);
+
+		template<utility::JsonValues<utility::JSONObject> T>
+		static bool checkSameType(const VariantType& value);
+
+		template<std::integral T>
+		static T getValue(const VariantType& value);
+
+		static void throwCantFindValueException(std::string_view key);
+
+	private:
 		template<typename T>
-		JsonObject& setValue(std::string_view key, T&& value);
+		JSONObject& setValue(std::string_view key, T&& value);
 
 		template<typename T>
 		bool tryGetValue(std::string_view key, T& value) const;
 
 		ConstJSONIterator::ConstJSONIteratorType findValue(std::string_view key, bool throwException = true) const;
 
-		void appendData(const std::string& key, const json::utility::JsonObject::VariantType& value);
+		void appendData(const std::string& key, const json::utility::JSONObject::VariantType& value);
 
 	public:
 		std::vector<std::pair<std::string, VariantType>> data;
 
 	public:
-		JsonObject() = default;
+		JSONObject() = default;
 
 		/// @brief Copy constructor
 		/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
-		JsonObject(const JsonObject& other);
+		JSONObject(const JSONObject& other);
 
 		/// @brief Move constructor
 		/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
-		JsonObject(JsonObject&& other) noexcept;
+		JSONObject(JSONObject&& other) noexcept;
 
 		/// @brief Copy assignment operator
 		/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
 		/// @return Self
-		JsonObject& operator=(const JsonObject& other);
+		JSONObject& operator =(const JSONObject& other);
 
 		/// @brief Move assignment operator
 		/// @param other Another jsonObject from JSONParser or JSONBuilder or custom
 		/// @return Self
-		JsonObject& operator=(JsonObject&& other) noexcept;
+		JSONObject& operator =(JSONObject&& other) noexcept;
 
 		/// @brief Set null value with given key
 		/// @param key JSON key
-		JsonObject& setNull(std::string_view key);
+		JSONObject& setNull(std::string_view key);
 
 		/// @brief Set string value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		JsonObject& setString(std::string_view key, std::string_view value);
+		JSONObject& setString(std::string_view key, std::string_view value);
 
 		/// @brief Set bool value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		JsonObject& setBool(std::string_view key, bool value);
+		JSONObject& setBool(std::string_view key, bool value);
 
 		/// @brief Set int value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		JsonObject& setInt(std::string_view key, int64_t value);
+		JSONObject& setInt(std::string_view key, int64_t value);
 
 		/// @brief Set unsigned int value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		JsonObject& setUnsignedInt(std::string_view key, uint64_t value);
+		JSONObject& setUnsignedInt(std::string_view key, uint64_t value);
 
 		/// @brief Set double value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		JsonObject& setDouble(std::string_view key, double value);
+		JSONObject& setDouble(std::string_view key, double value);
 
 		/// @brief Set array value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		JsonObject& setArray(std::string_view key, const std::vector<JsonObject>& value);
+		JSONObject& setArray(std::string_view key, const std::vector<JSONObject>& value);
 
 		/// @brief Set array value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		JsonObject& setArray(std::string_view key, std::vector<JsonObject>&& value);
+		JSONObject& setArray(std::string_view key, std::vector<JSONObject>&& value);
 
 		/// @brief Set object value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		JsonObject& setObject(std::string_view key, const JsonObject& value);
+		JSONObject& setObject(std::string_view key, const JSONObject& value);
 
 		/// @brief Set object value with given key
 		/// @param key JSON key
 		/// @param value JSON value
-		JsonObject& setObject(std::string_view key, JsonObject&& value);
+		JSONObject& setObject(std::string_view key, JSONObject&& value);
 
 		/// @brief Get null value. Find and get value only for this JSON object
 		/// @param key JSON key
@@ -257,14 +268,14 @@ namespace json::utility
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const std::vector<JsonObject>& getArray(std::string_view key) const;
+		const std::vector<JSONObject>& getArray(std::string_view key) const;
 
 		/// @brief Get JSON object. Find and get value only for this JSON object
 		/// @param key JSON Key
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		const JsonObject& getObject(std::string_view key) const;
+		const JSONObject& getObject(std::string_view key) const;
 
 		/// @brief Try get null value
 		/// @param key JSON key
@@ -313,14 +324,14 @@ namespace json::utility
 		/// @return JSON array
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetArray(std::string_view key, std::vector<utility::JsonObject>& value) const;
+		bool tryGetArray(std::string_view key, std::vector<utility::JSONObject>& value) const;
 
 		/// @brief Try get JSON object
 		/// @param key JSON Key
 		/// @return JSON object
 		/// @exception json::exceptions::CantFindValueException 
 		/// @exception std::bad_variant_access Other type found
-		bool tryGetObject(std::string_view key, utility::JsonObject& value) const;
+		bool tryGetObject(std::string_view key, utility::JSONObject& value) const;
 
 		/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
 		/// @param key Object name
@@ -353,20 +364,57 @@ namespace json::utility
 		*/
 		const VariantType& operator [](std::string_view key) const;
 
-		~JsonObject() = default;
+		/// <summary>
+		/// <para>Getter for all JSON parsed values</para>
+		/// <para>Find and get first value of given key</para>
+		/// </summary>
+		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
+		/// <param name="key">JSON key</param>
+		/// <param name="recursive">Recursive search</param>
+		/// <returns>JSON value</returns>
+		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
+		/// <exception cref="std::bad_variant_access">Other type found</exception>
+		template<utility::JsonLightValues T>
+		T get(std::string_view key, bool recursive = false) const;
+
+		/// <summary>
+		/// <para>Getter for all JSON parsed values</para>
+		/// <para>Find and get first value of given key</para>
+		/// </summary>
+		/// <typeparam name="T">T is one of JSONParser::jsonStruct::variantType template parameters</typeparam>
+		/// <param name="key">JSON key</param>
+		/// <param name="recursive">Recursive search</param>
+		/// <returns>JSON value</returns>
+		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
+		/// <exception cref="std::bad_variant_access">Other type found</exception>
+		template<utility::JsonHeavyValues<utility::JSONObject> T>
+		const T& get(std::string_view key, bool recursive = false) const;
+
+		/**
+		 * @brief Getter for all JSON parsed values
+		 * @tparam T Is one of json::utility::jsonObject::variantType template parameters
+		 * @param key JSON key
+		 * @param value JSON value
+		 * @param recursive Recursive search
+		 * @return True if value found
+		*/
+		template<utility::JsonValues<utility::JSONObject> T>
+		bool tryGet(std::string_view key, T& value, bool recursive = false) const;
+
+		~JSONObject() = default;
 	};
 
 	/// @brief Check current iterator with begin or end iterator
 	/// @param iterator jsonObject::ConstJSONIterator
 	/// @param nestedIterator jsonObject::ConstJSONIterator::getBegin() or jsonObject::ConstJSONIterator::getEnd()
 	/// @return 
-	bool operator==(const JsonObject::ConstJSONIterator& iterator, const JsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator);
+	bool operator ==(const JSONObject::ConstJSONIterator& iterator, const JSONObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator);
 
 	/// @brief Compare index from variant with enum
 	/// @param index Index from variant
 	/// @param value Value from variantTypeEnum
 	/// @return 
-	constexpr bool operator==(size_t index, VariantTypeEnum value);
+	constexpr bool operator ==(size_t index, VariantTypeEnum value);
 
 #if defined(__LINUX__) || defined(__ANDROID__)
 	/// <summary>
@@ -412,24 +460,179 @@ namespace json::utility
 	/// <param name="outputStream">std::ostream subclass</param>
 	/// <param name="value">JSON value</param>
 	/// <param name="isLast">is description ends</param>
-	JSON_API_FUNCTION void outputJSONType(std::ostream& outputStream, const JsonObject::VariantType& value, bool isLast, std::string& offset);
+	JSON_API_FUNCTION void outputJSONType(std::ostream& outputStream, const JSONObject::VariantType& value, bool isLast, std::string& offset);
 
 	/// @brief Append jsonObject::variantType value to array
 	/// @param value JSON value
 	/// @param jsonArray Modifiable array
-	JSON_API_FUNCTION void appendArray(JsonObject::VariantType&& value, std::vector<JsonObject>& jsonArray);
+	JSON_API_FUNCTION void appendArray(JSONObject::VariantType&& value, std::vector<JSONObject>& jsonArray);
 
 	/// @brief Get current version of JSON project
 	/// @return Current version of JSON project
 	JSON_API_FUNCTION std::string getJSONVersion();
 }
 
-inline bool json::utility::operator==(const JsonObject::ConstJSONIterator& iterator, const JsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator)
+inline bool json::utility::operator==(const JSONObject::ConstJSONIterator& iterator, const JSONObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator)
 {
-	return static_cast<JsonObject::ConstJSONIterator::ConstJSONIteratorType>(iterator) == nestedIterator;
+	return static_cast<JSONObject::ConstJSONIterator::ConstJSONIteratorType>(iterator) == nestedIterator;
 }
 
 inline constexpr bool json::utility::operator==(size_t index, VariantTypeEnum value)
 {
 	return index == static_cast<size_t>(value);
+}
+
+namespace json::utility
+{
+	template<utility::JsonValues<utility::JSONObject> T>
+	bool JSONObject::checkSameType(const VariantType& value)
+	{
+		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<utility::JSONObject>> || std::is_same_v<T, utility::JSONObject>)
+		{
+			return std::holds_alternative<T>(value);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			return std::holds_alternative<double>(value);
+		}
+		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
+		{
+			return std::holds_alternative<uint64_t>(value) || std::holds_alternative<int64_t>(value);
+		}
+
+		return false;
+	}
+
+	template<std::integral T>
+	T JSONObject::getValue(const VariantType& value)
+	{
+		if (std::holds_alternative<int64_t>(value))
+		{
+			return static_cast<T>(std::get<int64_t>(value));
+		}
+		else if (std::holds_alternative<uint64_t>(value))
+		{
+			return static_cast<T>(std::get<uint64_t>(value));
+		}
+
+		throw std::runtime_error("Wrong type");
+
+		return T{};
+	}
+
+	template<utility::JsonLightValues T>
+	T JSONObject::get(std::string_view key, bool recursive) const
+	{
+		auto [result, success] = JSONObject::find(key, data, recursive);
+
+		if (!success)
+		{
+			JSONObject::throwCantFindValueException(key);
+		}
+
+		const utility::JSONObject::VariantType& value = result->second;
+
+		if constexpr (std::is_same_v<T, bool>)
+		{
+			return std::get<bool>(value);
+		}
+		else if constexpr (std::is_same_v<T, std::nullptr_t>)
+		{
+			return std::get<std::nullptr_t>(value);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			return static_cast<T>(std::get<double>(value));
+		}
+		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
+		{
+			return JSONObject::getValue<T>(value);
+		}
+		else
+		{
+			throw std::runtime_error("Wrong type");
+		}
+
+		return {};
+	}
+
+	template<utility::JsonHeavyValues<utility::JSONObject> T>
+	const T& JSONObject::get(std::string_view key, bool recursive) const
+	{
+		auto [result, success] = JSONObject::find(key, data, recursive);
+
+		if (!success)
+		{
+			JSONObject::throwCantFindValueException(key);
+		}
+
+		const utility::JSONObject::VariantType& value = result->second;
+
+		if constexpr (std::is_same_v<T, std::string>)
+		{
+			return std::get<std::string>(value);
+		}
+		else if constexpr (std::is_same_v<T, std::vector<utility::JSONObject>>)
+		{
+			return std::get<std::vector<utility::JSONObject>>(value);
+		}
+		else if constexpr (std::is_same_v<T, utility::JSONObject>)
+		{
+			return std::get<utility::JSONObject>(value);
+		}
+		else
+		{
+			throw std::runtime_error("Wrong type");
+		}
+
+		return {};
+	}
+
+	template<utility::JsonValues<utility::JSONObject> T>
+	bool JSONObject::tryGet(std::string_view key, T& value, bool recursive) const
+	{
+		auto [result, success] = JSONObject::find(key, data, recursive);
+
+		if (!success || !JSONObject::checkSameType<T>(result->second))
+		{
+			return false;
+		}
+
+		const utility::JSONObject::VariantType& temp = result->second;
+
+		if constexpr (std::is_same_v<T, bool>)
+		{
+			value = std::get<bool>(temp);
+		}
+		else if constexpr (std::is_same_v<T, std::nullptr_t>)
+		{
+			value = std::get<std::nullptr_t>(temp);
+		}
+		else if constexpr (std::is_same_v<T, std::string>)
+		{
+			value = std::get<std::string>(temp);
+		}
+		else if constexpr (std::is_same_v<T, std::vector<utility::JSONObject>>)
+		{
+			value = std::get<std::vector<utility::JSONObject>>(temp);
+		}
+		else if constexpr (std::is_same_v<T, utility::JSONObject>)
+		{
+			value = std::get<utility::JSONObject>(temp);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			value = static_cast<T>(std::get<double>(temp));
+		}
+		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
+		{
+			value = JSONObject::getValue<T>(temp);
+		}
+		else
+		{
+			throw std::runtime_error("Wrong type");
+		}
+
+		return true;
+	}
 }

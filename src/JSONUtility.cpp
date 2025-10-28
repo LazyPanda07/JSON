@@ -14,12 +14,15 @@
 #include "Exceptions/WrongEncodingException.h"
 #include "Exceptions/CantFindValueException.h"
 
-using namespace std;
-
 namespace json::utility
 {
-	using ConstJSONIterator = JsonObject::ConstJSONIterator;
-	using ConstJSONIteratorType = JsonObject::ConstJSONIterator::ConstJSONIteratorType;
+	void JSONObject::throwCantFindValueException(std::string_view key)
+	{
+		throw exceptions::CantFindValueException(key);
+	}
+
+	using ConstJSONIterator = JSONObject::ConstJSONIterator;
+	using ConstJSONIteratorType = JSONObject::ConstJSONIterator::ConstJSONIteratorType;
 
 	ConstJSONIterator::ConstJSONIterator(ConstJSONIteratorType begin, ConstJSONIteratorType end, ConstJSONIteratorType start) :
 		begin(begin),
@@ -81,7 +84,7 @@ namespace json::utility
 		return *this;
 	}
 
-	const pair<string, JsonObject::VariantType>& ConstJSONIterator::operator* () const noexcept
+	const std::pair<std::string, JSONObject::VariantType>& ConstJSONIterator::operator* () const noexcept
 	{
 		return *current;
 	}
@@ -107,22 +110,22 @@ namespace json::utility
 	}
 
 	template<typename T>
-	JsonObject& JsonObject::setValue(string_view key, T&& value)
+	JSONObject& JSONObject::setValue(std::string_view key, T&& value)
 	{
-		if constexpr (is_same_v<string_view&, decltype(value)>)
+		if constexpr (std::is_same_v<std::string_view&, decltype(value)>)
 		{
-			data.emplace_back(string(key.data(), key.size()), string(value.data(), value.size()));
+			data.emplace_back(std::string(key.data(), key.size()), std::string(value.data(), value.size()));
 		}
 		else
 		{
-			data.emplace_back(string(key.data(), key.size()), forward<T>(value));
+			data.emplace_back(std::string(key.data(), key.size()), std::forward<T>(value));
 		}
 
 		return *this;
 	}
 
 	template<typename T>
-	bool JsonObject::tryGetValue(string_view key, T& value) const
+	bool JSONObject::tryGetValue(std::string_view key, T& value) const
 	{
 		auto it = this->findValue(key, false);
 
@@ -131,12 +134,58 @@ namespace json::utility
 			return false;
 		}
 
-		value = get<T>(it->second);
+		value = std::get<T>(it->second);
 
 		return true;
 	}
 
-	ConstJSONIteratorType JsonObject::findValue(string_view key, bool throwException) const
+	std::pair<std::vector<std::pair<std::string, JSONObject::VariantType>>::const_iterator, bool> JSONObject::find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive)
+	{
+		auto it = std::find_if(start.begin(), start.end(), [&key](const std::pair<std::string, VariantType>& value) { return value.first == key; });
+		auto end = start.end();
+
+		if (!recursive || it != end)
+		{
+			return { it, it != end };
+		}
+
+		it = start.begin();
+
+		while (it != end)
+		{
+			if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONArray))
+			{
+				const std::vector<utility::JSONObject>& jsonArray = std::get<std::vector<utility::JSONObject>>(it->second);
+
+				for (const utility::JSONObject& object : jsonArray)
+				{
+					auto result = JSONObject::find(key, object.data, recursive);
+
+					if (result.second)
+					{
+						return result;
+					}
+				}
+			}
+			else if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
+			{
+				const std::vector<std::pair<std::string, VariantType>>& data = ::std::get<utility::JSONObject>(it->second).data;
+
+				auto result = JSONObject::find(key, data, recursive);
+
+				if (result.second)
+				{
+					return result;
+				}
+			}
+
+			++it;
+		}
+
+		return { end, false };
+	}
+
+	ConstJSONIteratorType JSONObject::findValue(std::string_view key, bool throwException) const
 	{
 		auto it = find_if(data.begin(), data.end(), [key](const auto& value) { return value.first == key; });
 
@@ -148,47 +197,47 @@ namespace json::utility
 		return it;
 	}
 
-	void JsonObject::appendData(const string& key, const json::utility::JsonObject::VariantType& value)
+	void JSONObject::appendData(const std::string& key, const json::utility::JSONObject::VariantType& value)
 	{
 		switch (static_cast<json::utility::VariantTypeEnum>(value.index()))
 		{
 		case json::utility::VariantTypeEnum::jNull:
-			data.emplace_back(key, get<nullptr_t>(value));
+			data.emplace_back(key, std::get<nullptr_t>(value));
 
 			break;
 
 		case json::utility::VariantTypeEnum::jString:
-			data.emplace_back(key, get<string>(value));
+			data.emplace_back(key, std::get<std::string>(value));
 
 			break;
 
 		case json::utility::VariantTypeEnum::jBool:
-			data.emplace_back(key, get<bool>(value));
+			data.emplace_back(key, std::get<bool>(value));
 
 			break;
 
 		case json::utility::VariantTypeEnum::jInt64_t:
-			data.emplace_back(key, get<int64_t>(value));
+			data.emplace_back(key, std::get<int64_t>(value));
 
 			break;
 
 		case json::utility::VariantTypeEnum::jUInt64_t:
-			data.emplace_back(key, get<uint64_t>(value));
+			data.emplace_back(key, std::get<uint64_t>(value));
 
 			break;
 
 		case json::utility::VariantTypeEnum::jDouble:
-			data.emplace_back(key, get<double>(value));
+			data.emplace_back(key, std::get<double>(value));
 
 			break;
 
 		case json::utility::VariantTypeEnum::jJSONArray:
-			data.emplace_back(key, get<vector<JsonObject>>(value));
+			data.emplace_back(key, std::get<std::vector<JSONObject>>(value));
 
 			break;
 
 		case json::utility::VariantTypeEnum::jJSONObject:
-			data.emplace_back(key, get<JsonObject>(value));
+			data.emplace_back(key, std::get<JSONObject>(value));
 
 			break;
 
@@ -197,17 +246,17 @@ namespace json::utility
 		}
 	}
 
-	JsonObject::JsonObject(const JsonObject& other)
+	JSONObject::JSONObject(const JSONObject& other)
 	{
 		(*this) = other;
 	}
 
-	JsonObject::JsonObject(JsonObject&& other) noexcept
+	JSONObject::JSONObject(JSONObject&& other) noexcept
 	{
-		(*this) = move(other);
+		(*this) = std::move(other);
 	}
 
-	JsonObject& JsonObject::operator = (const JsonObject& other)
+	JSONObject& JSONObject::operator = (const JSONObject& other)
 	{
 		if (this == &other)
 		{
@@ -224,79 +273,79 @@ namespace json::utility
 		return *this;
 	}
 
-	JsonObject& JsonObject::operator = (JsonObject&& other) noexcept
+	JSONObject& JSONObject::operator = (JSONObject&& other) noexcept
 	{
-		data = move(other.data);
+		data = std::move(other.data);
 
 		return *this;
 	}
 
-	JsonObject& JsonObject::setNull(string_view key)
+	JSONObject& JSONObject::setNull(std::string_view key)
 	{
 		return this->setValue(key, nullptr);
 	}
 
-	JsonObject& JsonObject::setString(string_view key, string_view value)
+	JSONObject& JSONObject::setString(std::string_view key, std::string_view value)
 	{
 		return this->setValue(key, value);
 	}
 
-	JsonObject& JsonObject::setBool(string_view key, bool value)
+	JSONObject& JSONObject::setBool(std::string_view key, bool value)
 	{
 		return this->setValue(key, value);
 	}
 
-	JsonObject& JsonObject::setInt(string_view key, int64_t value)
+	JSONObject& JSONObject::setInt(std::string_view key, int64_t value)
 	{
 		return this->setValue(key, value);
 	}
 
-	JsonObject& JsonObject::setUnsignedInt(string_view key, uint64_t value)
+	JSONObject& JSONObject::setUnsignedInt(std::string_view key, uint64_t value)
 	{
 		return this->setValue(key, value);
 	}
 
-	JsonObject& JsonObject::setDouble(string_view key, double value)
+	JSONObject& JSONObject::setDouble(std::string_view key, double value)
 	{
 		return this->setValue(key, value);
 	}
 
-	JsonObject& JsonObject::setArray(string_view key, const vector<JsonObject>& value)
+	JSONObject& JSONObject::setArray(std::string_view key, const std::vector<JSONObject>& value)
 	{
 		return this->setValue(key, value);
 	}
 
-	JsonObject& JsonObject::setArray(string_view key, vector<JsonObject>&& value)
+	JSONObject& JSONObject::setArray(std::string_view key, std::vector<JSONObject>&& value)
 	{
-		return this->setValue(key, move(value));
+		return this->setValue(key, std::move(value));
 	}
 
-	JsonObject& JsonObject::setObject(string_view key, const JsonObject& value)
+	JSONObject& JSONObject::setObject(std::string_view key, const JSONObject& value)
 	{
 		return this->setValue(key, value);
 	}
 
-	JsonObject& JsonObject::setObject(string_view key, JsonObject&& value)
+	JSONObject& JSONObject::setObject(std::string_view key, JSONObject&& value)
 	{
-		return this->setValue(key, move(value));
+		return this->setValue(key, std::move(value));
 	}
 
-	nullptr_t JsonObject::getNull(string_view key) const
+	nullptr_t JSONObject::getNull(std::string_view key) const
 	{
-		return get<nullptr_t>(this->findValue(key)->second);
+		return std::get<nullptr_t>(this->findValue(key)->second);
 	}
 
-	const string& JsonObject::getString(string_view key) const
+	const std::string& JSONObject::getString(std::string_view key) const
 	{
-		return get<string>(this->findValue(key)->second);
+		return std::get<std::string>(this->findValue(key)->second);
 	}
 
-	bool JsonObject::getBool(string_view key) const
+	bool JSONObject::getBool(std::string_view key) const
 	{
-		return get<bool>(this->findValue(key)->second);
+		return std::get<bool>(this->findValue(key)->second);
 	}
 
-	int64_t JsonObject::getInt(string_view key) const
+	int64_t JSONObject::getInt(std::string_view key) const
 	{
 		auto it = this->findValue(key);
 
@@ -305,16 +354,16 @@ namespace json::utility
 		switch (type)
 		{
 		case json::utility::VariantTypeEnum::jUInt64_t:
-			return static_cast<int64_t>(get<uint64_t>(it->second));
+			return static_cast<int64_t>(std::get<uint64_t>(it->second));
 
 		case json::utility::VariantTypeEnum::jDouble:
-			return static_cast<int64_t>(get<double>(it->second));
+			return static_cast<int64_t>(std::get<double>(it->second));
 		}
 
-		return get<int64_t>(it->second);
+		return std::get<int64_t>(it->second);
 	}
 
-	uint64_t JsonObject::getUnsignedInt(string_view key) const
+	uint64_t JSONObject::getUnsignedInt(std::string_view key) const
 	{
 		auto it = this->findValue(key);
 
@@ -323,16 +372,16 @@ namespace json::utility
 		switch (type)
 		{
 		case json::utility::VariantTypeEnum::jInt64_t:
-			return static_cast<uint64_t>(get<int64_t>(it->second));
+			return static_cast<uint64_t>(std::get<int64_t>(it->second));
 
 		case json::utility::VariantTypeEnum::jDouble:
-			return static_cast<uint64_t>(get<double>(it->second));
+			return static_cast<uint64_t>(std::get<double>(it->second));
 		}
 
-		return get<uint64_t>(it->second);
+		return std::get<uint64_t>(it->second);
 	}
 
-	double JsonObject::getDouble(string_view key) const
+	double JSONObject::getDouble(std::string_view key) const
 	{
 		auto it = this->findValue(key);
 
@@ -341,41 +390,41 @@ namespace json::utility
 		switch (type)
 		{
 		case json::utility::VariantTypeEnum::jInt64_t:
-			return static_cast<double>(get<int64_t>(it->second));
+			return static_cast<double>(std::get<int64_t>(it->second));
 
 		case json::utility::VariantTypeEnum::jUInt64_t:
-			return static_cast<double>(get<uint64_t>(it->second));
+			return static_cast<double>(std::get<uint64_t>(it->second));
 		}
 
-		return get<double>(it->second);
+		return std::get<double>(it->second);
 	}
 
-	const vector<JsonObject>& JsonObject::getArray(string_view key) const
+	const std::vector<JSONObject>& JSONObject::getArray(std::string_view key) const
 	{
-		return get<vector<JsonObject>>(this->findValue(key)->second);
+		return std::get<std::vector<JSONObject>>(this->findValue(key)->second);
 	}
 
-	const JsonObject& JsonObject::getObject(string_view key) const
+	const JSONObject& JSONObject::getObject(std::string_view key) const
 	{
-		return get<JsonObject>(this->findValue(key)->second);
+		return std::get<JSONObject>(this->findValue(key)->second);
 	}
 
-	bool JsonObject::tryGetNull(string_view key) const
+	bool JSONObject::tryGetNull(std::string_view key) const
 	{
 		return this->findValue(key, false) != data.end();
 	}
 
-	bool JsonObject::tryGetString(string_view key, string& value) const
+	bool JSONObject::tryGetString(std::string_view key, std::string& value) const
 	{
 		return this->tryGetValue(key, value);
 	}
 
-	bool JsonObject::tryGetBool(string_view key, bool& value) const
+	bool JSONObject::tryGetBool(std::string_view key, bool& value) const
 	{
 		return this->tryGetValue(key, value);
 	}
 
-	bool JsonObject::tryGetInt(string_view key, int64_t& value) const
+	bool JSONObject::tryGetInt(std::string_view key, int64_t& value) const
 	{
 		auto it = this->findValue(key, false);
 
@@ -389,22 +438,22 @@ namespace json::utility
 		switch (type)
 		{
 		case utility::VariantTypeEnum::jInt64_t:
-			value = get<int64_t>(it->second);
+			value = std::get<int64_t>(it->second);
 
 			return true;
 
 		case utility::VariantTypeEnum::jUInt64_t:
-			value = static_cast<int64_t>(get<uint64_t>(it->second));
+			value = static_cast<int64_t>(std::get<uint64_t>(it->second));
 
 			return true;
 
 		case utility::VariantTypeEnum::jDouble:
-			value = static_cast<int64_t>(get<double>(it->second));
+			value = static_cast<int64_t>(std::get<double>(it->second));
 
 			return true;
 
 		case utility::VariantTypeEnum::jString:
-			value = stoll(get<string>(it->second));
+			value = stoll(std::get<std::string>(it->second));
 
 			return true;
 
@@ -413,7 +462,7 @@ namespace json::utility
 		}
 	}
 
-	bool JsonObject::tryGetUnsignedInt(string_view key, uint64_t& value) const
+	bool JSONObject::tryGetUnsignedInt(std::string_view key, uint64_t& value) const
 	{
 		auto it = this->findValue(key, false);
 
@@ -427,22 +476,22 @@ namespace json::utility
 		switch (type)
 		{
 		case utility::VariantTypeEnum::jUInt64_t:
-			value = get<uint64_t>(it->second);
+			value = std::get<uint64_t>(it->second);
 
 			return true;
 
 		case utility::VariantTypeEnum::jInt64_t:
-			value = static_cast<uint64_t>(get<int64_t>(it->second));
+			value = static_cast<uint64_t>(std::get<int64_t>(it->second));
 
 			return true;
 
 		case utility::VariantTypeEnum::jDouble:
-			value = static_cast<uint64_t>(get<double>(it->second));
+			value = static_cast<uint64_t>(std::get<double>(it->second));
 
 			return true;
 
 		case utility::VariantTypeEnum::jString:
-			value = stoull(get<string>(it->second));
+			value = stoull(std::get<std::string>(it->second));
 
 			return true;
 
@@ -451,7 +500,7 @@ namespace json::utility
 		}
 	}
 
-	bool JsonObject::tryGetDouble(string_view key, double& value) const
+	bool JSONObject::tryGetDouble(std::string_view key, double& value) const
 	{
 		auto it = this->findValue(key, false);
 
@@ -465,22 +514,22 @@ namespace json::utility
 		switch (type)
 		{
 		case utility::VariantTypeEnum::jDouble:
-			value = get<double>(it->second);
+			value = std::get<double>(it->second);
 
 			return true;
 
 		case utility::VariantTypeEnum::jInt64_t:
-			value = static_cast<double>(get<int64_t>(it->second));
+			value = static_cast<double>(std::get<int64_t>(it->second));
 
 			return true;
 
 		case utility::VariantTypeEnum::jUInt64_t:
-			value = static_cast<double>(get<uint64_t>(it->second));
+			value = static_cast<double>(std::get<uint64_t>(it->second));
 
 			return true;
 
 		case utility::VariantTypeEnum::jString:
-			value = stod(get<string>(it->second));
+			value = stod(std::get<std::string>(it->second));
 
 			return true;
 
@@ -489,32 +538,32 @@ namespace json::utility
 		}
 	}
 
-	bool JsonObject::tryGetArray(string_view key, vector<utility::JsonObject>& value) const
+	bool JSONObject::tryGetArray(std::string_view key, std::vector<utility::JSONObject>& value) const
 	{
 		return this->tryGetValue(key, value);
 	}
 
-	bool JsonObject::tryGetObject(string_view key, utility::JsonObject& value) const
+	bool JSONObject::tryGetObject(std::string_view key, utility::JSONObject& value) const
 	{
 		return this->tryGetValue(key, value);
 	}
 
-	bool JsonObject::contains(string_view key, utility::VariantTypeEnum type) const
+	bool JSONObject::contains(std::string_view key, utility::VariantTypeEnum type) const
 	{
-		return any_of(data.begin(), data.end(), [&key, &type](const pair<string, JsonObject::VariantType>& data) { return data.first == key && data.second.index() == static_cast<size_t>(type); });
+		return any_of(data.begin(), data.end(), [&key, &type](const std::pair<std::string, JSONObject::VariantType>& data) { return data.first == key && data.second.index() == static_cast<size_t>(type); });
 	}
 
-	ConstJSONIterator JsonObject::begin() const noexcept
+	ConstJSONIterator JSONObject::begin() const noexcept
 	{
 		return ConstJSONIterator(data.cbegin(), data.cend(), data.cbegin());
 	}
 
-	ConstJSONIterator JsonObject::end() const noexcept
+	ConstJSONIterator JSONObject::end() const noexcept
 	{
 		return ConstJSONIterator(data.cbegin(), data.cend(), data.cend());
 	}
 
-	JsonObject::VariantType& JsonObject::operator[](string_view key)
+	JSONObject::VariantType& JSONObject::operator[](std::string_view key)
 	{
 		for (auto& [jsonKey, value] : data)
 		{
@@ -527,7 +576,7 @@ namespace json::utility
 		throw exceptions::CantFindValueException(key);
 	}
 
-	const JsonObject::VariantType& JsonObject::operator[](string_view key) const
+	const JSONObject::VariantType& JSONObject::operator[](std::string_view key) const
 	{
 		for (const auto& [jsonKey, value] : data)
 		{
@@ -541,23 +590,23 @@ namespace json::utility
 	}
 
 #if defined(__LINUX__) || defined(__ANDROID__)
-	static string convertString(string_view source, size_t resultSize, iconv_t convert)
+	static std::string convertString(std::string_view source, size_t resultSize, iconv_t convert)
 	{
-		if (convert == reinterpret_cast<iconv_t>(string::npos))
+		if (convert == reinterpret_cast<iconv_t>(std::string::npos))
 		{
 			throw exceptions::WrongEncodingException(source);
 		}
 
 		char* data = const_cast<char*>(source.data());
 		size_t dataSize = source.size();
-		string result(resultSize, '\0');
+		std::string result(resultSize, '\0');
 		char* resultData = const_cast<char*>(result.data());
 
 		size_t error = iconv(convert, &data, &dataSize, &resultData, &resultSize);
 
 		iconv_close(convert);
 
-		if (error == string::npos)
+		if (error == std::string::npos)
 		{
 			throw exceptions::WrongEncodingException(source);
 		}
@@ -567,20 +616,20 @@ namespace json::utility
 		return result;
 	}
 
-	string toUTF8JSON(string_view source, string_view sourceCodePage)
+	std::string toUTF8JSON(std::string_view source, std::string_view sourceCodePage)
 	{
 		return convertString(source, source.size() * 4, iconv_open(CP_UTF8, sourceCodePage.data()));
 	}
 
-	string fromUTF8JSON(string_view source, string_view resultCodePage)
+	std::string fromUTF8JSON(std::string_view source, std::string_view resultCodePage)
 	{
 		return convertString(source, source.size(), iconv_open(resultCodePage.data(), CP_UTF8));
 	}
 #else
-	string toUTF8JSON(string_view source, uint32_t sourceCodePage)
+	std::string toUTF8JSON(std::string_view source, uint32_t sourceCodePage)
 	{
-		string result;
-		wstring tem;
+		std::string result;
+		std::wstring tem;
 		int size = MultiByteToWideChar
 		(
 			sourceCodePage,
@@ -648,10 +697,10 @@ namespace json::utility
 		return result;
 	}
 
-	string fromUTF8JSON(string_view source, uint32_t resultCodePage)
+	std::string fromUTF8JSON(std::string_view source, uint32_t resultCodePage)
 	{
-		string result;
-		wstring tem;
+		std::string result;
+		std::wstring tem;
 		int size = MultiByteToWideChar
 		(
 			CP_UTF8,
@@ -720,7 +769,7 @@ namespace json::utility
 	}
 #endif
 
-	void outputJSONType(ostream& outputStream, const JsonObject::VariantType& value, bool isLast, string& offset)
+	void outputJSONType(std::ostream& outputStream, const JSONObject::VariantType& value, bool isLast, std::string& offset)
 	{
 		VariantTypeEnum type = static_cast<VariantTypeEnum>(value.index());
 
@@ -737,38 +786,38 @@ namespace json::utility
 			break;
 
 		case VariantTypeEnum::jString:
-			outputStream << '"' << regex_replace(get<string>(value), regex(R"(\\)"), R"(\\)") << '"';
+			outputStream << '"' << std::regex_replace(std::get<std::string>(value), std::regex(R"(\\)"), R"(\\)") << '"';
 
 			break;
 
 		case VariantTypeEnum::jBool:
-			outputStream << boolalpha << get<bool>(value);
+			outputStream << std::boolalpha << std::get<bool>(value);
 
 			break;
 
 		case VariantTypeEnum::jInt64_t:
-			outputStream << get<int64_t>(value);
+			outputStream << std::get<int64_t>(value);
 
 			break;
 
 		case VariantTypeEnum::jUInt64_t:
-			outputStream << get<uint64_t>(value);
+			outputStream << std::get<uint64_t>(value);
 
 			break;
 
 		case VariantTypeEnum::jDouble:
-			outputStream << fixed << get<double>(value);
+			outputStream << std::fixed << std::get<double>(value);
 
 			break;
 
 		case VariantTypeEnum::jJSONArray:
-			outputStream << JSONArrayWrapper(value, &offset) << string(offset.begin(), offset.end() - 2) << ']';
+			outputStream << JSONArrayWrapper(value, &offset) << std::string(offset.begin(), offset.end() - 2) << ']';
 
 			break;
 
 		case VariantTypeEnum::jJSONObject:
 		{
-			const JsonObject& ref = get<JsonObject>(value);
+			const JSONObject& ref = std::get<JSONObject>(value);
 
 			auto start = ref.data.begin();
 			auto end = ref.data.end();
@@ -793,7 +842,7 @@ namespace json::utility
 				++start;
 			}
 
-			outputStream << string(offset.begin(), offset.end() - 2) << '}';
+			outputStream << std::string(offset.begin(), offset.end() - 2) << '}';
 		}
 
 		break;
@@ -810,21 +859,21 @@ namespace json::utility
 			outputStream << ',';
 		}
 
-		outputStream << endl;
+		outputStream << std::endl;
 	}
 
-	void appendArray(JsonObject::VariantType&& value, vector<JsonObject>& jsonArray)
+	void appendArray(JSONObject::VariantType&& value, std::vector<JSONObject>& jsonArray)
 	{
-		JsonObject object;
+		JSONObject object;
 
-		object.data.emplace_back("", move(value));
+		object.data.emplace_back("", std::move(value));
 
-		jsonArray.push_back(move(object));
+		jsonArray.push_back(std::move(object));
 	}
 
-	string getJSONVersion()
+	std::string getJSONVersion()
 	{
-		string jsonVersion = "2.7.1";
+		std::string jsonVersion = "2.8.0";
 
 		return jsonVersion;
 	}

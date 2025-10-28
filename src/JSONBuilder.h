@@ -9,10 +9,10 @@ namespace json
 	{
 	public:
 		/// @brief std::variant specialization for JSON
-		using VariantType = utility::JsonObject::VariantType;
+		using VariantType = utility::JSONObject::VariantType;
 
 		/// @brief JSON object
-		using ObjectType = utility::JsonObject;
+		using ObjectType = utility::JSONObject;
 
 		/// @brief Output type for istream operator
 		enum class OutputType
@@ -24,7 +24,7 @@ namespace json
 		};
 
 	private:
-		utility::JsonObject builderData;
+		utility::JSONObject builderData;
 #if defined(__LINUX__) || defined(__ANDROID__)
 		std::string_view codePage;
 #else
@@ -44,7 +44,7 @@ namespace json
 		/// @brief Construct from parsed or builded data 
 		/// @param data Data from JSONBuilder or JSONParser
 		/// @param codePage data's codePage
-		JSONBuilder(const utility::JsonObject& data, std::string_view codePage, OutputType type = OutputType::standard);
+		JSONBuilder(const utility::JSONObject& data, std::string_view codePage, OutputType type = OutputType::standard);
 #else
 		/// <summary>
 		/// Construct JSONBuilder
@@ -56,7 +56,7 @@ namespace json
 		/// @brief Construct from parsed or builded data 
 		/// @param data Data from JSONBuilder or JSONParser
 		/// @param codePage data's codePage
-		JSONBuilder(const utility::JsonObject& data, uint32_t codePage, OutputType type = OutputType::standard);
+		JSONBuilder(const utility::JSONObject& data, uint32_t codePage, OutputType type = OutputType::standard);
 #endif
 
 		/// @brief Copy constructor
@@ -146,25 +146,25 @@ namespace json
 		/// @param key JSON key
 		/// @param value JSON array
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendArray(std::string_view key, std::vector<utility::JsonObject>&& value);
+		JSONBuilder& appendArray(std::string_view key, std::vector<utility::JSONObject>&& value);
 
 		/// @brief Add JSON key - JSON array
 		/// @param key JSON key
 		/// @param value JSON array
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendArray(std::string_view key, const std::vector<utility::JsonObject>& value);
+		JSONBuilder& appendArray(std::string_view key, const std::vector<utility::JSONObject>& value);
 
 		/// @brief Add JSON key - JSON object
 		/// @param key JSON key
 		/// @param value JSON object
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendObject(std::string_view key, utility::JsonObject&& value);
+		JSONBuilder& appendObject(std::string_view key, utility::JSONObject&& value);
 
 		/// @brief Add JSON key - JSON object
 		/// @param key JSON key
 		/// @param value JSON object
 		/// @return Reference to current JSONBuilder instance
-		JSONBuilder& appendObject(std::string_view key, const utility::JsonObject& value);
+		JSONBuilder& appendObject(std::string_view key, const utility::JSONObject& value);
 
 		/**
 		 * @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
@@ -212,11 +212,11 @@ namespace json
 
 		/// @brief Getter for builded JSON object
 		/// @return JSON object
-		const utility::JsonObject& getObject() const;
+		const utility::JSONObject& getObject() const;
 
 		/// @brief Move builded JSON object from JSONBuilder
 		/// @param object Result of moving
-		void getObject(utility::JsonObject& object) noexcept;
+		void getObject(utility::JSONObject& object) noexcept;
 
 		/// <summary>
 		/// Set JSON to output stream

@@ -9,8 +9,8 @@ namespace json
 	class JSON_API RecursiveJSONIterator
 	{
 	private:
-		utility::JsonObject object;
-		std::stack<utility::JsonObject::ConstJSONIterator> depth;
+		utility::JSONObject object;
+		std::stack<utility::JSONObject::ConstJSONIterator> depth;
 
 	private:
 		RecursiveJSONIterator() = default;
@@ -18,15 +18,15 @@ namespace json
 	public:
 		RecursiveJSONIterator(const JSONParser& parser);
 
-		RecursiveJSONIterator(const utility::JsonObject& object);
+		RecursiveJSONIterator(const utility::JSONObject& object);
 
 		RecursiveJSONIterator operator ++ (int) noexcept;
 
 		const RecursiveJSONIterator& operator ++ () noexcept;
 
-		const std::pair<std::string, utility::JsonObject::VariantType>& operator* () const noexcept;
+		const std::pair<std::string, utility::JSONObject::VariantType>& operator* () const noexcept;
 
-		utility::JsonObject::ConstJSONIterator::ConstJSONIteratorType operator-> () const noexcept;
+		utility::JSONObject::ConstJSONIterator::ConstJSONIteratorType operator-> () const noexcept;
 
 		bool operator == (const RecursiveJSONIterator& other) const noexcept;
 

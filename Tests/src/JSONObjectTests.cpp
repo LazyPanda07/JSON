@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "JSONParser.h"
+#include "JsonParser.h"
 
 TEST(Object, DefaultOperations)
 {

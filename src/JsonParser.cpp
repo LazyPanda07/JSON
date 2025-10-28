@@ -27,7 +27,7 @@ bool isNumber(const string& source);
 
 namespace json
 {
-	using ConstJSONIterator = JsonObject::ConstJSONIterator;
+	using ConstJSONIterator = JsonObject::ConstIterator;
 
 	JsonObject::VariantType JsonParser::parseValue(const string& value)
 	{

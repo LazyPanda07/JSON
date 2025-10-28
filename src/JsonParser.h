@@ -20,7 +20,7 @@ namespace json
 		using ObjectType = JsonObject;
 
 		/// @brief Iterator for jsonObject
-		using ConstJSONIterator = JsonObject::ConstJSONIterator;
+		using ConstJSONIterator = JsonObject::ConstIterator;
 
 	private:
 		std::string rawData;

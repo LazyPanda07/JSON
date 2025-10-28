@@ -39,7 +39,7 @@
     <ClCompile Include="src\Exceptions\WrongInputStreamException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\RecursiveJSONIterator.cpp">
+    <ClCompile Include="src\RecursiveIterator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\JsonObject.cpp">
@@ -71,7 +71,7 @@
     <ClInclude Include="src\Exceptions\WrongInputStreamException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\RecursiveJSONIterator.h">
+    <ClInclude Include="src\RecursiveIterator.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\OutputOperations.h">

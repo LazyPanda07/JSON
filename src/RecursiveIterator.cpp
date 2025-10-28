@@ -1,40 +1,40 @@
-#include "RecursiveJSONIterator.h"
+#include "RecursiveIterator.h"
 
 using namespace std;
 
 namespace json
 {
-	using ConstJSONIterator = JsonObject::ConstJSONIterator;
+	using ConstIterator = JsonObject::ConstIterator;
 
-	RecursiveJSONIterator::RecursiveJSONIterator(const JsonParser& parser) :
+	RecursiveIterator::RecursiveIterator(const JsonParser& parser) :
 		object(parser.getParsedData())
 	{
 		depth.emplace(object.begin());
 	}
 
-	RecursiveJSONIterator::RecursiveJSONIterator(const JsonObject& object) :
+	RecursiveIterator::RecursiveIterator(const JsonObject& object) :
 		object(object)
 	{
 		depth.emplace(this->object.begin());
 	}
 
-	RecursiveJSONIterator RecursiveJSONIterator::operator++ (int) noexcept
+	RecursiveIterator RecursiveIterator::operator++ (int) noexcept
 	{
-		RecursiveJSONIterator it(*this);
+		RecursiveIterator it(*this);
 
 		++(*this);
 
 		return it;
 	}
 
-	const RecursiveJSONIterator& RecursiveJSONIterator::operator++ () noexcept
+	const RecursiveIterator& RecursiveIterator::operator++ () noexcept
 	{
 		if (depth.empty())
 		{
 			return *this;
 		}
 
-		ConstJSONIterator& current = depth.top();
+		ConstIterator& current = depth.top();
 
 		if (current == current.getEnd())
 		{
@@ -86,17 +86,17 @@ namespace json
 		return *this;
 	}
 
-	const pair<string, JsonObject::VariantType>& RecursiveJSONIterator::operator* () const noexcept
+	const pair<string, JsonObject::VariantType>& RecursiveIterator::operator* () const noexcept
 	{
 		return *depth.top();
 	}
 
-	JsonObject::ConstJSONIterator::ConstJSONIteratorType RecursiveJSONIterator::operator-> () const noexcept
+	JsonObject::ConstIterator::ConstIteratorType RecursiveIterator::operator-> () const noexcept
 	{
 		return depth.top();
 	}
 
-	bool RecursiveJSONIterator::operator == (const RecursiveJSONIterator& other) const noexcept
+	bool RecursiveIterator::operator == (const RecursiveIterator& other) const noexcept
 	{
 		if (depth.empty() && other.depth.empty())
 		{
@@ -113,7 +113,7 @@ namespace json
 		return depth.top() == other.depth.top();
 	}
 
-	bool RecursiveJSONIterator::operator != (const RecursiveJSONIterator& other) const noexcept
+	bool RecursiveIterator::operator != (const RecursiveIterator& other) const noexcept
 	{
 		return !(*this == other);
 	}

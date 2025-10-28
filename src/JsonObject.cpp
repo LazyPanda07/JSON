@@ -6,8 +6,8 @@
 
 namespace json
 {
-	using ConstJSONIterator = JsonObject::ConstJSONIterator;
-	using ConstJSONIteratorType = JsonObject::ConstJSONIterator::ConstJSONIteratorType;
+	using ConstJSONIterator = JsonObject::ConstIterator;
+	using ConstJSONIteratorType = JsonObject::ConstIterator::ConstIteratorType;
 
 	void JsonObject::throwCantFindValueException(std::string_view key)
 	{
@@ -23,7 +23,7 @@ namespace json
 		jsonArray.push_back(std::move(object));
 	}
 
-	ConstJSONIterator::ConstJSONIterator(ConstJSONIteratorType begin, ConstJSONIteratorType end, ConstJSONIteratorType start) :
+	ConstJSONIterator::ConstIterator(ConstIteratorType begin, ConstIteratorType end, ConstIteratorType start) :
 		begin(begin),
 		end(end),
 		current(start)
@@ -43,7 +43,7 @@ namespace json
 
 	ConstJSONIterator ConstJSONIterator::operator++ (int) noexcept
 	{
-		ConstJSONIterator it(*this);
+		ConstIterator it(*this);
 
 		++(*this);
 
@@ -64,7 +64,7 @@ namespace json
 
 	ConstJSONIterator ConstJSONIterator::operator-- (int) noexcept
 	{
-		ConstJSONIterator it(*this);
+		ConstIterator it(*this);
 
 		--current;
 
@@ -93,17 +93,17 @@ namespace json
 		return current;
 	}
 
-	bool ConstJSONIterator::operator == (const ConstJSONIterator& other) const noexcept
+	bool ConstJSONIterator::operator == (const ConstIterator& other) const noexcept
 	{
 		return current == other.current;
 	}
 
-	bool ConstJSONIterator::operator != (const ConstJSONIterator& other) const noexcept
+	bool ConstJSONIterator::operator != (const ConstIterator& other) const noexcept
 	{
 		return current != other.current;
 	}
 
-	ConstJSONIterator::operator ConstJSONIteratorType () const
+	ConstJSONIterator::operator ConstIteratorType () const
 	{
 		return current;
 	}
@@ -554,12 +554,12 @@ namespace json
 
 	ConstJSONIterator JsonObject::begin() const noexcept
 	{
-		return ConstJSONIterator(data.cbegin(), data.cend(), data.cbegin());
+		return ConstIterator(data.cbegin(), data.cend(), data.cbegin());
 	}
 
 	ConstJSONIterator JsonObject::end() const noexcept
 	{
-		return ConstJSONIterator(data.cbegin(), data.cend(), data.cend());
+		return ConstIterator(data.cbegin(), data.cend(), data.cend());
 	}
 
 	JsonObject::VariantType& JsonObject::operator[](std::string_view key)

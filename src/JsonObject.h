@@ -12,52 +12,52 @@ namespace json
 
 	public:
 		/// @brief Iterator through jsonObject
-		class JSON_API ConstJSONIterator
+		class JSON_API ConstIterator
 		{
 		public:
-			using ConstJSONIteratorType = std::vector<std::pair<std::string, VariantType>>::const_iterator;
+			using ConstIteratorType = std::vector<std::pair<std::string, VariantType>>::const_iterator;
 
 		private:
-			ConstJSONIteratorType begin;
-			ConstJSONIteratorType end;
-			ConstJSONIteratorType current;
+			ConstIteratorType begin;
+			ConstIteratorType end;
+			ConstIteratorType current;
 
 		public:
-			ConstJSONIterator() = default;
+			ConstIterator() = default;
 
-			ConstJSONIterator(ConstJSONIteratorType begin, ConstJSONIteratorType end, ConstJSONIteratorType start);
+			ConstIterator(ConstIteratorType begin, ConstIteratorType end, ConstIteratorType start);
 
-			ConstJSONIterator(const ConstJSONIterator& other) = default;
+			ConstIterator(const ConstIterator& other) = default;
 
-			ConstJSONIterator(ConstJSONIterator&& other) noexcept = default;
+			ConstIterator(ConstIterator&& other) noexcept = default;
 
-			ConstJSONIterator& operator = (const ConstJSONIterator& other) = default;
+			ConstIterator& operator = (const ConstIterator& other) = default;
 
-			ConstJSONIterator& operator = (ConstJSONIterator&& other) noexcept = default;
+			ConstIterator& operator = (ConstIterator&& other) noexcept = default;
 
-			const ConstJSONIteratorType& getBegin() const;
+			const ConstIteratorType& getBegin() const;
 
-			const ConstJSONIteratorType& getEnd() const;
+			const ConstIteratorType& getEnd() const;
 
-			ConstJSONIterator operator++(int) noexcept;
+			ConstIterator operator++(int) noexcept;
 
-			const ConstJSONIterator& operator++() noexcept;
+			const ConstIterator& operator++() noexcept;
 
-			ConstJSONIterator operator--(int) noexcept;
+			ConstIterator operator--(int) noexcept;
 
-			const ConstJSONIterator& operator--() noexcept;
+			const ConstIterator& operator--() noexcept;
 
 			const std::pair<std::string, VariantType>& operator*() const noexcept;
 
-			const ConstJSONIteratorType& operator->() const noexcept;
+			const ConstIteratorType& operator->() const noexcept;
 
-			bool operator==(const ConstJSONIterator& other) const noexcept;
+			bool operator==(const ConstIterator& other) const noexcept;
 
-			bool operator!=(const ConstJSONIterator& other) const noexcept;
+			bool operator!=(const ConstIterator& other) const noexcept;
 
-			operator ConstJSONIteratorType () const;
+			operator ConstIteratorType () const;
 
-			~ConstJSONIterator() = default;
+			~ConstIterator() = default;
 		};
 
 	private:
@@ -84,7 +84,7 @@ namespace json
 		template<typename T>
 		bool tryGetValue(std::string_view key, T& value) const;
 
-		ConstJSONIterator::ConstJSONIteratorType findValue(std::string_view key, bool throwException = true) const;
+		ConstIterator::ConstIteratorType findValue(std::string_view key, bool throwException = true) const;
 
 		void appendData(const std::string& key, const json::JsonObject::VariantType& value);
 
@@ -282,13 +282,13 @@ namespace json
 		 * @brief Begin iterator
 		 * @return
 		*/
-		ConstJSONIterator begin() const noexcept;
+		ConstIterator begin() const noexcept;
 
 		/**
 		 * @brief End iterator
 		 * @return
 		*/
-		ConstJSONIterator end() const noexcept;
+		ConstIterator end() const noexcept;
 
 		/**
 		 * @brief Access JSON value
@@ -350,7 +350,7 @@ namespace json
 		/// @param iterator jsonObject::ConstJSONIterator
 		/// @param nestedIterator jsonObject::ConstJSONIterator::getBegin() or jsonObject::ConstJSONIterator::getEnd()
 		/// @return 
-		bool operator ==(const JsonObject::ConstJSONIterator& iterator, const JsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator);
+		bool operator ==(const JsonObject::ConstIterator& iterator, const JsonObject::ConstIterator::ConstIteratorType& nestedIterator);
 	}
 }
 
@@ -358,9 +358,9 @@ namespace json
 {
 	namespace utility
 	{
-		inline bool operator==(const JsonObject::ConstJSONIterator& iterator, const JsonObject::ConstJSONIterator::ConstJSONIteratorType& nestedIterator)
+		inline bool operator ==(const JsonObject::ConstIterator& iterator, const JsonObject::ConstIterator::ConstIteratorType& nestedIterator)
 		{
-			return static_cast<JsonObject::ConstJSONIterator::ConstJSONIteratorType>(iterator) == nestedIterator;
+			return static_cast<JsonObject::ConstIterator::ConstIteratorType>(iterator) == nestedIterator;
 		}
 	}
 

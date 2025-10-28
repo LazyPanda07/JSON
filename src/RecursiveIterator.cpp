@@ -29,6 +29,8 @@ namespace json
 
 	const RecursiveIterator& RecursiveIterator::operator++ () noexcept
 	{
+		using utility::operator==;
+
 		if (depth.empty())
 		{
 			return *this;

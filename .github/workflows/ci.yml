@@ -245,7 +245,7 @@ jobs:
     
     - name: Setup release version variable
       shell: pwsh
-      run: echo "VERSION=$($($($(Select-String -Path .\src\JSONUtility.cpp -Pattern jsonVersion) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
+      run: echo "VERSION=$($($($(Select-String -Path .\src\JsonUtility.cpp -Pattern jsonVersion) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
       if: ${{ env.CURRENT_BRANCH == 'master' }}

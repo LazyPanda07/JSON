@@ -27,7 +27,7 @@ add_library(
 	src/JsonBuilder.cpp
 	src/JsonParser.cpp
 	src/JsonUtility.cpp
-	src/RecursiveIterator.cpp
+	src/RecursiveJsonIterator.cpp
 	src/Exceptions/BaseJSONException.cpp
 	src/Exceptions/CantFindValueException.cpp
 	src/Exceptions/WrongEncodingException.cpp

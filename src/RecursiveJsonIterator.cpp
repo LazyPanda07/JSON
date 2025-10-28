@@ -1,4 +1,4 @@
-#include "RecursiveIterator.h"
+#include "RecursiveJsonIterator.h"
 
 using namespace std;
 
@@ -6,28 +6,28 @@ namespace json
 {
 	using ConstIterator = JsonObject::ConstIterator;
 
-	RecursiveIterator::RecursiveIterator(const JsonParser& parser) :
+	RecursiveJsonIterator::RecursiveJsonIterator(const JsonParser& parser) :
 		object(parser.getParsedData())
 	{
 		depth.emplace(object.begin());
 	}
 
-	RecursiveIterator::RecursiveIterator(const JsonObject& object) :
+	RecursiveJsonIterator::RecursiveJsonIterator(const JsonObject& object) :
 		object(object)
 	{
 		depth.emplace(this->object.begin());
 	}
 
-	RecursiveIterator RecursiveIterator::operator++ (int) noexcept
+	RecursiveJsonIterator RecursiveJsonIterator::operator++ (int) noexcept
 	{
-		RecursiveIterator it(*this);
+		RecursiveJsonIterator it(*this);
 
 		++(*this);
 
 		return it;
 	}
 
-	const RecursiveIterator& RecursiveIterator::operator++ () noexcept
+	const RecursiveJsonIterator& RecursiveJsonIterator::operator++ () noexcept
 	{
 		using utility::operator==;
 
@@ -88,17 +88,17 @@ namespace json
 		return *this;
 	}
 
-	const pair<string, JsonObject::VariantType>& RecursiveIterator::operator* () const noexcept
+	const pair<string, JsonObject::VariantType>& RecursiveJsonIterator::operator* () const noexcept
 	{
 		return *depth.top();
 	}
 
-	JsonObject::ConstIterator::ConstIteratorType RecursiveIterator::operator-> () const noexcept
+	JsonObject::ConstIterator::ConstIteratorType RecursiveJsonIterator::operator-> () const noexcept
 	{
 		return depth.top();
 	}
 
-	bool RecursiveIterator::operator == (const RecursiveIterator& other) const noexcept
+	bool RecursiveJsonIterator::operator == (const RecursiveJsonIterator& other) const noexcept
 	{
 		if (depth.empty() && other.depth.empty())
 		{
@@ -115,7 +115,7 @@ namespace json
 		return depth.top() == other.depth.top();
 	}
 
-	bool RecursiveIterator::operator != (const RecursiveIterator& other) const noexcept
+	bool RecursiveJsonIterator::operator != (const RecursiveJsonIterator& other) const noexcept
 	{
 		return !(*this == other);
 	}

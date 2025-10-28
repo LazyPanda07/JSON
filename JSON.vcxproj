@@ -260,7 +260,7 @@
     <ClCompile Include="src\JsonObject.cpp" />
     <ClCompile Include="src\JsonParser.cpp" />
     <ClCompile Include="src\JsonUtility.cpp" />
-    <ClCompile Include="src\RecursiveIterator.cpp" />
+    <ClCompile Include="src\RecursiveJsonIterator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CodePageConstants.h" />
@@ -274,7 +274,7 @@
     <ClInclude Include="src\JsonParser.h" />
     <ClInclude Include="src\JsonUtility.h" />
     <ClInclude Include="src\OutputOperations.h" />
-    <ClInclude Include="src\RecursiveIterator.h" />
+    <ClInclude Include="src\RecursiveJsonIterator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

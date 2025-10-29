@@ -109,21 +109,6 @@ namespace json
 	}
 
 	template<typename T>
-	JsonObject& JsonObject::setValue(std::string_view key, T&& value)
-	{
-		if constexpr (std::is_same_v<std::string_view&, decltype(value)>)
-		{
-			data.emplace_back(std::string(key.data(), key.size()), std::string(value.data(), value.size()));
-		}
-		else
-		{
-			data.emplace_back(std::string(key.data(), key.size()), std::forward<T>(value));
-		}
-
-		return *this;
-	}
-
-	template<typename T>
 	bool JsonObject::tryGetValue(std::string_view key, T& value) const
 	{
 		auto it = this->findValue(key, false);

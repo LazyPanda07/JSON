@@ -16,12 +16,12 @@ TEST(Builder, Appends)
 
 	ASSERT_TRUE(referenceData.is_open());
 
-	object.setNull("nullValue");
-	object.setBool("boolValue", true);
-	object.setInt("intValue", 5);
-	object.setDouble("doubleValue", 10.2);
-	object.setUnsignedInt("unsignedIntValue", 15);
-	object.setString("stringValue", "qwe");
+	object.setValue<std::nullptr_t>("nullValue");
+	object.setValue<bool>("boolValue", true);
+	object.setValue<int64_t>("intValue", 5);
+	object.setValue<double>("doubleValue", 10.2);
+	object.setValue<uint64_t>("unsignedIntValue", 15);
+	object.setValue<std::string>("stringValue", "qwe");
 
 	json::JsonObject::appendArray(nullptr, array);
 	json::JsonObject::appendArray(true, array);

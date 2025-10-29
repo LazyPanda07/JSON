@@ -69,7 +69,7 @@ namespace json::utility
 	concept JsonHeavyValues = std::same_as<T, std::string> || std::same_as<T, std::vector<TJsonStruct>> || std::same_as<T, TJsonStruct>;
 
 	template<typename T, typename TJsonStruct>
-	concept JsonValues = JsonLightValues<T> || JsonHeavyValues<T, TJsonStruct>;
+	concept JsonValues = JsonLightValues<std::remove_cvref_t<T>> || JsonHeavyValues<std::remove_cvref_t<T>, TJsonStruct>;
 
 	/// @brief Compare index from variant with enum
 	/// @param index Index from variant

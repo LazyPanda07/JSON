@@ -1,5 +1,7 @@
 #pragma once
 
+#include <format>
+
 #include "JsonUtility.h"
 
 namespace json
@@ -79,9 +81,6 @@ namespace json
 
 	private:
 		template<typename T>
-		JsonObject& setValue(std::string_view key, T&& value);
-
-		template<typename T>
 		bool tryGetValue(std::string_view key, T& value) const;
 
 		ConstIterator::ConstIteratorType findValue(std::string_view key, bool throwException = true) const;
@@ -111,6 +110,9 @@ namespace json
 		/// @param other Another jsonObject from JsonParser or JsonBuilder or custom
 		/// @return Self
 		JsonObject& operator =(JsonObject&& other) noexcept;
+
+		template<typename T>
+		JsonObject& setValue(std::string_view key, T&& value = T()) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);
 
 		/// @brief Set null value with given key
 		/// @param key JSON key
@@ -398,6 +400,55 @@ namespace json
 		throw std::runtime_error("Wrong type");
 
 		return T{};
+	}
+
+	template<typename T>
+	JsonObject& JsonObject::setValue(std::string_view key, T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
+	{
+		using ActualT = std::remove_cvref_t<T>;
+
+		if constexpr (std::is_same_v<ActualT, bool>)
+		{
+			data.emplace_back(key, value);
+		}
+		else if constexpr (std::is_same_v<ActualT, std::nullptr_t>)
+		{
+			data.emplace_back(key, nullptr);
+		}
+		else if constexpr (std::is_same_v<ActualT, std::string>)
+		{
+			data.emplace_back(key, std::forward<T>(value));
+		}
+		else if constexpr (std::is_convertible_v<ActualT, std::string>)
+		{
+			data.emplace_back(key, static_cast<std::string>(value));
+		}
+		else if constexpr (std::convertible_to<ActualT, std::string_view>)
+		{
+			data.emplace_back(key, static_cast<std::string_view>(value).data());
+		}
+		else if constexpr (std::is_same_v<ActualT, std::vector<JsonObject>> || std::is_same_v<ActualT, JsonObject>)
+		{
+			data.emplace_back(key, std::forward<T>(value));
+		}
+		else if constexpr (std::is_floating_point_v<ActualT>)
+		{
+			data.emplace_back(key, static_cast<double>(value));
+		}
+		else if constexpr (std::is_unsigned_v<ActualT>)
+		{
+			data.emplace_back(key, static_cast<uint64_t>(value));
+		}
+		else if constexpr (std::is_signed_v<ActualT>)
+		{
+			data.emplace_back(key, static_cast<int64_t>(value));
+		}
+		else
+		{
+			throw std::invalid_argument(std::format("Wrong argument type: {}", typeid(T).name()));
+		}
+
+		return *this;
 	}
 
 	template<utility::JsonLightValues T>

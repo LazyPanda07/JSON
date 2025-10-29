@@ -616,13 +616,11 @@ bool isNumber(const std::string& source)
 		return false;
 	}
 
-	constexpr std::string_view symbols = "0123456789-.";
-
-	if (all_of(source.begin(), source.end(), [](const char& c) { return std::find(symbols.begin(), symbols.end(), c) != symbols.end(); }))
+	if (std::all_of(source.begin(), source.end(), [](char c) { constexpr std::string_view symbols = "0123456789-."; return std::find(symbols.begin(), symbols.end(), c) != symbols.end(); }))
 	{
 		size_t check = 0;
 
-		for (const auto& c : source)
+		for (char c : source)
 		{
 			if (c == '.')
 			{

@@ -32,14 +32,14 @@ TEST(Builder, Appends)
 	json::JsonObject::appendArray(object, array);
 
 	jsonData << json::JsonBuilder(CP_UTF8)
-		.appendNull("nullValue")
-		.appendBool("boolValue", true)
-		.appendInt("intValue", 5)
-		.appendDouble("doubleValue", 10.2)
-		.appendUnsignedInt("unsignedIntValue", 15)
-		.appendString("stringValue", "qwe")
-		.appendArray("arrayValue", std::move(array))
-		.appendObject("objectValue", std::move(object));
+		.append<std::nullptr_t>("nullValue")
+		.append("boolValue", true)
+		.append("intValue", 5)
+		.append("doubleValue", 10.2)
+		.append("unsignedIntValue", 15)
+		.append("stringValue", "qwe")
+		.append("arrayValue", std::move(array))
+		.append("objectValue", std::move(object));
 
 	ASSERT_EQ
 	(
@@ -53,7 +53,7 @@ TEST(Builder, Contains)
 	json::JsonBuilder builder(CP_UTF8);
 	json::JsonObject object;
 
-	object.setInt("someRecursiveData", 10);
+	object.setValue("someRecursiveData", 10);
 
 	builder["someData"] = 5LL;
 	builder["object"] = std::move(object);
@@ -99,7 +99,7 @@ TEST(Builder, Minimize)
 
 	referenceData << std::ifstream("data/minimize.json").rdbuf();
 
-	object.setInt("someRecursiveData", 10);
+	object.setValue("someRecursiveData", 10);
 
 	builder["someData"] = 5LL;
 	builder["object"] = std::move(object);

@@ -16,7 +16,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
     
     steps:
     - uses: actions/checkout@v4
@@ -28,13 +27,13 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_SHARED_LIBS=${{ matrix.shared[0] }} -G "NMake Makefiles" ..
-          nmake install
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=install-dir -G "Ninja" ..
+          cmake --build . -j && cmake --install
       
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
+        name: ${{ matrix.configuration }}_Windows
         path: build/install-dir/
 
 
@@ -45,7 +44,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
 
     steps:
     - uses: actions/checkout@v4
@@ -54,13 +52,13 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_SHARED_LIBS=${{ matrix.shared[0] }} ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=install-dir -G "Ninja" ..
+          cmake --build . -j && cmake --install .
           
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
+        name: ${{ matrix.configuration }}_Linux
         path: build/install-dir
 
 
@@ -71,7 +69,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
 
     steps:
     - uses: actions/checkout@v4
@@ -80,13 +77,13 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DBUILD_SHARED_LIBS=${{ matrix.shared[0] }} ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=install-dir -G "Ninja" ..
+          cmake --build . -j && cmake --install .
           
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_LinuxARM
+        name: ${{ matrix.configuration }}_LinuxARM
         path: build/install-dir
 
 
@@ -96,7 +93,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
 
     steps:
     - uses: actions/checkout@v4
@@ -113,7 +109,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Windows
+        name: ${{ matrix.configuration }}_Windows
         path: JSON
 
     - name: Build tests
@@ -121,8 +117,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "NMake Makefiles" ..
-          nmake install
+          cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -G "Ninja" ..
+          cmake --build . -j && cmake --install .
 
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
@@ -139,7 +135,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
 
     steps:
     - uses: actions/checkout@v4
@@ -147,7 +142,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
+        name: ${{ matrix.configuration }}_Linux
         path: JSON
         
     - name: Build tests
@@ -155,8 +150,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake --build . -j && cmake --install .
           
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
@@ -173,7 +168,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
 
     steps:
     - uses: actions/checkout@v4
@@ -181,7 +175,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_LinuxARM
+        name: ${{ matrix.configuration }}_LinuxARM
         path: JSON
         
     - name: Build tests
@@ -189,8 +183,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake --build . -j && cmake --install .
           
     - name: Tests
       working-directory: ${{ github.workspace }}/Tests
@@ -207,7 +201,6 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        shared: [[ON, DLL], [OFF, ""]]
 
     steps: 
     - uses: actions/checkout@v4
@@ -215,7 +208,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ matrix.configuration }}${{ matrix.shared[1] }}_Linux
+        name: ${{ matrix.configuration }}_Linux
         path: JSON
     
     - name: Tests
@@ -223,8 +216,8 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ..
-          make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -G "Ninja" ..
+          cmake --build . -j && cmake --install .
           
     - name: Memory leak test
       uses: LazyPanda07/check-memory-leaks@v1
@@ -260,11 +253,11 @@ jobs:
 
     - name: Create Linux zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: zip -r linux.zip Release_Linux ReleaseDLL_Linux
+      run: zip -r linux.zip Release_Linux
 
     - name: Create Linux ARM zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: zip -r linux_aarch64.zip Release_LinuxARM ReleaseDLL_LinuxARM
+      run: zip -r linux_aarch64.zip Release_LinuxARM
 
     - name: Publish
       if: ${{ env.CURRENT_BRANCH == 'master' }}

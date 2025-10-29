@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install-dir CACHE STRING "")
-option(BUILD_SHARED_LIBS "" OFF)
 option(CMAKE_POSITION_INDEPENDENT_CODE "" ON)
 
 project(JSON VERSION 2.8.0)
@@ -14,14 +12,10 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 	set(ANDROID_PLATFORM ${ANDROID_NATIVE_API_LEVEL})
 elseif (UNIX)
     add_definitions(-D__LINUX__)
-endif ()
-
-if (${BUILD_SHARED_LIBS})
-	add_definitions(-DJSON_DLL)
-endif ()
+endif()
 
 add_library(
-	${PROJECT_NAME}
+	${PROJECT_NAME} STATIC
 	src/JsonObject.cpp
 	src/JsonArrayWrapper.cpp
 	src/JsonBuilder.cpp
@@ -43,11 +37,6 @@ target_include_directories(
 	${PROJECT_SOURCE_DIR}/src/
 )
 
-install(
-	TARGETS ${PROJECT_NAME} 
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/dll
-)
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 install(DIRECTORY src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")

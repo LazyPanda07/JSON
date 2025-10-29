@@ -6,7 +6,7 @@
 
 namespace json
 {
-	class JSON_API RecursiveJsonIterator
+	class RecursiveJsonIterator
 	{
 	private:
 		JsonObject object;

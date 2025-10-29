@@ -7,14 +7,14 @@
 namespace json
 {
 	/// @brief JSON object
-	class JSON_API JsonObject
+	class JsonObject
 	{
 	public:
 		using VariantType = utility::BaseVariantType<JsonObject>;
 
 	public:
 		/// @brief Iterator through jsonObject
-		class JSON_API ConstIterator
+		class ConstIterator
 		{
 		public:
 			using ConstIteratorType = std::vector<std::pair<std::string, VariantType>>::const_iterator;

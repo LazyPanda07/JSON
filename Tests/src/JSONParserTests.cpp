@@ -15,8 +15,8 @@ TEST(Parser, Getters)
 	ASSERT_EQ(parser.get<uint32_t>("unsignedIntValue"), 15);
 	ASSERT_EQ(parser.get<std::string>("stringValue"), "qwe");
 
-	EXPECT_THROW(parser.getInt("test"), json::exceptions::CantFindValueException);
-	EXPECT_THROW(parser.getNull("intValue"), std::bad_variant_access);
+	EXPECT_THROW(parser.get<int>("test"), json::exceptions::CantFindValueException);
+	EXPECT_THROW(parser.get<nullptr_t>("intValue"), std::bad_variant_access);
 }
 
 TEST(Parser, TryGetters)
@@ -27,8 +27,9 @@ TEST(Parser, TryGetters)
 	float floatValue;
 	uint16_t unsignedIntValue;
 	std::string stringValue;
+	nullptr_t null;
 
-	ASSERT_TRUE(parser.tryGetNull("nullValue"));
+	ASSERT_TRUE(parser.tryGet("nullValue", null));
 	ASSERT_TRUE(parser.tryGet("boolValue", boolValue));
 	ASSERT_TRUE(parser.tryGet("intValue", intValue));
 	ASSERT_TRUE(parser.tryGet("doubleValue", floatValue));

@@ -80,7 +80,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<nullptr_t>(const pair<string, nullptr_t>& value)
+	JsonBuilder& JsonBuilder::push_back<nullptr_t>(const pair<string, nullptr_t>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -88,7 +88,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<nullptr_t>(pair<string, nullptr_t>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<nullptr_t>(pair<string, nullptr_t>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -96,7 +96,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<string>(const pair<string, string>& value)
+	JsonBuilder& JsonBuilder::push_back<string>(const pair<string, string>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -104,7 +104,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<string>(pair<string, string>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<string>(pair<string, string>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -112,7 +112,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<bool>(const pair<string, bool>& value)
+	JsonBuilder& JsonBuilder::push_back<bool>(const pair<string, bool>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -120,7 +120,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<bool>(pair<string, bool>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<bool>(pair<string, bool>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -128,7 +128,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<int64_t>(const pair<string, int64_t>& value)
+	JsonBuilder& JsonBuilder::push_back<int64_t>(const pair<string, int64_t>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -136,7 +136,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<int64_t>(pair<string, int64_t>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<int64_t>(pair<string, int64_t>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -144,7 +144,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<uint64_t>(const pair<string, uint64_t>& value)
+	JsonBuilder& JsonBuilder::push_back<uint64_t>(const pair<string, uint64_t>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -152,7 +152,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<uint64_t>(pair<string, uint64_t>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<uint64_t>(pair<string, uint64_t>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -160,7 +160,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<double>(const pair<string, double>& value)
+	JsonBuilder& JsonBuilder::push_back<double>(const pair<string, double>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -168,7 +168,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<double>(pair<string, double>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<double>(pair<string, double>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -176,7 +176,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<vector<JsonObject>>(pair<string, vector<JsonObject>>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<vector<JsonObject>>(pair<string, vector<JsonObject>>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -184,7 +184,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<JsonObject>(const pair<string, JsonObject>& value)
+	JsonBuilder& JsonBuilder::push_back<JsonObject>(const pair<string, JsonObject>& value)
 	{
 		builderData.data.emplace_back(value.first, value.second);
 
@@ -192,7 +192,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<JsonObject>(pair<string, JsonObject>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<JsonObject>(pair<string, JsonObject>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -200,7 +200,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<int>(const pair<string, int>& value)
+	JsonBuilder& JsonBuilder::push_back<int>(const pair<string, int>& value)
 	{
 		this->push_back<int64_t>(value);
 
@@ -208,7 +208,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<int>(pair<string, int>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<int>(pair<string, int>&& value) noexcept
 	{
 		this->push_back<int64_t>(move(value));
 
@@ -216,7 +216,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<uint32_t>(const pair<string, uint32_t>& value)
+	JsonBuilder& JsonBuilder::push_back<uint32_t>(const pair<string, uint32_t>& value)
 	{
 		this->push_back<uint64_t>(value);
 
@@ -224,7 +224,7 @@ namespace json
 	}
 
 	template<>
-	JSON_API JsonBuilder& JsonBuilder::push_back<uint32_t>(pair<string, uint32_t>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<uint32_t>(pair<string, uint32_t>&& value) noexcept
 	{
 		this->push_back<uint64_t>(move(value));
 
@@ -410,7 +410,7 @@ namespace json
 		object = move(builderData);
 	}
 
-	JSON_API ostream& operator << (ostream& outputStream, const JsonBuilder& builder)
+	ostream& operator << (ostream& outputStream, const JsonBuilder& builder)
 	{
 		return outputStream << builder.build();
 	}

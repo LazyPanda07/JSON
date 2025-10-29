@@ -7,7 +7,7 @@ namespace json
 	namespace utility
 	{
 		/// @brief Wrapper around array of jsonObjects for simplify some operation
-		class JSON_API JsonArrayWrapper
+		class JsonArrayWrapper
 		{
 		private:
 			const std::vector<JsonObject>& array;

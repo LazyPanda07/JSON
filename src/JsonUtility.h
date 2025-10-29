@@ -9,24 +9,6 @@
 #include <concepts>
 #include <regex>
 
-#ifdef JSON_DLL
-#if defined(__LINUX__) || defined(__ANDROID__)
-#define JSON_API __attribute__((visibility("default")))
-#else
-#define JSON_API __declspec(dllexport)
-#endif
-
-#define JSON_API_FUNCTION extern "C" JSON_API
-
-#pragma warning(disable: 4297)
-#pragma warning(disable: 4251)
-#pragma warning(disable: 4275)
-#pragma warning(disable: 4190)
-#else
-#define JSON_API
-#define JSON_API_FUNCTION
-#endif // JSON_DLL
-
 #include "CodePageConstants.h"
 
 namespace json::utility
@@ -85,7 +67,7 @@ namespace json::utility
 	/// <param name="sourceCodePage">source encoding</param>
 	/// <returns>string in UTF8 encoding</returns>
 	/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-	JSON_API_FUNCTION std::string toUTF8JSON(std::string_view source, std::string_view sourceCodePage);
+	std::string toUTF8JSON(std::string_view source, std::string_view sourceCodePage);
 
 	/// <summary>
 	/// Decode string from UTF8
@@ -94,7 +76,7 @@ namespace json::utility
 	/// <param name="resultCodePage">decoding code page</param>
 	/// <returns>string in resultCodePage encoding</returns>
 	/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-	JSON_API_FUNCTION std::string fromUTF8JSON(std::string_view source, std::string_view resultCodePage);
+	std::string fromUTF8JSON(std::string_view source, std::string_view resultCodePage);
 #else
 	/// <summary>
 	/// Encode string to UTF8
@@ -103,7 +85,7 @@ namespace json::utility
 	/// <param name="sourceCodePage">source encoding from https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers</param>
 	/// <returns>string in UTF8 encoding</returns>
 	/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-	JSON_API_FUNCTION std::string toUTF8JSON(std::string_view source, uint32_t sourceCodePage);
+	std::string toUTF8JSON(std::string_view source, uint32_t sourceCodePage);
 
 	/// <summary>
 	/// Decode string from UTF8
@@ -112,11 +94,11 @@ namespace json::utility
 	/// <param name="resultCodePage">decoding code page from https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers</param>
 	/// <returns>string in resultCodePage encoding</returns>
 	/// <exception cref="json::exceptions::WrongEncodingException"></exception>
-	JSON_API_FUNCTION std::string fromUTF8JSON(std::string_view source, uint32_t resultCodePage);
+	std::string fromUTF8JSON(std::string_view source, uint32_t resultCodePage);
 #endif
 	/// @brief Get current version of JSON project
 	/// @return Current version of JSON project
-	JSON_API_FUNCTION std::string getJSONVersion();
+	std::string getJSONVersion();
 
 	/// <summary>
 	/// Put JSON value into outputStream

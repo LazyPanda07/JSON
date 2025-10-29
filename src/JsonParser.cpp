@@ -7,14 +7,13 @@
 #include <queue>
 #include <limits>
 #include <regex>
+#include <sstream>
 
 #include "JsonArrayWrapper.h"
 #include "OutputOperations.h"
 
 #pragma warning(disable: 4715)
 #pragma warning(disable: 26800)
-
-using namespace std;
 
 constexpr char openCurlyBracket = '{';
 constexpr char closeCurlyBracket = '}';
@@ -23,13 +22,13 @@ constexpr char closeSquareBracket = ']';
 constexpr char comma = ',';
 constexpr char colon = ':';
 
-bool isNumber(const string& source);
+bool isNumber(const std::string& source);
 
 namespace json
 {
 	using ConstJSONIterator = JsonObject::ConstIterator;
 
-	JsonObject::VariantType JsonParser::parseValue(const string& value)
+	JsonObject::VariantType JsonParser::parseValue(const std::string& value)
 	{
 #ifndef __LINUX__
 #pragma warning(push)
@@ -38,7 +37,7 @@ namespace json
 
 		if (isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin()))
 		{
-			return string(value.begin() + 1, value.end() - 1);
+			return std::string(value.begin() + 1, value.end() - 1);
 		}
 		else if (value == "true" || value == "false")
 		{
@@ -50,17 +49,17 @@ namespace json
 		}
 		else if (isNumber(value))
 		{
-			if (value.find('.') != string::npos)
+			if (value.find('.') != std::string::npos)
 			{
 				return stod(value);
 			}
 			else
 			{
-				if (value.find('-') != string::npos)
+				if (value.find('-') != std::string::npos)
 				{
 					return stoll(value);
 				}
-				else if (uint64_t valueToInsert = stoull(value); valueToInsert > numeric_limits<int64_t>::max())
+				else if (uint64_t valueToInsert = stoull(value); valueToInsert > (std::numeric_limits<int64_t>::max)())
 				{
 					return valueToInsert;
 				}
@@ -71,7 +70,7 @@ namespace json
 			}
 		}
 
-		throw runtime_error("Can't parse value");
+		throw std::runtime_error("Can't parse value");
 
 		return nullptr;
 #ifndef __LINUX__
@@ -79,14 +78,14 @@ namespace json
 #endif
 	}
 
-	void JsonParser::insertKeyValueData(string&& key, const string& value, JsonObject& ptr)
+	void JsonParser::insertKeyValueData(std::string&& key, const std::string& value, JsonObject& ptr)
 	{
-		ptr.data.emplace_back(move(key), JsonParser::parseValue(value));
+		ptr.data.emplace_back(std::move(key), JsonParser::parseValue(value));
 	}
 
-	pair<vector<pair<string, JsonParser::VariantType>>::const_iterator, bool> JsonParser::find(string_view key, const vector<pair<string, VariantType>>& start, bool recursive)
+	std::pair<std::vector<std::pair<std::string, JsonParser::VariantType>>::const_iterator, bool> JsonParser::find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive)
 	{
-		auto it = find_if(start.begin(), start.end(), [&key](const pair<string, VariantType>& value) { return value.first == key; });
+		auto it = std::find_if(start.begin(), start.end(), [&key](const std::pair<std::string, VariantType>& value) { return value.first == key; });
 		auto end = start.end();
 
 		if (!recursive || it != end)
@@ -100,7 +99,7 @@ namespace json
 		{
 			if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONArray))
 			{
-				const vector<JsonObject>& jsonArray = std::get<vector<JsonObject>>(it->second);
+				const std::vector<JsonObject>& jsonArray = std::get<std::vector<JsonObject>>(it->second);
 
 				for (const JsonObject& object : jsonArray)
 				{
@@ -114,7 +113,7 @@ namespace json
 			}
 			else if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
 			{
-				const vector<pair<string, VariantType>>& data = ::std::get<JsonObject>(it->second).data;
+				const std::vector<std::pair<std::string, VariantType>>& data = ::std::get<JsonObject>(it->second).data;
 
 				auto result = JsonParser::find(key, data, recursive);
 
@@ -181,11 +180,11 @@ namespace json
 		rawData = std::regex_replace(rawData, singleLine, ""); // Remove // comments
 		rawData = std::regex_replace(rawData, multiLine, ""); // Remove /* ... */ comments (including multiline)
 
-		stack<pair<string, JsonObject*>> objects;
-		stack<pair<string, vector<JsonObject>>> arrays;
-		stack<type> currentTop;
-		string key;
-		string value;
+		std::stack<std::pair<std::string, JsonObject*>> objects;
+		std::stack<std::pair<std::string, std::vector<JsonObject>>> arrays;
+		std::stack<type> currentTop;
+		std::string key;
+		std::string value;
 		bool startString = false;
 		bool escapeSymbol = false;
 		size_t index = 0;
@@ -263,8 +262,8 @@ namespace json
 				}
 
 				{
-					pair<string, JsonObject*> object = move(objects.top());
-					vector<pair<string, JsonObject::VariantType>>* data = nullptr;
+					std::pair<std::string, JsonObject*> object = move(objects.top());
+					std::vector<std::pair<std::string, JsonObject::VariantType>>* data = nullptr;
 
 					objects.pop();
 					currentTop.pop();
@@ -287,7 +286,7 @@ namespace json
 						break;
 
 					default:
-						throw runtime_error("Wrong type");
+						throw std::runtime_error("Wrong type");
 					}
 
 					data->push_back({ move(object.first), JsonObject(*object.second) });
@@ -300,7 +299,7 @@ namespace json
 			case openSquareBracket:
 				currentTop.push(type::array);
 
-				arrays.push({ move(key), vector<JsonObject>() });
+				arrays.push({ move(key), std::vector<JsonObject>() });
 
 				break;
 
@@ -313,8 +312,8 @@ namespace json
 				}
 
 				{
-					pair<string, vector<JsonObject>> array = arrays.top();
-					vector<pair<string, JsonObject::VariantType>>* data = nullptr;
+					std::pair<std::string, std::vector<JsonObject>> array = arrays.top();
+					std::vector<std::pair<std::string, JsonObject::VariantType>>* data = nullptr;
 
 					arrays.pop();
 					currentTop.pop();
@@ -332,7 +331,7 @@ namespace json
 						break;
 
 					default:
-						throw runtime_error("Wrong type");
+						throw std::runtime_error("Wrong type");
 					}
 
 					data->push_back(move(array));
@@ -360,7 +359,7 @@ namespace json
 				break;
 
 			case colon:
-				key = string(value.begin() + 1, value.end() - 1);
+				key = std::string(value.begin() + 1, value.end() - 1);
 
 				value.clear();
 
@@ -372,25 +371,25 @@ namespace json
 		}
 	}
 
-	JsonParser::JsonParser(string_view data) :
+	JsonParser::JsonParser(std::string_view data) :
 		rawData(utility::toUTF8JSON(data, CP_UTF8))
 	{
 		this->parse();
 	}
 
-	JsonParser::JsonParser(istream& inputStream)
+	JsonParser::JsonParser(std::istream& inputStream)
 	{
 		if (!inputStream.good())
 		{
 			throw exceptions::WrongInputStreamException(inputStream);
 		}
 
-		rawData = utility::toUTF8JSON((ostringstream() << inputStream.rdbuf()).str(), CP_UTF8);
+		rawData = utility::toUTF8JSON((std::ostringstream() << inputStream.rdbuf()).str(), CP_UTF8);
 
 		this->parse();
 	}
 
-	JsonParser::JsonParser(istream&& inputStream) :
+	JsonParser::JsonParser(std::istream&& inputStream) :
 		JsonParser(inputStream)
 	{
 
@@ -410,8 +409,8 @@ namespace json
 	}
 
 	JsonParser::JsonParser(JsonParser&& other) noexcept :
-		rawData(move(other.rawData)),
-		parsedData(move(other.parsedData))
+		rawData(std::move(other.rawData)),
+		parsedData(std::move(other.parsedData))
 	{
 
 	}
@@ -426,15 +425,15 @@ namespace json
 
 	JsonParser& JsonParser::operator = (JsonParser&& other) noexcept
 	{
-		rawData = move(other.rawData);
-		parsedData = move(other.parsedData);
+		rawData = std::move(other.rawData);
+		parsedData = std::move(other.parsedData);
 
 		return *this;
 	}
 
-	bool JsonParser::contains(string_view key, utility::VariantTypeEnum type, bool recursive) const
+	bool JsonParser::contains(std::string_view key, utility::VariantTypeEnum type, bool recursive) const
 	{
-		queue<const JsonObject*> objects;
+		std::queue<const JsonObject*> objects;
 
 		objects.push(&parsedData);
 
@@ -471,7 +470,7 @@ namespace json
 		this->parse();
 	}
 #else
-	void JsonParser::setJSONData(string_view jsonData, uint32_t codePage)
+	void JsonParser::setJSONData(std::string_view jsonData, uint32_t codePage)
 	{
 		rawData = utility::toUTF8JSON(jsonData, codePage);
 
@@ -479,40 +478,40 @@ namespace json
 	}
 #endif
 
-	void JsonParser::setJSONData(string_view jsonData)
+	void JsonParser::setJSONData(std::string_view jsonData)
 	{
 		rawData = jsonData;
 
 		this->parse();
 	}
 
-	void JsonParser::setJSONData(istream& inputStream)
+	void JsonParser::setJSONData(std::istream& inputStream)
 	{
 		if (!inputStream.good())
 		{
 			throw exceptions::WrongInputStreamException(inputStream);
 		}
 
-		rawData = utility::toUTF8JSON((ostringstream() << inputStream.rdbuf()).str(), CP_UTF8);
+		rawData = utility::toUTF8JSON((std::ostringstream() << inputStream.rdbuf()).str(), CP_UTF8);
 
 		this->parse();
 	}
 
-	void JsonParser::setJSONData(istream&& inputStream)
+	void JsonParser::setJSONData(std::istream&& inputStream)
 	{
 		if (!inputStream.good())
 		{
 			throw exceptions::WrongInputStreamException(inputStream);
 		}
 
-		rawData = utility::toUTF8JSON((ostringstream() << inputStream.rdbuf()).str(), CP_UTF8);
+		rawData = utility::toUTF8JSON((std::ostringstream() << inputStream.rdbuf()).str(), CP_UTF8);
 
 		this->parse();
 	}
 
-	void JsonParser::setJSONData(string&& jsonData)
+	void JsonParser::setJSONData(std::string&& jsonData)
 	{
-		rawData = move(jsonData);
+		rawData = std::move(jsonData);
 
 		this->parse();
 	}
@@ -527,271 +526,17 @@ namespace json
 		return parsedData.end();
 	}
 
-	const string& JsonParser::getRawData() const
+	const std::string& JsonParser::getRawData() const
 	{
 		return rawData;
 	}
 
-	const string& JsonParser::operator * () const
+	const std::string& JsonParser::operator * () const
 	{
 		return rawData;
 	}
 
-	nullptr_t JsonParser::getNull(string_view key, bool recursive) const
-	{
-		return this->get<nullptr_t>(key, recursive);
-	}
-
-	const string& JsonParser::getString(string_view key, bool recursive) const
-	{
-		return this->get<string>(key, recursive);
-	}
-
-	bool JsonParser::getBool(string_view key, bool recursive) const
-	{
-		return this->get<bool>(key, recursive);
-	}
-
-	int64_t JsonParser::getInt(string_view key, bool recursive) const
-	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
-
-		if (!success)
-		{
-			throw exceptions::CantFindValueException(key);
-		}
-
-		utility::VariantTypeEnum type = static_cast<utility::VariantTypeEnum>(result->second.index());
-
-		switch (type)
-		{
-		case utility::VariantTypeEnum::jUInt64_t:
-			return static_cast<int64_t>(std::get<uint64_t>(result->second));
-
-		case utility::VariantTypeEnum::jDouble:
-			return static_cast<int64_t>(std::get<double>(result->second));
-
-		case utility::VariantTypeEnum::jString:
-			return stoll(std::get<string>(result->second));
-		}
-
-		return std::get<int64_t>(result->second);
-	}
-
-	uint64_t JsonParser::getUnsignedInt(string_view key, bool recursive) const
-	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
-
-		if (!success)
-		{
-			throw exceptions::CantFindValueException(key);
-		}
-
-		utility::VariantTypeEnum type = static_cast<utility::VariantTypeEnum>(result->second.index());
-
-		switch (type)
-		{
-		case utility::VariantTypeEnum::jInt64_t:
-			return static_cast<uint64_t>(std::get<int64_t>(result->second));
-
-		case utility::VariantTypeEnum::jDouble:
-			return static_cast<uint64_t>(std::get<double>(result->second));
-
-		case utility::VariantTypeEnum::jString:
-			return stoull(std::get<string>(result->second));
-		}
-
-		return std::get<uint64_t>(result->second);
-	}
-
-	double JsonParser::getDouble(string_view key, bool recursive) const
-	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
-
-		if (!success)
-		{
-			throw exceptions::CantFindValueException(key);
-		}
-
-		utility::VariantTypeEnum type = static_cast<utility::VariantTypeEnum>(result->second.index());
-
-		switch (type)
-		{
-		case utility::VariantTypeEnum::jInt64_t:
-			return static_cast<double>(std::get<int64_t>(result->second));
-
-		case utility::VariantTypeEnum::jUInt64_t:
-			return static_cast<double>(std::get<uint64_t>(result->second));
-
-		case utility::VariantTypeEnum::jString:
-			return stod(std::get<string>(result->second));
-		}
-
-		return std::get<double>(result->second);
-	}
-
-	const vector<JsonObject>& JsonParser::getArray(string_view key, bool recursive) const
-	{
-		return this->get<vector<JsonObject>>(key);
-	}
-
-	const JsonObject& JsonParser::getObject(string_view key, bool recursive) const
-	{
-		return this->get<JsonObject>(key);
-	}
-
-	bool JsonParser::tryGetNull(string_view key, bool recursive) const
-	{
-		nullptr_t value;
-
-		return this->tryGet(key, value, recursive);
-	}
-
-	bool JsonParser::tryGetString(string_view key, string& value, bool recursive) const
-	{
-		return this->tryGet(key, value, recursive);
-	}
-
-	bool JsonParser::tryGetBool(string_view key, bool& value, bool recursive) const
-	{
-		return this->tryGet(key, value, recursive);
-	}
-
-	bool JsonParser::tryGetInt(string_view key, int64_t& value, bool recursive) const
-	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
-
-		if (!success)
-		{
-			return false;
-		}
-
-		utility::VariantTypeEnum type = static_cast<utility::VariantTypeEnum>(result->second.index());
-
-		switch (type)
-		{
-		case utility::VariantTypeEnum::jInt64_t:
-			value = std::get<int64_t>(result->second);
-
-			return true;
-
-		case utility::VariantTypeEnum::jUInt64_t:
-			value = static_cast<int64_t>(std::get<uint64_t>(result->second));
-
-			return true;
-
-		case utility::VariantTypeEnum::jDouble:
-			value = static_cast<int64_t>(std::get<double>(result->second));
-
-			return true;
-
-		case utility::VariantTypeEnum::jString:
-			value = stoll(std::get<string>(result->second));
-
-			return true;
-
-		default:
-			return false;
-		}
-	}
-
-	bool JsonParser::tryGetUnsignedInt(string_view key, uint64_t& value, bool recursive) const
-	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
-
-		if (!success)
-		{
-			return false;
-		}
-
-		utility::VariantTypeEnum type = static_cast<utility::VariantTypeEnum>(result->second.index());
-
-		switch (type)
-		{
-		case utility::VariantTypeEnum::jUInt64_t:
-			value = std::get<uint64_t>(result->second);
-
-			return true;
-
-		case utility::VariantTypeEnum::jInt64_t:
-			value = static_cast<uint64_t>(std::get<int64_t>(result->second));
-
-			return true;
-
-		case utility::VariantTypeEnum::jDouble:
-			value = static_cast<uint64_t>(std::get<double>(result->second));
-
-			return true;
-
-		case utility::VariantTypeEnum::jString:
-			value = stoull(std::get<string>(result->second));
-
-			return true;
-
-		default:
-			return false;
-		}
-	}
-
-	bool JsonParser::tryGetDouble(string_view key, double& value, bool recursive) const
-	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
-
-		if (!success)
-		{
-			return false;
-		}
-
-		utility::VariantTypeEnum type = static_cast<utility::VariantTypeEnum>(result->second.index());
-
-		switch (type)
-		{
-		case utility::VariantTypeEnum::jDouble:
-			value = std::get<double>(result->second);
-
-			return true;
-
-		case utility::VariantTypeEnum::jInt64_t:
-			value = static_cast<double>(std::get<int64_t>(result->second));
-
-			return true;
-
-		case utility::VariantTypeEnum::jUInt64_t:
-			value = static_cast<double>(std::get<uint64_t>(result->second));
-
-			return true;
-
-		case utility::VariantTypeEnum::jString:
-			value = stod(std::get<string>(result->second));
-
-			return true;
-
-		default:
-			return false;
-		}
-	}
-
-	bool JsonParser::tryGetArray(string_view key, vector<JsonObject>& value, bool recursive) const
-	{
-		return this->tryGet(key, value, recursive);
-	}
-
-	bool JsonParser::tryGetObject(string_view key, JsonObject& value, bool recursive) const
-	{
-		return this->tryGet(key, value, recursive);
-	}
-
-	const JsonObject& JsonParser::getParsedData() const
-	{
-		return parsedData;
-	}
-
-	void JsonParser::getParsedData(JsonObject& object) noexcept
-	{
-		object = move(parsedData);
-	}
-
-	void JsonParser::overrideValue(string_view key, const VariantType& value, bool recursive)
+	void JsonParser::overrideValue(std::string_view key, const VariantType& value, bool recursive)
 	{
 		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
@@ -803,7 +548,7 @@ namespace json
 		const_cast<VariantType&>(result->second) = value;
 	}
 
-	void JsonParser::overrideValue(string_view key, VariantType&& value, bool recursive)
+	void JsonParser::overrideValue(std::string_view key, VariantType&& value, bool recursive)
 	{
 		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
 
@@ -815,20 +560,20 @@ namespace json
 		const_cast<VariantType&>(result->second) = move(value);
 	}
 
-	JSON_API istream& operator >> (istream& inputStream, JsonParser& parser)
+	std::istream& operator >> (std::istream& inputStream, JsonParser& parser)
 	{
 		parser.setJSONData(inputStream);
 
 		return inputStream;
 	}
 
-	JSON_API ostream& operator << (ostream& outputStream, const JsonParser& parser)
+	std::ostream& operator << (std::ostream& outputStream, const JsonParser& parser)
 	{
 		ConstJSONIterator start = parser.begin();
 		ConstJSONIterator end = parser.end();
-		string offset = "  ";
+		std::string offset = "  ";
 
-		outputStream << '{' << endl;
+		outputStream << '{' << std::endl;
 
 		while (start != end)
 		{
@@ -854,14 +599,14 @@ namespace json
 	}
 }
 
-bool isNumber(const string& source)
+bool isNumber(const std::string& source)
 {
 	if (source.empty())
 	{
 		return false;
 	}
 
-	static constexpr string_view symbols = "0123456789-.";
+	constexpr std::string_view symbols = "0123456789-.";
 
 	if (all_of(source.begin(), source.end(), [](const char& c) { return find(symbols.begin(), symbols.end(), c) != symbols.end(); }))
 	{

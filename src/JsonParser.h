@@ -10,7 +10,7 @@
 namespace json
 {
 	/// @brief Parser for JSON
-	class JSON_API JsonParser
+	class JsonParser
 	{
 	public:
 		/// @brief std::variant specialization for JSON
@@ -151,134 +151,6 @@ namespace json
 
 		ConstJSONIterator end() const noexcept;
 
-		/// @brief Get null value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return nullptr value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		std::nullptr_t getNull(std::string_view key, bool recursive = false) const;
-
-		/// @brief Get string value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return string value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		const std::string& getString(std::string_view key, bool recursive = false) const;
-		
-		/// @brief Get bool value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return bool value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		bool getBool(std::string_view key, bool recursive = false) const;
-
-		/// @brief Get int64_t value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return int64_t value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		int64_t getInt(std::string_view key, bool recursive = false) const;
-
-		/// @brief Get uint64_t value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return uint64_t value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		uint64_t getUnsignedInt(std::string_view key, bool recursive = false) const;
-
-		/// @brief Get double value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return double value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		double getDouble(std::string_view key, bool recursive = false) const;
-
-		/// @brief Get JSON array
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return JSON array
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		const std::vector<JsonObject>& getArray(std::string_view key, bool recursive = false) const;
-
-		/// @brief Get JSON object
-		/// @param key JSON Key
-		/// @param recursive Recursive search
-		/// @return JSON object
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		const JsonObject& getObject(std::string_view key, bool recursive = false) const;
-
-		/// @brief Try get null value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return nullptr value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		bool tryGetNull(std::string_view key, bool recursive = false) const;
-
-		/// @brief Try get string value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return string value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		bool tryGetString(std::string_view key, std::string& value, bool recursive = false) const;
-
-		/// @brief Try get bool value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return bool value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		bool tryGetBool(std::string_view key, bool& value, bool recursive = false) const;
-
-		/// @brief Try get int64_t value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return Converted to int64_t value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		bool tryGetInt(std::string_view key, int64_t& value, bool recursive = false) const;
-
-		/// @brief Try get uint64_t value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return Converted to uint64_t value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		bool tryGetUnsignedInt(std::string_view key, uint64_t& value, bool recursive = false) const;
-
-		/// @brief Try get double value
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return Converted to double value
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		bool tryGetDouble(std::string_view key, double& value, bool recursive = false) const;
-
-		/// @brief Try get JSON array
-		/// @param key JSON key
-		/// @param recursive Recursive search
-		/// @return JSON array
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		bool tryGetArray(std::string_view key, std::vector<JsonObject>& value, bool recursive = false) const;
-
-		/// @brief Try get JSON object
-		/// @param key JSON Key
-		/// @param recursive Recursive search
-		/// @return JSON object
-		/// @exception json::exceptions::CantFindValueException 
-		/// @exception std::bad_variant_access Other type found
-		bool tryGetObject(std::string_view key, JsonObject& value, bool recursive = false) const;
-
 		/// @brief Getter for parsedData
 		/// @return parsedData
 		const JsonObject& getParsedData() const;
@@ -348,7 +220,7 @@ namespace json
 		/// <returns>inputStream</returns>
 		/// <exception cref="json::exceptions::WrongEncodingException">can't convert JSON formatted string to UTF8 encoding</exception>
 		/// @exception json::exceptions::WrongInputStreamException Can't read JSON formatted data from inputStream
-		friend JSON_API std::istream& operator >> (std::istream& inputStream, JsonParser& parser);
+		friend std::istream& operator >> (std::istream& inputStream, JsonParser& parser);
 
 		/// <summary>
 		/// Set JSON to output stream
@@ -356,7 +228,7 @@ namespace json
 		/// <param name="outputStream">std::ostream subclass instance</param>
 		/// <param name="parser">const reference to JsonParser instance</param>
 		/// <returns>outputStream</returns>
-		friend JSON_API std::ostream& operator << (std::ostream& outputStream, const JsonParser& parser);
+		friend std::ostream& operator << (std::ostream& outputStream, const JsonParser& parser);
 
 		~JsonParser() = default;
 	};

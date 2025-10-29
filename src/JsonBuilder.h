@@ -5,7 +5,7 @@
 namespace json
 {
 	/// @brief Builder for JSON
-	class JSON_API JsonBuilder
+	class JsonBuilder
 	{
 	public:
 		/// @brief std::variant specialization for JSON
@@ -182,7 +182,7 @@ namespace json
 		/// </summary>
 		/// <param name="key">JSON key</param>
 		/// <returns>JSON value</returns>
-		VariantType& operator [] (std::string_view key);
+		VariantType& operator [](std::string_view key);
 
 		/// <summary>
 		/// <para>Access to JSON value operator</para>
@@ -192,7 +192,7 @@ namespace json
 		/// <param name="key">JSON key</param>
 		/// <returns>JSON value</returns>
 		/// <exception cref="json::exceptions::CantFindValueException"></exception>
-		const VariantType& operator [] (std::string_view key) const;
+		const VariantType& operator [](std::string_view key) const;
 
 		/// <summary>
 		/// Build JSON formatted string
@@ -224,7 +224,7 @@ namespace json
 		/// <param name="outputStream">std::ostream subclass instance</param>
 		/// <param name="builder">const reference to JsonBuilder instance</param>
 		/// <returns>outputStream</returns>
-		friend JSON_API std::ostream& operator << (std::ostream& outputStream, const JsonBuilder& builder);
+		friend std::ostream& operator << (std::ostream& outputStream, const JsonBuilder& builder);
 
 		~JsonBuilder() = default;
 	};

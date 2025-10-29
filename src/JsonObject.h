@@ -419,13 +419,13 @@ namespace json
 		{
 			data.emplace_back(key, std::forward<T>(value));
 		}
-		else if constexpr (std::is_convertible_v<ActualT, std::string>)
-		{
-			data.emplace_back(key, static_cast<std::string>(value));
-		}
 		else if constexpr (std::convertible_to<ActualT, std::string_view>)
 		{
 			data.emplace_back(key, static_cast<std::string_view>(value).data());
+		}
+		else if constexpr (std::is_convertible_v<ActualT, std::string>)
+		{
+			data.emplace_back(key, static_cast<std::string>(value));
 		}
 		else if constexpr (std::is_same_v<ActualT, std::vector<JsonObject>> || std::is_same_v<ActualT, JsonObject>)
 		{

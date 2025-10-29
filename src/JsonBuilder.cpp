@@ -9,19 +9,17 @@
 
 #pragma warning(disable: 4715)
 
-using namespace std;
-
 namespace json
 {
 #if defined(__LINUX__) || defined(__ANDROID__)
-	JsonBuilder::JsonBuilder(string_view codePage, OutputType type) :
+	JsonBuilder::JsonBuilder(std::string_view codePage, OutputType type) :
 		codePage(codePage),
 		type(type)
 	{
 
 	}
 
-	JsonBuilder::JsonBuilder(const JsonObject& data, string_view codePage, OutputType type) :
+	JsonBuilder::JsonBuilder(const JsonObject& data, std::string_view codePage, OutputType type) :
 		builderData(data),
 		codePage(codePage),
 		type(type)
@@ -54,7 +52,7 @@ namespace json
 	}
 
 	JsonBuilder::JsonBuilder(JsonBuilder&& other) noexcept :
-		builderData(move(other.builderData)),
+		builderData(std::move(other.builderData)),
 		codePage(other.codePage),
 		type(other.type)
 	{
@@ -72,7 +70,7 @@ namespace json
 
 	JsonBuilder& JsonBuilder::operator = (JsonBuilder&& other) noexcept
 	{
-		builderData = move(other.builderData);
+		builderData = std::move(other.builderData);
 		codePage = other.codePage;
 		type = other.type;
 
@@ -80,7 +78,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<nullptr_t>(const pair<string, nullptr_t>& value)
+	JsonBuilder& JsonBuilder::push_back<nullptr_t>(const std::pair<std::string, nullptr_t>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -88,7 +86,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<nullptr_t>(pair<string, nullptr_t>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<nullptr_t>(std::pair<std::string, nullptr_t>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -96,7 +94,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<string>(const pair<string, string>& value)
+	JsonBuilder& JsonBuilder::push_back<std::string>(const std::pair<std::string, std::string>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -104,7 +102,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<string>(pair<string, string>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<std::string>(std::pair<std::string, std::string>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -112,7 +110,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<bool>(const pair<string, bool>& value)
+	JsonBuilder& JsonBuilder::push_back<bool>(const std::pair<std::string, bool>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -120,7 +118,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<bool>(pair<string, bool>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<bool>(std::pair<std::string, bool>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -128,7 +126,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<int64_t>(const pair<string, int64_t>& value)
+	JsonBuilder& JsonBuilder::push_back<int64_t>(const std::pair<std::string, int64_t>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -136,7 +134,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<int64_t>(pair<string, int64_t>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<int64_t>(std::pair<std::string, int64_t>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -144,7 +142,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<uint64_t>(const pair<string, uint64_t>& value)
+	JsonBuilder& JsonBuilder::push_back<uint64_t>(const std::pair<std::string, uint64_t>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -152,7 +150,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<uint64_t>(pair<string, uint64_t>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<uint64_t>(std::pair<std::string, uint64_t>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -160,7 +158,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<double>(const pair<string, double>& value)
+	JsonBuilder& JsonBuilder::push_back<double>(const std::pair<std::string, double>& value)
 	{
 		builderData.data.push_back(value);
 
@@ -168,7 +166,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<double>(pair<string, double>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<double>(std::pair<std::string, double>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -176,7 +174,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<vector<JsonObject>>(pair<string, vector<JsonObject>>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<std::vector<JsonObject>>(std::pair<std::string, std::vector<JsonObject>>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -184,7 +182,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<JsonObject>(const pair<string, JsonObject>& value)
+	JsonBuilder& JsonBuilder::push_back<JsonObject>(const std::pair<std::string, JsonObject>& value)
 	{
 		builderData.data.emplace_back(value.first, value.second);
 
@@ -192,7 +190,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<JsonObject>(pair<string, JsonObject>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<JsonObject>(std::pair<std::string, JsonObject>&& value) noexcept
 	{
 		builderData.data.push_back(move(value));
 
@@ -200,7 +198,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<int>(const pair<string, int>& value)
+	JsonBuilder& JsonBuilder::push_back<int>(const std::pair<std::string, int>& value)
 	{
 		this->push_back<int64_t>(value);
 
@@ -208,7 +206,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<int>(pair<string, int>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<int>(std::pair<std::string, int>&& value) noexcept
 	{
 		this->push_back<int64_t>(move(value));
 
@@ -216,7 +214,7 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<uint32_t>(const pair<string, uint32_t>& value)
+	JsonBuilder& JsonBuilder::push_back<uint32_t>(const std::pair<std::string, uint32_t>& value)
 	{
 		this->push_back<uint64_t>(value);
 
@@ -224,66 +222,66 @@ namespace json
 	}
 
 	template<>
-	JsonBuilder& JsonBuilder::push_back<uint32_t>(pair<string, uint32_t>&& value) noexcept
+	JsonBuilder& JsonBuilder::push_back<uint32_t>(std::pair<std::string, uint32_t>&& value) noexcept
 	{
 		this->push_back<uint64_t>(move(value));
 
 		return *this;
 	}
 
-	JsonBuilder& JsonBuilder::appendNull(string_view key)
+	JsonBuilder& JsonBuilder::appendNull(std::string_view key)
 	{
 		return this->append(key, nullptr);
 	}
 
-	JsonBuilder& JsonBuilder::appendString(string_view key, string_view value)
+	JsonBuilder& JsonBuilder::appendString(std::string_view key, std::string_view value)
 	{
 		return this->append(key, value);
 	}
 
-	JsonBuilder& JsonBuilder::appendBool(string_view key, bool value)
+	JsonBuilder& JsonBuilder::appendBool(std::string_view key, bool value)
 	{
 		return this->append(key, value);
 	}
 
-	JsonBuilder& JsonBuilder::appendInt(string_view key, int64_t value)
+	JsonBuilder& JsonBuilder::appendInt(std::string_view key, int64_t value)
 	{
 		return this->append(key, value);
 	}
 
-	JsonBuilder& JsonBuilder::appendUnsignedInt(string_view key, uint64_t value)
+	JsonBuilder& JsonBuilder::appendUnsignedInt(std::string_view key, uint64_t value)
 	{
 		return this->append(key, value);
 	}
 
-	JsonBuilder& JsonBuilder::appendDouble(string_view key, double value)
+	JsonBuilder& JsonBuilder::appendDouble(std::string_view key, double value)
 	{
 		return this->append(key, value);
 	}
 
-	JsonBuilder& JsonBuilder::appendArray(string_view key, vector<JsonObject>&& value)
+	JsonBuilder& JsonBuilder::appendArray(std::string_view key, std::vector<JsonObject>&& value)
 	{
-		return this->append(key, move(value));
+		return this->append(key, std::move(value));
 	}
 
-	JsonBuilder& JsonBuilder::appendArray(string_view key, const vector<JsonObject>& value)
+	JsonBuilder& JsonBuilder::appendArray(std::string_view key, const std::vector<JsonObject>& value)
 	{
 		return this->append(key, value);
 	}
 
-	JsonBuilder& JsonBuilder::appendObject(string_view key, JsonObject&& value)
+	JsonBuilder& JsonBuilder::appendObject(std::string_view key, JsonObject&& value)
 	{
-		return this->append(key, move(value));
+		return this->append(key, std::move(value));
 	}
 
-	JsonBuilder& JsonBuilder::appendObject(string_view key, const JsonObject& value)
+	JsonBuilder& JsonBuilder::appendObject(std::string_view key, const JsonObject& value)
 	{
 		return this->append(key, value);
 	}
 
-	bool JsonBuilder::contains(string_view key, utility::VariantTypeEnum type, bool recursive) const
+	bool JsonBuilder::contains(std::string_view key, utility::VariantTypeEnum type, bool recursive) const
 	{
-		queue<const JsonObject*> objects;
+		std::queue<const JsonObject*> objects;
 
 		objects.push(&builderData);
 
@@ -312,23 +310,23 @@ namespace json
 		return false;
 	}
 
-	JsonBuilder::VariantType& JsonBuilder::operator [] (string_view key)
+	JsonBuilder::VariantType& JsonBuilder::operator [] (std::string_view key)
 	{
-		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, VariantType>& value) { return value.first == key; });
+		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const std::pair<std::string, VariantType>& value) { return value.first == key; });
 
 		if (it != builderData.data.end())
 		{
 			return it->second;
 		}
 
-		this->push_back<nullptr_t>(make_pair(string(key.data(), key.size()), nullptr));
+		this->push_back<nullptr_t>(std::make_pair(std::string(key.data(), key.size()), nullptr));
 
 		return builderData.data.back().second;
 	}
 
-	const JsonBuilder::VariantType& JsonBuilder::operator [] (string_view key) const
+	const JsonBuilder::VariantType& JsonBuilder::operator [] (std::string_view key) const
 	{
-		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const pair<string, VariantType>& value) { return value.first == key; });
+		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const std::pair<std::string, VariantType>& value) { return value.first == key; });
 
 		if (it != builderData.data.end())
 		{
@@ -338,14 +336,14 @@ namespace json
 		throw exceptions::CantFindValueException(key);
 	}
 
-	string JsonBuilder::build() const
+	std::string JsonBuilder::build() const
 	{
 		auto start = builderData.data.begin();
 		auto end = builderData.data.end();
-		ostringstream outputStream;
-		string offset = "  ";
+		std::ostringstream outputStream;
+		std::string offset = "  ";
 
-		outputStream << '{' << endl;
+		outputStream << '{' << std::endl;
 
 		while (start != end)
 		{
@@ -360,7 +358,7 @@ namespace json
 
 		outputStream << '}';
 
-		switch (string result; type)
+		switch (std::string result; type)
 		{
 		case json::JsonBuilder::OutputType::standard:
 			return json::utility::toUTF8JSON(outputStream.str(), codePage);
@@ -407,10 +405,10 @@ namespace json
 
 	void JsonBuilder::getObject(JsonObject& object) noexcept
 	{
-		object = move(builderData);
+		object = std::move(builderData);
 	}
 
-	ostream& operator << (ostream& outputStream, const JsonBuilder& builder)
+	std::ostream& operator << (std::ostream& outputStream, const JsonBuilder& builder)
 	{
 		return outputStream << builder.build();
 	}

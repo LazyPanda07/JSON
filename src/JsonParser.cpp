@@ -463,7 +463,7 @@ namespace json
 	}
 
 #if defined(__LINUX__) || defined(__ANDROID__)
-	void JsonParser::setJSONData(string_view jsonData, string_view codePage)
+	void JsonParser::setJSONData(std::string_view jsonData, std::string_view codePage)
 	{
 		rawData = utility::toUTF8JSON(jsonData, codePage);
 
@@ -534,6 +534,16 @@ namespace json
 	const std::string& JsonParser::operator * () const
 	{
 		return rawData;
+	}
+
+	const JsonObject& JsonParser::getParsedData() const
+	{
+		return parsedData;
+	}
+
+	void JsonParser::getParsedData(JsonObject& object) noexcept
+	{
+		object = std::move(parsedData);
 	}
 
 	void JsonParser::overrideValue(std::string_view key, const VariantType& value, bool recursive)

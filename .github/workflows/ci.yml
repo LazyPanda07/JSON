@@ -28,7 +28,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=${{ matrix.configuration }} -DCMAKE_INSTALL_PREFIX=install-dir -G "Ninja" ..
-          cmake --build . -j && cmake --install
+          cmake --build . -j && cmake --install .
       
     - name: Upload artifacts
       uses: actions/upload-artifact@v4

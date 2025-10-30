@@ -299,7 +299,7 @@ namespace json
 	{
 		auto [result, success] = utility::__internal::find(key, parsedData.data, recursive);
 
-		if (!success || !utility::__internal::checkSameType<T>(result->second))
+		if (!success || !utility::__internal::checkSameType<JsonObject, T>(result->second))
 		{
 			return false;
 		}

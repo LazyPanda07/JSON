@@ -272,7 +272,7 @@ namespace json
 		}
 		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			return getValue<T>(value);
+			return utility::__internal::getValue<T>(value);
 		}
 		else
 		{
@@ -319,7 +319,7 @@ namespace json
 	{
 		auto [result, success] = utility::__internal::find(key, data, recursive);
 
-		if (!success || !utility::__internal::checkSameType<T>(result->second))
+		if (!success || !utility::__internal::checkSameType<JsonObject, T>(result->second))
 		{
 			return false;
 		}

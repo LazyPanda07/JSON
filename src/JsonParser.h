@@ -31,17 +31,9 @@ namespace json
 
 		static void insertKeyValueData(std::string&& key, const std::string& value, JsonObject& ptr);
 
-		static std::pair<std::vector<std::pair<std::string, VariantType>>::const_iterator, bool> find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive);
-
 		static bool isStringSymbol(char symbol);
 
 		static char interpretEscapeSymbol(char symbol);
-
-		template<utility::JsonValues<JsonObject> T>
-		static bool checkSameType(const VariantType& value);
-
-		template<std::integral T>
-		static T getValue(const VariantType& value);
 
 	private:
 		void parse();
@@ -233,46 +225,11 @@ namespace json
 		~JsonParser() = default;
 	};
 
-	template<utility::JsonValues<JsonObject> T>
-	bool JsonParser::checkSameType(const VariantType& value)
-	{
-		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<JsonObject>> || std::is_same_v<T, JsonObject>)
-		{
-			return std::holds_alternative<T>(value);
-		}
-		else if constexpr (std::is_floating_point_v<T>)
-		{
-			return std::holds_alternative<double>(value);
-		}
-		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
-		{
-			return std::holds_alternative<uint64_t>(value) || std::holds_alternative<int64_t>(value);
-		}
-		
-		return false;
-	}
-
-	template<std::integral T>
-	T JsonParser::getValue(const VariantType& value)
-	{
-		if (std::holds_alternative<int64_t>(value))
-		{
-			return static_cast<T>(std::get<int64_t>(value));
-		}
-		else if (std::holds_alternative<uint64_t>(value))
-		{
-			return static_cast<T>(std::get<uint64_t>(value));
-		}
-
-		throw std::runtime_error("Wrong type");
-
-		return T{};
-	}
 
 	template<utility::JsonLightValues T>
 	T JsonParser::get(std::string_view key, bool recursive) const
 	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
+		auto [result, success] = utility::__internal::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -295,7 +252,7 @@ namespace json
 		}
 		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			return JsonParser::getValue<T>(value);
+			return utility::__internal::getValue<T>(value);
 		}
 		else
 		{
@@ -308,7 +265,7 @@ namespace json
 	template<utility::JsonHeavyValues<JsonObject> T>
 	const T& JsonParser::get(std::string_view key, bool recursive) const
 	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
+		auto [result, success] = utility::__internal::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -340,9 +297,9 @@ namespace json
 	template<utility::JsonValues<JsonObject> T>
 	bool JsonParser::tryGet(std::string_view key, T& value, bool recursive) const
 	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
+		auto [result, success] = utility::__internal::find(key, parsedData.data, recursive);
 
-		if (!success || !JsonParser::checkSameType<T>(result->second))
+		if (!success || !utility::__internal::checkSameType<T>(result->second))
 		{
 			return false;
 		}
@@ -375,7 +332,7 @@ namespace json
 		}
 		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			value = JsonParser::getValue<T>(temp);
+			value = utility::__internal::getValue<T>(temp);
 		}
 		else
 		{

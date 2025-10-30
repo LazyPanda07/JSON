@@ -1,7 +1,5 @@
 #include "JsonObject.h"
 
-#include <algorithm>
-
 #include "Exceptions/CantFindValueException.h"
 
 namespace json
@@ -121,52 +119,6 @@ namespace json
 		value = std::get<T>(it->second);
 
 		return true;
-	}
-
-	std::pair<std::vector<std::pair<std::string, JsonObject::VariantType>>::const_iterator, bool> JsonObject::find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive)
-	{
-		auto it = std::find_if(start.begin(), start.end(), [&key](const std::pair<std::string, VariantType>& value) { return value.first == key; });
-		auto end = start.end();
-
-		if (!recursive || it != end)
-		{
-			return { it, it != end };
-		}
-
-		it = start.begin();
-
-		while (it != end)
-		{
-			if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONArray))
-			{
-				const std::vector<JsonObject>& jsonArray = std::get<std::vector<JsonObject>>(it->second);
-
-				for (const JsonObject& object : jsonArray)
-				{
-					auto result = JsonObject::find(key, object.data, recursive);
-
-					if (result.second)
-					{
-						return result;
-					}
-				}
-			}
-			else if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
-			{
-				const std::vector<std::pair<std::string, VariantType>>& data = ::std::get<JsonObject>(it->second).data;
-
-				auto result = JsonObject::find(key, data, recursive);
-
-				if (result.second)
-				{
-					return result;
-				}
-			}
-
-			++it;
-		}
-
-		return { end, false };
 	}
 
 	ConstJSONIteratorType JsonObject::findValue(std::string_view key, bool throwException) const

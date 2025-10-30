@@ -63,14 +63,6 @@ namespace json
 		};
 
 	private:
-		static std::pair<std::vector<std::pair<std::string, VariantType>>::const_iterator, bool> find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive);
-
-		template<utility::JsonValues<JsonObject> T>
-		static bool checkSameType(const VariantType& value);
-
-		template<std::integral T>
-		static T getValue(const VariantType& value);
-
 		static void throwCantFindValueException(std::string_view key);
 
 	public:
@@ -205,42 +197,6 @@ namespace json
 		}
 	}
 
-	template<utility::JsonValues<JsonObject> T>
-	bool JsonObject::checkSameType(const VariantType& value)
-	{
-		if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<JsonObject>> || std::is_same_v<T, JsonObject>)
-		{
-			return std::holds_alternative<T>(value);
-		}
-		else if constexpr (std::is_floating_point_v<T>)
-		{
-			return std::holds_alternative<double>(value);
-		}
-		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
-		{
-			return std::holds_alternative<uint64_t>(value) || std::holds_alternative<int64_t>(value);
-		}
-
-		return false;
-	}
-
-	template<std::integral T>
-	T JsonObject::getValue(const VariantType& value)
-	{
-		if (std::holds_alternative<int64_t>(value))
-		{
-			return static_cast<T>(std::get<int64_t>(value));
-		}
-		else if (std::holds_alternative<uint64_t>(value))
-		{
-			return static_cast<T>(std::get<uint64_t>(value));
-		}
-
-		throw std::runtime_error("Wrong type");
-
-		return T{};
-	}
-
 	template<typename T>
 	JsonObject& JsonObject::setValue(std::string_view key, T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
 	{
@@ -316,7 +272,7 @@ namespace json
 		}
 		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			return JsonObject::getValue<T>(value);
+			return getValue<T>(value);
 		}
 		else
 		{
@@ -363,7 +319,7 @@ namespace json
 	{
 		auto [result, success] = JsonObject::find(key, data, recursive);
 
-		if (!success || !JsonObject::checkSameType<T>(result->second))
+		if (!success || !utility::__internal::checkSameType<T>(result->second))
 		{
 			return false;
 		}
@@ -396,7 +352,7 @@ namespace json
 		}
 		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
 		{
-			value = JsonObject::getValue<T>(temp);
+			value = utility::__internal::getValue<T>(temp);
 		}
 		else
 		{

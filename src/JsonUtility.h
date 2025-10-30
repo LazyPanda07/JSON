@@ -8,6 +8,8 @@
 #include <sstream>
 #include <concepts>
 #include <regex>
+#include <algorithm>
+#include <string>
 
 #include "CodePageConstants.h"
 
@@ -109,6 +111,18 @@ namespace json::utility
 	/// <param name="isLast">is description ends</param>
 	template<typename T, typename ArrayWrapperT>
 	void outputJsonType(std::ostream& outputStream, const typename T::VariantType& value, bool isLast, std::string& offset);
+
+	namespace __internal
+	{
+		template<typename VariantType>
+		std::pair<typename std::vector<std::pair<std::string, VariantType>>::const_iterator, bool> find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive);
+
+		template<typename JsonObjectT, utility::JsonValues<JsonObjectT> T, typename VariantType>
+		bool checkSameType(const VariantType& value);
+
+		template<std::integral T, typename VariantType>
+		T getValue(const VariantType& value);
+	}
 }
 
 namespace json::utility
@@ -167,7 +181,7 @@ namespace json::utility
 
 		case VariantTypeEnum::jJSONObject:
 		{
-			const auto& ref = std::get<static_cast<int>(VariantTypeEnum::jJSONObject)>(value);
+			const auto& ref = std::get<static_cast<size_t>(VariantTypeEnum::jJSONObject)>(value);
 
 			auto start = ref.data.begin();
 			auto end = ref.data.end();
@@ -210,5 +224,91 @@ namespace json::utility
 		}
 
 		outputStream << std::endl;
+	}
+
+	namespace __internal
+	{
+		template<typename VariantType>
+		inline std::pair<typename std::vector<std::pair<std::string, VariantType>>::const_iterator, bool> find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive)
+		{
+			auto it = std::find_if(start.begin(), start.end(), [&key](const std::pair<std::string, VariantType>& value) { return value.first == key; });
+			auto end = start.end();
+
+			if (!recursive || it != end)
+			{
+				return { it, it != end };
+			}
+
+			it = start.begin();
+
+			while (it != end)
+			{
+				if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONArray))
+				{
+					const auto& jsonArray = std::get<static_cast<size_t>(utility::VariantTypeEnum::jJSONArray)>(it->second);
+
+					for (const auto& object : jsonArray)
+					{
+						auto result = find(key, object.data, recursive);
+
+						if (result.second)
+						{
+							return result;
+						}
+					}
+				}
+				else if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
+				{
+					const std::vector<std::pair<std::string, VariantType>>& data = ::std::get<static_cast<size_t>(utility::VariantTypeEnum::jJSONObject)>(it->second).data;
+
+					auto result = find(key, data, recursive);
+
+					if (result.second)
+					{
+						return result;
+					}
+				}
+
+				++it;
+			}
+
+			return { end, false };
+		}
+
+		template<typename JsonObjectT, utility::JsonValues<JsonObjectT> T, typename VariantType>
+		inline bool checkSameType(const VariantType& value)
+		{
+			if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, std::nullptr_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::vector<JsonObjectT>> || std::is_same_v<T, JsonObjectT>)
+			{
+				return std::holds_alternative<T>(value);
+			}
+			else if constexpr (std::is_floating_point_v<T>)
+			{
+				return std::holds_alternative<double>(value);
+			}
+			else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
+			{
+				return std::holds_alternative<uint64_t>(value) || std::holds_alternative<int64_t>(value);
+			}
+
+			return false;
+		}
+
+		template<std::integral T, typename VariantType>
+		inline T getValue(const VariantType& value)
+		{
+			if (std::holds_alternative<int64_t>(value))
+			{
+				return static_cast<T>(std::get<int64_t>(value));
+			}
+			else if (std::holds_alternative<uint64_t>(value))
+			{
+				return static_cast<T>(std::get<uint64_t>(value));
+			}
+
+			throw std::runtime_error("Wrong type");
+
+			return T();
+		}
 	}
 }

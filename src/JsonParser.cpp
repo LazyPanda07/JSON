@@ -7,7 +7,6 @@
 #include <queue>
 #include <limits>
 #include <regex>
-#include <sstream>
 
 #include "JsonArrayWrapper.h"
 #include "OutputOperations.h"
@@ -81,52 +80,6 @@ namespace json
 	void JsonParser::insertKeyValueData(std::string&& key, const std::string& value, JsonObject& ptr)
 	{
 		ptr.data.emplace_back(std::move(key), JsonParser::parseValue(value));
-	}
-
-	std::pair<std::vector<std::pair<std::string, JsonParser::VariantType>>::const_iterator, bool> JsonParser::find(std::string_view key, const std::vector<std::pair<std::string, VariantType>>& start, bool recursive)
-	{
-		auto it = std::find_if(start.begin(), start.end(), [&key](const std::pair<std::string, VariantType>& value) { return value.first == key; });
-		auto end = start.end();
-
-		if (!recursive || it != end)
-		{
-			return { it, it != end };
-		}
-
-		it = start.begin();
-
-		while (it != end)
-		{
-			if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONArray))
-			{
-				const std::vector<JsonObject>& jsonArray = std::get<std::vector<JsonObject>>(it->second);
-
-				for (const JsonObject& object : jsonArray)
-				{
-					auto result = JsonParser::find(key, object.data, recursive);
-
-					if (result.second)
-					{
-						return result;
-					}
-				}
-			}
-			else if (it->second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
-			{
-				const std::vector<std::pair<std::string, VariantType>>& data = ::std::get<JsonObject>(it->second).data;
-
-				auto result = JsonParser::find(key, data, recursive);
-
-				if (result.second)
-				{
-					return result;
-				}
-			}
-
-			++it;
-		}
-
-		return { end, false };
 	}
 
 	bool JsonParser::isStringSymbol(char symbol)
@@ -548,7 +501,7 @@ namespace json
 
 	void JsonParser::overrideValue(std::string_view key, const VariantType& value, bool recursive)
 	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
+		auto [result, success] = utility::__internal::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{
@@ -560,7 +513,7 @@ namespace json
 
 	void JsonParser::overrideValue(std::string_view key, VariantType&& value, bool recursive)
 	{
-		auto [result, success] = JsonParser::find(key, parsedData.data, recursive);
+		auto [result, success] = utility::__internal::find(key, parsedData.data, recursive);
 
 		if (!success)
 		{

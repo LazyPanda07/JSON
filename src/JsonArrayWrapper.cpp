@@ -173,9 +173,9 @@ namespace json
 			return array;
 		}
 
-		const JsonObject::VariantType& JsonArrayWrapper::operator [] (size_t index) const
+		const JsonObject& JsonArrayWrapper::operator [] (size_t index) const
 		{
-			return array.at(index).data.begin()->second;
+			return array.at(index);
 		}
 	}
 }

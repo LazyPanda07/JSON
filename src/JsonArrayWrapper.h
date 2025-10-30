@@ -106,7 +106,7 @@ namespace json
 			/// @param index Array index
 			/// @return 
 			/// @exception std::out_of_range 
-			const JsonObject::VariantType& operator [] (size_t index) const;
+			const JsonObject& operator [] (size_t index) const;
 
 			~JsonArrayWrapper() = default;
 		};

@@ -148,7 +148,7 @@ namespace json
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
 		/// <exception cref="std::bad_variant_access">Other type found</exception>
 		template<utility::JsonLightValues T>
-		T get(std::string_view key, bool recursive = false) const;
+		T get(std::string_view key = "", bool recursive = false) const;
 
 		/// <summary>
 		/// <para>Getter for all JSON parsed values</para>
@@ -161,7 +161,7 @@ namespace json
 		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
 		/// <exception cref="std::bad_variant_access">Other type found</exception>
 		template<utility::JsonHeavyValues<JsonObject> T>
-		const T& get(std::string_view key, bool recursive = false) const;
+		const T& get(std::string_view key = "", bool recursive = false) const;
 
 		/**
 		 * @brief Getter for all JSON parsed values

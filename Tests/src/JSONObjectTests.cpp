@@ -40,8 +40,8 @@ TEST(Object, DefaultOperations)
 
 		ASSERT_EQ(temp.get<float>("float"), 5.5);
 
-		ASSERT_EQ(std::get<int64_t>(wrapper[0]), 5);
-		ASSERT_EQ(std::get<std::string>(wrapper[1]), "data");
-		ASSERT_EQ(std::get<nullptr_t>(wrapper[2]), nullptr);
+		ASSERT_EQ(wrapper[0].get<int64_t>(), 5);
+		ASSERT_EQ(wrapper[1].get<std::string>(), "data");
+		ASSERT_EQ(wrapper[2].get<std::nullptr_t>(), nullptr);
 	}
 }

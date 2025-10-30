@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['standard_0',['standard',['../classjson_1_1_j_s_o_n_builder.html#a613fcb5202d9a8512787fa10040ef6b8ac00f0c4675b91fb8b918e4079a0b1bac',1,'json::JSONBuilder']]]
+  ['standard_0',['standard',['../classjson_1_1_json_builder.html#a688bfb406405bc832989c56e9bdaca64ac00f0c4675b91fb8b918e4079a0b1bac',1,'json::JsonBuilder']]]
 ];

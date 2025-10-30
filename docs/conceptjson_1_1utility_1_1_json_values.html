@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JSON<span id="projectnumber">&#160;2.7.1</span>
+   <div id="projectname">JSON<span id="projectnumber">&#160;2.8.0</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++20</div>
   </td>
@@ -102,10 +102,10 @@ $(function(){initNavTree('conceptjson_1_1utility_1_1_json_values.html',''); init
 <div class="contents">
 <h2 class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> TJsonStruct&gt;</div>
-<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptjson_1_1utility_1_1_json_values.html">json::utility::JsonValues</a> =  <a class="code hl_concept" href="conceptjson_1_1utility_1_1_json_light_values.html">JsonLightValues&lt;T&gt;</a> || <a class="code hl_concept" href="conceptjson_1_1utility_1_1_json_heavy_values.html">JsonHeavyValues&lt;T, TJsonStruct&gt;</a></div>
-<div class="ttc" id="aconceptjson_1_1utility_1_1_json_heavy_values_html"><div class="ttname"><a href="conceptjson_1_1utility_1_1_json_heavy_values.html">json::utility::JsonHeavyValues</a></div><div class="ttdef"><b>Definition</b> JSONUtility.h:68</div></div>
-<div class="ttc" id="aconceptjson_1_1utility_1_1_json_light_values_html"><div class="ttname"><a href="conceptjson_1_1utility_1_1_json_light_values.html">json::utility::JsonLightValues</a></div><div class="ttdef"><b>Definition</b> JSONUtility.h:65</div></div>
-<div class="ttc" id="aconceptjson_1_1utility_1_1_json_values_html"><div class="ttname"><a href="conceptjson_1_1utility_1_1_json_values.html">json::utility::JsonValues</a></div><div class="ttdef"><b>Definition</b> JSONUtility.h:71</div></div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptjson_1_1utility_1_1_json_values.html">json::utility::JsonValues</a> =  <a class="code hl_concept" href="conceptjson_1_1utility_1_1_json_light_values.html">JsonLightValues&lt;std::remove_cvref_t&lt;T&gt;</a>&gt; || <a class="code hl_concept" href="conceptjson_1_1utility_1_1_json_heavy_values.html">JsonHeavyValues&lt;std::remove_cvref_t&lt;T&gt;</a>, TJsonStruct&gt;</div>
+<div class="ttc" id="aconceptjson_1_1utility_1_1_json_heavy_values_html"><div class="ttname"><a href="conceptjson_1_1utility_1_1_json_heavy_values.html">json::utility::JsonHeavyValues</a></div><div class="ttdef"><b>Definition</b> JsonUtility.h:53</div></div>
+<div class="ttc" id="aconceptjson_1_1utility_1_1_json_light_values_html"><div class="ttname"><a href="conceptjson_1_1utility_1_1_json_light_values.html">json::utility::JsonLightValues</a></div><div class="ttdef"><b>Definition</b> JsonUtility.h:50</div></div>
+<div class="ttc" id="aconceptjson_1_1utility_1_1_json_values_html"><div class="ttname"><a href="conceptjson_1_1utility_1_1_json_values.html">json::utility::JsonValues</a></div><div class="ttdef"><b>Definition</b> JsonUtility.h:56</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

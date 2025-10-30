@@ -8,11 +8,11 @@ var annotated_dup =
         [ "WrongInputStreamException", "classjson_1_1exceptions_1_1_wrong_input_stream_exception.html", null ]
       ] ],
       [ "utility", null, [
-        [ "JSONArrayWrapper", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper.html", "classjson_1_1utility_1_1_j_s_o_n_array_wrapper" ],
-        [ "jsonObject", "classjson_1_1utility_1_1json_object.html", "classjson_1_1utility_1_1json_object" ]
+        [ "JsonArrayWrapper", "classjson_1_1utility_1_1_json_array_wrapper.html", "classjson_1_1utility_1_1_json_array_wrapper" ]
       ] ],
-      [ "JSONBuilder", "classjson_1_1_j_s_o_n_builder.html", "classjson_1_1_j_s_o_n_builder" ],
-      [ "JSONParser", "classjson_1_1_j_s_o_n_parser.html", "classjson_1_1_j_s_o_n_parser" ],
-      [ "RecursiveJSONIterator", "classjson_1_1_recursive_j_s_o_n_iterator.html", null ]
+      [ "JsonBuilder", "classjson_1_1_json_builder.html", "classjson_1_1_json_builder" ],
+      [ "JsonObject", "classjson_1_1_json_object.html", "classjson_1_1_json_object" ],
+      [ "JsonParser", "classjson_1_1_json_parser.html", "classjson_1_1_json_parser" ],
+      [ "RecursiveJsonIterator", "classjson_1_1_recursive_json_iterator.html", null ]
     ] ]
 ];

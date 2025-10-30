@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['begin_0',['begin',['../classjson_1_1utility_1_1json_object.html#ae60c1e1f744c71dd9311df6fe9cf9873',1,'json::utility::jsonObject']]],
-  ['build_1',['build',['../classjson_1_1_j_s_o_n_builder.html#aece5f3b785cad82653de7f5177554037',1,'json::JSONBuilder']]]
+  ['begin_0',['begin',['../classjson_1_1_json_object.html#abda1688180f49e8e6e3b8745fc2e7c78',1,'json::JsonObject']]],
+  ['build_1',['build',['../classjson_1_1_json_builder.html#aa90cbe3e68ad9c861fbfe59f10fd5279',1,'json::JsonBuilder']]]
 ];

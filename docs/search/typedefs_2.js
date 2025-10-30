@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['varianttype_0',['variantType',['../classjson_1_1_j_s_o_n_builder.html#aa3d538f3250fdcac6582084b7ccce65e',1,'json::JSONBuilder::variantType'],['../classjson_1_1_j_s_o_n_parser.html#a98013c1d3c0661d58ba0fb4fca64f804',1,'json::JSONParser::variantType']]]
+  ['varianttype_0',['VariantType',['../classjson_1_1_json_builder.html#af14fcd11c4a281052833133778c776d6',1,'json::JsonBuilder::VariantType'],['../classjson_1_1_json_parser.html#add087acd498c34af32609a074ab7444c',1,'json::JsonParser::VariantType']]]
 ];

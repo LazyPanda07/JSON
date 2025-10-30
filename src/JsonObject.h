@@ -249,7 +249,7 @@ namespace json
 	template<utility::JsonLightValues T>
 	T JsonObject::get(std::string_view key, bool recursive) const
 	{
-		auto [result, success] = JsonObject::find(key, data, recursive);
+		auto [result, success] = utility::__internal::find(key, data, recursive);
 
 		if (!success)
 		{
@@ -285,7 +285,7 @@ namespace json
 	template<utility::JsonHeavyValues<JsonObject> T>
 	const T& JsonObject::get(std::string_view key, bool recursive) const
 	{
-		auto [result, success] = JsonObject::find(key, data, recursive);
+		auto [result, success] = utility::__internal::find(key, data, recursive);
 
 		if (!success)
 		{
@@ -317,7 +317,7 @@ namespace json
 	template<utility::JsonValues<JsonObject> T>
 	bool JsonObject::tryGet(std::string_view key, T& value, bool recursive) const
 	{
-		auto [result, success] = JsonObject::find(key, data, recursive);
+		auto [result, success] = utility::__internal::find(key, data, recursive);
 
 		if (!success || !utility::__internal::checkSameType<T>(result->second))
 		{

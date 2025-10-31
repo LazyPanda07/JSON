@@ -194,6 +194,77 @@ namespace json::utility
 
 		return result;
 	}
+
+	std::string convertEncoding(std::string_view source, uint32_t sourceCodePage, uint32_t resultCodePage)
+	{
+		std::string result;
+		std::wstring tem;
+		int size = MultiByteToWideChar
+		(
+			sourceCodePage,
+			NULL,
+			source.data(),
+			-1,
+			nullptr,
+			NULL
+		);
+
+		if (!size)
+		{
+			throw exceptions::WrongEncodingException(source);
+		}
+
+		tem.resize(static_cast<size_t>(size) - 1);
+
+		if (!MultiByteToWideChar
+		(
+			sourceCodePage,
+			NULL,
+			source.data(),
+			-1,
+			tem.data(),
+			size
+		))
+		{
+			throw exceptions::WrongEncodingException(source);
+		}
+
+		size = WideCharToMultiByte
+		(
+			resultCodePage,
+			NULL,
+			tem.data(),
+			-1,
+			nullptr,
+			NULL,
+			NULL,
+			NULL
+		);
+
+		if (!size)
+		{
+			throw exceptions::WrongEncodingException(source);
+		}
+
+		result.resize(static_cast<size_t>(size) - 1);
+
+		if (!WideCharToMultiByte
+		(
+			resultCodePage,
+			NULL,
+			tem.data(),
+			-1,
+			result.data(),
+			size,
+			NULL,
+			NULL
+		))
+		{
+			throw exceptions::WrongEncodingException(source);
+		}
+
+		return result;
+	}
 #endif
 
 	std::string getJSONVersion()

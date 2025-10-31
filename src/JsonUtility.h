@@ -97,6 +97,8 @@ namespace json::utility
 	/// <returns>string in resultCodePage encoding</returns>
 	/// <exception cref="json::exceptions::WrongEncodingException"></exception>
 	std::string fromUTF8JSON(std::string_view source, uint32_t resultCodePage);
+
+	std::string convertEncoding(std::string_view source, uint32_t sourceCodePage, uint32_t resultCodePage);
 #endif
 	/// @brief Get current version of JSON project
 	/// @return Current version of JSON project

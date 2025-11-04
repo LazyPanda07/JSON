@@ -52,6 +52,11 @@ namespace json::utility
 	{
 		return convertString(source, source.size(), iconv_open(resultCodePage.data(), CP_UTF8));
 	}
+
+	std::string convertEncoding(std::string_view source, std::string_view sourceCodePage, std::string_view resultCodePage)
+	{
+		return convertString(source, source.size() * 4, iconv_open(resultCodePage.data(), sourceCodePage.data()));
+	}
 #else
 	std::string toUTF8JSON(std::string_view source, uint32_t sourceCodePage)
 	{

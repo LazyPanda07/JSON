@@ -36,7 +36,7 @@ TEST(Object, DefaultOperations)
 	ASSERT_EQ(object["string_view"].get<std::string>(), "view");
 	ASSERT_EQ(object["ptr"].get<std::string>(), "ptr");
 	ASSERT_FALSE(object.contains<std::nullptr_t>("null"));
-	ASSERT_FALSE(object.contains<std::nullptr_t>("null"), true);
+	ASSERT_FALSE(object.contains<std::nullptr_t>("null", true));
 
 	{
 		const json::JsonObject& temp = object["object"].get<json::JsonObject>();

@@ -88,6 +88,7 @@ TEST(Builder, Minimize)
 {
 	json::JsonBuilder builder(CP_UTF8);
 	json::JsonObject object;
+	json::JsonParser reference(std::ifstream("data/minimize.json"));
 
 	object["someRecursiveData"] = 10;
 
@@ -96,9 +97,5 @@ TEST(Builder, Minimize)
 
 	builder.minimize();
 
-	std::ostringstream os;
-	
-	os << std::ifstream("data/minimize.json").rdbuf();
-
-	ASSERT_EQ(os.str(), builder.build());
+	ASSERT_EQ(reference.getParsedData(), json::JsonParser(builder.build()).getParsedData());
 }

@@ -1,13 +1,15 @@
 #include "JsonBuilder.h"
 
-#include <queue>
 #include <algorithm>
+#include <format>
 
 #include "JsonArrayWrapper.h"
 #include "OutputOperations.h"
 #include "Exceptions/CantFindValueException.h"
 
+#ifndef __LINUX__
 #pragma warning(disable: 4715)
+#endif
 
 namespace json
 {
@@ -43,101 +45,60 @@ namespace json
 	}
 #endif
 
-	JsonBuilder::JsonBuilder(const JsonBuilder& other) :
-		builderData(other.builderData),
-		codePage(other.codePage),
-		type(other.type)
+	JsonObject& JsonBuilder::operator [](std::string_view key)
 	{
+		auto it = builderData.begin();
 
-	}
-
-	JsonBuilder::JsonBuilder(JsonBuilder&& other) noexcept :
-		builderData(std::move(other.builderData)),
-		codePage(other.codePage),
-		type(other.type)
-	{
-
-	}
-
-	JsonBuilder& JsonBuilder::operator = (const JsonBuilder& other)
-	{
-		builderData = other.builderData;
-		codePage = other.codePage;
-		type = other.type;
-
-		return *this;
-	}
-
-	JsonBuilder& JsonBuilder::operator = (JsonBuilder&& other) noexcept
-	{
-		builderData = std::move(other.builderData);
-		codePage = other.codePage;
-		type = other.type;
-
-		return *this;
-	}
-
-	bool JsonBuilder::contains(std::string_view key, utility::VariantTypeEnum type, bool recursive) const
-	{
-		std::queue<const JsonObject*> objects;
-
-		objects.push(&builderData);
-
-		while (objects.size())
+		for (; it != builderData.end(); ++it)
 		{
-			const JsonObject* current = objects.front();
+			const JsonObject& value = *it;
 
-			objects.pop();
-
-			for (const auto& i : current->data)
+			if (value.is<JsonObject>())
 			{
-				if (i.first == key && i.second.index() == static_cast<size_t>(type))
+				if (it.key() == key)
 				{
-					return true;
-				}
-
-				if (recursive && i.second.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
-				{
-					const auto& object = get<static_cast<size_t>(utility::VariantTypeEnum::jJSONObject)>(i.second);
-
-					objects.push(&object);
+					break;
 				}
 			}
 		}
 
-		return false;
-	}
-
-	JsonBuilder::VariantType& JsonBuilder::operator [] (std::string_view key)
-	{
-		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const std::pair<std::string, VariantType>& value) { return value.first == key; });
-
-		if (it != builderData.data.end())
+		if (it != builderData.end())
 		{
-			return it->second;
+			return *it;
 		}
 
-		this->append<nullptr_t>(std::string_view(key.data(), key.size()), nullptr);
-
-		return builderData.data.back().second;
+		return builderData[key];
 	}
 
-	const JsonBuilder::VariantType& JsonBuilder::operator [] (std::string_view key) const
+	const JsonObject& JsonBuilder::operator [](std::string_view key) const
 	{
-		auto it = find_if(builderData.data.begin(), builderData.data.end(), [&key](const std::pair<std::string, VariantType>& value) { return value.first == key; });
+		auto it = builderData.begin();
 
-		if (it != builderData.data.end())
+		for (; it != builderData.end(); ++it)
 		{
-			return it->second;
+			const JsonObject& value = *it;
+
+			if (value.is<JsonObject>())
+			{
+				if (it.key() == key)
+				{
+					break;
+				}
+			}
 		}
 
-		throw exceptions::CantFindValueException(key);
+		if (it == builderData.end())
+		{
+			throw exceptions::CantFindValueException(key);
+		}
+
+		return *it;
 	}
 
 	std::string JsonBuilder::build() const
 	{
-		auto start = builderData.data.begin();
-		auto end = builderData.data.end();
+		JsonObject::ConstIterator start = builderData.begin();
+		JsonObject::ConstIterator end = builderData.end();
 		std::ostringstream outputStream;
 		std::string offset = "  ";
 
@@ -145,11 +106,19 @@ namespace json
 
 		while (start != end)
 		{
-			auto check = start;
+			JsonObject::ConstIterator check = start;
+			const JsonObject& value = *check;
 
-			outputStream << offset << '"' << start->first << '"' << ": ";
+			if (std::optional<std::string_view> key = check.key())
+			{
+				outputStream << std::format(R"({}"{}": )", offset, *key);
+			}
+			else
+			{
+				outputStream << offset;
+			}
 
-			utility::outputJsonType<JsonBuilder, utility::JsonArrayWrapper>(outputStream, start->second, ++check == end, offset);
+			utility::outputJsonType(outputStream, value, ++check == end, offset);
 
 			++start;
 		}
@@ -174,7 +143,7 @@ namespace json
 						isJsonString = !isJsonString;
 					}
 				}
-				else if (isspace(result[i]) && !isJsonString)
+				else if (std::isspace(result[i]) && !isJsonString)
 				{
 					result.erase(result.begin() + i);
 

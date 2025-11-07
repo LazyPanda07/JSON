@@ -5,6 +5,15 @@
 namespace json::utility
 {
 	/// <summary>
+	/// Put JSON value into outputStream
+	/// </summary>
+	/// <typeparam name="jsonStructT">last argument in baseVariantType</typeparam>
+	/// <param name="outputStream">std::ostream subclass</param>
+	/// <param name="value">JSON value</param>
+	/// <param name="isLast">is description ends</param>
+	void outputJsonType(std::ostream& outputStream, const JsonObject& value, bool isLast, std::string& offset);
+
+	/// <summary>
 	/// Output JSON arrays to std::ostream. Also applied std::endl and flushes
 	/// </summary>
 	/// <param name="outputStream">std::ostream subclass</param>
@@ -15,7 +24,7 @@ namespace json::utility
 	{
 		outputStream << '[' << std::endl;
 
-		auto& jsonArray = *jsonData;
+		const std::vector<JsonObject>& jsonArray = *jsonData;
 
 		if (!jsonData.getOffset())
 		{
@@ -26,12 +35,9 @@ namespace json::utility
 
 		for (size_t i = 0; i < jsonArray.size(); i++)
 		{
-			for (const auto& j : jsonArray[i].data)
-			{
-				outputStream << offset;
+			outputStream << offset;
 
-				outputJsonType<JsonObject, JsonArrayWrapper>(outputStream, j.second, i + 1 == jsonArray.size(), offset);
-			}
+			outputJsonType(outputStream, jsonArray[i], i + 1 == jsonArray.size(), offset);
 		}
 
 		return outputStream;
@@ -41,11 +47,11 @@ namespace json::utility
 	/// @param outputStream std::ostream subclass
 	/// @param jsonValue JSON value
 	/// @return outputStream
-	inline std::ostream& operator << (std::ostream& outputStream, const JsonObject::VariantType& jsonValue)
+	inline std::ostream& operator << (std::ostream& outputStream, const JsonObject& jsonValue)
 	{
 		std::string offset;
 
-		outputJsonType<JsonObject, JsonArrayWrapper>(outputStream, jsonValue, true, offset);
+		outputJsonType(outputStream, jsonValue, true, offset);
 
 		return outputStream;
 	}

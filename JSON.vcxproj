@@ -143,6 +143,7 @@
     <ClCompile Include="src\JsonObject.cpp" />
     <ClCompile Include="src\JsonParser.cpp" />
     <ClCompile Include="src\JsonUtility.cpp" />
+    <ClCompile Include="src\OutputOperations.cpp" />
     <ClCompile Include="src\RecursiveJsonIterator.cpp" />
   </ItemGroup>
   <ItemGroup>

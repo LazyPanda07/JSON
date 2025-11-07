@@ -1,6 +1,8 @@
 #pragma once
 
 #include <format>
+#include <queue>
+#include <optional>
 
 #include "JsonUtility.h"
 
@@ -10,269 +12,327 @@ namespace json
 	class JsonObject
 	{
 	public:
-		using VariantType = utility::BaseVariantType<JsonObject>;
+		using VariantType = utility::JsonVariantType<JsonObject>;
+		using MapType = utility::JsonMapType<JsonObject>;
 
 	public:
-		/// @brief Iterator through jsonObject
-		class ConstIterator
+		class Iterator
 		{
-		public:
-			using ConstIteratorType = std::vector<std::pair<std::string, VariantType>>::const_iterator;
+		private:
+			using IteratorType = std::variant
+				<
+				std::vector<JsonObject>::iterator,
+				MapType::iterator,
+				std::pair<JsonObject*, size_t>
+				>;
 
 		private:
-			ConstIteratorType begin;
-			ConstIteratorType end;
-			ConstIteratorType current;
+			IteratorType begin;
+			IteratorType end;
+			IteratorType current;
+
+		public:
+			Iterator() = default;
+
+			Iterator(IteratorType begin, IteratorType end, IteratorType current);
+
+			Iterator(const Iterator& other) = default;
+
+			Iterator(Iterator&& other) noexcept = default;
+
+			std::optional<std::string_view> key() const;
+
+			const IteratorType& getBegin() const;
+
+			const IteratorType& getEnd() const;
+
+			Iterator& operator =(const Iterator& other) = default;
+
+			Iterator& operator =(Iterator&& other) noexcept = default;
+
+			Iterator operator ++(int) noexcept;
+
+			Iterator& operator ++() noexcept;
+
+			Iterator operator --(int) noexcept;
+
+			Iterator& operator --() noexcept;
+
+			JsonObject& operator *() noexcept;
+
+			JsonObject* operator ->() noexcept;
+
+			bool operator ==(const Iterator& other) const noexcept;
+
+			bool operator !=(const Iterator& other) const noexcept;
+
+			~Iterator() = default;
+		};
+
+		class ConstIterator
+		{
+		private:
+			using IteratorType = std::variant
+				<
+				std::vector<JsonObject>::const_iterator,
+				MapType::const_iterator,
+				std::pair<const JsonObject*, size_t>
+				>;
+
+		private:
+			IteratorType begin;
+			IteratorType end;
+			IteratorType current;
 
 		public:
 			ConstIterator() = default;
 
-			ConstIterator(ConstIteratorType begin, ConstIteratorType end, ConstIteratorType start);
+			ConstIterator(IteratorType begin, IteratorType end, IteratorType current);
 
 			ConstIterator(const ConstIterator& other) = default;
 
 			ConstIterator(ConstIterator&& other) noexcept = default;
 
-			ConstIterator& operator = (const ConstIterator& other) = default;
+			std::optional<std::string_view> key() const;
 
-			ConstIterator& operator = (ConstIterator&& other) noexcept = default;
+			const IteratorType& getBegin() const;
 
-			const ConstIteratorType& getBegin() const;
+			const IteratorType& getEnd() const;
 
-			const ConstIteratorType& getEnd() const;
+			ConstIterator& operator =(const ConstIterator& other) = default;
 
-			ConstIterator operator++(int) noexcept;
+			ConstIterator& operator =(ConstIterator&& other) noexcept = default;
 
-			const ConstIterator& operator++() noexcept;
+			ConstIterator operator ++(int) noexcept;
 
-			ConstIterator operator--(int) noexcept;
+			const ConstIterator& operator ++() noexcept;
 
-			const ConstIterator& operator--() noexcept;
+			ConstIterator operator --(int) noexcept;
 
-			const std::pair<std::string, VariantType>& operator*() const noexcept;
+			const ConstIterator& operator --() noexcept;
 
-			const ConstIteratorType& operator->() const noexcept;
+			const JsonObject& operator *() const noexcept;
 
-			bool operator==(const ConstIterator& other) const noexcept;
+			const JsonObject* operator ->() const noexcept;
 
-			bool operator!=(const ConstIterator& other) const noexcept;
+			bool operator ==(const ConstIterator& other) const noexcept;
 
-			operator ConstIteratorType () const;
+			bool operator !=(const ConstIterator& other) const noexcept;
 
 			~ConstIterator() = default;
 		};
 
 	private:
-		static void throwCantFindValueException(std::string_view key);
-
-	public:
-		/// @brief Append jsonObject::variantType value to array
-		/// @param value JSON value
-		/// @param jsonArray Modifiable array
-		static void appendArray(VariantType&& value, std::vector<JsonObject>& jsonArray);
+		VariantType data;
 
 	private:
-		template<typename T>
-		bool tryGetValue(std::string_view key, T& value) const;
-
-		ConstIterator::ConstIteratorType findValue(std::string_view key, bool throwException = true) const;
-
-		void appendData(const std::string& key, const json::JsonObject::VariantType& value);
+		static bool compareMaps(const MapType& first, const MapType& second);
 
 	public:
-		std::vector<std::pair<std::string, VariantType>> data;
+		template<utility::JsonVariantTypeEnum T>
+		static JsonObject createDefaultJsonObject();
 
 	public:
-		JsonObject() = default;
+		JsonObject();
 
-		/// @brief Copy constructor
-		/// @param other Another jsonObject from JsonParser or JsonBuilder or custom
-		JsonObject(const JsonObject& other);
+		JsonObject(VariantType&& data);
 
-		/// @brief Move constructor
-		/// @param other Another jsonObject from JsonParser or JsonBuilder or custom
-		JsonObject(JsonObject&& other) noexcept;
+		JsonObject& at(size_t index);
 
-		/// @brief Copy assignment operator
-		/// @param other Another jsonObject from JsonParser or JsonBuilder or custom
-		/// @return Self
-		JsonObject& operator =(const JsonObject& other);
+		JsonObject& at(std::string_view key);
 
-		/// @brief Move assignment operator
-		/// @param other Another jsonObject from JsonParser or JsonBuilder or custom
-		/// @return Self
-		JsonObject& operator =(JsonObject&& other) noexcept;
+		const JsonObject& at(size_t index) const;
 
-		template<typename T>
-		JsonObject& setValue(std::string_view key, T&& value = T()) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);
+		const JsonObject& at(std::string_view key) const;
 
-		/// @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
-		/// @param key Object name
-		/// @param type Object type
-		bool contains(std::string_view key, utility::VariantTypeEnum type) const;
+		Iterator begin() noexcept;
 
-		/**
-		 * @brief Begin iterator
-		 * @return
-		*/
+		Iterator end() noexcept;
+
 		ConstIterator begin() const noexcept;
 
-		/**
-		 * @brief End iterator
-		 * @return
-		*/
 		ConstIterator end() const noexcept;
 
-		/**
-		 * @brief Access JSON value
-		 * @param key
-		 * @return
-		*/
-		VariantType& operator [](std::string_view key);
+		const std::type_info& getType() const;
 
-		/**
-		 * @brief Access JSON value
-		 * @param key
-		 * @return
-		*/
-		const VariantType& operator [](std::string_view key) const;
+		utility::JsonVariantTypeEnum getEnumType() const;
 
-		/// <summary>
-		/// <para>Getter for all JSON parsed values</para>
-		/// <para>Find and get first value of given key</para>
-		/// </summary>
-		/// <typeparam name="T">T is one of JsonParser::jsonStruct::variantType template parameters</typeparam>
-		/// <param name="key">JSON key</param>
-		/// <param name="recursive">Recursive search</param>
-		/// <returns>JSON value</returns>
-		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
-		/// <exception cref="std::bad_variant_access">Other type found</exception>
-		template<utility::JsonLightValues T>
-		T get(std::string_view key = "", bool recursive = false) const;
+		bool operator ==(const JsonObject& other) const noexcept;
 
-		/// <summary>
-		/// <para>Getter for all JSON parsed values</para>
-		/// <para>Find and get first value of given key</para>
-		/// </summary>
-		/// <typeparam name="T">T is one of JsonParser::jsonStruct::variantType template parameters</typeparam>
-		/// <param name="key">JSON key</param>
-		/// <param name="recursive">Recursive search</param>
-		/// <returns>JSON value</returns>
-		/// <exception cref="json::exceptions::CantFindValueException">can't find JSON value</exception>
-		/// <exception cref="std::bad_variant_access">Other type found</exception>
-		template<utility::JsonHeavyValues<JsonObject> T>
-		const T& get(std::string_view key = "", bool recursive = false) const;
+		const JsonObject& operator [](size_t index) const;
 
-		/**
-		 * @brief Getter for all JSON parsed values
-		 * @tparam T Is one of json::utility::jsonObject::variantType template parameters
-		 * @param key JSON key
-		 * @param value JSON value
-		 * @param recursive Recursive search
-		 * @return True if value found
-		*/
+		const JsonObject& operator [](std::string_view key) const;
+
 		template<utility::JsonValues<JsonObject> T>
-		bool tryGet(std::string_view key, T& value, bool recursive = false) const;
+		void emplace_back(T&& value);
+
+		template<utility::JsonValues<JsonObject> T>
+		bool is() const;
+
+		template<utility::JsonVariantTypeEnum T>
+		bool is() const;
+
+		template<utility::JsonValues<JsonObject> T>
+		bool contains(std::string_view key, bool recursive = false) const;
+
+		template<utility::JsonLightValues T>
+		T get() const;
+
+		template<utility::JsonHeavyValues<JsonObject> T>
+		const T& get() const;
+
+		template<utility::JsonValues<JsonObject> T>
+		bool tryGet(T& value) const;
+
+		JsonObject& operator [](size_t index);
+
+		template<typename T>
+		JsonObject& operator [](T&& key) requires(std::convertible_to<T, std::string_view> || (std::same_as<T, std::string> && std::is_rvalue_reference_v<decltype(key)>));
+
+		template<typename T>
+		JsonObject& operator =(T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);
 
 		~JsonObject() = default;
 	};
-
-	namespace utility
-	{
-		/// @brief Check current iterator with begin or end iterator
-		/// @param iterator jsonObject::ConstJSONIterator
-		/// @param nestedIterator jsonObject::ConstJSONIterator::getBegin() or jsonObject::ConstJSONIterator::getEnd()
-		/// @return 
-		bool operator ==(const JsonObject::ConstIterator& iterator, const JsonObject::ConstIterator::ConstIteratorType& nestedIterator);
-	}
 }
 
 namespace json
 {
-	namespace utility
+	template<utility::JsonVariantTypeEnum T>
+	JsonObject JsonObject::createDefaultJsonObject()
 	{
-		inline bool operator ==(const JsonObject::ConstIterator& iterator, const JsonObject::ConstIterator::ConstIteratorType& nestedIterator)
+		switch (T)
 		{
-			return static_cast<JsonObject::ConstIterator::ConstIteratorType>(iterator) == nestedIterator;
+		case json::utility::JsonVariantTypeEnum::jNull:
+			return JsonObject();
+
+		case json::utility::JsonVariantTypeEnum::jString:
+			return JsonObject("");
+
+		case json::utility::JsonVariantTypeEnum::jBool:
+			return JsonObject(false);
+
+		case json::utility::JsonVariantTypeEnum::jInt:
+			return JsonObject(static_cast<int64_t>(0));
+
+		case json::utility::JsonVariantTypeEnum::jUint:
+			return JsonObject(static_cast<uint64_t>(0));
+
+		case json::utility::JsonVariantTypeEnum::jDouble:
+			return JsonObject(0.0);
+
+		case json::utility::JsonVariantTypeEnum::jJSONArray:
+			return JsonObject(std::vector<JsonObject>());
+
+		case json::utility::JsonVariantTypeEnum::jJSONObject:
+			return JsonObject(JsonObject::MapType());
+
+		default:
+			throw std::runtime_error("Wrong JsonVariantTypeEnum");
 		}
 	}
 
-	template<typename T>
-	JsonObject& JsonObject::setValue(std::string_view key, T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
+	template<utility::JsonValues<JsonObject> T>
+	void JsonObject::emplace_back(T&& value)
 	{
-		using ActualT = std::remove_cvref_t<T>;
-
-		if constexpr (std::is_same_v<ActualT, bool>)
+		if (!std::holds_alternative<std::vector<JsonObject>>(data))
 		{
-			data.emplace_back(key, value);
-		}
-		else if constexpr (std::is_same_v<ActualT, std::nullptr_t>)
-		{
-			data.emplace_back(key, nullptr);
-		}
-		else if constexpr (std::is_same_v<ActualT, std::string>)
-		{
-			data.emplace_back(key, std::forward<T>(value));
-		}
-		else if constexpr (std::convertible_to<ActualT, std::string_view>)
-		{
-			data.emplace_back(key, static_cast<std::string_view>(value).data());
-		}
-		else if constexpr (std::is_convertible_v<ActualT, std::string>)
-		{
-			data.emplace_back(key, static_cast<std::string>(value));
-		}
-		else if constexpr (std::is_same_v<ActualT, std::vector<JsonObject>> || std::is_same_v<ActualT, JsonObject>)
-		{
-			data.emplace_back(key, std::forward<T>(value));
-		}
-		else if constexpr (std::is_floating_point_v<ActualT>)
-		{
-			data.emplace_back(key, static_cast<double>(value));
-		}
-		else if constexpr (std::is_unsigned_v<ActualT>)
-		{
-			data.emplace_back(key, static_cast<uint64_t>(value));
-		}
-		else if constexpr (std::is_signed_v<ActualT>)
-		{
-			data.emplace_back(key, static_cast<int64_t>(value));
-		}
-		else
-		{
-			throw std::invalid_argument(std::format("Wrong argument type: {}", typeid(T).name()));
+			data = std::vector<JsonObject>();
 		}
 
-		return *this;
+		std::vector<JsonObject>& array = std::get<std::vector<JsonObject>>(data);
+
+		array.emplace_back(std::forward<T>(value));
 	}
 
-	template<utility::JsonLightValues T>
-	T JsonObject::get(std::string_view key, bool recursive) const
+	template<utility::JsonValues<JsonObject> T>
+	bool JsonObject::is() const
 	{
-		auto [result, success] = utility::__internal::find(key, data, recursive);
-
-		if (!success)
+		if constexpr (std::is_integral_v<T>)
 		{
-			JsonObject::throwCantFindValueException(key);
-		}
-
-		const JsonObject::VariantType& value = result->second;
-
-		if constexpr (std::is_same_v<T, bool>)
-		{
-			return std::get<bool>(value);
-		}
-		else if constexpr (std::is_same_v<T, std::nullptr_t>)
-		{
-			return std::get<std::nullptr_t>(value);
+			return std::holds_alternative<bool>(data) || std::holds_alternative<int64_t>(data) || std::holds_alternative<uint64_t>(data);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
 		{
-			return static_cast<T>(std::get<double>(value));
+			return std::holds_alternative<double>(data);
 		}
-		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
+		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			return utility::__internal::getValue<T>(value);
+			return std::holds_alternative<MapType>(data);
+		}
+		else
+		{
+			return std::holds_alternative<T>(data);
+		}
+	}
+
+	template<utility::JsonVariantTypeEnum T>
+	bool JsonObject::is() const
+	{
+		return data.index() == static_cast<size_t>(T);
+	}
+
+	template<utility::JsonValues<JsonObject> T>
+	bool JsonObject::contains(std::string_view key, bool recursive) const
+	{
+		std::queue<const JsonObject*> objects;
+
+		objects.push(this);
+
+		while (objects.size())
+		{
+			const JsonObject* current = objects.front();
+			bool isObject = current->is<JsonObject>();
+
+			objects.pop();
+
+			for (auto it = current->begin(); it != current->end(); ++it)
+			{
+				const JsonObject& value = *it;
+
+				if (isObject)
+				{
+					if (it.key() == key && it->is<T>())
+					{
+						return true;
+					}
+				}
+
+				if (recursive && value.is<JsonObject>() || value.is<std::vector<JsonObject>>())
+				{
+					objects.push(&value);
+				}
+			}
+		}
+
+		return false;
+	}
+
+	template<utility::JsonLightValues T>
+	T JsonObject::get() const
+	{
+		if constexpr (std::is_same_v<T, std::nullptr_t>)
+		{
+			return std::get<std::nullptr_t>(data);
+		}
+		else if constexpr (std::is_same_v<T, bool>)
+		{
+			return std::get<bool>(data);
+		}
+		else if constexpr (std::is_floating_point_v<T>)
+		{
+			return static_cast<T>(std::get<double>(data));
+		}
+		else if constexpr (std::is_integral_v<T>)
+		{
+			if (std::holds_alternative<int64_t>(data))
+			{
+				return static_cast<T>(std::get<int64_t>(data));
+			}
+			else
+			{
+				return static_cast<T>(std::get<uint64_t>(data));
+			}
 		}
 		else
 		{
@@ -283,28 +343,19 @@ namespace json
 	}
 
 	template<utility::JsonHeavyValues<JsonObject> T>
-	const T& JsonObject::get(std::string_view key, bool recursive) const
+	const T& JsonObject::get() const
 	{
-		auto [result, success] = utility::__internal::find(key, data, recursive);
-
-		if (!success)
-		{
-			JsonObject::throwCantFindValueException(key);
-		}
-
-		const JsonObject::VariantType& value = result->second;
-
 		if constexpr (std::is_same_v<T, std::string>)
 		{
-			return std::get<std::string>(value);
+			return std::get<std::string>(data);
 		}
 		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
 		{
-			return std::get<std::vector<JsonObject>>(value);
+			return std::get<std::vector<JsonObject>>(data);
 		}
 		else if constexpr (std::is_same_v<T, JsonObject>)
 		{
-			return std::get<JsonObject>(value);
+			return *this;
 		}
 		else
 		{
@@ -315,50 +366,98 @@ namespace json
 	}
 
 	template<utility::JsonValues<JsonObject> T>
-	bool JsonObject::tryGet(std::string_view key, T& value, bool recursive) const
+	bool JsonObject::tryGet(T& value) const
 	{
-		auto [result, success] = utility::__internal::find(key, data, recursive);
+		if (this->is<T>())
+		{
+			value = this->get<T>();
 
-		if (!success || !utility::__internal::checkSameType<JsonObject, T>(result->second))
-		{
-			return false;
+			return true;
 		}
 
-		const JsonObject::VariantType& temp = result->second;
+		return false;
+	}
 
-		if constexpr (std::is_same_v<T, bool>)
+	template<typename T>
+	JsonObject& JsonObject::operator =(T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
+	{
+		using ActualT = std::remove_cvref_t<T>;
+
+		if constexpr (std::is_same_v<ActualT, std::nullptr_t> || std::is_same_v<ActualT, bool>)
 		{
-			value = std::get<bool>(temp);
+			data = value;
 		}
-		else if constexpr (std::is_same_v<T, std::nullptr_t>)
+		else if constexpr (std::is_same_v<ActualT, std::string>)
 		{
-			value = std::get<std::nullptr_t>(temp);
+			data = std::forward<T>(value);
 		}
-		else if constexpr (std::is_same_v<T, std::string>)
+		else if constexpr (std::convertible_to<ActualT, std::string_view>)
 		{
-			value = std::get<std::string>(temp);
+			data = static_cast<std::string_view>(value).data();
 		}
-		else if constexpr (std::is_same_v<T, std::vector<JsonObject>>)
+		else if constexpr (std::is_convertible_v<ActualT, std::string>)
 		{
-			value = std::get<std::vector<JsonObject>>(temp);
+			data = static_cast<std::string>(value);
 		}
-		else if constexpr (std::is_same_v<T, JsonObject>)
+		else if constexpr (std::is_same_v<ActualT, std::vector<JsonObject>>)
 		{
-			value = std::get<JsonObject>(temp);
+			data = std::forward<T>(value);
 		}
-		else if constexpr (std::is_floating_point_v<T>)
+		else if constexpr (std::is_same_v<ActualT, JsonObject>)
 		{
-			value = static_cast<T>(std::get<double>(temp));
+			if constexpr (std::is_rvalue_reference_v<T>)
+			{
+				data = std::move(value.data);
+			}
+			else
+			{
+				data = value.data;
+			}
 		}
-		else if constexpr (std::is_unsigned_v<T> || std::is_signed_v<T>)
+		else if constexpr (std::is_floating_point_v<ActualT>)
 		{
-			value = utility::__internal::getValue<T>(temp);
+			data = static_cast<double>(value);
+		}
+		else if constexpr (std::is_unsigned_v<ActualT>)
+		{
+			data = static_cast<uint64_t>(value);
+		}
+		else if constexpr (std::is_signed_v<ActualT>)
+		{
+			data = static_cast<int64_t>(value);
 		}
 		else
 		{
-			throw std::runtime_error("Wrong type");
+			throw std::invalid_argument(std::format("Wrong argument type: {}", typeid(T).name()));
 		}
 
-		return true;
+		return *this;
+	}
+
+	template<typename T>
+	JsonObject& JsonObject::operator [](T&& key) requires(std::convertible_to<T, std::string_view> || (std::same_as<T, std::string> && std::is_rvalue_reference_v<decltype(key)>))
+	{
+		MapType* map;
+
+		if (!std::holds_alternative<MapType>(data))
+		{
+			data = MapType();
+		}
+
+		map = &std::get<MapType>(data);
+
+		if (auto it = map->find(static_cast<std::string_view>(key)); it != map->end())
+		{
+			return it->second;
+		}
+
+		if constexpr (std::same_as<T, std::string>)
+		{
+			return map->emplace(std::move(key), JsonObject()).first->second;
+		}
+		else
+		{
+			return map->emplace(static_cast<std::string_view>(key), JsonObject()).first->second;
+		}
 	}
 }

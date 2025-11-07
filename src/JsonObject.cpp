@@ -2,44 +2,179 @@
 
 #include "Exceptions/CantFindValueException.h"
 
+template<typename... Ts>
+struct VisitHelper : Ts...
+{
+	using Ts::operator()...;
+};
+
+template<typename... Ts>
+VisitHelper(Ts...) -> VisitHelper<Ts...>;
+
+template <typename T = void>
+struct PrefixIncrement
+{
+	using ResultType = decltype(++std::declval<T&>());
+
+	constexpr ResultType operator ()(T& value) const noexcept(noexcept(++value))
+	{
+		return ++value;
+	}
+};
+
+template <typename T = void>
+struct PrefixDecrement
+{
+	using ResultType = decltype(--std::declval<T&>());
+
+	constexpr ResultType operator ()(T& value) const noexcept(noexcept(--value))
+	{
+		return --value;
+	}
+};
+
+template<template<typename IteratorT> typename OperatorT, typename T>
+static void callVisit(T& current);
+
 namespace json
 {
-	using ConstJSONIterator = JsonObject::ConstIterator;
-	using ConstJSONIteratorType = JsonObject::ConstIterator::ConstIteratorType;
-
-	void JsonObject::throwCantFindValueException(std::string_view key)
-	{
-		throw exceptions::CantFindValueException(key);
-	}
-
-	void JsonObject::appendArray(VariantType&& value, std::vector<JsonObject>& jsonArray)
-	{
-		JsonObject object;
-
-		object.data.emplace_back("", std::move(value));
-
-		jsonArray.push_back(std::move(object));
-	}
-
-	ConstJSONIterator::ConstIterator(ConstIteratorType begin, ConstIteratorType end, ConstIteratorType start) :
+	JsonObject::Iterator::Iterator(IteratorType begin, IteratorType end, IteratorType current) :
 		begin(begin),
 		end(end),
-		current(start)
+		current(current)
 	{
 
 	}
 
-	const ConstJSONIteratorType& ConstJSONIterator::getBegin() const
+	std::optional<std::string_view> JsonObject::Iterator::key() const
+	{
+		if (std::holds_alternative<MapType::iterator>(current))
+		{
+			return std::get<MapType::iterator>(current)->first;
+		}
+
+		return std::nullopt;
+	}
+
+	const JsonObject::Iterator::IteratorType& JsonObject::Iterator::getBegin() const
 	{
 		return begin;
 	}
 
-	const ConstJSONIteratorType& ConstJSONIterator::getEnd() const
+	const JsonObject::Iterator::IteratorType& JsonObject::Iterator::getEnd() const
 	{
 		return end;
 	}
 
-	ConstJSONIterator ConstJSONIterator::operator++ (int) noexcept
+	JsonObject::Iterator JsonObject::Iterator::operator ++(int) noexcept
+	{
+		Iterator it(*this);
+
+		++(*this);
+
+		return it;
+	}
+
+	JsonObject::Iterator& JsonObject::Iterator::operator ++() noexcept
+	{
+		if (current == end)
+		{
+			return *this;
+		}
+
+		callVisit<PrefixIncrement>(current);
+
+		return *this;
+	}
+
+	JsonObject::Iterator JsonObject::Iterator::operator --(int) noexcept
+	{
+		Iterator it(*this);
+
+		--(*this);
+
+		return it;
+	}
+
+	JsonObject::Iterator& JsonObject::Iterator::operator --() noexcept
+	{
+		if (current == begin)
+		{
+			return *this;
+		}
+
+		callVisit<PrefixDecrement>(current);
+
+		return *this;
+	}
+
+	JsonObject& JsonObject::Iterator::operator *() noexcept
+	{
+		return std::visit
+		(
+			VisitHelper
+			(
+				[](std::vector<JsonObject>::iterator& it) -> JsonObject&
+				{
+					return *it;
+				},
+				[](MapType::iterator& it) -> JsonObject&
+				{
+					return it->second;
+				},
+				[](std::pair<JsonObject*, size_t>& it) -> JsonObject&
+				{
+					return *it.first;
+				}
+			),
+			current
+		);
+	}
+
+	JsonObject* JsonObject::Iterator::operator ->() noexcept
+	{
+		return &(**this);
+	}
+
+	bool JsonObject::Iterator::operator ==(const Iterator& other) const noexcept
+	{
+		return current == other.current;
+	}
+
+	bool JsonObject::Iterator::operator !=(const Iterator& other) const noexcept
+	{
+		return current != other.current;
+	}
+
+	JsonObject::ConstIterator::ConstIterator(IteratorType begin, IteratorType end, IteratorType current) :
+		begin(begin),
+		end(end),
+		current(current)
+	{
+
+	}
+
+	std::optional<std::string_view> JsonObject::ConstIterator::key() const
+	{
+		if (std::holds_alternative<MapType::const_iterator>(current))
+		{
+			return std::get<MapType::const_iterator>(current)->first;
+		}
+
+		return std::nullopt;
+	}
+
+	const JsonObject::ConstIterator::IteratorType& JsonObject::ConstIterator::getBegin() const
+	{
+		return begin;
+	}
+
+	const JsonObject::ConstIterator::IteratorType& JsonObject::ConstIterator::getEnd() const
+	{
+		return end;
+	}
+
+	JsonObject::ConstIterator JsonObject::ConstIterator::operator ++(int) noexcept
 	{
 		ConstIterator it(*this);
 
@@ -48,212 +183,390 @@ namespace json
 		return it;
 	}
 
-	const ConstJSONIterator& ConstJSONIterator::operator++ () noexcept
+	const JsonObject::ConstIterator& JsonObject::ConstIterator::operator ++() noexcept
 	{
 		if (current == end)
 		{
 			return *this;
 		}
 
-		++current;
+		callVisit<PrefixIncrement>(current);
 
 		return *this;
 	}
 
-	ConstJSONIterator ConstJSONIterator::operator-- (int) noexcept
+	JsonObject::ConstIterator JsonObject::ConstIterator::operator --(int) noexcept
 	{
 		ConstIterator it(*this);
 
-		--current;
+		--(*this);
 
 		return it;
 	}
 
-	const ConstJSONIterator& ConstJSONIterator::operator-- () noexcept
+	const JsonObject::ConstIterator& JsonObject::ConstIterator::operator --() noexcept
 	{
 		if (current == begin)
 		{
 			return *this;
 		}
 
-		--current;
+		callVisit<PrefixDecrement>(current);
 
 		return *this;
 	}
 
-	const std::pair<std::string, JsonObject::VariantType>& ConstJSONIterator::operator* () const noexcept
+	const JsonObject& JsonObject::ConstIterator::operator *() const noexcept
 	{
-		return *current;
+		return std::visit
+		(
+			VisitHelper
+			(
+				[](const std::vector<JsonObject>::const_iterator& it) -> const JsonObject&
+				{
+					return *it;
+				},
+				[](const MapType::const_iterator& it) -> const JsonObject&
+				{
+					return it->second;
+				},
+				[](const std::pair<const JsonObject*, size_t>& it) -> const JsonObject&
+				{
+					return *it.first;
+				}
+			),
+			current
+		);
 	}
 
-	const ConstJSONIteratorType& ConstJSONIterator::operator-> () const noexcept
+	const JsonObject* JsonObject::ConstIterator::operator ->() const noexcept
 	{
-		return current;
+		return &(**this);
 	}
 
-	bool ConstJSONIterator::operator == (const ConstIterator& other) const noexcept
+	bool JsonObject::ConstIterator::operator ==(const ConstIterator& other) const noexcept
 	{
 		return current == other.current;
 	}
 
-	bool ConstJSONIterator::operator != (const ConstIterator& other) const noexcept
+	bool JsonObject::ConstIterator::operator !=(const ConstIterator& other) const noexcept
 	{
 		return current != other.current;
 	}
 
-	ConstJSONIterator::operator ConstIteratorType () const
+	bool JsonObject::compareMaps(const MapType& first, const MapType& second)
 	{
-		return current;
-	}
-
-	template<typename T>
-	bool JsonObject::tryGetValue(std::string_view key, T& value) const
-	{
-		auto it = this->findValue(key, false);
-
-		if (it == data.end())
+		if (first.size() != second.size())
 		{
 			return false;
 		}
 
-		value = std::get<T>(it->second);
+		for (const auto& [key, value] : first)
+		{
+			if (auto it = second.find(key); it == second.end())
+			{
+				return false;
+			}
+			else if (!(value == it->second))
+			{
+				return false;
+			}
+		}
 
 		return true;
 	}
 
-	ConstJSONIteratorType JsonObject::findValue(std::string_view key, bool throwException) const
+	JsonObject::JsonObject() :
+		data(nullptr)
 	{
-		auto it = find_if(data.begin(), data.end(), [key](const auto& value) { return value.first == key; });
 
-		if (throwException && it == data.end())
+	}
+
+	JsonObject::JsonObject(VariantType&& data) :
+		data(std::move(data))
+	{
+
+	}
+
+	JsonObject& JsonObject::at(size_t index)
+	{
+		if (!std::holds_alternative<std::vector<JsonObject>>(data))
 		{
-			throw exceptions::CantFindValueException(key);
+			throw std::runtime_error(std::format("Can't get value at index: {} on non array JsonObject", index));
 		}
 
-		return it;
+		return std::get<std::vector<JsonObject>>(data).at(index);
 	}
 
-	void JsonObject::appendData(const std::string& key, const json::JsonObject::VariantType& value)
+	JsonObject& JsonObject::at(std::string_view key)
 	{
-		switch (static_cast<json::utility::VariantTypeEnum>(value.index()))
+		if (!std::holds_alternative<MapType>(data))
 		{
-		case json::utility::VariantTypeEnum::jNull:
-			data.emplace_back(key, std::get<nullptr_t>(value));
+			throw std::runtime_error(std::format("Can't get value with key: {} on non object JsonObject", key));
+		}
 
-			break;
+		MapType& map = std::get<MapType>(data);
 
-		case json::utility::VariantTypeEnum::jString:
-			data.emplace_back(key, std::get<std::string>(value));
+		if (auto it = map.find(key); it != map.end())
+		{
+			return it->second;
+		}
 
-			break;
+		throw std::runtime_error(std::format("Can't get value with key: {}", key));
+	}
 
-		case json::utility::VariantTypeEnum::jBool:
-			data.emplace_back(key, std::get<bool>(value));
+	const JsonObject& JsonObject::at(size_t index) const
+	{
+		if (!std::holds_alternative<std::vector<JsonObject>>(data))
+		{
+			throw std::runtime_error(std::format("Can't get value at index: {} on non array JsonObject", index));
+		}
 
-			break;
+		return std::get<std::vector<JsonObject>>(data).at(index);
+	}
 
-		case json::utility::VariantTypeEnum::jInt64_t:
-			data.emplace_back(key, std::get<int64_t>(value));
+	const JsonObject& JsonObject::at(std::string_view key) const
+	{
+		if (!std::holds_alternative<MapType>(data))
+		{
+			throw std::runtime_error(std::format("Can't get value with key: {} on non object JsonObject", key));
+		}
 
-			break;
+		const MapType& map = std::get<MapType>(data);
 
-		case json::utility::VariantTypeEnum::jUInt64_t:
-			data.emplace_back(key, std::get<uint64_t>(value));
+		if (auto it = map.find(key); it != map.end())
+		{
+			return it->second;
+		}
 
-			break;
+		throw std::runtime_error(std::format("Can't get value with key: {}", key));
+	}
 
-		case json::utility::VariantTypeEnum::jDouble:
-			data.emplace_back(key, std::get<double>(value));
+	const std::type_info& JsonObject::getType() const
+	{
+		return std::visit([](auto&& value) -> const std::type_info& { return typeid(value); }, data);
+	}
 
-			break;
+	utility::JsonVariantTypeEnum JsonObject::getEnumType() const
+	{
+		return static_cast<utility::JsonVariantTypeEnum>(data.index());
+	}
 
-		case json::utility::VariantTypeEnum::jJSONArray:
-			data.emplace_back(key, std::get<std::vector<JsonObject>>(value));
+	JsonObject::Iterator JsonObject::begin() noexcept
+	{
+		if (this->is<JsonObject>())
+		{
+			MapType& map = std::get<MapType>(data);
 
-			break;
+			return Iterator(map.begin(), map.end(), map.begin());
+		}
+		else if (this->is<std::vector<JsonObject>>())
+		{
+			std::vector<JsonObject>& array = std::get<std::vector<JsonObject>>(data);
 
-		case json::utility::VariantTypeEnum::jJSONObject:
-			data.emplace_back(key, std::get<JsonObject>(value));
+			return Iterator(array.begin(), array.end(), array.begin());
+		}
+		else
+		{
+			std::pair<JsonObject*, size_t> temp(this, 0);
 
-			break;
-
-		default:
-			break;
+			return Iterator(temp, std::make_pair<JsonObject*, size_t>(this, 1), temp);
 		}
 	}
 
-	JsonObject::JsonObject(const JsonObject& other)
+	JsonObject::Iterator JsonObject::end() noexcept
 	{
-		(*this) = other;
-	}
-
-	JsonObject::JsonObject(JsonObject&& other) noexcept
-	{
-		(*this) = std::move(other);
-	}
-
-	JsonObject& JsonObject::operator = (const JsonObject& other)
-	{
-		if (this == &other)
+		if (this->is<JsonObject>())
 		{
-			return *this;
+			MapType& map = std::get<MapType>(data);
+
+			return Iterator(map.begin(), map.end(), map.end());
 		}
-
-		data.clear();
-
-		for (const auto& [key, value] : other.data)
+		else if (this->is<std::vector<JsonObject>>())
 		{
-			this->appendData(key, value);
+			std::vector<JsonObject>& array = std::get<std::vector<JsonObject>>(data);
+
+			return Iterator(array.begin(), array.end(), array.end());
 		}
-
-		return *this;
-	}
-
-	JsonObject& JsonObject::operator = (JsonObject&& other) noexcept
-	{
-		data = std::move(other.data);
-
-		return *this;
-	}
-
-	bool JsonObject::contains(std::string_view key, utility::VariantTypeEnum type) const
-	{
-		return std::any_of(data.begin(), data.end(), [&key, &type](const std::pair<std::string, JsonObject::VariantType>& data) { return data.first == key && data.second.index() == static_cast<size_t>(type); });
-	}
-
-	ConstJSONIterator JsonObject::begin() const noexcept
-	{
-		return ConstIterator(data.cbegin(), data.cend(), data.cbegin());
-	}
-
-	ConstJSONIterator JsonObject::end() const noexcept
-	{
-		return ConstIterator(data.cbegin(), data.cend(), data.cend());
-	}
-
-	JsonObject::VariantType& JsonObject::operator[](std::string_view key)
-	{
-		for (auto& [jsonKey, value] : data)
+		else
 		{
-			if (jsonKey == key)
+			std::pair<JsonObject*, size_t> temp(this, 1);
+
+			return Iterator(std::make_pair<JsonObject*, size_t>(this, 0), temp, temp);
+		}
+	}
+
+	JsonObject::ConstIterator JsonObject::begin() const noexcept
+	{
+		if (this->is<JsonObject>())
+		{
+			const MapType& map = std::get<MapType>(data);
+
+			return ConstIterator(map.begin(), map.end(), map.begin());
+		}
+		else if (this->is<std::vector<JsonObject>>())
+		{
+			const std::vector<JsonObject>& array = std::get<std::vector<JsonObject>>(data);
+
+			return ConstIterator(array.begin(), array.end(), array.begin());
+		}
+		else
+		{
+			std::pair<const JsonObject*, size_t> temp(this, 0);
+
+			return ConstIterator(temp, std::make_pair<const JsonObject*, size_t>(this, 1), temp);
+		}
+	}
+
+	JsonObject::ConstIterator JsonObject::end() const noexcept
+	{
+		if (this->is<JsonObject>())
+		{
+			const MapType& map = std::get<MapType>(data);
+
+			return ConstIterator(map.begin(), map.end(), map.end());
+		}
+		else if (this->is<std::vector<JsonObject>>())
+		{
+			const std::vector<JsonObject>& array = std::get<std::vector<JsonObject>>(data);
+
+			return ConstIterator(array.begin(), array.end(), array.end());
+		}
+		else
+		{
+			std::pair<const JsonObject*, size_t> temp(this, 1);
+
+			return ConstIterator(std::make_pair<const JsonObject*, size_t>(this, 0), temp, temp);
+		}
+	}
+
+	JsonObject& JsonObject::operator [](size_t index)
+	{
+		return std::get<std::vector<JsonObject>>(data)[index];
+	}
+
+	bool JsonObject::operator ==(const JsonObject& other) const noexcept
+	{
+		ConstIterator start = this->begin();
+		ConstIterator end = this->end();
+		ConstIterator otherStart = other.begin();
+		ConstIterator otherEnd = other.end();
+
+		while (start != end)
+		{
+			if (otherStart == otherEnd)
 			{
-				return value;
+				return false;
 			}
-		}
 
-		throw exceptions::CantFindValueException(key);
-	}
+			std::optional<std::string_view> key = start.key();
+			std::optional<std::string_view> otherKey = otherStart.key();
 
-	const JsonObject::VariantType& JsonObject::operator[](std::string_view key) const
-	{
-		for (const auto& [jsonKey, value] : data)
-		{
-			if (jsonKey == key)
+			if (key && otherKey)
 			{
-				return value;
+				return JsonObject::compareMaps(std::get<MapType>(data), std::get<MapType>(other.data));
 			}
+
+			if (key != otherKey)
+			{
+				return false;
+			}
+
+			const JsonObject& value = *start;
+			const JsonObject& otherValue = *otherStart;
+
+			if (value.getEnumType() != otherValue.getEnumType())
+			{
+				return false;
+			}
+
+			if (value.is<JsonObject>())
+			{
+				if (!(value == otherValue))
+				{
+					return false;
+				}
+			}
+			else if (value.is<std::vector<JsonObject>>())
+			{
+				const std::vector<JsonObject>& array = value.get<std::vector<JsonObject>>();
+				const std::vector<JsonObject>& otherArray = otherValue.get<std::vector<JsonObject>>();
+
+				if (array.size() != otherArray.size())
+				{
+					return false;
+				}
+
+				if (!std::equal(array.begin(), array.end(), otherArray.begin(), otherArray.end()))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (value.data != otherValue.data)
+				{
+					return false;
+				}
+			}
+
+			++start;
+			++otherStart;
 		}
 
-		throw exceptions::CantFindValueException(key);
+		return true;
 	}
+
+	const JsonObject& JsonObject::operator [](size_t index) const
+	{
+		if (!std::holds_alternative<std::vector<JsonObject>>(data))
+		{
+			throw std::runtime_error(std::format("Can't get value at index: {} on non array JsonObject", index));
+		}
+
+		return std::get<std::vector<JsonObject>>(data)[index];
+	}
+
+	const JsonObject& JsonObject::operator [](std::string_view key) const
+	{
+		if (!std::holds_alternative<MapType>(data))
+		{
+			throw std::runtime_error(std::format("Can't get value with key: {} on non object JsonObject", key));
+		}
+
+		const MapType& map = std::get<MapType>(data);
+
+		if (auto it = map.find(key); it != map.end())
+		{
+			return it->second;
+		}
+
+		throw std::runtime_error(std::format("Can't get value with key: {}", key));
+
+		return {};
+	}
+}
+
+template<template<typename IteratorT> typename OperatorT, typename T>
+void callVisit(T& current)
+{
+	std::visit
+	(
+		VisitHelper
+		(
+			[](std::pair<json::JsonObject*, size_t>& it)
+			{
+				OperatorT<size_t>()(it.second);
+			},
+			[](std::pair<const json::JsonObject*, size_t>& it)
+			{
+				OperatorT<size_t>()(it.second);
+			},
+			[](auto&& it)
+			{
+				OperatorT<decltype(it)>()(it);
+			}
+		),
+		current
+	);
 }

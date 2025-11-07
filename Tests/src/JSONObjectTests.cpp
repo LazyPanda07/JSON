@@ -5,40 +5,45 @@
 
 TEST(Object, DefaultOperations)
 {
+	using namespace std::string_literals;
+	using namespace std::string_view_literals;
+
 	json::JsonObject object;
 	std::string data;
-	std::nullptr_t null;
 
-	object.setValue<int64_t>("int", 5);
-	object.setValue<std::string>("string", "data");
-	object.setValue<std::string_view>("string_view", "view");
+	object["int"] = 5;
+	object["string"] = "data"s;
+	object["string_view"] = "view"sv;
+	object["ptr"] = "ptr";
 
 	{
 		json::JsonObject temp;
 		std::vector<json::JsonObject> array;
 
-		json::JsonObject::appendArray(5, array);
-		json::JsonObject::appendArray("data", array);
-		json::JsonObject::appendArray(nullptr, array);
+		array.emplace_back(5);
+		array.emplace_back("data");
+		array.emplace_back(nullptr);
 
-		temp.setValue("float", 5.5);
-		temp.setValue("array", std::move(array));
+		temp["float"] = 5.5;
+		temp["array"] = std::move(array);
 
-		object.setValue("object", std::move(temp));
+		object["object"] = std::move(temp);
 	}
 
-	ASSERT_EQ(object.get<int>("int"), 5);
-	ASSERT_TRUE(object.tryGet<std::string>("string", data));
+	ASSERT_EQ(object["int"].get<int>(), 5);
+	ASSERT_TRUE(object["string"].tryGet<std::string>(data));
 	ASSERT_EQ(data, "data");
-	ASSERT_EQ(object.get<std::string>("string_view"), "view");
-	ASSERT_FALSE(object.tryGet<std::nullptr_t>("null", null));
+	ASSERT_EQ(object["string_view"].get<std::string>(), "view");
+	ASSERT_EQ(object["ptr"].get<std::string>(), "ptr");
+	ASSERT_FALSE(object.contains<std::nullptr_t>("null"));
+	ASSERT_FALSE(object.contains<std::nullptr_t>("null"), true);
 
 	{
-		const json::JsonObject& temp = object.get<json::JsonObject>("object");
-		const std::vector<json::JsonObject>& array = temp.get<std::vector<json::JsonObject>>("array");
+		const json::JsonObject& temp = object["object"].get<json::JsonObject>();
+		const std::vector<json::JsonObject>& array = temp["array"].get<std::vector<json::JsonObject>>();
 		json::utility::JsonArrayWrapper wrapper(array);
 
-		ASSERT_EQ(temp.get<float>("float"), 5.5);
+		ASSERT_EQ(temp["float"].get<float>(), 5.5);
 
 		ASSERT_EQ(wrapper[0].get<int64_t>(), 5);
 		ASSERT_EQ(wrapper[1].get<std::string>(), "data");

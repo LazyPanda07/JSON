@@ -1,6 +1,13 @@
 {
   "someData": 5,
   "object": {
-    "someRecursiveData": 10
-  }
+    "someRecursiveData": 5.5
+  },
+  "array": [
+    5,
+    10.3,
+    {
+      "someRecursiveDataInArray": "data"
+    }
+  ]
 }

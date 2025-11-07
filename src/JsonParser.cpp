@@ -4,15 +4,17 @@
 #include <string>
 #include <cctype>
 #include <algorithm>
-#include <queue>
 #include <limits>
 #include <regex>
+#include <format>
 
 #include "JsonArrayWrapper.h"
 #include "OutputOperations.h"
 
+#ifndef __LINUX__
 #pragma warning(disable: 4715)
 #pragma warning(disable: 26800)
+#endif
 
 constexpr char openCurlyBracket = '{';
 constexpr char closeCurlyBracket = '}';
@@ -21,13 +23,17 @@ constexpr char closeSquareBracket = ']';
 constexpr char comma = ',';
 constexpr char colon = ':';
 
-bool isNumber(const std::string& source);
+static bool isNumber(std::string_view source);
+
+static bool isStringSymbol(char symbol);
+
+std::pair<std::string, json::JsonObject> pop(std::stack<std::pair<std::string, json::JsonObject>>& processingData);
 
 namespace json
 {
-	using ConstJSONIterator = JsonObject::ConstIterator;
+	using ConstJSONIterator = JsonObject::Iterator;
 
-	JsonObject::VariantType JsonParser::parseValue(const std::string& value)
+	utility::JsonVariantType<JsonObject> JsonParser::parseValue(const std::string& value)
 	{
 #ifndef __LINUX__
 #pragma warning(push)
@@ -50,13 +56,13 @@ namespace json
 		{
 			if (value.find('.') != std::string::npos)
 			{
-				return stod(value);
+				return std::stod(value);
 			}
 			else
 			{
 				if (value.find('-') != std::string::npos)
 				{
-					return stoll(value);
+					return std::stoll(value);
 				}
 				else if (uint64_t valueToInsert = stoull(value); valueToInsert > (std::numeric_limits<int64_t>::max)())
 				{
@@ -64,7 +70,7 @@ namespace json
 				}
 				else
 				{
-					return stoll(value);
+					return std::stoll(value);
 				}
 			}
 		}
@@ -77,14 +83,9 @@ namespace json
 #endif
 	}
 
-	void JsonParser::insertKeyValueData(std::string&& key, const std::string& value, JsonObject& ptr)
+	void JsonParser::insertValue(std::string_view key, const std::string& value, JsonObject& object)
 	{
-		ptr.data.emplace_back(std::move(key), JsonParser::parseValue(value));
-	}
-
-	bool JsonParser::isStringSymbol(char symbol)
-	{
-		return symbol == '"';
+		object[key] = JsonParser::parseValue(value);
 	}
 
 	char JsonParser::interpretEscapeSymbol(char symbol)
@@ -121,41 +122,18 @@ namespace json
 	{
 		using namespace json::utility;
 
-		enum class type
-		{
-			object,
-			array
-		};
-
 		static const std::regex singleLine(R"(//[^\n\r]*)", std::regex_constants::ECMAScript);
 		static const std::regex multiLine(R"(/\*([^*]|\*+[^*/])*\*+/)", std::regex_constants::ECMAScript);
 
 		rawData = std::regex_replace(rawData, singleLine, ""); // Remove // comments
 		rawData = std::regex_replace(rawData, multiLine, ""); // Remove /* ... */ comments (including multiline)
 
-		std::stack<std::pair<std::string, JsonObject*>> objects;
-		std::stack<std::pair<std::string, std::vector<JsonObject>>> arrays;
-		std::stack<type> currentTop;
+		std::stack<std::pair<std::string, JsonObject>> processingData;
 		std::string key;
 		std::string value;
 		bool startString = false;
 		bool escapeSymbol = false;
 		size_t index = 0;
-
-		if (rawData.size() && rawData[0] == '{')
-		{
-			objects.push({ "", &parsedData });
-
-			currentTop.push(type::object);
-
-			index = 1;
-		}
-		else if (rawData.size() && rawData[0] == '[')
-		{
-			objects.push({ "", &parsedData });
-
-			currentTop.push(type::object);
-		}
 
 		for (; index < rawData.size(); index++)
 		{
@@ -200,107 +178,83 @@ namespace json
 			switch (c)
 			{
 			case openCurlyBracket:
-				objects.push({ move(key), new JsonObject() });
-
-				currentTop.push(type::object);
+				processingData.emplace(std::move(key), JsonObject::createDefaultJsonObject<utility::JsonVariantTypeEnum::jJSONObject>());
 
 				break;
 
 			case closeCurlyBracket:
+			{
+				auto [topKey, top] = pop(processingData);
+
 				if (value.size())
 				{
-					JsonParser::insertKeyValueData(move(key), value, *objects.top().second);
+					top[std::move(key)] = JsonParser::parseValue(value);
 
 					value.clear();
 				}
 
+				if (processingData.size())
 				{
-					std::pair<std::string, JsonObject*> object = move(objects.top());
-					std::vector<std::pair<std::string, JsonObject::VariantType>>* data = nullptr;
-
-					objects.pop();
-					currentTop.pop();
-
-					if (object.second == &parsedData)
+					if (topKey.size())
 					{
-						continue;
+						processingData.top().second[std::move(topKey)] = std::move(top);
 					}
-
-					switch (currentTop.top())
+					else
 					{
-					case type::object:
-						data = &objects.top().second->data;
-
-						break;
-
-					case type::array:
-						data = &arrays.top().second.emplace_back().data;
-
-						break;
-
-					default:
-						throw std::runtime_error("Wrong type");
+						processingData.top().second.emplace_back(std::move(top));
 					}
-
-					data->push_back({ move(object.first), JsonObject(*object.second) });
-
-					delete object.second;
 				}
+				else
+				{
+					parsedData = std::move(top);
+				}
+			}
 
-				break;
+			break;
 
 			case openSquareBracket:
-				currentTop.push(type::array);
-
-				arrays.push({ move(key), std::vector<JsonObject>() });
+				processingData.emplace(std::move(key), JsonObject::createDefaultJsonObject<utility::JsonVariantTypeEnum::jJSONArray>());
 
 				break;
 
 			case closeSquareBracket:
+			{
+				auto [topKey, top] = pop(processingData);
+
 				if (value.size())
 				{
-					JsonParser::insertKeyValueData(move(key), value, arrays.top().second.emplace_back());
+					top.emplace_back(JsonObject(JsonParser::parseValue(value)));
 
 					value.clear();
 				}
 
+				if (topKey.size())
 				{
-					std::pair<std::string, std::vector<JsonObject>> array = arrays.top();
-					std::vector<std::pair<std::string, JsonObject::VariantType>>* data = nullptr;
-
-					arrays.pop();
-					currentTop.pop();
-
-					switch (currentTop.top())
-					{
-					case type::object:
-						data = &objects.top().second->data;
-
-						break;
-
-					case type::array:
-						data = &arrays.top().second.emplace_back().data;
-
-						break;
-
-					default:
-						throw std::runtime_error("Wrong type");
-					}
-
-					data->push_back(move(array));
+					processingData.top().second[std::move(topKey)] = std::move(top);
 				}
+				else
+				{
+					processingData.top().second.emplace_back(std::move(top));
+				}
+			}
 
-				break;
+			break;
 
 			case comma:
 				if (isNumber(value) || (value.size() && isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin())) || (value == "true" || value == "false" || value == "null"))
 				{
-					JsonParser::insertKeyValueData
-					(
-						move(key),
-						value,
-						currentTop.top() == type::array ? arrays.top().second.emplace_back() : *objects.top().second
-					);
+					if (processingData.top().second.is<json::JsonObject>())
+					{
+						processingData.top().second[std::move(key)] = JsonParser::parseValue(value);
+					}
+					else if (processingData.top().second.is<std::vector<json::JsonObject>>())
+					{
+						processingData.top().second.emplace_back(JsonObject(JsonParser::parseValue(value)));
+					}
+					else
+					{
+						throw std::runtime_error(std::format("Can't add value to {}", processingData.top().second.getType().name()));
+					}
 
 					value.clear();
 				}
@@ -322,6 +276,76 @@ namespace json
 				value += c;
 			}
 		}
+	}
+
+	JsonObject* JsonParser::find(std::string_view key, bool recursive)
+	{
+		std::queue<JsonObject*> objects;
+
+		objects.push(&parsedData);
+
+		while (objects.size())
+		{
+			JsonObject* current = objects.front();
+			bool isObject = current->is<JsonObject>();
+
+			objects.pop();
+
+			for (auto it = current->begin(); it != current->end(); ++it)
+			{
+				JsonObject& value = *it;
+
+				if (isObject)
+				{
+					if (it.key() == key)
+					{
+						return &value;
+					}
+				}
+
+				if (recursive && value.is<JsonObject>() || value.is<std::vector<JsonObject>>())
+				{
+					objects.push(&value);
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
+	const JsonObject* JsonParser::find(std::string_view key, bool recursive) const
+	{
+		std::queue<const JsonObject*> objects;
+
+		objects.push(&parsedData);
+
+		while (objects.size())
+		{
+			const JsonObject* current = objects.front();
+			bool isObject = current->is<JsonObject>();
+
+			objects.pop();
+
+			for (auto it = current->begin(); it != current->end(); ++it)
+			{
+				const JsonObject& value = *it;
+
+				if (isObject)
+				{
+					if (it.key() == key)
+					{
+						return &value;
+					}
+				}
+
+				if (recursive && value.is<JsonObject>() || value.is<std::vector<JsonObject>>())
+				{
+					objects.push(&value);
+				}
+			}
+		}
+
+		return nullptr;
 	}
 
 	JsonParser::JsonParser(std::string_view data) :
@@ -384,37 +408,6 @@ namespace json
 		return *this;
 	}
 
-	bool JsonParser::contains(std::string_view key, utility::VariantTypeEnum type, bool recursive) const
-	{
-		std::queue<const JsonObject*> objects;
-
-		objects.push(&parsedData);
-
-		while (objects.size())
-		{
-			const JsonObject* current = objects.front();
-
-			objects.pop();
-
-			for (const auto& [currentKey, currentValue] : current->data)
-			{
-				if (currentKey == key && currentValue.index() == static_cast<size_t>(type))
-				{
-					return true;
-				}
-
-				if (recursive && currentValue.index() == static_cast<size_t>(utility::VariantTypeEnum::jJSONObject))
-				{
-					const JsonObject& object = std::get<JsonObject>(currentValue);
-
-					objects.push(&object);
-				}
-			}
-		}
-
-		return false;
-	}
-
 #if defined(__LINUX__) || defined(__ANDROID__)
 	void JsonParser::setJSONData(std::string_view jsonData, std::string_view codePage)
 	{
@@ -469,12 +462,12 @@ namespace json
 		this->parse();
 	}
 
-	ConstJSONIterator JsonParser::begin() const noexcept
+	JsonObject::ConstIterator JsonParser::begin() const noexcept
 	{
 		return parsedData.begin();
 	}
 
-	ConstJSONIterator JsonParser::end() const noexcept
+	JsonObject::ConstIterator JsonParser::end() const noexcept
 	{
 		return parsedData.end();
 	}
@@ -499,30 +492,6 @@ namespace json
 		object = std::move(parsedData);
 	}
 
-	void JsonParser::overrideValue(std::string_view key, const VariantType& value, bool recursive)
-	{
-		auto [result, success] = utility::__internal::find(key, parsedData.data, recursive);
-
-		if (!success)
-		{
-			throw exceptions::CantFindValueException(key);
-		}
-
-		const_cast<VariantType&>(result->second) = value;
-	}
-
-	void JsonParser::overrideValue(std::string_view key, VariantType&& value, bool recursive)
-	{
-		auto [result, success] = utility::__internal::find(key, parsedData.data, recursive);
-
-		if (!success)
-		{
-			throw exceptions::CantFindValueException(key);
-		}
-
-		const_cast<VariantType&>(result->second) = move(value);
-	}
-
 	std::istream& operator >> (std::istream& inputStream, JsonParser& parser)
 	{
 		parser.setJSONData(inputStream);
@@ -532,26 +501,27 @@ namespace json
 
 	std::ostream& operator << (std::ostream& outputStream, const JsonParser& parser)
 	{
-		ConstJSONIterator start = parser.begin();
-		ConstJSONIterator end = parser.end();
+		JsonObject::ConstIterator start = parser.begin();
+		JsonObject::ConstIterator end = parser.end();
 		std::string offset = "  ";
 
 		outputStream << '{' << std::endl;
 
 		while (start != end)
 		{
-			auto check = start;
-
-			if (start->first.size())
+			JsonObject::ConstIterator check = start;
+			const JsonObject& value = *check;
+			
+			if (std::optional<std::string_view> key = check.key())
 			{
-				outputStream << offset << '"' << start->first << '"' << ": ";
+				outputStream << std::format(R"({}"{}": )", offset, *key);
 			}
 			else
 			{
 				outputStream << offset;
 			}
 
-			utility::outputJsonType<JsonParser, utility::JsonArrayWrapper>(outputStream, start->second, ++check == end, offset);
+			utility::outputJsonType(outputStream, value, ++check == end, offset);
 
 			++start;
 		}
@@ -562,7 +532,7 @@ namespace json
 	}
 }
 
-bool isNumber(const std::string& source)
+bool isNumber(std::string_view source)
 {
 	if (source.empty())
 	{
@@ -590,4 +560,18 @@ bool isNumber(const std::string& source)
 	}
 
 	return false;
+}
+
+bool isStringSymbol(char symbol)
+{
+	return symbol == '"';
+}
+
+std::pair<std::string, json::JsonObject> pop(std::stack<std::pair<std::string, json::JsonObject>>& processingData)
+{
+	std::pair<std::string, json::JsonObject> result = std::move(processingData.top());
+
+	processingData.pop();
+
+	return result;
 }

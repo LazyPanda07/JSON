@@ -67,8 +67,8 @@ TEST(Parser, Override)
 TEST(Parser, StreamOperators)
 {
 	json::JsonParser parser;
-	std::ostringstream first;
-	std::ostringstream second;
+	std::stringstream first;
+	std::stringstream second;
 
 	{
 		std::ifstream in("data/appends.json");
@@ -79,9 +79,59 @@ TEST(Parser, StreamOperators)
 	std::ifstream in("data/appends.json");
 
 	first << parser;
-	second << in.rdbuf();
 
-	ASSERT_EQ(first.str(), second.str());
+	parser = json::JsonParser(first);
+
+	ASSERT_EQ(parser.get<std::nullptr_t>("nullValue"), nullptr);
+	ASSERT_EQ(parser.get<bool>("boolValue"), true);
+	ASSERT_EQ(parser.get<int>("intValue"), 5);
+	ASSERT_EQ(parser.get<double>("doubleValue"), 10.2);
+	ASSERT_EQ(parser.get<uint32_t>("unsignedIntValue"), 15);
+	ASSERT_EQ(parser.get<std::string>("stringValue"), "qwe");
+
+	{
+		const json::JsonObject& object = parser.get<json::JsonObject>("objectValue");
+
+		ASSERT_EQ(object["nullValue"].get<std::nullptr_t>(), nullptr);
+		ASSERT_EQ(object["boolValue"].get<bool>(), true);
+		ASSERT_EQ(object["intValue"].get<int>(), 5);
+		ASSERT_EQ(object["doubleValue"].get<double>(), 10.2);
+		ASSERT_EQ(object["unsignedIntValue"].get<uint32_t>(), 15);
+		ASSERT_EQ(object["stringValue"].get<std::string>(), "qwe");
+	}
+
+	{
+		const std::vector<json::JsonObject>& array = parser.get<std::vector<json::JsonObject>>("arrayValue");
+
+		ASSERT_EQ(array[0].get<std::nullptr_t>(), nullptr);
+		ASSERT_EQ(array[1].get<bool>(), true);
+		ASSERT_EQ(array[2].get<int>(), 5);
+		ASSERT_EQ(array[3].get<double>(), 10.2);
+		ASSERT_EQ(array[4].get<uint32_t>(), 15);
+		ASSERT_EQ(array[5].get<std::string>(), "qwe");
+
+		const json::JsonObject& object = array[6].get<json::JsonObject>();
+
+		ASSERT_EQ(object["nullValue"].get<std::nullptr_t>(), nullptr);
+		ASSERT_EQ(object["boolValue"].get<bool>(), true);
+		ASSERT_EQ(object["intValue"].get<int>(), 5);
+		ASSERT_EQ(object["doubleValue"].get<double>(), 10.2);
+		ASSERT_EQ(object["unsignedIntValue"].get<uint32_t>(), 15);
+		ASSERT_EQ(object["stringValue"].get<std::string>(), "qwe");
+	}
+}
+
+TEST(Parser, Contains)
+{
+	json::JsonParser parser(std::ifstream("data/contains.json"));
+
+	ASSERT_TRUE(parser.contains<int>("someData"));
+	ASSERT_TRUE(parser.contains<float>("someRecursiveData", true));
+	ASSERT_TRUE(parser.contains<std::string>("someRecursiveDataInArray", true));
+
+	ASSERT_FALSE(parser.contains<int>("data"));
+	ASSERT_FALSE(parser.contains<float>("someRecursiveData"));
+	ASSERT_FALSE(parser.contains<std::string>("someRecursiveDataInArray"));
 }
 
 TEST(Parser, SimpleLineComment) 

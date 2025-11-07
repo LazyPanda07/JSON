@@ -8,12 +8,6 @@ namespace json
 	class JsonBuilder
 	{
 	public:
-		/// @brief std::variant specialization for JSON
-		using VariantType = JsonObject::VariantType;
-
-		/// @brief JSON object
-		using ObjectType = JsonObject;
-
 		/// @brief Output type for istream operator
 		enum class OutputType
 		{
@@ -59,60 +53,6 @@ namespace json
 		JsonBuilder(const JsonObject& data, uint32_t codePage, OutputType type = OutputType::standard);
 #endif
 
-		/// @brief Copy constructor
-		/// @param other Other JsonBuilder
-		JsonBuilder(const JsonBuilder& other);
-
-		/// @brief Move constructor
-		/// @param other Other JsonBuilder
-		JsonBuilder(JsonBuilder&& other) noexcept;
-
-		/// @brief Copy operator
-		/// @param other Other JsonBuilder
-		/// @return Self
-		JsonBuilder& operator = (const JsonBuilder& other);
-
-		/// @brief Move operator
-		/// @param other Other JsonBuilder
-		/// @return Self 
-		JsonBuilder& operator = (JsonBuilder&& other) noexcept;
-
-		/// @brief Add JSON key - value
-		/// @tparam T is one of json::utility::jsonBuilderStruct::variantType template parameters
-		/// @param key JSON key
-		/// @param value JSON value
-		/// @return Reference to current JsonBuilder instance
-		template<typename T>
-		JsonBuilder& append(std::string_view key, T&& value = T()) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);;
-
-		/**
-		 * @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
-		 * @param key Object name
-		 * @param type Object type
-		 * @param recursive Recursive search
-		 * @return 
-		*/
-		bool contains(std::string_view key, utility::VariantTypeEnum type, bool recursive = false) const;
-
-		/// <summary>
-		/// <para>Access to JSON value operator</para>
-		/// <para>If key doesn't exist creates new with this key and return reference to it</para>
-		/// <para>Always use std::string as parameter or ""s literal</para>
-		/// </summary>
-		/// <param name="key">JSON key</param>
-		/// <returns>JSON value</returns>
-		VariantType& operator [](std::string_view key);
-
-		/// <summary>
-		/// <para>Access to JSON value operator</para>
-		/// <para>If key doesn't exist throws a json::exceptions::CantFindValueException</para>
-		/// <para>Always use std::string as parameter or ""s literal</para>
-		/// </summary>
-		/// <param name="key">JSON key</param>
-		/// <returns>JSON value</returns>
-		/// <exception cref="json::exceptions::CantFindValueException"></exception>
-		const VariantType& operator [](std::string_view key) const;
-
 		/// <summary>
 		/// Build JSON formatted string
 		/// </summary>
@@ -137,6 +77,43 @@ namespace json
 		/// @param object Result of moving
 		void getObject(JsonObject& object) noexcept;
 
+		/// @brief Add JSON key - value
+		/// @tparam T is one of json::utility::jsonBuilderStruct::variantType template parameters
+		/// @param key JSON key
+		/// @param value JSON value
+		/// @return Reference to current JsonBuilder instance
+		template<typename T>
+		JsonBuilder& append(std::string_view key, T&& value = T()) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);;
+
+		/**
+		 * @brief Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container
+		 * @param key Object name
+		 * @param type Object type
+		 * @param recursive Recursive search
+		 * @return
+		*/
+		template<utility::JsonValues<JsonObject> T>
+		bool contains(std::string_view key, bool recursive = false) const;
+
+		/// <summary>
+		/// <para>Access to JSON value operator</para>
+		/// <para>If key doesn't exist creates new with this key and return reference to it</para>
+		/// <para>Always use std::string as parameter or ""s literal</para>
+		/// </summary>
+		/// <param name="key">JSON key</param>
+		/// <returns>JSON value</returns>
+		JsonObject& operator [](std::string_view key);
+
+		/// <summary>
+		/// <para>Access to JSON value operator</para>
+		/// <para>If key doesn't exist throws a json::exceptions::CantFindValueException</para>
+		/// <para>Always use std::string as parameter or ""s literal</para>
+		/// </summary>
+		/// <param name="key">JSON key</param>
+		/// <returns>JSON value</returns>
+		/// <exception cref="json::exceptions::CantFindValueException"></exception>
+		const JsonObject& operator [](std::string_view key) const;
+
 		/// <summary>
 		/// Set JSON to output stream
 		/// </summary>
@@ -151,8 +128,14 @@ namespace json
 	template<typename T>
 	JsonBuilder& JsonBuilder::append(std::string_view key, T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
 	{
-		builderData.setValue(key, std::forward<T>(value));
+		builderData[key] = JsonObject(std::forward<T>(value));
 
 		return *this;
+	}
+
+	template<utility::JsonValues<JsonObject> T>
+	bool JsonBuilder::contains(std::string_view key, bool recursive) const
+	{
+		return builderData.contains<T>(key, recursive);
 	}
 }

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.27.0)
 
+set(CMAKE_CXX_STANDARD 20)
+
 project(Tests)
 
 find_package(GTest)
@@ -10,19 +12,10 @@ if(NOT ${GTest_FOUND})
 endif()
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
-set(CMAKE_CXX_STANDARD 20)
 
 if (UNIX)
-    set(DLL ${PROJECT_SOURCE_DIR}/../JSON/lib/libJSON.so)
     add_definitions(-D__LINUX__)
-else ()
-    set(DLL ${PROJECT_SOURCE_DIR}/../JSON/dll/JSON.dll)
-endif (UNIX)
-
-if(EXISTS ${DLL})
-    add_definitions(-DJSON_DLL)
-    install(FILES ${DLL} DESTINATION bin)
-endif()
+endif(UNIX)
 
 add_executable(
     ${PROJECT_NAME}

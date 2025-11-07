@@ -24,10 +24,10 @@ endif(UNIX)
 add_executable(
     ${PROJECT_NAME}
     main.cpp
-    src/JsonObjectTests.cpp
-    src/JsonBuilderTests.cpp
-    src/JsonParserTests.cpp
-    src/JsonRecursiveIteratorTests.cpp
+    src/cases/JsonObjectTests.cpp
+    src/cases/JsonBuilderTests.cpp
+    src/cases/JsonParserTests.cpp
+    src/cases/JsonRecursiveIteratorTests.cpp
     src/Utils.cpp    
 )
 

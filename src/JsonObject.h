@@ -54,10 +54,6 @@ namespace json
 
 			Iterator& operator ++() noexcept;
 
-			Iterator operator --(int) noexcept;
-
-			Iterator& operator --() noexcept;
-
 			JsonObject& operator *() noexcept;
 
 			JsonObject* operator ->() noexcept;
@@ -106,10 +102,6 @@ namespace json
 			ConstIterator operator ++(int) noexcept;
 
 			const ConstIterator& operator ++() noexcept;
-
-			ConstIterator operator --(int) noexcept;
-
-			const ConstIterator& operator --() noexcept;
 
 			const JsonObject& operator *() const noexcept;
 

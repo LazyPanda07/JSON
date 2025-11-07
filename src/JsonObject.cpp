@@ -22,17 +22,6 @@ struct PrefixIncrement
 	}
 };
 
-template <typename T = void>
-struct PrefixDecrement
-{
-	using ResultType = decltype(--std::declval<T&>());
-
-	constexpr ResultType operator ()(T& value) const noexcept(noexcept(--value))
-	{
-		return --value;
-	}
-};
-
 template<template<typename IteratorT> typename OperatorT, typename T>
 static void callVisit(T& current);
 
@@ -83,27 +72,6 @@ namespace json
 		}
 
 		callVisit<PrefixIncrement>(current);
-
-		return *this;
-	}
-
-	JsonObject::Iterator JsonObject::Iterator::operator --(int) noexcept
-	{
-		Iterator it(*this);
-
-		--(*this);
-
-		return it;
-	}
-
-	JsonObject::Iterator& JsonObject::Iterator::operator --() noexcept
-	{
-		if (current == begin)
-		{
-			return *this;
-		}
-
-		callVisit<PrefixDecrement>(current);
 
 		return *this;
 	}
@@ -191,27 +159,6 @@ namespace json
 		}
 
 		callVisit<PrefixIncrement>(current);
-
-		return *this;
-	}
-
-	JsonObject::ConstIterator JsonObject::ConstIterator::operator --(int) noexcept
-	{
-		ConstIterator it(*this);
-
-		--(*this);
-
-		return it;
-	}
-
-	const JsonObject::ConstIterator& JsonObject::ConstIterator::operator --() noexcept
-	{
-		if (current == begin)
-		{
-			return *this;
-		}
-
-		callVisit<PrefixDecrement>(current);
 
 		return *this;
 	}

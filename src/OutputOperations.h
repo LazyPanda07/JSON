@@ -11,7 +11,7 @@ namespace json::utility
 	/// <param name="outputStream">std::ostream subclass</param>
 	/// <param name="value">JSON value</param>
 	/// <param name="isLast">is description ends</param>
-	void outputJsonType(std::ostream& outputStream, const JsonObject& value, bool isLast, std::string& offset);
+	std::ostream& outputJsonType(std::ostream& outputStream, const JsonObject& value, bool isLast, std::string& offset);
 
 	/// <summary>
 	/// Output JSON arrays to std::ostream. Also applied std::endl and flushes

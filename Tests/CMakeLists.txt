@@ -24,10 +24,11 @@ endif(UNIX)
 add_executable(
     ${PROJECT_NAME}
     main.cpp
-    src/JSONObjectTests.cpp
-    src/JSONBuilderTests.cpp
-    src/JSONParserTests.cpp
-    src/Utils.cpp
+    src/JsonObjectTests.cpp
+    src/JsonBuilderTests.cpp
+    src/JsonParserTests.cpp
+    src/JsonRecursiveIteratorTests.cpp
+    src/Utils.cpp    
 )
 
 target_include_directories(

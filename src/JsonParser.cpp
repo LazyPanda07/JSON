@@ -501,15 +501,15 @@ namespace json
 
 	std::ostream& operator << (std::ostream& outputStream, const JsonParser& parser)
 	{
-		JsonObject::ConstIterator start = parser.begin();
+		JsonObject::ConstIterator begin = parser.begin();
 		JsonObject::ConstIterator end = parser.end();
 		std::string offset = "  ";
 
 		outputStream << '{' << std::endl;
 
-		while (start != end)
+		while (begin != end)
 		{
-			JsonObject::ConstIterator check = start;
+			JsonObject::ConstIterator check = begin;
 			const JsonObject& value = *check;
 			
 			if (std::optional<std::string_view> key = check.key())
@@ -523,7 +523,7 @@ namespace json
 
 			utility::outputJsonType(outputStream, value, ++check == end, offset);
 
-			++start;
+			++begin;
 		}
 
 		outputStream << '}';

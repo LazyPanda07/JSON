@@ -42,10 +42,6 @@ namespace json
 
 			std::optional<std::string_view> key() const;
 
-			const IteratorType& getBegin() const;
-
-			const IteratorType& getEnd() const;
-
 			Iterator& operator =(const Iterator& other) = default;
 
 			Iterator& operator =(Iterator&& other) noexcept = default;
@@ -90,10 +86,6 @@ namespace json
 			ConstIterator(ConstIterator&& other) noexcept = default;
 
 			std::optional<std::string_view> key() const;
-
-			const IteratorType& getBegin() const;
-
-			const IteratorType& getEnd() const;
 
 			ConstIterator& operator =(const ConstIterator& other) = default;
 
@@ -155,6 +147,8 @@ namespace json
 
 		const JsonObject& operator [](std::string_view key) const;
 
+		JsonObject& operator [](size_t index);
+
 		template<utility::JsonValues<JsonObject> T>
 		void emplace_back(T&& value);
 
@@ -176,13 +170,13 @@ namespace json
 		template<utility::JsonValues<JsonObject> T>
 		bool tryGet(T& value) const;
 
-		JsonObject& operator [](size_t index);
-
 		template<typename T>
 		JsonObject& operator [](T&& key) requires(std::convertible_to<T, std::string_view> || (std::same_as<T, std::string> && std::is_rvalue_reference_v<decltype(key)>));
 
 		template<typename T>
 		JsonObject& operator =(T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);
+
+		friend std::ostream& operator <<(std::ostream& stream, const JsonObject& object);
 
 		~JsonObject() = default;
 	};

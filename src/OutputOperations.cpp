@@ -4,7 +4,7 @@
 
 namespace json::utility
 {
-	void outputJsonType(std::ostream& outputStream, const JsonObject& value, bool isLast, std::string& offset)
+	std::ostream& outputJsonType(std::ostream& outputStream, const JsonObject& value, bool isLast, std::string& offset)
 	{
 		if (value.is<JsonVariantTypeEnum::jJSONArray>() || value.is<JsonVariantTypeEnum::jJSONObject>())
 		{
@@ -52,14 +52,14 @@ namespace json::utility
 
 		case JsonVariantTypeEnum::jJSONObject:
 		{
-			auto start = value.begin();
-			auto end = value.end();
+			JsonObject::ConstIterator begin = value.begin();
+			JsonObject::ConstIterator end = value.end();
 
 			outputStream << "{\n";
 
-			while (start != end)
+			while (begin != end)
 			{
-				JsonObject::ConstIterator check = start;
+				JsonObject::ConstIterator check = begin;
 				const JsonObject& temp = *check;
 
 				if (std::optional<std::string_view> key = check.key())
@@ -73,7 +73,7 @@ namespace json::utility
 
 				outputJsonType(outputStream, temp, ++check == end, offset);
 
-				++start;
+				++begin;
 			}
 
 			outputStream << std::string(offset.begin(), offset.end() - 2) << '}';
@@ -93,6 +93,6 @@ namespace json::utility
 			outputStream << ',';
 		}
 
-		outputStream << std::endl;
+		return outputStream << std::endl;
 	}
 }

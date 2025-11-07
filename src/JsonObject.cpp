@@ -1,6 +1,7 @@
 #include "JsonObject.h"
 
 #include "Exceptions/CantFindValueException.h"
+#include "OutputOperations.h"
 
 template<typename... Ts>
 struct VisitHelper : Ts...
@@ -43,16 +44,6 @@ namespace json
 		}
 
 		return std::nullopt;
-	}
-
-	const JsonObject::Iterator::IteratorType& JsonObject::Iterator::getBegin() const
-	{
-		return begin;
-	}
-
-	const JsonObject::Iterator::IteratorType& JsonObject::Iterator::getEnd() const
-	{
-		return end;
 	}
 
 	JsonObject::Iterator JsonObject::Iterator::operator ++(int) noexcept
@@ -130,16 +121,6 @@ namespace json
 		}
 
 		return std::nullopt;
-	}
-
-	const JsonObject::ConstIterator::IteratorType& JsonObject::ConstIterator::getBegin() const
-	{
-		return begin;
-	}
-
-	const JsonObject::ConstIterator::IteratorType& JsonObject::ConstIterator::getEnd() const
-	{
-		return end;
 	}
 
 	JsonObject::ConstIterator JsonObject::ConstIterator::operator ++(int) noexcept
@@ -387,11 +368,6 @@ namespace json
 		}
 	}
 
-	JsonObject& JsonObject::operator [](size_t index)
-	{
-		return std::get<std::vector<JsonObject>>(data)[index];
-	}
-
 	bool JsonObject::operator ==(const JsonObject& other) const noexcept
 	{
 		ConstIterator start = this->begin();
@@ -491,6 +467,18 @@ namespace json
 		throw std::runtime_error(std::format("Can't get value with key: {}", key));
 
 		return {};
+	}
+
+	JsonObject& JsonObject::operator [](size_t index)
+	{
+		return std::get<std::vector<JsonObject>>(data)[index];
+	}
+
+	std::ostream& operator <<(std::ostream& stream, const JsonObject& object)
+	{
+		std::string offset;
+
+		return utility::outputJsonType(stream, object, true, offset);
 	}
 }
 

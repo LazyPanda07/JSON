@@ -1,4 +1,4 @@
-#include "WrongEncodingException.h"
+#include "Exceptions/WrongEncodingException.h"
 
 #include <format>
 

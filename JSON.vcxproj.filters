@@ -50,40 +50,40 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\JsonParser.h">
+    <ClInclude Include="include\JsonParser.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\JsonBuilder.h">
+    <ClInclude Include="include\JsonBuilder.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\BaseJSONException.h">
+    <ClInclude Include="include\Exceptions\BaseJSONException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\CantFindValueException.h">
+    <ClInclude Include="include\Exceptions\CantFindValueException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\WrongEncodingException.h">
+    <ClInclude Include="include\Exceptions\WrongEncodingException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\JsonUtility.h">
+    <ClInclude Include="include\JsonUtility.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\JsonArrayWrapper.h">
+    <ClInclude Include="include\JsonArrayWrapper.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Exceptions\WrongInputStreamException.h">
+    <ClInclude Include="include\Exceptions\WrongInputStreamException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\RecursiveJsonIterator.h">
+    <ClInclude Include="include\RecursiveJsonIterator.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\OutputOperations.h">
+    <ClInclude Include="include\OutputOperations.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\CodePageConstants.h">
+    <ClInclude Include="include\CodePageConstants.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\JsonObject.h">
+    <ClInclude Include="include\JsonObject.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

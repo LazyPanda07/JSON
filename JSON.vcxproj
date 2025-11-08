@@ -81,7 +81,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -98,7 +98,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,7 +118,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,18 +147,18 @@
     <ClCompile Include="src\RecursiveJsonIterator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CodePageConstants.h" />
-    <ClInclude Include="src\Exceptions\BaseJSONException.h" />
-    <ClInclude Include="src\Exceptions\CantFindValueException.h" />
-    <ClInclude Include="src\Exceptions\WrongEncodingException.h" />
-    <ClInclude Include="src\Exceptions\WrongInputStreamException.h" />
-    <ClInclude Include="src\JsonArrayWrapper.h" />
-    <ClInclude Include="src\JsonBuilder.h" />
-    <ClInclude Include="src\JsonObject.h" />
-    <ClInclude Include="src\JsonParser.h" />
-    <ClInclude Include="src\JsonUtility.h" />
-    <ClInclude Include="src\OutputOperations.h" />
-    <ClInclude Include="src\RecursiveJsonIterator.h" />
+    <ClInclude Include="include\CodePageConstants.h" />
+    <ClInclude Include="include\Exceptions\BaseJSONException.h" />
+    <ClInclude Include="include\Exceptions\CantFindValueException.h" />
+    <ClInclude Include="include\Exceptions\WrongEncodingException.h" />
+    <ClInclude Include="include\Exceptions\WrongInputStreamException.h" />
+    <ClInclude Include="include\JsonArrayWrapper.h" />
+    <ClInclude Include="include\JsonBuilder.h" />
+    <ClInclude Include="include\JsonObject.h" />
+    <ClInclude Include="include\JsonParser.h" />
+    <ClInclude Include="include\JsonUtility.h" />
+    <ClInclude Include="include\OutputOperations.h" />
+    <ClInclude Include="include\RecursiveJsonIterator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

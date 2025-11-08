@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.27.0)
 set(CMAKE_CXX_STANDARD 20)
 option(CMAKE_POSITION_INDEPENDENT_CODE "" ON)
 
-project(JSON VERSION 3.0.0)
+project(JSON VERSION 3.0.1)
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 	add_definitions(-D__ANDROID__)
@@ -35,9 +35,8 @@ endif()
 
 target_include_directories(
 	${PROJECT_NAME} PUBLIC
-	${PROJECT_SOURCE_DIR}/src
+	include
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-
-install(DIRECTORY src/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include FILES_MATCHING PATTERN "*.h")
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+install(DIRECTORY include DESTINATION .)

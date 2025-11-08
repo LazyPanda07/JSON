@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['basejsonexception_0',['BaseJSONException',['../classjson_1_1exceptions_1_1_base_j_s_o_n_exception.html',1,'json::exceptions']]]
+  ['prefixincrement_0',['PrefixIncrement',['../struct_prefix_increment.html',1,'']]]
 ];

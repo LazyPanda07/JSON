@@ -1,4 +1,4 @@
-#include "WrongInputStreamException.h"
+#include "Exceptions/WrongInputStreamException.h"
 
 #include <fstream>
 

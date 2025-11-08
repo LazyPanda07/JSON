@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JSON<span id="projectnumber">&#160;2.8.0</span>
+   <div id="projectname">JSON<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++20</div>
   </td>
@@ -114,386 +114,43 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2989ac9ddc70024ed7320ec1b45ee823" id="r_a2989ac9ddc70024ed7320ec1b45ee823"><td class="memItemLeft" align="right" valign="top"><a id="a2989ac9ddc70024ed7320ec1b45ee823" name="a2989ac9ddc70024ed7320ec1b45ee823"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>JsonArrayWrapper</b> (const std::vector&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; &amp;array, std::string *offset=nullptr)</td></tr>
 <tr class="separator:a2989ac9ddc70024ed7320ec1b45ee823"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b2240213c950d26f623e434311df609" id="r_a7b2240213c950d26f623e434311df609"><td class="memItemLeft" align="right" valign="top"><a id="a7b2240213c950d26f623e434311df609" name="a7b2240213c950d26f623e434311df609"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>JsonArrayWrapper</b> (const JsonObject::VariantType &amp;array, std::string *offset=nullptr)</td></tr>
-<tr class="separator:a7b2240213c950d26f623e434311df609"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6057bdead8c33edff431060dd53dcc13" id="r_a6057bdead8c33edff431060dd53dcc13"><td class="memItemLeft" align="right" valign="top"><a id="a6057bdead8c33edff431060dd53dcc13" name="a6057bdead8c33edff431060dd53dcc13"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>JsonArrayWrapper</b> (const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;array, std::string *offset=nullptr)</td></tr>
+<tr class="separator:a6057bdead8c33edff431060dd53dcc13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e51f2577191fb4de02c543263e2a815" id="r_a4e51f2577191fb4de02c543263e2a815"><td class="memItemLeft" align="right" valign="top"><a id="a4e51f2577191fb4de02c543263e2a815" name="a4e51f2577191fb4de02c543263e2a815"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
 <tr class="separator:a4e51f2577191fb4de02c543263e2a815"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5deb0d58ba95b462f92dbc3a79cd8cd" id="r_ad5deb0d58ba95b462f92dbc3a79cd8cd"><td class="memItemLeft" align="right" valign="top">std::nullptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5deb0d58ba95b462f92dbc3a79cd8cd">getNull</a> (size_t index) const</td></tr>
-<tr class="memdesc:ad5deb0d58ba95b462f92dbc3a79cd8cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value as nullptr.  <br /></td></tr>
-<tr class="separator:ad5deb0d58ba95b462f92dbc3a79cd8cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a942ca7babf5b34ffbf1282c5eef7aa9d" id="r_a942ca7babf5b34ffbf1282c5eef7aa9d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a942ca7babf5b34ffbf1282c5eef7aa9d">getString</a> (size_t index) const</td></tr>
-<tr class="memdesc:a942ca7babf5b34ffbf1282c5eef7aa9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value as string.  <br /></td></tr>
-<tr class="separator:a942ca7babf5b34ffbf1282c5eef7aa9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ab2f3dade8390dfedfbb8cd3a1d00b3" id="r_a8ab2f3dade8390dfedfbb8cd3a1d00b3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ab2f3dade8390dfedfbb8cd3a1d00b3">getBool</a> (size_t index) const</td></tr>
-<tr class="memdesc:a8ab2f3dade8390dfedfbb8cd3a1d00b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value as bool.  <br /></td></tr>
-<tr class="separator:a8ab2f3dade8390dfedfbb8cd3a1d00b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abda7eb5f096eb44d887b1caa0027ef3a" id="r_abda7eb5f096eb44d887b1caa0027ef3a"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abda7eb5f096eb44d887b1caa0027ef3a">getInt64_t</a> (size_t index) const</td></tr>
-<tr class="memdesc:abda7eb5f096eb44d887b1caa0027ef3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value as int64_t.  <br /></td></tr>
-<tr class="separator:abda7eb5f096eb44d887b1caa0027ef3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4618bf4855bbe1809c5048443dfebe31" id="r_a4618bf4855bbe1809c5048443dfebe31"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4618bf4855bbe1809c5048443dfebe31">getUInt64_t</a> (size_t index) const</td></tr>
-<tr class="memdesc:a4618bf4855bbe1809c5048443dfebe31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value as uint64_t.  <br /></td></tr>
-<tr class="separator:a4618bf4855bbe1809c5048443dfebe31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a259f09967468856d22aac3a2adcb76e9" id="r_a259f09967468856d22aac3a2adcb76e9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a259f09967468856d22aac3a2adcb76e9">getDouble</a> (size_t index) const</td></tr>
-<tr class="memdesc:a259f09967468856d22aac3a2adcb76e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value as double.  <br /></td></tr>
-<tr class="separator:a259f09967468856d22aac3a2adcb76e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f02bdf954e7ea306e87e419c0553da7" id="r_a4f02bdf954e7ea306e87e419c0553da7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f02bdf954e7ea306e87e419c0553da7">getObject</a> (size_t index) const</td></tr>
-<tr class="memdesc:a4f02bdf954e7ea306e87e419c0553da7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get value as object.  <br /></td></tr>
-<tr class="separator:a4f02bdf954e7ea306e87e419c0553da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29105b30c79f33ebfc994ced5807ffa0" id="r_a29105b30c79f33ebfc994ced5807ffa0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::nullptr_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29105b30c79f33ebfc994ced5807ffa0">getAsNullArray</a> () const</td></tr>
-<tr class="memdesc:a29105b30c79f33ebfc994ced5807ffa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert wrapped array into array with nullptr_t values.  <br /></td></tr>
-<tr class="separator:a29105b30c79f33ebfc994ced5807ffa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bede5060f7a55ea570074d0ecefbe09" id="r_a8bede5060f7a55ea570074d0ecefbe09"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bede5060f7a55ea570074d0ecefbe09">getAsStringArray</a> () const</td></tr>
-<tr class="memdesc:a8bede5060f7a55ea570074d0ecefbe09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert wrapped array into array with string values.  <br /></td></tr>
-<tr class="separator:a8bede5060f7a55ea570074d0ecefbe09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1057e65bc006e2942ca450226f27dcce" id="r_a1057e65bc006e2942ca450226f27dcce"><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1057e65bc006e2942ca450226f27dcce">getAsBoolArray</a> () const</td></tr>
-<tr class="memdesc:a1057e65bc006e2942ca450226f27dcce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert wrapped array into array with bool values.  <br /></td></tr>
-<tr class="separator:a1057e65bc006e2942ca450226f27dcce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41d0d63a50ee98e0d56416540932e2d1" id="r_a41d0d63a50ee98e0d56416540932e2d1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41d0d63a50ee98e0d56416540932e2d1">getAsInt64_tArray</a> () const</td></tr>
-<tr class="memdesc:a41d0d63a50ee98e0d56416540932e2d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert wrapped array into array with int64_t values.  <br /></td></tr>
-<tr class="separator:a41d0d63a50ee98e0d56416540932e2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4edb27ff21d3dce38a76cf7dd835edae" id="r_a4edb27ff21d3dce38a76cf7dd835edae"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4edb27ff21d3dce38a76cf7dd835edae">getAsUInt64_tArray</a> () const</td></tr>
-<tr class="memdesc:a4edb27ff21d3dce38a76cf7dd835edae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert wrapped array into array with uint64_t values.  <br /></td></tr>
-<tr class="separator:a4edb27ff21d3dce38a76cf7dd835edae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefdaa18ea70da5151d14da12d91b5cc4" id="r_aefdaa18ea70da5151d14da12d91b5cc4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefdaa18ea70da5151d14da12d91b5cc4">getAsDoubleArray</a> () const</td></tr>
-<tr class="memdesc:aefdaa18ea70da5151d14da12d91b5cc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert wrapped array into array with double values.  <br /></td></tr>
-<tr class="separator:aefdaa18ea70da5151d14da12d91b5cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a841afbbf4e1c656af2a913018a9ba2ef" id="r_a841afbbf4e1c656af2a913018a9ba2ef"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a841afbbf4e1c656af2a913018a9ba2ef">getAsObjectArray</a> () const</td></tr>
-<tr class="memdesc:a841afbbf4e1c656af2a913018a9ba2ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert wrapped array into array with object values.  <br /></td></tr>
-<tr class="separator:a841afbbf4e1c656af2a913018a9ba2ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a460aa100d246b0b97eb27268f33caa89" id="r_a460aa100d246b0b97eb27268f33caa89"><td class="memItemLeft" align="right" valign="top">const std::string *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a460aa100d246b0b97eb27268f33caa89">getOffset</a> () const</td></tr>
-<tr class="memdesc:a460aa100d246b0b97eb27268f33caa89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get offset for output.  <br /></td></tr>
-<tr class="separator:a460aa100d246b0b97eb27268f33caa89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcac48bd148b55ce7aad7e9da0f77bd4" id="r_adcac48bd148b55ce7aad7e9da0f77bd4"><td class="memItemLeft" align="right" valign="top">std::string *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcac48bd148b55ce7aad7e9da0f77bd4">getOffset</a> ()</td></tr>
-<tr class="memdesc:adcac48bd148b55ce7aad7e9da0f77bd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get offset for output.  <br /></td></tr>
-<tr class="separator:adcac48bd148b55ce7aad7e9da0f77bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac50b874ab987d50dd89a191285f6ec41" id="r_ac50b874ab987d50dd89a191285f6ec41"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac50b874ab987d50dd89a191285f6ec41">operator*</a> () const</td></tr>
-<tr class="memdesc:ac50b874ab987d50dd89a191285f6ec41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference to wrapped array.  <br /></td></tr>
-<tr class="separator:ac50b874ab987d50dd89a191285f6ec41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa26a91f1f4415d20941ea64e4f03f86a" id="r_aa26a91f1f4415d20941ea64e4f03f86a"><td class="memItemLeft" align="right" valign="top"><a id="aa26a91f1f4415d20941ea64e4f03f86a" name="aa26a91f1f4415d20941ea64e4f03f86a"></a>
+const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (size_t index) const</td></tr>
+<tr class="separator:aa26a91f1f4415d20941ea64e4f03f86a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf8746359cf9d2be62730560087d32b7" id="r_acf8746359cf9d2be62730560087d32b7"><td class="memItemLeft" align="right" valign="top">const std::string *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf8746359cf9d2be62730560087d32b7">getOffset</a> () const</td></tr>
+<tr class="memdesc:acf8746359cf9d2be62730560087d32b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get offset for output.  <br /></td></tr>
+<tr class="separator:acf8746359cf9d2be62730560087d32b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217cc42baaa4385befff199aa3197d00" id="r_a217cc42baaa4385befff199aa3197d00"><td class="memItemLeft" align="right" valign="top">std::string *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a217cc42baaa4385befff199aa3197d00">getOffset</a> ()</td></tr>
+<tr class="memdesc:a217cc42baaa4385befff199aa3197d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get offset for output.  <br /></td></tr>
+<tr class="separator:a217cc42baaa4385befff199aa3197d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ce6a17908e5ebd377f79f25c6d3f012" id="r_a3ce6a17908e5ebd377f79f25c6d3f012"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ce6a17908e5ebd377f79f25c6d3f012">operator*</a> () const</td></tr>
+<tr class="memdesc:a3ce6a17908e5ebd377f79f25c6d3f012"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get reference to wrapped array.  <br /></td></tr>
+<tr class="separator:a3ce6a17908e5ebd377f79f25c6d3f012"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cce1fea9d1f42db29e2f25222779422" id="r_a1cce1fea9d1f42db29e2f25222779422"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cce1fea9d1f42db29e2f25222779422">operator[]</a> (size_t index) const</td></tr>
 <tr class="memdesc:a1cce1fea9d1f42db29e2f25222779422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get jsonObject at given index.  <br /></td></tr>
 <tr class="separator:a1cce1fea9d1f42db29e2f25222779422"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0509c7621769662956eaacb07f5de841" id="r_a0509c7621769662956eaacb07f5de841"><td class="memTemplParams" colspan="2"><a id="a0509c7621769662956eaacb07f5de841" name="a0509c7621769662956eaacb07f5de841"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a0509c7621769662956eaacb07f5de841"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>as</b> () const</td></tr>
+<tr class="separator:a0509c7621769662956eaacb07f5de841"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Wrapper around array of jsonObjects for simplify some operation. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1057e65bc006e2942ca450226f27dcce" name="a1057e65bc006e2942ca450226f27dcce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1057e65bc006e2942ca450226f27dcce">&#9670;&#160;</a></span>getAsBoolArray()</h2>
+<a id="a217cc42baaa4385befff199aa3197d00" name="a217cc42baaa4385befff199aa3197d00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a217cc42baaa4385befff199aa3197d00">&#9670;&#160;</a></span>getOffset() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">vector&lt; bool &gt; json::utility::JsonArrayWrapper::getAsBoolArray </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Convert wrapped array into array with bool values. </p>
-<dl class="section return"><dt>Returns</dt><dd><br  />
- </dd></dl>
-
-</div>
-</div>
-<a id="aefdaa18ea70da5151d14da12d91b5cc4" name="aefdaa18ea70da5151d14da12d91b5cc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefdaa18ea70da5151d14da12d91b5cc4">&#9670;&#160;</a></span>getAsDoubleArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">vector&lt; double &gt; json::utility::JsonArrayWrapper::getAsDoubleArray </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Convert wrapped array into array with double values. </p>
-<dl class="section return"><dt>Returns</dt><dd><br  />
- </dd></dl>
-
-</div>
-</div>
-<a id="a41d0d63a50ee98e0d56416540932e2d1" name="a41d0d63a50ee98e0d56416540932e2d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41d0d63a50ee98e0d56416540932e2d1">&#9670;&#160;</a></span>getAsInt64_tArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">vector&lt; int64_t &gt; json::utility::JsonArrayWrapper::getAsInt64_tArray </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Convert wrapped array into array with int64_t values. </p>
-<dl class="section return"><dt>Returns</dt><dd><br  />
- </dd></dl>
-
-</div>
-</div>
-<a id="a29105b30c79f33ebfc994ced5807ffa0" name="a29105b30c79f33ebfc994ced5807ffa0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29105b30c79f33ebfc994ced5807ffa0">&#9670;&#160;</a></span>getAsNullArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">vector&lt; nullptr_t &gt; json::utility::JsonArrayWrapper::getAsNullArray </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Convert wrapped array into array with nullptr_t values. </p>
-<dl class="section return"><dt>Returns</dt><dd><br  />
- </dd></dl>
-
-</div>
-</div>
-<a id="a841afbbf4e1c656af2a913018a9ba2ef" name="a841afbbf4e1c656af2a913018a9ba2ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a841afbbf4e1c656af2a913018a9ba2ef">&#9670;&#160;</a></span>getAsObjectArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">vector&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; json::utility::JsonArrayWrapper::getAsObjectArray </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Convert wrapped array into array with object values. </p>
-<dl class="section return"><dt>Returns</dt><dd><br  />
- </dd></dl>
-
-</div>
-</div>
-<a id="a8bede5060f7a55ea570074d0ecefbe09" name="a8bede5060f7a55ea570074d0ecefbe09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bede5060f7a55ea570074d0ecefbe09">&#9670;&#160;</a></span>getAsStringArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">vector&lt; string &gt; json::utility::JsonArrayWrapper::getAsStringArray </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Convert wrapped array into array with string values. </p>
-<dl class="section return"><dt>Returns</dt><dd><br  />
- </dd></dl>
-
-</div>
-</div>
-<a id="a4edb27ff21d3dce38a76cf7dd835edae" name="a4edb27ff21d3dce38a76cf7dd835edae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4edb27ff21d3dce38a76cf7dd835edae">&#9670;&#160;</a></span>getAsUInt64_tArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">vector&lt; uint64_t &gt; json::utility::JsonArrayWrapper::getAsUInt64_tArray </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Convert wrapped array into array with uint64_t values. </p>
-<dl class="section return"><dt>Returns</dt><dd><br  />
- </dd></dl>
-
-</div>
-</div>
-<a id="a8ab2f3dade8390dfedfbb8cd3a1d00b3" name="a8ab2f3dade8390dfedfbb8cd3a1d00b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ab2f3dade8390dfedfbb8cd3a1d00b3">&#9670;&#160;</a></span>getBool()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool json::utility::JsonArrayWrapper::getBool </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get value as bool. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Array index </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a259f09967468856d22aac3a2adcb76e9" name="a259f09967468856d22aac3a2adcb76e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a259f09967468856d22aac3a2adcb76e9">&#9670;&#160;</a></span>getDouble()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double json::utility::JsonArrayWrapper::getDouble </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get value as double. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Array index </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abda7eb5f096eb44d887b1caa0027ef3a" name="abda7eb5f096eb44d887b1caa0027ef3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abda7eb5f096eb44d887b1caa0027ef3a">&#9670;&#160;</a></span>getInt64_t()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int64_t json::utility::JsonArrayWrapper::getInt64_t </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get value as int64_t. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Array index </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ad5deb0d58ba95b462f92dbc3a79cd8cd" name="ad5deb0d58ba95b462f92dbc3a79cd8cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5deb0d58ba95b462f92dbc3a79cd8cd">&#9670;&#160;</a></span>getNull()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">nullptr_t json::utility::JsonArrayWrapper::getNull </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get value as nullptr. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Array index </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>nullptr </dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a4f02bdf954e7ea306e87e419c0553da7" name="a4f02bdf954e7ea306e87e419c0553da7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f02bdf954e7ea306e87e419c0553da7">&#9670;&#160;</a></span>getObject()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp; json::utility::JsonArrayWrapper::getObject </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get value as object. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Array index </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td><br  />
- </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="adcac48bd148b55ce7aad7e9da0f77bd4" name="adcac48bd148b55ce7aad7e9da0f77bd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adcac48bd148b55ce7aad7e9da0f77bd4">&#9670;&#160;</a></span>getOffset() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">string * json::utility::JsonArrayWrapper::getOffset </td>
+          <td class="memname">std::string * json::utility::JsonArrayWrapper::getOffset </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -507,14 +164,14 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</
 
 </div>
 </div>
-<a id="a460aa100d246b0b97eb27268f33caa89" name="a460aa100d246b0b97eb27268f33caa89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a460aa100d246b0b97eb27268f33caa89">&#9670;&#160;</a></span>getOffset() <span class="overload">[2/2]</span></h2>
+<a id="acf8746359cf9d2be62730560087d32b7" name="acf8746359cf9d2be62730560087d32b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf8746359cf9d2be62730560087d32b7">&#9670;&#160;</a></span>getOffset() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const string * json::utility::JsonArrayWrapper::getOffset </td>
+          <td class="memname">const std::string * json::utility::JsonArrayWrapper::getOffset </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -528,78 +185,14 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</
 
 </div>
 </div>
-<a id="a942ca7babf5b34ffbf1282c5eef7aa9d" name="a942ca7babf5b34ffbf1282c5eef7aa9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a942ca7babf5b34ffbf1282c5eef7aa9d">&#9670;&#160;</a></span>getString()</h2>
+<a id="a3ce6a17908e5ebd377f79f25c6d3f012" name="a3ce6a17908e5ebd377f79f25c6d3f012"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ce6a17908e5ebd377f79f25c6d3f012">&#9670;&#160;</a></span>operator*()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">string json::utility::JsonArrayWrapper::getString </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get value as string. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Array index </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a4618bf4855bbe1809c5048443dfebe31" name="a4618bf4855bbe1809c5048443dfebe31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4618bf4855bbe1809c5048443dfebe31">&#9670;&#160;</a></span>getUInt64_t()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t json::utility::JsonArrayWrapper::getUInt64_t </td>
-          <td>(</td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get value as uint64_t. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">index</td><td>Array index </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">std::out_of_range</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac50b874ab987d50dd89a191285f6ec41" name="ac50b874ab987d50dd89a191285f6ec41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac50b874ab987d50dd89a191285f6ec41">&#9670;&#160;</a></span>operator*()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const vector&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; &amp; json::utility::JsonArrayWrapper::operator* </td>
+          <td class="memname">const std::vector&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; &amp; json::utility::JsonArrayWrapper::operator* </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>

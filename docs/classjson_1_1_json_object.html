@@ -27,7 +27,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">JSON<span id="projectnumber">&#160;2.8.0</span>
+   <div id="projectname">JSON<span id="projectnumber">&#160;3.0.0</span>
    </div>
    <div id="projectbrief">Parser and builder for JSON in C++20</div>
   </td>
@@ -102,7 +102,7 @@ $(function(){initNavTree('classjson_1_1_json_object.html',''); initResizable(tru
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classjson_1_1_json_object-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">json::JsonObject Class Reference</div></div>
 </div><!--header-->
@@ -116,102 +116,123 @@ $(function(){initNavTree('classjson_1_1_json_object.html',''); initResizable(tru
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_json_object_1_1_const_iterator.html">ConstIterator</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator through jsonObject.  <a href="classjson_1_1_json_object_1_1_const_iterator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classjson_1_1_json_object_1_1_iterator.html">Iterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a4cb694d2081f02ca1956fddf2eca3bb4" id="r_a4cb694d2081f02ca1956fddf2eca3bb4"><td class="memItemLeft" align="right" valign="top"><a id="a4cb694d2081f02ca1956fddf2eca3bb4" name="a4cb694d2081f02ca1956fddf2eca3bb4"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>VariantType</b> = utility::BaseVariantType&lt;<a class="el" href="classjson_1_1_json_object.html">JsonObject</a>&gt;</td></tr>
-<tr class="separator:a4cb694d2081f02ca1956fddf2eca3bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a486f32067bfdb85ebf65d5d4d2f54c1f" id="r_a486f32067bfdb85ebf65d5d4d2f54c1f"><td class="memItemLeft" align="right" valign="top"><a id="a486f32067bfdb85ebf65d5d4d2f54c1f" name="a486f32067bfdb85ebf65d5d4d2f54c1f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>VariantType</b> = utility::JsonVariantType&lt;<a class="el" href="classjson_1_1_json_object.html">JsonObject</a>&gt;</td></tr>
+<tr class="separator:a486f32067bfdb85ebf65d5d4d2f54c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a4ec0883642a1d2b85b85500b1178a1" id="r_a4a4ec0883642a1d2b85b85500b1178a1"><td class="memItemLeft" align="right" valign="top"><a id="a4a4ec0883642a1d2b85b85500b1178a1" name="a4a4ec0883642a1d2b85b85500b1178a1"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>MapType</b> = utility::JsonMapType&lt;<a class="el" href="classjson_1_1_json_object.html">JsonObject</a>&gt;</td></tr>
+<tr class="separator:a4a4ec0883642a1d2b85b85500b1178a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0e34b5c9fa1c5a8d5f8fff8de637b90d" id="r_a0e34b5c9fa1c5a8d5f8fff8de637b90d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e34b5c9fa1c5a8d5f8fff8de637b90d">JsonObject</a> (const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;other)</td></tr>
-<tr class="memdesc:a0e34b5c9fa1c5a8d5f8fff8de637b90d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
-<tr class="separator:a0e34b5c9fa1c5a8d5f8fff8de637b90d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa21ac7bdf4fcb4cc87e39f7f92bde53a" id="r_aa21ac7bdf4fcb4cc87e39f7f92bde53a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa21ac7bdf4fcb4cc87e39f7f92bde53a">JsonObject</a> (<a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&amp;other) noexcept</td></tr>
-<tr class="memdesc:aa21ac7bdf4fcb4cc87e39f7f92bde53a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <br /></td></tr>
-<tr class="separator:aa21ac7bdf4fcb4cc87e39f7f92bde53a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af41b8c089155d04f15901d92bc990c0e" id="r_af41b8c089155d04f15901d92bc990c0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af41b8c089155d04f15901d92bc990c0e">operator=</a> (const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;other)</td></tr>
-<tr class="memdesc:af41b8c089155d04f15901d92bc990c0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator.  <br /></td></tr>
-<tr class="separator:af41b8c089155d04f15901d92bc990c0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92792f1dfa623412dca23bddc8c3a07d" id="r_a92792f1dfa623412dca23bddc8c3a07d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92792f1dfa623412dca23bddc8c3a07d">operator=</a> (<a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&amp;other) noexcept</td></tr>
-<tr class="memdesc:a92792f1dfa623412dca23bddc8c3a07d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <br /></td></tr>
-<tr class="separator:a92792f1dfa623412dca23bddc8c3a07d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae63a407fdb3ee64d21fb13c176edc94a" id="r_ae63a407fdb3ee64d21fb13c176edc94a"><td class="memTemplParams" colspan="2"><a id="ae63a407fdb3ee64d21fb13c176edc94a" name="ae63a407fdb3ee64d21fb13c176edc94a"></a>
+<tr class="memitem:ae54c54baa5a79aaea2868debb70c5aa3" id="r_ae54c54baa5a79aaea2868debb70c5aa3"><td class="memItemLeft" align="right" valign="top"><a id="ae54c54baa5a79aaea2868debb70c5aa3" name="ae54c54baa5a79aaea2868debb70c5aa3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>JsonObject</b> (VariantType &amp;&amp;data)</td></tr>
+<tr class="separator:ae54c54baa5a79aaea2868debb70c5aa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61b6cd8f338bd02e9c35e799d5ff8cb9" id="r_a61b6cd8f338bd02e9c35e799d5ff8cb9"><td class="memItemLeft" align="right" valign="top"><a id="a61b6cd8f338bd02e9c35e799d5ff8cb9" name="a61b6cd8f338bd02e9c35e799d5ff8cb9"></a>
+<a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (size_t index)</td></tr>
+<tr class="separator:a61b6cd8f338bd02e9c35e799d5ff8cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9227a81f2a91d891bb90b4142338bf7b" id="r_a9227a81f2a91d891bb90b4142338bf7b"><td class="memItemLeft" align="right" valign="top"><a id="a9227a81f2a91d891bb90b4142338bf7b" name="a9227a81f2a91d891bb90b4142338bf7b"></a>
+<a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (std::string_view key)</td></tr>
+<tr class="separator:a9227a81f2a91d891bb90b4142338bf7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf7d75c640c583500de65edd3709d639" id="r_aaf7d75c640c583500de65edd3709d639"><td class="memItemLeft" align="right" valign="top"><a id="aaf7d75c640c583500de65edd3709d639" name="aaf7d75c640c583500de65edd3709d639"></a>
+const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (size_t index) const</td></tr>
+<tr class="separator:aaf7d75c640c583500de65edd3709d639"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3de86a5cdf7a12b51b3ac6e3971c7745" id="r_a3de86a5cdf7a12b51b3ac6e3971c7745"><td class="memItemLeft" align="right" valign="top"><a id="a3de86a5cdf7a12b51b3ac6e3971c7745" name="a3de86a5cdf7a12b51b3ac6e3971c7745"></a>
+const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>at</b> (std::string_view key) const</td></tr>
+<tr class="separator:a3de86a5cdf7a12b51b3ac6e3971c7745"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80560294dee97532c933248823f77c52" id="r_a80560294dee97532c933248823f77c52"><td class="memItemLeft" align="right" valign="top"><a id="a80560294dee97532c933248823f77c52" name="a80560294dee97532c933248823f77c52"></a>
+<a class="el" href="classjson_1_1_json_object_1_1_iterator.html">Iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () noexcept</td></tr>
+<tr class="separator:a80560294dee97532c933248823f77c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7377f570d1fc5fb1b9df977a864b20b" id="r_ad7377f570d1fc5fb1b9df977a864b20b"><td class="memItemLeft" align="right" valign="top"><a id="ad7377f570d1fc5fb1b9df977a864b20b" name="ad7377f570d1fc5fb1b9df977a864b20b"></a>
+<a class="el" href="classjson_1_1_json_object_1_1_iterator.html">Iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () noexcept</td></tr>
+<tr class="separator:ad7377f570d1fc5fb1b9df977a864b20b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac88d4090cbcb68eb2e83fc23c3024845" id="r_ac88d4090cbcb68eb2e83fc23c3024845"><td class="memItemLeft" align="right" valign="top"><a id="ac88d4090cbcb68eb2e83fc23c3024845" name="ac88d4090cbcb68eb2e83fc23c3024845"></a>
+<a class="el" href="classjson_1_1_json_object_1_1_const_iterator.html">ConstIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const noexcept</td></tr>
+<tr class="separator:ac88d4090cbcb68eb2e83fc23c3024845"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f423c4ed7985c2bb19296c41c9c323e" id="r_a1f423c4ed7985c2bb19296c41c9c323e"><td class="memItemLeft" align="right" valign="top"><a id="a1f423c4ed7985c2bb19296c41c9c323e" name="a1f423c4ed7985c2bb19296c41c9c323e"></a>
+<a class="el" href="classjson_1_1_json_object_1_1_const_iterator.html">ConstIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const noexcept</td></tr>
+<tr class="separator:a1f423c4ed7985c2bb19296c41c9c323e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa04ad0eafb2ca98ae7b01929ce5fbc71" id="r_aa04ad0eafb2ca98ae7b01929ce5fbc71"><td class="memItemLeft" align="right" valign="top"><a id="aa04ad0eafb2ca98ae7b01929ce5fbc71" name="aa04ad0eafb2ca98ae7b01929ce5fbc71"></a>
+const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> () const</td></tr>
+<tr class="separator:aa04ad0eafb2ca98ae7b01929ce5fbc71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6beceda1a5a36b9126fd8fcb82befd6" id="r_aa6beceda1a5a36b9126fd8fcb82befd6"><td class="memItemLeft" align="right" valign="top"><a id="aa6beceda1a5a36b9126fd8fcb82befd6" name="aa6beceda1a5a36b9126fd8fcb82befd6"></a>
+utility::JsonVariantTypeEnum&#160;</td><td class="memItemRight" valign="bottom"><b>getEnumType</b> () const</td></tr>
+<tr class="separator:aa6beceda1a5a36b9126fd8fcb82befd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff199321a082a15a94f106febda7ff74" id="r_aff199321a082a15a94f106febda7ff74"><td class="memItemLeft" align="right" valign="top"><a id="aff199321a082a15a94f106febda7ff74" name="aff199321a082a15a94f106febda7ff74"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;other) const noexcept</td></tr>
+<tr class="separator:aff199321a082a15a94f106febda7ff74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e109dd9d88889ed6b0632a01c3f9dae" id="r_a8e109dd9d88889ed6b0632a01c3f9dae"><td class="memItemLeft" align="right" valign="top"><a id="a8e109dd9d88889ed6b0632a01c3f9dae" name="a8e109dd9d88889ed6b0632a01c3f9dae"></a>
+const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_t index) const</td></tr>
+<tr class="separator:a8e109dd9d88889ed6b0632a01c3f9dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9569e1085893d0da9e45bafb4a9055d7" id="r_a9569e1085893d0da9e45bafb4a9055d7"><td class="memItemLeft" align="right" valign="top"><a id="a9569e1085893d0da9e45bafb4a9055d7" name="a9569e1085893d0da9e45bafb4a9055d7"></a>
+const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (std::string_view key) const</td></tr>
+<tr class="separator:a9569e1085893d0da9e45bafb4a9055d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f83ce1717333cf9cdfb69c66ad3d53b" id="r_a9f83ce1717333cf9cdfb69c66ad3d53b"><td class="memItemLeft" align="right" valign="top"><a id="a9f83ce1717333cf9cdfb69c66ad3d53b" name="a9f83ce1717333cf9cdfb69c66ad3d53b"></a>
+<a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_t index)</td></tr>
+<tr class="separator:a9f83ce1717333cf9cdfb69c66ad3d53b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75e3be77ba9b4f332c39529bdf6ac60a" id="r_a75e3be77ba9b4f332c39529bdf6ac60a"><td class="memTemplParams" colspan="2"><a id="a75e3be77ba9b4f332c39529bdf6ac60a" name="a75e3be77ba9b4f332c39529bdf6ac60a"></a>
+template&lt;utility::JsonValues&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; T&gt; </td></tr>
+<tr class="memitem:a75e3be77ba9b4f332c39529bdf6ac60a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>emplace_back</b> (T &amp;&amp;value)</td></tr>
+<tr class="separator:a75e3be77ba9b4f332c39529bdf6ac60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee926df5fb48e88e9d79003f9a2f74a2" id="r_aee926df5fb48e88e9d79003f9a2f74a2"><td class="memTemplParams" colspan="2"><a id="aee926df5fb48e88e9d79003f9a2f74a2" name="aee926df5fb48e88e9d79003f9a2f74a2"></a>
+template&lt;utility::JsonValues&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; T&gt; </td></tr>
+<tr class="memitem:aee926df5fb48e88e9d79003f9a2f74a2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>is</b> () const</td></tr>
+<tr class="separator:aee926df5fb48e88e9d79003f9a2f74a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee926df5fb48e88e9d79003f9a2f74a2" id="r_aee926df5fb48e88e9d79003f9a2f74a2"><td class="memTemplParams" colspan="2"><a id="aee926df5fb48e88e9d79003f9a2f74a2" name="aee926df5fb48e88e9d79003f9a2f74a2"></a>
+template&lt;utility::JsonVariantTypeEnum T&gt; </td></tr>
+<tr class="memitem:aee926df5fb48e88e9d79003f9a2f74a2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>is</b> () const</td></tr>
+<tr class="separator:aee926df5fb48e88e9d79003f9a2f74a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8ee42560b7901cac56a9c03f551ded4" id="r_ad8ee42560b7901cac56a9c03f551ded4"><td class="memTemplParams" colspan="2"><a id="ad8ee42560b7901cac56a9c03f551ded4" name="ad8ee42560b7901cac56a9c03f551ded4"></a>
+template&lt;utility::JsonValues&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; T&gt; </td></tr>
+<tr class="memitem:ad8ee42560b7901cac56a9c03f551ded4"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>contains</b> (std::string_view key, bool recursive=false) const</td></tr>
+<tr class="separator:ad8ee42560b7901cac56a9c03f551ded4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf1376bc0ea1f297937e754d152312a3" id="r_abf1376bc0ea1f297937e754d152312a3"><td class="memTemplParams" colspan="2"><a id="abf1376bc0ea1f297937e754d152312a3" name="abf1376bc0ea1f297937e754d152312a3"></a>
+template&lt;utility::JsonLightValues T&gt; </td></tr>
+<tr class="memitem:abf1376bc0ea1f297937e754d152312a3"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="separator:abf1376bc0ea1f297937e754d152312a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65cfbb534f8f9893288c772528af83e7" id="r_a65cfbb534f8f9893288c772528af83e7"><td class="memTemplParams" colspan="2"><a id="a65cfbb534f8f9893288c772528af83e7" name="a65cfbb534f8f9893288c772528af83e7"></a>
+template&lt;utility::JsonHeavyValues&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; T&gt; </td></tr>
+<tr class="memitem:a65cfbb534f8f9893288c772528af83e7"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> () const</td></tr>
+<tr class="separator:a65cfbb534f8f9893288c772528af83e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afadfabe81bcc796aec3ad1483bd2f5cd" id="r_afadfabe81bcc796aec3ad1483bd2f5cd"><td class="memTemplParams" colspan="2"><a id="afadfabe81bcc796aec3ad1483bd2f5cd" name="afadfabe81bcc796aec3ad1483bd2f5cd"></a>
+template&lt;utility::JsonValues&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; T&gt; </td></tr>
+<tr class="memitem:afadfabe81bcc796aec3ad1483bd2f5cd"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>tryGet</b> (T &amp;value) const</td></tr>
+<tr class="separator:afadfabe81bcc796aec3ad1483bd2f5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41c965e99fab2a8c6e7fef23f72f4471" id="r_a41c965e99fab2a8c6e7fef23f72f4471"><td class="memTemplParams" colspan="2"><a id="a41c965e99fab2a8c6e7fef23f72f4471" name="a41c965e99fab2a8c6e7fef23f72f4471"></a>
+template&lt;typename T &gt; <br />
+requires (std::convertible_to&lt;T, std::string_view&gt; || (std::same_as&lt;T, std::string&gt; &amp;&amp; std::is_rvalue_reference_v&lt;decltype(key)&gt;))</td></tr>
+<tr class="memitem:a41c965e99fab2a8c6e7fef23f72f4471"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator[]</b> (T &amp;&amp;key)</td></tr>
+<tr class="separator:a41c965e99fab2a8c6e7fef23f72f4471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac4f9cab5d4d2dae138ce8a60f4cffec" id="r_aac4f9cab5d4d2dae138ce8a60f4cffec"><td class="memTemplParams" colspan="2"><a id="aac4f9cab5d4d2dae138ce8a60f4cffec" name="aac4f9cab5d4d2dae138ce8a60f4cffec"></a>
 template&lt;typename T &gt; <br />
 requires (utility::JsonValues&lt;T, <a class="el" href="classjson_1_1_json_object.html">JsonObject</a>&gt; || std::convertible_to&lt;T, std::string_view&gt; || std::convertible_to&lt;T, std::string&gt;)</td></tr>
-<tr class="memitem:ae63a407fdb3ee64d21fb13c176edc94a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setValue</b> (std::string_view key, T &amp;&amp;value=T())</td></tr>
-<tr class="separator:ae63a407fdb3ee64d21fb13c176edc94a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf58a8a7fe732c48a5678c6b02d0ac03" id="r_abf58a8a7fe732c48a5678c6b02d0ac03"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf58a8a7fe732c48a5678c6b02d0ac03">contains</a> (std::string_view key, utility::VariantTypeEnum type) const</td></tr>
-<tr class="memdesc:abf58a8a7fe732c48a5678c6b02d0ac03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container.  <br /></td></tr>
-<tr class="separator:abf58a8a7fe732c48a5678c6b02d0ac03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abda1688180f49e8e6e3b8745fc2e7c78" id="r_abda1688180f49e8e6e3b8745fc2e7c78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classjson_1_1_json_object_1_1_const_iterator.html">ConstIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abda1688180f49e8e6e3b8745fc2e7c78">begin</a> () const noexcept</td></tr>
-<tr class="memdesc:abda1688180f49e8e6e3b8745fc2e7c78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin iterator.  <br /></td></tr>
-<tr class="separator:abda1688180f49e8e6e3b8745fc2e7c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a217dd78b926d5eaddb50563688b29f" id="r_a3a217dd78b926d5eaddb50563688b29f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classjson_1_1_json_object_1_1_const_iterator.html">ConstIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a217dd78b926d5eaddb50563688b29f">end</a> () const noexcept</td></tr>
-<tr class="memdesc:a3a217dd78b926d5eaddb50563688b29f"><td class="mdescLeft">&#160;</td><td class="mdescRight">End iterator.  <br /></td></tr>
-<tr class="separator:a3a217dd78b926d5eaddb50563688b29f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7380a27ca91f1afaad22bad54498f1a7" id="r_a7380a27ca91f1afaad22bad54498f1a7"><td class="memItemLeft" align="right" valign="top">VariantType &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7380a27ca91f1afaad22bad54498f1a7">operator[]</a> (std::string_view key)</td></tr>
-<tr class="memdesc:a7380a27ca91f1afaad22bad54498f1a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access JSON value.  <br /></td></tr>
-<tr class="separator:a7380a27ca91f1afaad22bad54498f1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22de193a47c65474eec80b74067b3279" id="r_a22de193a47c65474eec80b74067b3279"><td class="memItemLeft" align="right" valign="top">const VariantType &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22de193a47c65474eec80b74067b3279">operator[]</a> (std::string_view key) const</td></tr>
-<tr class="memdesc:a22de193a47c65474eec80b74067b3279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access JSON value.  <br /></td></tr>
-<tr class="separator:a22de193a47c65474eec80b74067b3279"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9df65d9ed39ff0896a957d5b32a41bb3" id="r_a9df65d9ed39ff0896a957d5b32a41bb3"><td class="memTemplParams" colspan="2">template&lt;utility::JsonLightValues T&gt; </td></tr>
-<tr class="memitem:a9df65d9ed39ff0896a957d5b32a41bb3"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9df65d9ed39ff0896a957d5b32a41bb3">get</a> (std::string_view key=&quot;&quot;, bool recursive=false) const</td></tr>
-<tr class="separator:a9df65d9ed39ff0896a957d5b32a41bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a498c984dbad3997a7dd68d42c06d14ab" id="r_a498c984dbad3997a7dd68d42c06d14ab"><td class="memTemplParams" colspan="2">template&lt;utility::JsonHeavyValues&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; T&gt; </td></tr>
-<tr class="memitem:a498c984dbad3997a7dd68d42c06d14ab"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a498c984dbad3997a7dd68d42c06d14ab">get</a> (std::string_view key=&quot;&quot;, bool recursive=false) const</td></tr>
-<tr class="separator:a498c984dbad3997a7dd68d42c06d14ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05e9b26654b44bbe887f70862fb1cfde" id="r_a05e9b26654b44bbe887f70862fb1cfde"><td class="memTemplParams" colspan="2">template&lt;utility::JsonValues&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; T&gt; </td></tr>
-<tr class="memitem:a05e9b26654b44bbe887f70862fb1cfde"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a05e9b26654b44bbe887f70862fb1cfde">tryGet</a> (std::string_view key, T &amp;value, bool recursive=false) const</td></tr>
-<tr class="memdesc:a05e9b26654b44bbe887f70862fb1cfde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for all JSON parsed values.  <br /></td></tr>
-<tr class="separator:a05e9b26654b44bbe887f70862fb1cfde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac4f9cab5d4d2dae138ce8a60f4cffec"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator=</b> (T &amp;&amp;value)</td></tr>
+<tr class="separator:aac4f9cab5d4d2dae138ce8a60f4cffec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab5d517d363dce2f5f540cd9c1ab161f4" id="r_ab5d517d363dce2f5f540cd9c1ab161f4"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5d517d363dce2f5f540cd9c1ab161f4">appendArray</a> (VariantType &amp;&amp;value, std::vector&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; &amp;jsonArray)</td></tr>
-<tr class="memdesc:ab5d517d363dce2f5f540cd9c1ab161f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append jsonObject::variantType value to array.  <br /></td></tr>
-<tr class="separator:ab5d517d363dce2f5f540cd9c1ab161f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3a7d87d45aec16a8a1f9af2bcd16df1" id="r_ae3a7d87d45aec16a8a1f9af2bcd16df1"><td class="memTemplParams" colspan="2"><a id="ae3a7d87d45aec16a8a1f9af2bcd16df1" name="ae3a7d87d45aec16a8a1f9af2bcd16df1"></a>
+template&lt;utility::JsonVariantTypeEnum T&gt; </td></tr>
+<tr class="memitem:ae3a7d87d45aec16a8a1f9af2bcd16df1"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classjson_1_1_json_object.html">JsonObject</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>createDefaultJsonObject</b> ()</td></tr>
+<tr class="separator:ae3a7d87d45aec16a8a1f9af2bcd16df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:af1029990bc889b0d67f052a0c0e2ec5c" id="r_af1029990bc889b0d67f052a0c0e2ec5c"><td class="memItemLeft" align="right" valign="top"><a id="af1029990bc889b0d67f052a0c0e2ec5c" name="af1029990bc889b0d67f052a0c0e2ec5c"></a>
-std::vector&lt; std::pair&lt; std::string, VariantType &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>data</b></td></tr>
-<tr class="separator:af1029990bc889b0d67f052a0c0e2ec5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a08bdece0517528d420b462dc926cef14" id="r_a08bdece0517528d420b462dc926cef14"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08bdece0517528d420b462dc926cef14">operator&lt;&lt;</a> (std::ostream &amp;stream, const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;object)</td></tr>
+<tr class="memdesc:a08bdece0517528d420b462dc926cef14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output JSON value to std::ostream. Also apply std::endl and flush.  <br /></td></tr>
+<tr class="separator:a08bdece0517528d420b462dc926cef14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>JSON object. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0e34b5c9fa1c5a8d5f8fff8de637b90d" name="a0e34b5c9fa1c5a8d5f8fff8de637b90d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e34b5c9fa1c5a8d5f8fff8de637b90d">&#9670;&#160;</a></span>JsonObject() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">json::JsonObject::JsonObject </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Copy constructor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>Another jsonObject from <a class="el" href="classjson_1_1_json_parser.html" title="Parser for JSON.">JsonParser</a> or <a class="el" href="classjson_1_1_json_builder.html" title="Builder for JSON.">JsonBuilder</a> or custom </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aa21ac7bdf4fcb4cc87e39f7f92bde53a" name="aa21ac7bdf4fcb4cc87e39f7f92bde53a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa21ac7bdf4fcb4cc87e39f7f92bde53a">&#9670;&#160;</a></span>JsonObject() <span class="overload">[2/2]</span></h2>
+</div><h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a08bdece0517528d420b462dc926cef14" name="a08bdece0517528d420b462dc926cef14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08bdece0517528d420b462dc926cef14">&#9670;&#160;</a></span>operator&lt;&lt;</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,400 +241,32 @@ std::vector&lt; std::pair&lt; std::string, VariantType &gt; &gt;&#160;</td><td c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">json::JsonObject::JsonObject </td>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
+          <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>stream</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>object</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Move constructor. </p>
+<p>Output JSON value to std::ostream. Also apply std::endl and flush. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td>Another jsonObject from <a class="el" href="classjson_1_1_json_parser.html" title="Parser for JSON.">JsonParser</a> or <a class="el" href="classjson_1_1_json_builder.html" title="Builder for JSON.">JsonBuilder</a> or custom </td></tr>
+    <tr><td class="paramname">outputStream</td><td>std::ostream subclass </td></tr>
+    <tr><td class="paramname">jsonValue</td><td>JSON value </td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab5d517d363dce2f5f540cd9c1ab161f4" name="ab5d517d363dce2f5f540cd9c1ab161f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5d517d363dce2f5f540cd9c1ab161f4">&#9670;&#160;</a></span>appendArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void json::JsonObject::appendArray </td>
-          <td>(</td>
-          <td class="paramtype">VariantType &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>jsonArray</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Append jsonObject::variantType value to array. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">value</td><td>JSON value </td></tr>
-    <tr><td class="paramname">jsonArray</td><td>Modifiable array </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="abda1688180f49e8e6e3b8745fc2e7c78" name="abda1688180f49e8e6e3b8745fc2e7c78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abda1688180f49e8e6e3b8745fc2e7c78">&#9670;&#160;</a></span>begin()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classjson_1_1_json_object_1_1_const_iterator.html">ConstJSONIterator</a> json::JsonObject::begin </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Begin iterator. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="abf58a8a7fe732c48a5678c6b02d0ac03" name="abf58a8a7fe732c48a5678c6b02d0ac03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf58a8a7fe732c48a5678c6b02d0ac03">&#9670;&#160;</a></span>contains()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool json::JsonObject::contains </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">utility::VariantTypeEnum</td>          <td class="paramname"><span class="paramname"><em>type</em></span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Checks if there is a object with key equivalent to key in the container and type equivalent to type in the container. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td>Object name </td></tr>
-    <tr><td class="paramname">type</td><td>Object type </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a3a217dd78b926d5eaddb50563688b29f" name="a3a217dd78b926d5eaddb50563688b29f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a217dd78b926d5eaddb50563688b29f">&#9670;&#160;</a></span>end()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classjson_1_1_json_object_1_1_const_iterator.html">ConstJSONIterator</a> json::JsonObject::end </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>End iterator. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a9df65d9ed39ff0896a957d5b32a41bb3" name="a9df65d9ed39ff0896a957d5b32a41bb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9df65d9ed39ff0896a957d5b32a41bb3">&#9670;&#160;</a></span>get() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;utility::JsonLightValues T&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">T json::JsonObject::get </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;&quot;</span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>recursive</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Getter for all JSON parsed values</p>
-<p>Find and get first value of given key</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>T is one of JsonParser::jsonStruct::variantType template parameters</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td>JSON key</td></tr>
-    <tr><td class="paramname">recursive</td><td>Recursive search</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>JSON value</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JsonParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td>can't find JSON value</td></tr>
-    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a498c984dbad3997a7dd68d42c06d14ab" name="a498c984dbad3997a7dd68d42c06d14ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a498c984dbad3997a7dd68d42c06d14ab">&#9670;&#160;</a></span>get() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;utility::JsonHeavyValues&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; T&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const T &amp; json::JsonObject::get </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;&quot;</span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>recursive</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Getter for all JSON parsed values</p>
-<p>Find and get first value of given key</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>T is one of JsonParser::jsonStruct::variantType template parameters</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td>JSON key</td></tr>
-    <tr><td class="paramname">recursive</td><td>Recursive search</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>JSON value</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="classjson_1_1exceptions_1_1_cant_find_value_exception.html" title="Thrown if can&#39;t find value in JsonParser::get&lt;jsonType&gt;">json::exceptions::CantFindValueException</a></td><td>can't find JSON value</td></tr>
-    <tr><td class="paramname">std::bad_variant_access</td><td>Other type found</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="af41b8c089155d04f15901d92bc990c0e" name="af41b8c089155d04f15901d92bc990c0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af41b8c089155d04f15901d92bc990c0e">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp; json::JsonObject::operator= </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Copy assignment operator. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>Another jsonObject from <a class="el" href="classjson_1_1_json_parser.html" title="Parser for JSON.">JsonParser</a> or <a class="el" href="classjson_1_1_json_builder.html" title="Builder for JSON.">JsonBuilder</a> or custom </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Self </dd></dl>
-
-</div>
-</div>
-<a id="a92792f1dfa623412dca23bddc8c3a07d" name="a92792f1dfa623412dca23bddc8c3a07d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92792f1dfa623412dca23bddc8c3a07d">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp; json::JsonObject::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Move assignment operator. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>Another jsonObject from <a class="el" href="classjson_1_1_json_parser.html" title="Parser for JSON.">JsonParser</a> or <a class="el" href="classjson_1_1_json_builder.html" title="Builder for JSON.">JsonBuilder</a> or custom </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Self </dd></dl>
-
-</div>
-</div>
-<a id="a7380a27ca91f1afaad22bad54498f1a7" name="a7380a27ca91f1afaad22bad54498f1a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7380a27ca91f1afaad22bad54498f1a7">&#9670;&#160;</a></span>operator[]() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">JsonObject::VariantType &amp; json::JsonObject::operator[] </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Access JSON value. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a22de193a47c65474eec80b74067b3279" name="a22de193a47c65474eec80b74067b3279"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22de193a47c65474eec80b74067b3279">&#9670;&#160;</a></span>operator[]() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const JsonObject::VariantType &amp; json::JsonObject::operator[] </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Access JSON value. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a05e9b26654b44bbe887f70862fb1cfde" name="a05e9b26654b44bbe887f70862fb1cfde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05e9b26654b44bbe887f70862fb1cfde">&#9670;&#160;</a></span>tryGet()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;utility::JsonValues&lt; <a class="el" href="classjson_1_1_json_object.html">JsonObject</a> &gt; T&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool json::JsonObject::tryGet </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>key</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>recursive</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Getter for all JSON parsed values. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>Is one of json::utility::jsonObject::variantType template parameters </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td>JSON key </td></tr>
-    <tr><td class="paramname">value</td><td>JSON value </td></tr>
-    <tr><td class="paramname">recursive</td><td>Recursive search </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if value found </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>outputStream </dd></dl>
 
 </div>
 </div>

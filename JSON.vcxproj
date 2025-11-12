@@ -143,6 +143,7 @@
     <ClCompile Include="src\JsonObject.cpp" />
     <ClCompile Include="src\JsonParser.cpp" />
     <ClCompile Include="src\JsonUtility.cpp" />
+    <ClCompile Include="src\MapJsonIterator.cpp" />
     <ClCompile Include="src\OutputOperations.cpp" />
     <ClCompile Include="src\RecursiveJsonIterator.cpp" />
   </ItemGroup>
@@ -157,6 +158,7 @@
     <ClInclude Include="include\JsonObject.h" />
     <ClInclude Include="include\JsonParser.h" />
     <ClInclude Include="include\JsonUtility.h" />
+    <ClInclude Include="include\MapJsonIterator.h" />
     <ClInclude Include="include\OutputOperations.h" />
     <ClInclude Include="include\RecursiveJsonIterator.h" />
   </ItemGroup>

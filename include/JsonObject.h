@@ -107,14 +107,24 @@ namespace json
 		};
 
 	private:
-		VariantType data;
+		static bool compareMaps(const MapType& first, const MapType& second);
 
 	private:
-		static bool compareMaps(const MapType& first, const MapType& second);
+		template<utility::JsonValues<JsonObject> T>
+		JsonObject* find(std::string_view key, bool recursive);
+
+		template<utility::JsonValues<JsonObject> T>
+		const JsonObject* find(std::string_view key, bool recursive) const;
 
 	public:
 		template<utility::JsonVariantTypeEnum T>
 		static JsonObject createDefaultJsonObject();
+
+		template<typename... Args>
+		static std::vector<json::JsonObject> makeArray(Args&&... args);
+
+	private:
+		VariantType data;
 
 	public:
 		JsonObject();
@@ -168,6 +178,9 @@ namespace json
 		const T& get() const;
 
 		template<utility::JsonValues<JsonObject> T>
+		bool tryGet(std::string_view key, T& value, bool recursive = false) const;
+
+		template<utility::JsonValues<JsonObject> T>
 		bool tryGet(T& value) const;
 
 		template<typename T>
@@ -184,6 +197,78 @@ namespace json
 
 namespace json
 {
+	template<utility::JsonValues<JsonObject> T>
+	JsonObject* JsonObject::find(std::string_view key, bool recursive)
+	{
+		std::queue<JsonObject*> objects;
+
+		objects.push(this);
+
+		while (objects.size())
+		{
+			JsonObject* current = objects.front();
+			bool isObject = current->is<JsonObject>();
+
+			objects.pop();
+
+			for (auto it = current->begin(); it != current->end(); ++it)
+			{
+				JsonObject& value = *it;
+
+				if (isObject)
+				{
+					if (it.key() == key && it->is<T>())
+					{
+						return &value;
+					}
+				}
+
+				if (recursive && value.is<JsonObject>() || value.is<std::vector<JsonObject>>())
+				{
+					objects.push(&value);
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
+	template<utility::JsonValues<JsonObject> T>
+	const JsonObject* JsonObject::find(std::string_view key, bool recursive) const
+	{
+		std::queue<const JsonObject*> objects;
+
+		objects.push(this);
+
+		while (objects.size())
+		{
+			const JsonObject* current = objects.front();
+			bool isObject = current->is<JsonObject>();
+
+			objects.pop();
+
+			for (auto it = current->begin(); it != current->end(); ++it)
+			{
+				const JsonObject& value = *it;
+
+				if (isObject)
+				{
+					if (it.key() == key && it->is<T>())
+					{
+						return &value;
+					}
+				}
+
+				if (recursive && value.is<JsonObject>() || value.is<std::vector<JsonObject>>())
+				{
+					objects.push(&value);
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
 	template<utility::JsonVariantTypeEnum T>
 	JsonObject JsonObject::createDefaultJsonObject()
 	{
@@ -216,6 +301,22 @@ namespace json
 		default:
 			throw std::runtime_error("Wrong JsonVariantTypeEnum");
 		}
+	}
+
+	template<typename... Args>
+	static std::vector<json::JsonObject> JsonObject::makeArray(Args&&... args)
+	{
+		std::vector<json::JsonObject> result;
+		auto helper = [&result](auto&& value)
+			{
+				result.emplace_back() = std::forward<decltype(value)>(value);
+			};
+
+		result.reserve(sizeof...(Args));
+
+		(helper(std::forward<Args>(args)), ...);
+
+		return result;
 	}
 
 	template<utility::JsonValues<JsonObject> T>
@@ -261,37 +362,7 @@ namespace json
 	template<utility::JsonValues<JsonObject> T>
 	bool JsonObject::contains(std::string_view key, bool recursive) const
 	{
-		std::queue<const JsonObject*> objects;
-
-		objects.push(this);
-
-		while (objects.size())
-		{
-			const JsonObject* current = objects.front();
-			bool isObject = current->is<JsonObject>();
-
-			objects.pop();
-
-			for (auto it = current->begin(); it != current->end(); ++it)
-			{
-				const JsonObject& value = *it;
-
-				if (isObject)
-				{
-					if (it.key() == key && it->is<T>())
-					{
-						return true;
-					}
-				}
-
-				if (recursive && value.is<JsonObject>() || value.is<std::vector<JsonObject>>())
-				{
-					objects.push(&value);
-				}
-			}
-		}
-
-		return false;
+		return static_cast<bool>(this->find<T>(key, recursive));
 	}
 
 	template<utility::JsonLightValues T>
@@ -349,6 +420,19 @@ namespace json
 		}
 
 		return {};
+	}
+
+	template<utility::JsonValues<JsonObject> T>
+	bool JsonObject::tryGet(std::string_view key, T& value, bool recursive) const
+	{
+		if (const JsonObject* result = this->find<T>(key, recursive))
+		{
+			value = result->get<T>();
+
+			return true;
+		}
+
+		return false;
 	}
 
 	template<utility::JsonValues<JsonObject> T>

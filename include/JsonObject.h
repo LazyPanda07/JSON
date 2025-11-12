@@ -304,7 +304,7 @@ namespace json
 	}
 
 	template<typename... Args>
-	static std::vector<json::JsonObject> JsonObject::makeArray(Args&&... args)
+	std::vector<json::JsonObject> JsonObject::makeArray(Args&&... args)
 	{
 		std::vector<json::JsonObject> result;
 		auto helper = [&result](auto&& value)

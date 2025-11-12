@@ -128,7 +128,7 @@ namespace json
 	template<typename T>
 	JsonBuilder& JsonBuilder::append(std::string_view key, T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
 	{
-		builderData[key] = JsonObject(std::forward<T>(value));
+		builderData[key] = std::forward<T>(value);
 
 		return *this;
 	}

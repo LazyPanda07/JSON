@@ -134,45 +134,10 @@ TEST(Parser, Contains)
 	ASSERT_FALSE(parser.contains<std::string>("someRecursiveDataInArray"));
 }
 
-TEST(Parser, SimpleLineComment) 
+TEST(Parser, SimpleLineComment)
 {
-    std::string input = R"({
+	std::string input = R"({
         // single line
-        "a": 1
-    })";
-    
-	json::JsonParser parser(input);
-
-    EXPECT_EQ(parser.get<int>("a"), 1);
-}
-
-TEST(Parser, InlineComment) 
-{
-    std::string input = R"({
-        "a": 1, // after field
-        "b": 2
-    })";
-    std::string expected = R"({
-        "a": 1, 
-        "b": 2
-    })";
-
-	json::JsonParser parser(input);
-
-    EXPECT_EQ(parser.get<int>("a"), 1);
-    EXPECT_EQ(parser.get<int>("b"), 2);
-}
-
-TEST(Parser, MultiLineComment) 
-{
-    std::string input = R"({
-        /* multi
-           line
-           comment */
-        "a": 1
-    })";
-    std::string expected = R"({
-        
         "a": 1
     })";
 
@@ -181,17 +146,11 @@ TEST(Parser, MultiLineComment)
 	EXPECT_EQ(parser.get<int>("a"), 1);
 }
 
-TEST(Parser, MixedComments) 
+TEST(Parser, InlineComment)
 {
-    std::string input = R"({
-        // start comment
-        "a": 1, /* inline */
-        "b": 2 // end
-    })";
-    std::string expected = R"({
-        
-        "a": 1, 
-        "b": 2 
+	std::string input = R"({
+        "a": 1, // after field
+        "b": 2
     })";
 
 	json::JsonParser parser(input);
@@ -200,18 +159,74 @@ TEST(Parser, MixedComments)
 	EXPECT_EQ(parser.get<int>("b"), 2);
 }
 
-TEST(Parser, TrickyStars) 
+TEST(Parser, MultiLineComment)
 {
-    std::string input = R"({
-        /* comment ** with stars **/
-        "a": 1
-    })";
-    std::string expected = R"({
-        
+	std::string input = R"({
+        /* multi
+           line
+           comment */
         "a": 1
     })";
 
 	json::JsonParser parser(input);
 
 	EXPECT_EQ(parser.get<int>("a"), 1);
+}
+
+TEST(Parser, MixedComments)
+{
+	std::string input = R"({
+        // start comment
+        "a": 1, /* inline */
+        "b": 2 // end
+    })";
+
+	json::JsonParser parser(input);
+
+	EXPECT_EQ(parser.get<int>("a"), 1);
+	EXPECT_EQ(parser.get<int>("b"), 2);
+}
+
+TEST(Parser, TrickyStars)
+{
+	std::string input = R"({
+        /* comment ** with stars **/
+        "a": 1
+    })";
+
+	json::JsonParser parser(input);
+
+	EXPECT_EQ(parser.get<int>("a"), 1);
+}
+
+TEST(Parser, Link)
+{
+	std::string input = R"({
+  "$schema": "https://raw.githubusercontent.com/LazyPanda07/WebFramework/refs/heads/dev/schemas/web_framework_config_schema.json",
+  "WebServer": {
+    "ip": "127.0.0.1",
+    "port": 8080
+  },
+  "WebFramework": {
+    "webServerType": "multiThreaded",
+    "loadSources": [
+      "executors/Executors"
+    ],
+    "settingsPaths": [
+      "executors/web.json"
+    ],
+    "assetsPath": "assets",
+    "templatesPath": "templates",
+    "defaultAssetsPath": "WebFrameworkAssets"
+  },
+  "Logging": {
+    "usingLogging": true,
+    "dateFormat": "DMY",
+    "logFileSize": 134217728
+  }
+})";
+
+	json::JsonParser parser(input);
+
+	ASSERT_EQ(parser.get<std::string>("$schema"), "https://raw.githubusercontent.com/LazyPanda07/WebFramework/refs/heads/dev/schemas/web_framework_config_schema.json");
 }

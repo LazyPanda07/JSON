@@ -5,7 +5,6 @@
 #include <cctype>
 #include <algorithm>
 #include <limits>
-#include <regex>
 #include <format>
 
 #include "JsonArrayWrapper.h"
@@ -120,18 +119,18 @@ namespace json
 
 	void JsonParser::parse()
 	{
-		using namespace json::utility;
-
-		static const std::regex singleLine(R"(//[^\n\r]*)", std::regex_constants::ECMAScript);
-		static const std::regex multiLine(R"(/\*([^*]|\*+[^*/])*\*+/)", std::regex_constants::ECMAScript);
-
-		rawData = std::regex_replace(rawData, singleLine, ""); // Remove // comments
-		rawData = std::regex_replace(rawData, multiLine, ""); // Remove /* ... */ comments (including multiline)
+		enum class CommentType
+		{
+			singleLine,
+			multiline,
+			none
+		};
 
 		std::stack<std::pair<std::string, JsonObject>> processingData;
 		std::string key;
 		std::string value;
 		bool startString = false;
+		CommentType commentType = CommentType::none;
 		bool escapeSymbol = false;
 		size_t index = 0;
 
@@ -154,13 +153,16 @@ namespace json
 				continue;
 			}
 
-			if (!startString && isStringSymbol(c))
+			if (commentType == CommentType::none)
 			{
-				startString = true;
-			}
-			else if (startString && isStringSymbol(c))
-			{
-				startString = false;
+				if (!startString && isStringSymbol(c))
+				{
+					startString = true;
+				}
+				else if (startString && isStringSymbol(c))
+				{
+					startString = false;
+				}
 			}
 
 			if (startString)
@@ -170,7 +172,51 @@ namespace json
 				continue;
 			}
 
-			if (isspace(static_cast<unsigned char>(c)))
+			switch (commentType)
+			{
+			case CommentType::singleLine:
+				if (c == '\n')
+				{
+					commentType = CommentType::none;
+				}
+
+				continue;
+
+			case CommentType::multiline:
+				if (c == '*' && rawData[index + 1] == '/')
+				{
+					commentType = CommentType::none;
+
+					index++;
+				}
+
+				continue;
+
+			case CommentType::none:
+				if (c == '/')
+				{
+					if (rawData[index + 1] == '/')
+					{
+						commentType = CommentType::singleLine;
+					}
+					else if (rawData[index + 1] == '*')
+					{
+						commentType = CommentType::multiline;
+					}
+					else
+					{
+						throw std::runtime_error("Wrong commentType");
+					}
+
+					continue;
+				}
+
+				break;
+			default:
+				break;
+			}
+
+			if (isspace(static_cast<int>(c)))
 			{
 				continue;
 			}

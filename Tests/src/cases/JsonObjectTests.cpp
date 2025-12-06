@@ -155,3 +155,23 @@ TEST(Object, MapIterator)
 		ASSERT_EQ(referenceValue.type().name(), value.getType().name()) << key;
 	}
 }
+
+TEST(Object, EmplaceBack)
+{
+	using namespace std::string_literals;
+	using namespace std::string_view_literals;
+
+	json::JsonObject array;
+	
+	array.emplace_back(1);
+	array.emplace_back(5.5);
+	array.emplace_back("first");
+	array.emplace_back("second"s);
+	array.emplace_back("third"sv);
+
+	ASSERT_TRUE(array[0].is<int>());
+	ASSERT_TRUE(array[1].is<float>());
+	ASSERT_TRUE(array[2].is<std::string>());
+	ASSERT_TRUE(array[3].is<std::string>());
+	ASSERT_TRUE(array[4].is<std::string>());
+}

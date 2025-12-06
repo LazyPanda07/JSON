@@ -159,8 +159,8 @@ namespace json
 
 		JsonObject& operator [](size_t index);
 
-		template<utility::JsonValues<JsonObject> T>
-		JsonObject& emplace_back(T&& value);
+		template<typename T>
+		JsonObject& emplace_back(T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);
 
 		template<utility::JsonValues<JsonObject> T>
 		bool is() const;
@@ -319,9 +319,11 @@ namespace json
 		return result;
 	}
 
-	template<utility::JsonValues<JsonObject> T>
-	JsonObject& JsonObject::emplace_back(T&& value)
+	template<typename T>
+	JsonObject& JsonObject::emplace_back(T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>)
 	{
+		using ActualT = std::remove_cvref_t<T>;
+
 		if (!std::holds_alternative<std::vector<JsonObject>>(data))
 		{
 			data = std::vector<JsonObject>();
@@ -329,7 +331,22 @@ namespace json
 
 		std::vector<JsonObject>& array = std::get<std::vector<JsonObject>>(data);
 
-		return array.emplace_back(std::forward<T>(value));
+		if constexpr (std::is_same_v<ActualT, std::string>)
+		{
+			return array.emplace_back(std::forward<T>(value));
+		}
+		else if constexpr (std::convertible_to<ActualT, std::string_view>)
+		{
+			return array.emplace_back(static_cast<std::string_view>(value));
+		}
+		else if constexpr (std::is_convertible_v<ActualT, std::string>)
+		{
+			return array.emplace_back(static_cast<std::string>(value));
+		}
+		else
+		{
+			return array.emplace_back(std::forward<T>(value));
+		}
 	}
 
 	template<utility::JsonValues<JsonObject> T>

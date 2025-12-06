@@ -160,7 +160,7 @@ namespace json
 		JsonObject& operator [](size_t index);
 
 		template<utility::JsonValues<JsonObject> T>
-		void emplace_back(T&& value);
+		JsonObject& emplace_back(T&& value);
 
 		template<utility::JsonValues<JsonObject> T>
 		bool is() const;
@@ -320,7 +320,7 @@ namespace json
 	}
 
 	template<utility::JsonValues<JsonObject> T>
-	void JsonObject::emplace_back(T&& value)
+	JsonObject& JsonObject::emplace_back(T&& value)
 	{
 		if (!std::holds_alternative<std::vector<JsonObject>>(data))
 		{
@@ -329,7 +329,7 @@ namespace json
 
 		std::vector<JsonObject>& array = std::get<std::vector<JsonObject>>(data);
 
-		array.emplace_back(std::forward<T>(value));
+		return array.emplace_back(std::forward<T>(value));
 	}
 
 	template<utility::JsonValues<JsonObject> T>

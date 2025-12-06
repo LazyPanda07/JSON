@@ -230,3 +230,15 @@ TEST(Parser, Link)
 
 	ASSERT_EQ(parser.get<std::string>("$schema"), "https://raw.githubusercontent.com/LazyPanda07/WebFramework/refs/heads/dev/schemas/web_framework_config_schema.json");
 }
+
+TEST(Parser, OuterArray)
+{
+	std::string input = R"([{"name":"dev","commit":{"sha":"7978b7a8634415dd6d496c248c68234b2032e9c1","url":"https://api.github.com/repos/LazyPanda07/Networks/commits/7978b7a8634415dd6d496c248c68234b2032e9c1"},"protected":false,"protection":{"enabled":false,"required_status_checks":{"enforcement_level":"off","contexts":[],"checks":[]}},"protection_url":"https://api.github.com/repos/LazyPanda07/Networks/branches/dev/protection"},{"name":"master","commit":{"sha":"7978b7a8634415dd6d496c248c68234b2032e9c1","url":"https://api.github.com/repos/LazyPanda07/Networks/commits/7978b7a8634415dd6d496c248c68234b2032e9c1"},"protected":false,"protection":{"enabled":false,"required_status_checks":{"enforcement_level":"off","contexts":[],"checks":[]}},"protection_url":"https://api.github.com/repos/LazyPanda07/Networks/branches/master/protection"}])";
+	json::JsonParser parser(input);
+	const json::JsonObject& data = parser.getParsedData();
+	const json::JsonObject& first = data[0].get<json::JsonObject>();
+	const json::JsonObject& second = data[1].get<json::JsonObject>();
+
+	ASSERT_EQ(first["name"].get<std::string>(), "dev");
+	ASSERT_EQ(second["name"].get<std::string>(), "master");
+}

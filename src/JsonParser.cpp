@@ -274,13 +274,20 @@ namespace json
 					value.clear();
 				}
 
-				if (topKey.size())
+				if (processingData.size())
 				{
-					processingData.top().second[std::move(topKey)] = std::move(top);
+					if (topKey.size())
+					{
+						processingData.top().second[std::move(topKey)] = std::move(top);
+					}
+					else
+					{
+						processingData.top().second.emplace_back(std::move(top));
+					}
 				}
 				else
 				{
-					processingData.top().second.emplace_back(std::move(top));
+					parsedData = std::move(top);
 				}
 			}
 

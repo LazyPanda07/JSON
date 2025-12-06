@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 set(GTEST_VERSION 1.17.0)
 
 project(Tests)
@@ -14,8 +15,6 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(gtest)
-
-set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR})
 
 if (UNIX)
     add_definitions(-D__LINUX__)

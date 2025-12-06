@@ -333,20 +333,22 @@ namespace json
 
 		if constexpr (std::is_same_v<ActualT, std::string>)
 		{
-			return array.emplace_back(std::forward<T>(value));
+			array.emplace_back(std::forward<T>(value));
 		}
 		else if constexpr (std::convertible_to<ActualT, std::string_view>)
 		{
-			return array.emplace_back(static_cast<std::string_view>(value));
+			array.emplace_back(std::string(static_cast<std::string_view>(value)));
 		}
-		else if constexpr (std::is_convertible_v<ActualT, std::string>)
+		else if constexpr (std::convertible_to<ActualT, std::string>)
 		{
-			return array.emplace_back(static_cast<std::string>(value));
+			array.emplace_back(static_cast<std::string>(value));
 		}
 		else
 		{
-			return array.emplace_back(std::forward<T>(value));
+			array.emplace_back(std::forward<T>(value));
 		}
+
+		return array.back();
 	}
 
 	template<utility::JsonValues<JsonObject> T>

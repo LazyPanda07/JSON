@@ -337,7 +337,11 @@ namespace json
 
 		std::vector<JsonObject>& array = std::get<std::vector<JsonObject>>(data);
 
-		if constexpr (std::is_same_v<ActualT, std::string>)
+		if constexpr (std::same_as<ActualT, std::nullptr_t>)
+		{
+			array.emplace_back(nullptr);
+		}
+		else if constexpr (std::same_as<ActualT, std::string>)
 		{
 			array.emplace_back(std::forward<T>(value));
 		}

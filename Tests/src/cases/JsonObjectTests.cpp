@@ -168,12 +168,14 @@ TEST(Object, EmplaceBack)
 	array.emplace_back("first");
 	array.emplace_back("second"s);
 	array.emplace_back("third"sv);
+	array.emplace_back(nullptr);
 
 	ASSERT_TRUE(array[0].is<int>());
 	ASSERT_TRUE(array[1].is<float>());
 	ASSERT_TRUE(array[2].is<std::string>());
 	ASSERT_TRUE(array[3].is<std::string>());
 	ASSERT_TRUE(array[4].is<std::string>());
+	ASSERT_TRUE(array[5].is<std::nullptr_t>());
 }
 
 TEST(Object, Size)

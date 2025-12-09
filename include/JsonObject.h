@@ -131,6 +131,12 @@ namespace json
 
 		JsonObject(VariantType&& data);
 
+		/**
+		 * @brief Returns the number of elements in the container.
+		 * @return If JsonObject is map or array it returns actual size, std::numeric_limits<size_t>::max() otherwise.
+		 */
+		size_t size() const;
+
 		JsonObject& at(size_t index);
 
 		JsonObject& at(std::string_view key);

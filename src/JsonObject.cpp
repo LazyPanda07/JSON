@@ -216,6 +216,22 @@ namespace json
 
 	}
 
+	size_t JsonObject::size() const
+	{
+		if (this->is<std::vector<JsonObject>>())
+		{
+			return this->get<std::vector<JsonObject>>().size();
+		}
+		else if (this->is<JsonObject>())
+		{
+			return std::get<MapType>(data).size();
+		}
+		else
+		{
+			return (std::numeric_limits<size_t>::max)();
+		}
+	}
+
 	JsonObject& JsonObject::at(size_t index)
 	{
 		if (!std::holds_alternative<std::vector<JsonObject>>(data))

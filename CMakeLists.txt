@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.27.0)
 set(CMAKE_CXX_STANDARD 20)
 option(CMAKE_POSITION_INDEPENDENT_CODE "" ON)
 
-project(JSON VERSION 3.1.5)
+project(JSON VERSION 3.2.0)
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Android")
 	add_definitions(-D__ANDROID__)

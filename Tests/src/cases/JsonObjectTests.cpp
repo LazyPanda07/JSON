@@ -175,3 +175,18 @@ TEST(Object, EmplaceBack)
 	ASSERT_TRUE(array[3].is<std::string>());
 	ASSERT_TRUE(array[4].is<std::string>());
 }
+
+TEST(Object, Size)
+{
+	json::JsonObject array;
+	json::JsonObject map;
+
+	array.emplace_back(1);
+	array.emplace_back(5.5);
+
+	map["first"] = 1;
+	map["second"] = 5.5;
+
+	ASSERT_EQ(array.size(), 2);
+	ASSERT_EQ(map.size(), 2);
+}

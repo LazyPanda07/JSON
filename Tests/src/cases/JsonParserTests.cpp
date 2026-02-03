@@ -242,3 +242,17 @@ TEST(Parser, OuterArray)
 	ASSERT_EQ(first["name"].get<std::string>(), "dev");
 	ASSERT_EQ(second["name"].get<std::string>(), "master");
 }
+
+TEST(Parser, UTF8)
+{
+	std::string_view key = "\xD0\xBA\xD0\xBB\xD1\x8E\xD1\x87";
+	std::string_view value = "\xD0\xB7\xD0\xBD\xD0\xB0\xD1\x87\xD0\xB5\xD0\xBD\xD0\xB8\xD0\xB5";
+
+	json::JsonParser parser(std::ifstream("data/utf8.json"));
+
+	ASSERT_EQ(parser.get<std::string>("key"), key);
+	ASSERT_EQ(parser.get<std::string>("value"), value);
+
+	ASSERT_EQ(parser.get<std::string>(key), "key");
+	ASSERT_EQ(parser.get<std::string>(value), "value");
+}

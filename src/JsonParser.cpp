@@ -132,9 +132,8 @@ namespace json
 		bool startString = false;
 		CommentType commentType = CommentType::none;
 		bool escapeSymbol = false;
-		size_t index = 0;
-
-		for (; index < rawData.size(); index++)
+		
+		for (size_t index = 0; index < rawData.size(); index++)
 		{
 			char c = rawData[index];
 
@@ -216,7 +215,7 @@ namespace json
 				break;
 			}
 
-			if (isspace(static_cast<int>(c)))
+			if (std::isspace(static_cast<uint8_t>(c)))
 			{
 				continue;
 			}

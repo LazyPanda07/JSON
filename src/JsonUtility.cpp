@@ -45,6 +45,11 @@ namespace json::utility
 
 	std::string toUTF8JSON(std::string_view source, std::string_view sourceCodePage)
 	{
+		if (sourceCodePage == CP_UTF8)
+		{
+			return std::string(source);
+		}
+
 		return convertString(source, source.size() * 4, iconv_open(CP_UTF8, sourceCodePage.data()));
 	}
 
@@ -55,11 +60,21 @@ namespace json::utility
 
 	std::string convertEncoding(std::string_view source, std::string_view sourceCodePage, std::string_view resultCodePage)
 	{
+		if (sourceCodePage == resultCodePage)
+		{
+			return std::string(source);
+		}
+
 		return convertString(source, source.size() * 4, iconv_open(resultCodePage.data(), sourceCodePage.data()));
 	}
 #else
 	std::string toUTF8JSON(std::string_view source, uint32_t sourceCodePage)
 	{
+		if (sourceCodePage == CP_UTF8)
+		{
+			return std::string(source);
+		}
+
 		std::string result;
 		std::wstring tem;
 		int size = MultiByteToWideChar
@@ -202,6 +217,11 @@ namespace json::utility
 
 	std::string convertEncoding(std::string_view source, uint32_t sourceCodePage, uint32_t resultCodePage)
 	{
+		if (sourceCodePage == resultCodePage)
+		{
+			return std::string(source);
+		}
+
 		std::string result;
 		std::wstring tem;
 		int size = MultiByteToWideChar
@@ -274,7 +294,7 @@ namespace json::utility
 
 	std::string getJSONVersion()
 	{
-		std::string jsonVersion = "3.2.1";
+		std::string jsonVersion = "3.2.2";
 
 		return jsonVersion;
 	}

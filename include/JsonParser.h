@@ -104,7 +104,7 @@ namespace json
 		template<utility::JsonValues<JsonObject> T>
 		bool tryGet(std::string_view key, T& value, bool recursive = false) const;
 
-		operator std::string() const;
+		explicit operator std::string() const;
 
 		friend std::istream& operator >> (std::istream& inputStream, JsonParser& parser);
 

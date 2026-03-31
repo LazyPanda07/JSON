@@ -3,7 +3,7 @@ name: CI
 
 on:
   push:
-   branches: [master, dev]
+   branches: [main, dev]
 
 
 permissions:
@@ -18,7 +18,7 @@ jobs:
         configuration: [Debug, Release]
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
   
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -31,7 +31,7 @@ jobs:
           cmake --build . -j && cmake --install .
       
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ matrix.configuration }}_Windows
         path: build/install-dir/
@@ -46,7 +46,7 @@ jobs:
         configuration: [Debug, Release]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Build
       run: |
@@ -56,7 +56,7 @@ jobs:
           cmake --build . -j && cmake --install .
           
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ matrix.configuration }}_Linux
         path: build/install-dir
@@ -71,7 +71,7 @@ jobs:
         configuration: [Debug, Release]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Build
       run: |
@@ -81,7 +81,7 @@ jobs:
           cmake --build . -j && cmake --install .
           
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ matrix.configuration }}_LinuxARM
         path: build/install-dir
@@ -95,13 +95,13 @@ jobs:
         configuration: [Debug, Release]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
   
     - name: Enable NMake
       uses: ilammy/msvc-dev-cmd@v1.13.0
       
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.configuration }}_Windows
         path: JSON
@@ -131,10 +131,10 @@ jobs:
         configuration: [Debug, Release]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
   
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.configuration }}_Linux
         path: JSON
@@ -164,10 +164,10 @@ jobs:
         configuration: [Debug, Release]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
   
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.configuration }}_LinuxARM
         path: JSON
@@ -197,10 +197,10 @@ jobs:
         configuration: [Debug, Release]
 
     steps: 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
   
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: ${{ matrix.configuration }}_Linux
         path: JSON
@@ -226,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - uses: LazyPanda07/extract-current-branch@master
     
@@ -235,26 +235,26 @@ jobs:
       run: echo "VERSION=$($($($(Select-String -Path .\src\JsonUtility.cpp -Pattern jsonVersion) -split '( = )')[3].TrimEnd(';')).Trim('\"'))" >> $Env:GITHUB_ENV
 
     - name: Download artifacts
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
-      uses: actions/download-artifact@v4
+      if: ${{ env.CURRENT_BRANCH == 'main' }}
+      uses: actions/download-artifact@v8
       
     - name: Setup Windows build list
       run: echo "WINDOWS_BUILD_LIST="$(ls | grep Windows)"" >> ${GITHUB_ENV}
       
     - name: Create Windows zip
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      if: ${{ env.CURRENT_BRANCH == 'main' }}
       run: zip -r windows.zip ${{ env.WINDOWS_BUILD_LIST }}
 
     - name: Create Linux zip
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      if: ${{ env.CURRENT_BRANCH == 'main' }}
       run: zip -r linux.zip Release_Linux
 
     - name: Create Linux ARM zip
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      if: ${{ env.CURRENT_BRANCH == 'main' }}
       run: zip -r linux_aarch64.zip Release_LinuxARM
 
     - name: Publish
-      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      if: ${{ env.CURRENT_BRANCH == 'main' }}
       run: gh release create v${{ env.VERSION }} *.zip --title v${{ env.VERSION }} --generate-notes
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

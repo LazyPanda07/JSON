@@ -95,6 +95,63 @@ namespace json
 		return *it;
 	}
 
+	JsonBuilder::operator std::string() const
+	{
+		JsonObject::ConstIterator begin = builderData.begin();
+		JsonObject::ConstIterator end = builderData.end();
+		std::string offset = "  ";
+		std::string result = "{\n";
+
+		while (begin != end)
+		{
+			JsonObject::ConstIterator check = begin;
+			const JsonObject& value = *check;
+
+			if (std::optional<std::string_view> key = check.key())
+			{
+				result += std::format(R"({}"{}": )", offset, *key);
+			}
+			else
+			{
+				result += offset;
+			}
+
+			result += utility::outputJsonType(value, ++check == end, offset);
+
+			++begin;
+		}
+
+		result += '}';
+
+		switch (type)
+		{
+		case json::JsonBuilder::OutputType::standard:
+			return json::utility::toUTF8JSON(result, codePage);
+
+		case json::JsonBuilder::OutputType::minimize:
+			bool isJsonString = false;
+
+			for (size_t i = 0; i < result.size(); i++)
+			{
+				if (result[i] == '\"')
+				{
+					if (result[i - 1] != '\\')
+					{
+						isJsonString = !isJsonString;
+					}
+				}
+				else if (std::isspace(result[i]) && !isJsonString)
+				{
+					result.erase(result.begin() + i);
+
+					i--;
+				}
+			}
+
+			return json::utility::toUTF8JSON(result, codePage);
+		}
+	}
+
 	std::string JsonBuilder::build() const
 	{
 		JsonObject::ConstIterator begin = builderData.begin();

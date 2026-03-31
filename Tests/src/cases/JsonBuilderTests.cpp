@@ -99,3 +99,37 @@ TEST(Builder, Minimize)
 
 	ASSERT_EQ(reference.getParsedData(), json::JsonParser(builder.build()).getParsedData());
 }
+
+TEST(Builder, Output)
+{
+	std::vector<json::JsonObject> array;
+	json::JsonObject object;
+
+	object["nullValue"] = nullptr;
+	object["boolValue"] = true;
+	object["intValue"] = 5;
+	object["doubleValue"] = 10.2;
+	object["unsignedIntValue"] = 15;
+	object["stringValue"] = "qwe";
+
+	array.emplace_back(nullptr);
+	array.emplace_back(true);
+	array.emplace_back(5LL);
+	array.emplace_back(10.2);
+	array.emplace_back(15ULL);
+	array.emplace_back("qwe");
+	array.emplace_back(object);
+
+	json::JsonBuilder builder(CP_UTF8);
+
+	builder["nullValue"] = nullptr;
+	builder["boolValue"] = true;
+	builder["intValue"] = 5;
+	builder["doubleValue"] = 10.2;
+	builder["unsignedIntValue"] = 15;
+	builder["stringValue"] = "qwe";
+	builder["arrayValue"] = std::move(array);
+	builder["objectValue"] = std::move(object);
+
+	ASSERT_EQ((std::ostringstream() << object).str(), static_cast<std::string>(object));
+}

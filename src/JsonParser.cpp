@@ -544,6 +544,35 @@ namespace json
 		object = std::move(parsedData);
 	}
 
+	JsonParser::operator std::string() const
+	{
+		JsonObject::ConstIterator begin = this->begin();
+		JsonObject::ConstIterator end = this->end();
+		std::string offset = "  ";
+		std::string result = "{\n";
+
+		while (begin != end)
+		{
+			JsonObject::ConstIterator check = begin;
+			const JsonObject& value = *check;
+
+			if (std::optional<std::string_view> key = check.key())
+			{
+				result += std::format(R"({}"{}": )", offset, *key);
+			}
+			else
+			{
+				result += offset;
+			}
+
+			result += utility::outputJsonType(value, ++check == end, offset);
+
+			++begin;
+		}
+
+		return result.append("}");
+	}
+
 	std::istream& operator >> (std::istream& inputStream, JsonParser& parser)
 	{
 		parser.setJSONData(inputStream);

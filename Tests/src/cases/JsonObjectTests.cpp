@@ -192,3 +192,34 @@ TEST(Object, Size)
 	ASSERT_EQ(array.size(), 2);
 	ASSERT_EQ(map.size(), 2);
 }
+
+TEST(Object, Output)
+{
+	using namespace std::string_literals;
+	using namespace std::string_view_literals;
+
+	json::JsonObject object;
+	std::string data;
+	int intData;
+
+	object["int"] = 5;
+	object["string"] = "data"s;
+	object["string_view"] = "view"sv;
+	object["ptr"] = "ptr";
+
+	{
+		json::JsonObject temp;
+		std::vector<json::JsonObject> array;
+
+		array.emplace_back(5);
+		array.emplace_back("data");
+		array.emplace_back(nullptr);
+
+		temp["float"] = 5.5;
+		temp["array"] = std::move(array);
+
+		object["object"] = std::move(temp);
+	}
+
+	ASSERT_EQ((std::ostringstream() << object).str(), static_cast<std::string>(object));
+}

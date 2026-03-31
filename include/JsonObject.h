@@ -195,6 +195,8 @@ namespace json
 		template<typename T>
 		JsonObject& operator =(T&& value) requires (utility::JsonValues<T, JsonObject> || std::convertible_to<T, std::string_view> || std::convertible_to<T, std::string>);
 
+		explicit operator std::string() const;
+
 		friend std::ostream& operator <<(std::ostream& stream, const JsonObject& object);
 
 		~JsonObject() = default;

@@ -8,12 +8,19 @@ TEST(Parser, Getters)
 {
 	json::JsonParser parser(createParser());
 
+	const json::JsonObject& arrayObject = parser.get<json::JsonObject>("arrayValue");
+	int16_t intValue;
+
 	ASSERT_EQ(parser.get<std::nullptr_t>("nullValue"), nullptr);
 	ASSERT_EQ(parser.get<bool>("boolValue"), true);
 	ASSERT_EQ(parser.get<int>("intValue"), 5);
 	ASSERT_EQ(parser.get<double>("doubleValue"), 10.2);
 	ASSERT_EQ(parser.get<uint32_t>("unsignedIntValue"), 15);
 	ASSERT_EQ(parser.get<std::string>("stringValue"), "qwe");
+
+	ASSERT_TRUE(arrayObject.is<std::vector<json::JsonObject>>());
+	ASSERT_TRUE(arrayObject.tryGet("intValue", intValue, true));
+	ASSERT_EQ(intValue, 5);
 
 	EXPECT_THROW(parser.get<int>("test"), json::exceptions::CantFindValueException);
 	EXPECT_THROW(parser.get<nullptr_t>("intValue"), std::bad_variant_access);
@@ -255,4 +262,11 @@ TEST(Parser, UTF8)
 
 	ASSERT_EQ(parser.get<std::string>(key), "key");
 	ASSERT_EQ(parser.get<std::string>(value), "value");
+}
+
+TEST(Parser, Output)
+{
+	json::JsonParser parser = createParser();
+
+	ASSERT_EQ((std::ostringstream() << parser).str(), static_cast<std::string>(parser));
 }

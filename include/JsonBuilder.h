@@ -114,6 +114,8 @@ namespace json
 		/// <exception cref="json::exceptions::CantFindValueException"></exception>
 		const JsonObject& operator [](std::string_view key) const;
 
+		explicit operator std::string() const;
+
 		/// <summary>
 		/// Set JSON to output stream
 		/// </summary>

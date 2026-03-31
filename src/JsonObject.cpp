@@ -490,6 +490,13 @@ namespace json
 		return std::get<std::vector<JsonObject>>(data)[index];
 	}
 
+	JsonObject::operator std::string() const
+	{
+		std::string offset;
+		
+		return utility::outputJsonType(*this, true, offset);
+	}
+
 	std::ostream& operator <<(std::ostream& stream, const JsonObject& object)
 	{
 		std::string offset;

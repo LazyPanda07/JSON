@@ -490,6 +490,41 @@ namespace json
 		return std::get<std::vector<JsonObject>>(data)[index];
 	}
 
+	bool JsonObject::contains(std::string_view key, bool recursive) const
+	{
+		std::queue<const JsonObject*> objects;
+
+		objects.push(this);
+
+		while (objects.size())
+		{
+			const JsonObject* current = objects.front();
+			bool isObject = current->is<JsonObject>();
+
+			objects.pop();
+
+			for (auto it = current->begin(); it != current->end(); ++it)
+			{
+				const JsonObject& value = *it;
+
+				if (isObject)
+				{
+					if (it.key() == key)
+					{
+						return true;
+					}
+				}
+
+				if (recursive && value.is<JsonObject>() || value.is<std::vector<JsonObject>>())
+				{
+					objects.push(&value);
+				}
+			}
+		}
+
+		return false;
+	}
+
 	JsonObject::operator std::string() const
 	{
 		std::string offset;

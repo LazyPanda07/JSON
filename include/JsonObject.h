@@ -177,6 +177,8 @@ namespace json
 		template<utility::JsonValues<JsonObject> T>
 		bool contains(std::string_view key, bool recursive = false) const;
 
+		bool contains(std::string_view key, bool recursive = false) const;
+
 		template<utility::JsonLightValues T>
 		T get() const;
 

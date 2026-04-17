@@ -311,6 +311,8 @@ namespace json
 		default:
 			throw std::runtime_error("Wrong JsonVariantTypeEnum");
 		}
+
+		return JsonObject();
 	}
 
 	template<typename... Args>
@@ -447,12 +449,12 @@ namespace json
 		{
 			return *this;
 		}
-		else
-		{
-			throw std::runtime_error("Wrong type");
-		}
+		
+		throw std::runtime_error("Wrong type");
 
-		return {};
+		JsonObject defaultReturn;
+
+		return defaultReturn;
 	}
 
 	template<utility::JsonValues<JsonObject> T>

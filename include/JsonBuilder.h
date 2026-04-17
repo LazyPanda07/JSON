@@ -33,7 +33,7 @@ namespace json
 		/// </summary>
 		/// <param name="codePage">codePage of your system</param>
 		/// <param name="type">value from json::JsonBuilder::outputType</param>
-		JsonBuilder(std::string_view codePage, OutputType type = OutputType::standard);
+		JsonBuilder(std::string_view codePage = CP_UTF8, OutputType type = OutputType::standard);
 
 		/// @brief Construct from parsed or builded data 
 		/// @param data Data from JsonBuilder or JsonParser
@@ -45,7 +45,7 @@ namespace json
 		/// </summary>
 		/// <param name="codePage">codePage of your system</param>
 		/// <param name="type">value from json::JsonBuilder::outputType</param>
-		JsonBuilder(uint32_t codePage, OutputType type = OutputType::standard);
+		JsonBuilder(uint32_t codePage = CP_UTF8, OutputType type = OutputType::standard);
 
 		/// @brief Construct from parsed or builded data 
 		/// @param data Data from JsonBuilder or JsonParser

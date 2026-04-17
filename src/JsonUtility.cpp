@@ -294,7 +294,7 @@ namespace json::utility
 
 	std::string getJSONVersion()
 	{
-		std::string jsonVersion = "3.4.0";
+		std::string jsonVersion = "3.4.1";
 
 		return jsonVersion;
 	}

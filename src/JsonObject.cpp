@@ -226,10 +226,8 @@ namespace json
 		{
 			return std::get<MapType>(data).size();
 		}
-		else
-		{
-			return (std::numeric_limits<size_t>::max)();
-		}
+		
+		return (std::numeric_limits<size_t>::max)();
 	}
 
 	JsonObject& JsonObject::at(size_t index)
@@ -482,7 +480,9 @@ namespace json
 
 		throw std::runtime_error(std::format("Can't get value with key: {}", key));
 
-		return {};
+		static JsonObject defaultReturn;
+
+		return defaultReturn;
 	}
 
 	JsonObject& JsonObject::operator [](size_t index)

@@ -149,7 +149,12 @@ namespace json
 			}
 
 			return json::utility::toUTF8JSON(result, codePage);
+			
+		default:
+			throw std::runtime_error(std::format("Wrong OutputType: {}", static_cast<int>(type)));
 		}
+
+		return "";
 	}
 
 	std::string JsonBuilder::build() const
@@ -209,7 +214,12 @@ namespace json
 			}
 
 			return json::utility::toUTF8JSON(result, codePage);
+
+		default:
+			throw std::runtime_error(std::format("Wrong OutputType: {}", static_cast<int>(type)));
 		}
+
+		return "";
 	}
 
 	void JsonBuilder::standard()

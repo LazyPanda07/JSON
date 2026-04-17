@@ -34,11 +34,6 @@ namespace json
 
 	utility::JsonVariantType<JsonObject> JsonParser::parseValue(const std::string& value)
 	{
-#ifndef __LINUX__
-#pragma warning(push)
-#pragma warning(disable: 4018)
-#endif
-
 		if (isStringSymbol(*value.begin()) && isStringSymbol(*value.rbegin()))
 		{
 			return std::string(value.begin() + 1, value.end() - 1);
@@ -63,7 +58,7 @@ namespace json
 				{
 					return std::stoll(value);
 				}
-				else if (uint64_t valueToInsert = stoull(value); valueToInsert > (std::numeric_limits<int64_t>::max)())
+				else if (uint64_t valueToInsert = std::stoull(value); valueToInsert > (std::numeric_limits<int64_t>::max)())
 				{
 					return valueToInsert;
 				}
@@ -77,9 +72,6 @@ namespace json
 		throw std::runtime_error("Can't parse value");
 
 		return nullptr;
-#ifndef __LINUX__
-#pragma warning(pop)
-#endif
 	}
 
 	void JsonParser::insertValue(std::string_view key, const std::string& value, JsonObject& object)
@@ -113,8 +105,10 @@ namespace json
 			return '\f';
 
 		default:
-			return symbol;
+			throw std::runtime_error(std::format("Wrong escape symbol: {}", symbol));
 		}
+
+		return symbol;
 	}
 
 	void JsonParser::parse()
@@ -182,7 +176,7 @@ namespace json
 				continue;
 
 			case CommentType::multiline:
-				if (c == '*' && rawData[index + 1] == '/')
+				if (c == '*' && rawData.at(index + 1) == '/')
 				{
 					commentType = CommentType::none;
 
@@ -194,17 +188,19 @@ namespace json
 			case CommentType::none:
 				if (c == '/')
 				{
-					if (rawData[index + 1] == '/')
+					switch (rawData.at(index + 1))
 					{
+					case '/':
 						commentType = CommentType::singleLine;
-					}
-					else if (rawData[index + 1] == '*')
-					{
+
+						break;
+						
+					case '*':
 						commentType = CommentType::multiline;
-					}
-					else
-					{
-						throw std::runtime_error("Wrong commentType");
+						break;
+
+					default:
+						throw std::runtime_error("Wrong CommentType");
 					}
 
 					continue;
@@ -318,10 +314,17 @@ namespace json
 				break;
 
 			case colon:
-				key = std::string(value.begin() + 1, value.end() - 1);
+				if (value.size() > 3)
+				{
+					key = std::string(value.begin() + 1, value.end() - 1);
 
-				value.clear();
-
+					value.clear();
+				}
+				else
+				{
+					throw std::runtime_error(std::format("Wrong key: {}", key));
+				}
+				
 				break;
 
 			default:

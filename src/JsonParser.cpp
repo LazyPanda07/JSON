@@ -7,7 +7,6 @@
 #include <limits>
 #include <format>
 
-#include "JsonArrayWrapper.h"
 #include "OutputOperations.h"
 
 #ifndef __LINUX__
@@ -58,7 +57,7 @@ namespace json
 				{
 					return std::stoll(value);
 				}
-				else if (uint64_t valueToInsert = std::stoull(value); valueToInsert > (std::numeric_limits<int64_t>::max)())
+				else if (uint64_t valueToInsert = std::stoull(value); valueToInsert > static_cast<uint64_t>((std::numeric_limits<int64_t>::max)()))
 				{
 					return valueToInsert;
 				}

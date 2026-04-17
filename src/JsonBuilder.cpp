@@ -123,14 +123,14 @@ namespace json
 
 		result += '}';
 
+		bool isJsonString = false;
+
 		switch (type)
 		{
 		case json::JsonBuilder::OutputType::standard:
 			return json::utility::toUTF8JSON(result, codePage);
 
 		case json::JsonBuilder::OutputType::minimize:
-			bool isJsonString = false;
-
 			for (size_t i = 0; i < result.size(); i++)
 			{
 				if (result[i] == '\"')
@@ -187,6 +187,8 @@ namespace json
 
 		outputStream << '}';
 
+		bool isJsonString = false;
+
 		switch (std::string result; type)
 		{
 		case json::JsonBuilder::OutputType::standard:
@@ -194,7 +196,6 @@ namespace json
 
 		case json::JsonBuilder::OutputType::minimize:
 			result = outputStream.str();
-			bool isJsonString = false;
 
 			for (size_t i = 0; i < result.size(); i++)
 			{

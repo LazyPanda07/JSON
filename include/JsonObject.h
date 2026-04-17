@@ -452,7 +452,7 @@ namespace json
 		
 		throw std::runtime_error("Wrong type");
 
-		JsonObject defaultReturn;
+		static T defaultReturn;
 
 		return defaultReturn;
 	}

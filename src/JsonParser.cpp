@@ -314,7 +314,7 @@ namespace json
 				break;
 
 			case colon:
-				if (value.size() > 3)
+				if (value.size() > 2)
 				{
 					key = std::string(value.begin() + 1, value.end() - 1);
 

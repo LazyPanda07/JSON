@@ -162,9 +162,20 @@ namespace json
 		JsonObject::ConstIterator begin = builderData.begin();
 		JsonObject::ConstIterator end = builderData.end();
 		std::ostringstream outputStream;
-		std::string offset = "  ";
+		std::string offset;
 
-		outputStream << '{' << std::endl;
+		if (builderData.is<json::JsonObject>())
+		{
+			offset = "  ";
+
+			outputStream << '{' << std::endl;
+		}
+		else if (builderData.is<std::vector<json::JsonObject>>())
+		{
+			offset = "  ";
+
+			outputStream << '[' << std::endl;
+		}
 
 		while (begin != end)
 		{
@@ -185,7 +196,14 @@ namespace json
 			++begin;
 		}
 
-		outputStream << '}';
+		if (builderData.is<json::JsonObject>())
+		{
+			outputStream << '}' << std::endl;
+		}
+		else if (builderData.is<std::vector<json::JsonObject>>())
+		{
+			outputStream << ']' << std::endl;
+		}
 
 		bool isJsonString = false;
 

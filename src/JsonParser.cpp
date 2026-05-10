@@ -586,10 +586,21 @@ namespace json
 	{
 		JsonObject::ConstIterator begin = parser.begin();
 		JsonObject::ConstIterator end = parser.end();
-		std::string offset = "  ";
+		std::string offset;
 
-		outputStream << '{' << std::endl;
+		if (parser.parsedData.is<json::JsonObject>())
+		{
+			offset = "  ";
 
+			outputStream << '{' << std::endl;
+		}
+		else if (parser.parsedData.is<std::vector<json::JsonObject>>())
+		{
+			offset = "  ";
+
+			outputStream << '[' << std::endl;
+		}
+		
 		while (begin != end)
 		{
 			JsonObject::ConstIterator check = begin;
@@ -609,7 +620,14 @@ namespace json
 			++begin;
 		}
 
-		outputStream << '}';
+		if (parser.parsedData.is<json::JsonObject>())
+		{
+			outputStream << '}';
+		}
+		else if (parser.parsedData.is<std::vector<json::JsonObject>>())
+		{
+			outputStream << ']';
+		}
 
 		return outputStream;
 	}
